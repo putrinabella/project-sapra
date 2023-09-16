@@ -8,9 +8,7 @@
     <meta name="description" content="Manajemen Sarana, Prasarana, IT dan Laboratorium SMK TELKOM Banjarbaru">
     <meta name="author" content="Putri Nabella">
     <meta name="keywords" content="Sarana, Prasarana, IT, Lab">
-
-    <title>Manajemen Sapra | SKATEL
-    </title>
+    <?= $this->renderSection("title"); ?>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,23 +17,23 @@
     <!-- End fonts -->
 
     <!-- core:css -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/public/assets/vendors/core/core.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/core/core.css">
     <!-- endinject -->
 
     <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/public/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/public/assets/fonts/feather-font/css/iconfont.css">
-    <link rel="stylesheet" href="<?= base_url(); ?>/public/assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/flag-icon-css/css/flag-icon.min.css">
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/public/assets/css/demo1/style.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/demo1/style.css">
     <!-- End layout styles -->
 
-    <link rel="shortcut icon" href="<?= base_url(); ?>/public/assets/images/favicon.png" />
+    <link rel="shortcut icon" href="<?= base_url(); ?>/assets/images/favicon.png" />
 </head>
 
 <body>
@@ -80,7 +78,7 @@
                 <div class="theme-wrapper">
                     <h6 class="text-muted mb-2">Light Theme:</h6>
                     <a class="theme-item active" href="<?= base_url(); ?>/public/demo1/dashboard.html">
-                        <img src="<?= base_url(); ?>/public/assets/images/screenshots/light.jpg" alt="light theme">
+                        <img src="<?= base_url(); ?>/assets/images/screenshots/light.jpg" alt="light theme">
                     </a>
                     <h6 class="text-muted mb-2">Dark Theme:</h6>
                     <a class="theme-item" href="<?= base_url(); ?>/public/demo2/dashboard.html">
@@ -99,7 +97,7 @@
                     <i data-feather="menu"></i>
                 </a>
                 <div class="navbar-content">
-                    <img class="" src="<?= base_url(); ?>/public/assets/images/header-pic.png" alt="Logo SMK TELKOM BJB" style="padding-top: 10px; padding-bottom: 10px;">
+                    <img class="" src="<?= base_url(); ?>/assets/images/header-pic.png" alt="Logo SMK TELKOM BJB" style="padding-top: 10px; padding-bottom: 10px;">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -163,25 +161,25 @@
     </div>
 
     <!-- core:js -->
-    <script src="<?= base_url(); ?>/public/assets/vendors/core/core.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/core/core.js"></script>
     <!-- endinject -->
 
     <!-- Plugin js for this page -->
-    <script src="<?= base_url(); ?>/public/assets/vendors/chartjs/Chart.min.js"></script>
-    <script src="<?= base_url(); ?>/public/assets/vendors/jquery.flot/jquery.flot.js"></script>
-    <script src="<?= base_url(); ?>/public/assets/vendors/jquery.flot/jquery.flot.resize.js"></script>
-    <script src="<?= base_url(); ?>/public/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-    <script src="<?= base_url(); ?>/public/assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/jquery.flot/jquery.flot.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/jquery.flot/jquery.flot.resize.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/apexcharts/apexcharts.min.js"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
-    <script src="<?= base_url(); ?>/public/assets/vendors/feather-icons/feather.min.js"></script>
-    <script src="<?= base_url(); ?>/public/assets/js/template.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/feather-icons/feather.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/template.js"></script>
     <!-- endinject -->
 
     <!-- Custom js for this page -->
-    <script src="<?= base_url(); ?>/public/assets/js/dashboard-light.js"></script>
-    <script src="<?= base_url(); ?>/public/assets/js/datepicker.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/dashboard-light.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/datepicker.js"></script>
     <!-- End custom js for this page -->
 
 </body>

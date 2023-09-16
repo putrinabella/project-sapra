@@ -130,7 +130,7 @@
         <div class="collapse" id="identitas">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Identitas Sarana</a>
+                    <a href="<?= site_url('identitasSarana') ?>" class="nav-link">Identitas Sarana</a>
                 </li>
                 <li class="nav-item">
                     <a href="<?= site_url() ?>" class="nav-link">Identitas Prasarana</a>
