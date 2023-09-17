@@ -16,10 +16,13 @@
         <div class="collapse" id="sarana">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Manajemen Sarana</a>
+                    <a href="<?= site_url('layananAset') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Rincian Sarana</a>
+                    <a href="<?= site_url('layananNonAset') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('rincianAset') ?>" class="nav-link">Rincian Aset</a>
                 </li>
             </ul>
         </div>
@@ -33,19 +36,19 @@
         <div class="collapse" id="prasarana">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Kantin</a>
+                    <a href="<?= site_url('kantin') ?>" class="nav-link">Kantin</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Lapangan</a>
+                    <a href="<?= site_url('lapangan') ?>" class="nav-link">Lapangan</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Parkiran</a>
+                    <a href="<?= site_url('parkiran') ?>" class="nav-link">Parkiran</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Ruangan</a>
+                    <a href="<?= site_url('ruangan') ?>" class="nav-link">Ruangan</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Toilet</a>
+                    <a href="<?= site_url('toilet') ?>" class="nav-link">Toilet</a>
                 </li>
             </ul>
         </div>
@@ -61,19 +64,22 @@
         <div class="collapse" id="masterLaboratorium">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Manajemen Peminjaman</a>
+                    <a href="<?= site_url('manajemenPeminjamanLab') ?>" class="nav-link">Manajemen Peminjaman</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Manajemen Sarana</a>
+                    <a href="<?= site_url('layananAsetLab') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Rincian Sarana </a>
+                    <a href="<?= site_url('layananNonAsetLab') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('rincianAsetLab') ?>" class="nav-link">Rincian Aset </a>
                 </li>
             </ul>
         </div>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url() ?>" class="nav-link">
+        <a href="<?= site_url('manajemenLab') ?>" class="nav-link">
             <i class="link-icon" data-feather="message-square"></i>
             <span class="link-title">Laboratorium</span>
         </a>
@@ -88,35 +94,35 @@
         <div class="collapse" id="masterIT">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Manajemen Sarana</a>
+                    <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Rincian Sarana </a>
+                    <a href="<?= site_url('rincianAsetIt') ?>" class="nav-link">Rincian Aset </a>
                 </li>
             </ul>
         </div>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url() ?>" class="nav-link">
+        <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
             <i class="link-icon" data-feather="wifi"></i>
             <span class="link-title">Perangkat IT</span>
         </a>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url() ?>" class="nav-link">
+        <a href="<?= site_url('websiteSosmed') ?>" class="nav-link">
             <i class="link-icon" data-feather="globe"></i>
             <span class="link-title">Website dan Media Sosial</span>
         </a>
     </li>
     <li class="nav-item nav-category">Settings</li>
     <li class="nav-item">
-        <a href="<?= site_url() ?>" class="nav-link">
+        <a href="<?= site_url('manajemenUser') ?>" class="nav-link">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">Manajemen User</span>
         </a>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url() ?>" class="nav-link">
+        <a href="<?= site_url('profilSekolah') ?>" class="nav-link">
             <i class="link-icon" data-feather="database"></i>
             <span class="link-title">Profil Sekolah</span>
         </a>
@@ -124,16 +130,31 @@
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#identitas" role="button" aria-expanded="false" aria-controls="identitas">
             <i class="link-icon" data-feather="tag"></i>
-            <span class="link-title">Identitas</span>
+            <span class="link-title">Informasi</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
         <div class="collapse" id="identitas">
             <ul class="nav sub-menu">
                 <li class="nav-item">
+                    <a href="<?= site_url('identitasGedung') ?>" class="nav-link">Identitas Gedung</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('identitasLantai') ?>" class="nav-link">Identitas Lantai</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('identitasPrasarana') ?>" class="nav-link">Identitas Prasarana</a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= site_url('identitasSarana') ?>" class="nav-link">Identitas Sarana</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Identitas Prasarana</a>
+                    <a href="<?= site_url('sumberDana') ?>" class="nav-link">Sumber Dana</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('statusManajemen') ?>" class="nav-link">Status Manajemen</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Manajemen </a>
                 </li>
             </ul>
         </div>

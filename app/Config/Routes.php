@@ -16,4 +16,34 @@ $routes->get('createDatabase', function () {
 // $routes->addRedirect('/', 'Home');
 $routes->get('/', 'Home::index');
 
-$routes->get('identitasSarana', 'Identitas::getIdentitasSarana');
+$routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
+$routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');
+$routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
+$routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
+$routes->get('sumberDana', 'InformasiController::getSumberDana');
+$routes->get('statusManajemen', 'InformasiController::getStatusManajemen');
+$routes->get('kategoriManajemen', 'InformasiController::getKategoriManajemen');
+$routes->get('profilSekolah', 'InformasiController::getProfilSekolah');
+
+$routes->get('manajemenUser', 'UserController::getManajemenUser');
+
+$routes->get('layananAsetIt', 'ItController::getLayananAset');
+$routes->get('rincianAsetIt', 'ItController::getRincianAset');
+$routes->get('perangkatIt', 'ItController::getPerangkatIt');
+$routes->get('websiteSosmed', 'ItController::getWebsiteSosmed');
+
+$routes->get('manajemenPeminjamanLab', 'LabController::getManajemenPeminjamanLab');
+$routes->get('layananAsetLab', 'LabController::getLayananAsetLab');
+$routes->get('layananNonAsetLab', 'LabController::getLayananNonAsetLab');
+$routes->get('rincianAsetLab', 'LabController::getRincianAsetLab');
+$routes->get('manajemenLab', 'LabController::getManajemenLab');
+
+$routes->get('kantin', 'PrasaranaController::getKantin');
+$routes->get('lapangan', 'PrasaranaController::getLapangan');
+$routes->get('parkiran', 'PrasaranaController::getParkiran');
+$routes->get('ruangan', 'PrasaranaController::getRuangan');
+$routes->get('toilet', 'PrasaranaController::getToilet');
+
+$routes->get('layananAset', 'SaranaController::getLayananAset');
+$routes->get('layananNonAset', 'SaranaController::getLayananNonAset');
+$routes->get('rincianAset', 'SaranaController::getRincianAset');
