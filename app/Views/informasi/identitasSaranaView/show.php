@@ -104,7 +104,15 @@
                                 <td class="text-center" style="width: 20%;">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('identitasSarana/edit/'.$value->idIdentitasSarana) ?>" class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <a href="" class="btn btn-danger btn-icon"> <i data-feather="trash"></i></a>
+                                    <form action="<?=site_url('identitasSarana/'.$value->idIdentitasSarana)?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button  class="btn btn-danger btn-icon"> 
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                    <!-- <a href="" class="btn btn-danger btn-icon"> <i data-feather="trash"></i></a> -->
+                                    <!-- <a href="" class="btn btn-danger btn-icon"> <i data-feather="trash"></i></a> -->
+                                    </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

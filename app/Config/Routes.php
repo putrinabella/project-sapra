@@ -19,8 +19,9 @@ $routes->get('/', 'Home::index');
 $routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
 $routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');
 $routes->post('identitasSarana', 'InformasiController::saveIdentitasSarana');
-$routes->get('identitasSarana/edit/(:any)', 'InformasiController::editIdentitasSarana/$1');
+$routes->get('identitasSarana/edit/(:num)', 'InformasiController::editIdentitasSarana/$1');
 $routes->put('identitasSarana/(:any)', 'InformasiController::updateIdentitasSarana/$1');
+$routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdentitasSarana/$1');
 
 $routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');
 $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');

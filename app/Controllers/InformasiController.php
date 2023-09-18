@@ -55,6 +55,12 @@ class InformasiController extends BaseController
         $this->db->table('tblIdentitasSarana')->where(['idIdentitasSarana' => $id])->update($data);
         return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil diupdate');
     }
+
+    public function deleteIdentitasSarana($id) {
+        $this->db->table('tblIdentitasSarana')->where(['idIdentitasSarana' => $id])->delete();
+        return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil dihapus');
+  
+    }
     
 
     public function getIdentitasPrasarana() {
