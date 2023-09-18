@@ -17,6 +17,9 @@ $routes->get('createDatabase', function () {
 $routes->get('/', 'Home::index');
 
 $routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
+$routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');
+
+
 $routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');
 $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
 $routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
@@ -44,6 +47,6 @@ $routes->get('parkiran', 'PrasaranaController::getParkiran');
 $routes->get('ruangan', 'PrasaranaController::getRuangan');
 $routes->get('toilet', 'PrasaranaController::getToilet');
 
-$routes->get('layananAset', 'SaranaController::getLayananAset');
-$routes->get('layananNonAset', 'SaranaController::getLayananNonAset');
-$routes->get('rincianAset', 'SaranaController::getRincianAset');
+$routes->get('layananAsetSarana', 'SaranaController::getLayananAsetSarana');
+$routes->get('layananNonAsetSarana', 'SaranaController::getLayananNonAsetSarana');
+$routes->get('rincianAsetSarana', 'SaranaController::getRincianAsetSarana');

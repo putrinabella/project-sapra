@@ -4,43 +4,42 @@ namespace App\Controllers;
 
 class InformasiController extends BaseController
 {
-    public function getIdentitasSarana()
-    {
-        return view('informasi/identitasSaranaView');
+    public function getIdentitasSarana() {
+        $builder = $this->db->table('tblIdentitasSarana');
+        $query = $builder->get()->getResult();
+        $data['dataIdentitasSarana'] = $query;
+        return view('informasi/identitasSaranaView', $data);
     }
 
-    public function getIdentitasPrasarana()
-    {
+    public function addIdentitasSarana() {
+        return view('informasi/add/addIdentitasSaranaView');
+    }
+
+    public function getIdentitasPrasarana() {
         return view('informasi/identitasPrasaranaView');
     }
 
-    public function getIdentitasGedung()
-    {
+    public function getIdentitasGedung() {
         return view('informasi/identitasGedungView');
     }
 
-    public function getIdentitasLantai()
-    {
+    public function getIdentitasLantai() {
         return view('informasi/identitasLantaiView');
     }
 
-    public function getSumberDana()
-    {
+    public function getSumberDana() {
         return view('informasi/sumberDanaView');
     }
 
-    public function getStatusManajemen()
-    {
+    public function getStatusManajemen() {
         return view('informasi/statusManajemenView');
     }
 
-    public function getKategoriManajemen()
-    {
+    public function getKategoriManajemen() {
         return view('informasi/kategoriManajemenView');
     }
 
-    public function getProfilSekolah()
-    {
+    public function getProfilSekolah() {
         return view('informasi/profilSekolahView');
     }
 }

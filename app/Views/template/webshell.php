@@ -55,7 +55,8 @@
                 <?= $this->include('template/sidebar') ?>
             </div>
         </nav>
-        <nav class="settings-sidebar">
+        <!-- Light and dark mode -->
+        <!-- <nav class="settings-sidebar">
             <div class="sidebar-body">
                 <a href="#" class="settings-sidebar-toggler">
                     <i data-feather="settings"></i>
@@ -86,7 +87,7 @@
                     </a>
                 </div>
             </div>
-        </nav>
+        </nav> -->
         <!-- partial -->
 
         <div class="page-wrapper">

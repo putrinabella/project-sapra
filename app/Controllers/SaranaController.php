@@ -4,17 +4,17 @@ namespace App\Controllers;
 
 class SaranaController extends BaseController
 {
-    public function getLayananAset()
+    public function getLayananAsetSarana()
     {
         return view('sarana/layananAsetView');
     }
 
-    public function getLayananNonAset()
+    public function getLayananNonAsetSarana()
     {
         return view('sarana/layananNonAsetView');
     }
 
-    public function getRincianAset()
+    public function getRincianAsetSarana()
     {
         return view('sarana/RincianAsetView');
     }
