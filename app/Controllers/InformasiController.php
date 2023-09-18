@@ -15,6 +15,15 @@ class InformasiController extends BaseController
         return view('informasi/add/addIdentitasSaranaView');
     }
 
+    public function saveIdentitasSarana() {
+        $data = $this->request->getPost();
+        $this->db->table('tblIdentitasSarana')->insert($data);
+
+        if($this->db->affectedRows() >0) {
+            return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil disimpan');
+        } 
+    }
+
     public function getIdentitasPrasarana() {
         return view('informasi/identitasPrasaranaView');
     }

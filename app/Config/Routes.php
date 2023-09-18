@@ -18,6 +18,7 @@ $routes->get('/', 'Home::index');
 
 $routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
 $routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');
+$routes->post('identitasSarana', 'InformasiController::saveIdentitasSarana');
 
 
 $routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');

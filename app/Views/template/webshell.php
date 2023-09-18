@@ -166,6 +166,7 @@
     <!-- endinject -->
 
     <!-- Plugin js for this page -->
+    <script src="<?= base_url(); ?>/assets/vendors/jquery-validation/jquery.validate.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/chartjs/Chart.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/jquery.flot/jquery.flot.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/jquery.flot/jquery.flot.resize.js"></script>
@@ -179,6 +180,7 @@
     <!-- endinject -->
 
     <!-- Custom js for this page -->
+    <script src="<?= base_url(); ?>/assets/js/form-validation.js"></script>
     <script src="<?= base_url(); ?>/assets/js/dashboard-light.js"></script>
     <script src="<?= base_url(); ?>/assets/js/datepicker.js"></script>
     <!-- End custom js for this page -->
