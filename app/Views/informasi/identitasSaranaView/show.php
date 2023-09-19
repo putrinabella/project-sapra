@@ -94,7 +94,7 @@
                         <tbody class="py-2">
                             <?php foreach ($dataIdentitasSarana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td class="text-center " style="width: 15%;">
+                                <td class="text-center " style="width: 10%;">
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center" style="width: 15%;">

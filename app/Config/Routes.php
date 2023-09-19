@@ -44,7 +44,7 @@ $routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdenti
 $routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');
 $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
 $routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
-$routes->get('sumberDana', 'InformasiController::getSumberDana');
+// $routes->get('sumberDana', 'InformasiController::getSumberDana');
 $routes->get('statusManajemen', 'InformasiController::getStatusManajemen');
 $routes->get('kategoriManajemen', 'InformasiController::getKategoriManajemen');
 $routes->get('profilSekolah', 'InformasiController::getProfilSekolah');
@@ -65,9 +65,12 @@ $routes->get('manajemenLab', 'LabController::getManajemenLab');
 $routes->get('kantin', 'PrasaranaController::getKantin');
 $routes->get('lapangan', 'PrasaranaController::getLapangan');
 $routes->get('parkiran', 'PrasaranaController::getParkiran');
+$routes->get('parkiran', 'PrasaranaController::getParkiran');
 $routes->get('ruangan', 'PrasaranaController::getRuangan');
 $routes->get('toilet', 'PrasaranaController::getToilet');
 
 $routes->get('layananAsetSarana', 'SaranaController::getLayananAsetSarana');
 $routes->get('layananNonAsetSarana', 'SaranaController::getLayananNonAsetSarana');
 $routes->get('rincianAsetSarana', 'SaranaController::getRincianAsetSarana');
+
+$routes->presenter('sumberDana');
