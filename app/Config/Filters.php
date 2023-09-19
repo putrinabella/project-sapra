@@ -8,6 +8,7 @@ use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
+use App\Filters\LoginFilter;
 
 class Filters extends BaseConfig
 {
@@ -24,6 +25,8 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'isLoggedIn'    => LoginFilter::class,
+
     ];
 
     /**
@@ -66,5 +69,64 @@ class Filters extends BaseConfig
      * Example:
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
-    public array $filters = [];
+    public array $filters = [
+        'isLoggedIn' => ['before' => [
+                '/',
+                'home', 
+                'identitasSarana',
+                'identitasPrasarana',
+                'identitasGedung',
+                'identitasLantai',
+                'sumberDana',
+                'statusManajemen',
+                'kategoriManajemen',
+                'profilSekolah',
+                'manajemenUser',
+                'layananAsetIt',
+                'rincianAsetIt',
+                'perangkatIt',
+                'websiteSosmed',
+                'manajemenPeminjamanLab',
+                'layananAsetLab',
+                'layananNonAsetLab',
+                'rincianAsetLab',
+                'manajemenLab',
+                'kantin',
+                'lapangan',
+                'parkiran',
+                'ruangan',
+                'toilet',
+                'layananAsetSarana',
+                'layananNonAsetSarana',
+                'rincianAsetSarana',
+                'home/*',
+                'identitasSarana/*',
+                'identitasPrasarana/*',
+                'identitasGedung/*',
+                'identitasLantai/*',
+                'sumberDana/*',
+                'statusManajemen/*',
+                'kategoriManajemen/*',
+                'profilSekolah/*',
+                'manajemenUser/*',
+                'layananAsetIt/*',
+                'rincianAsetIt/*',
+                'perangkatIt/*',
+                'websiteSosmed/*',
+                'manajemenPeminjamanLab/*',
+                'layananAsetLab/*',
+                'layananNonAsetLab/*',
+                'rincianAsetLab/*',
+                'manajemenLab/*',
+                'kantin/*',
+                'lapangan/*',
+                'parkiran/*',
+                'ruangan/*',
+                'toilet/*',
+                'layananAsetSarana/*',
+                'layananNonAsetSarana/*',
+                'rincianAsetSarana/*',
+            ]
+        ]
+    ];
 }

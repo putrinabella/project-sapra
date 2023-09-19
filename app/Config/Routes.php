@@ -17,6 +17,8 @@ $routes->get('createDatabase', function () {
 $routes->get('login', 'Auth::login');
 $routes->get('auth', 'Auth::index');
 $routes->post('loginProcess', 'Auth::loginProcess');
+$routes->get('logout', 'Auth::logout');
+
 
 // Register
 
@@ -34,6 +36,7 @@ $routes->get('home/generate', 'Home::generate');
 $routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
 $routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');
 $routes->post('identitasSarana', 'InformasiController::saveIdentitasSarana');
+$routes->get('identitasSarana/edit', 'InformasiController::editIdentitasSarana');
 $routes->get('identitasSarana/edit/(:num)', 'InformasiController::editIdentitasSarana/$1');
 $routes->put('identitasSarana/(:any)', 'InformasiController::updateIdentitasSarana/$1');
 $routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdentitasSarana/$1');
