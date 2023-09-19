@@ -26,22 +26,22 @@ License: For each use you must have a valid license purchased only from above li
   <!-- End fonts -->
 
 	<!-- core:css -->
-	<link rel="stylesheet" href="../../../assets/vendors/core/core.css">
+	<link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/core/core.css">
 	<!-- endinject -->
 
 	<!-- Plugin css for this page -->
 	<!-- End plugin css for this page -->
 
 	<!-- inject:css -->
-	<link rel="stylesheet" href="../../../assets/fonts/feather-font/css/iconfont.css">
-	<link rel="stylesheet" href="../../../assets/vendors/flag-icon-css/css/flag-icon.min.css">
+	<link rel="stylesheet" href="<?= base_url(); ?>/assets/fonts/feather-font/css/iconfont.css">
+	<link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/flag-icon-css/css/flag-icon.min.css">
 	<!-- endinject -->
 
   <!-- Layout styles -->  
-	<link rel="stylesheet" href="../../../assets/css/demo1/style.css">
+	<link rel="stylesheet" href="<?= base_url(); ?>/assets/css/demo1/style.css">
   <!-- End layout styles -->
 
-  <link rel="shortcut icon" href="../../../assets/images/favicon.png" />
+  <link rel="shortcut icon" href="<?= base_url(); ?>/assets/images/favicon.png" />
 </head>
 <body>
 	<div class="main-wrapper">
@@ -50,7 +50,7 @@ License: For each use you must have a valid license purchased only from above li
 
 				<div class="row w-100 mx-0 auth-page">
 					<div class="col-md-8 col-xl-6 mx-auto d-flex flex-column align-items-center">
-						<img src="../../../assets/images/others/404.svg" class="img-fluid mb-2" alt="404">
+						<img src="<?= base_url(); ?>/assets/images/others/404.svg" class="img-fluid mb-2" alt="404">
 						<h1 class="fw-bolder mb-22 mt-2 tx-80 text-muted">404</h1>
 						<h4 class="mb-2">Page Not Found</h4>
 						<h6 class="text-muted mb-3 text-center">Oopps!! The page you were looking for doesn't exist.</h6>
@@ -63,15 +63,15 @@ License: For each use you must have a valid license purchased only from above li
 	</div>
 
 	<!-- core:js -->
-	<script src="../../../assets/vendors/core/core.js"></script>
+	<script src="<?= base_url(); ?>/assets/vendors/core/core.js"></script>
 	<!-- endinject -->
 
 	<!-- Plugin js for this page -->
 	<!-- End plugin js for this page -->
 
 	<!-- inject:js -->
-	<script src="../../../assets/vendors/feather-icons/feather.min.js"></script>
-	<script src="../../../assets/js/template.js"></script>
+	<script src="<?= base_url(); ?>/assets/vendors/feather-icons/feather.min.js"></script>
+	<script src="<?= base_url(); ?>/assets/js/template.js"></script>
 	<!-- endinject -->
 
 	<!-- Custom js for this page -->

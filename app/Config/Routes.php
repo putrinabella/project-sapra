@@ -15,6 +15,7 @@ $routes->get('createDatabase', function () {
 
 // $routes->addRedirect('/', 'Home');
 $routes->get('/', 'Home::index');
+$routes->get('home/generate', 'Home::generate');
 
 $routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
 $routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');

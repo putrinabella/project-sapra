@@ -32,12 +32,12 @@ class InformasiController extends BaseController
                 $data['dataIdentitasSarana'] = $query->getRow();
                 return view('informasi/identitasSaranaView/edit', $data);
             } else {
-                return view('404');
+                return view('error/404');
                 // throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
         } else {
             // throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-            return view('404');
+            return view('error/404');
         }
     }
 
