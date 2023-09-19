@@ -9,10 +9,16 @@ class User extends Migration
     public function up()
     {
         $this->forge->addField([
+            'idUser' => [
+                'type' => 'INT',
+                'constraint' => 3,
+                'unsigned' => true,
+                'auto_increment' => true,
+            ],
             'username' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-                // 'unique' => true,
+                'unique' => true,
             ],
             'password' => [
                 'type' => 'VARCHAR',
@@ -28,7 +34,7 @@ class User extends Migration
             ],
         ]);
 
-        $this->forge->addKey('username', true);
+        $this->forge->addKey('idUser', true);
         $this->forge->createTable('tbluser');
     }
 

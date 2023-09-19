@@ -12,11 +12,25 @@ $routes->get('createDatabase', function () {
     }
 });
 
+// USER ROUTES
+// Login 
+$routes->get('login', 'Auth::login');
+$routes->get('auth', 'Auth::index');
+$routes->post('loginProcess', 'Auth::loginProcess');
 
-// $routes->addRedirect('/', 'Home');
+// Register
+
+
+// HOME
 $routes->get('/', 'Home::index');
+$routes->get('home', 'Home::index');
 $routes->get('home/generate', 'Home::generate');
 
+
+
+
+// INFORMATION ROUTES
+// Identitas Sarana
 $routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
 $routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');
 $routes->post('identitasSarana', 'InformasiController::saveIdentitasSarana');
