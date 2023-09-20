@@ -65,8 +65,15 @@ class SumberDana extends ResourcePresenter
      */
     public function edit($id = null)
     {
+        $dataSumberDana = $this->sumberDanaModel->where('idSumberDana', $id)->first();
 
-        return view('sumberDanaView/edit');
+        if (is_object($dataSumberDana)) {
+            $data['dataSumberDana'] = $dataSumberDana;
+            return view('sumberDanaView/edit', $data);
+        }
+        
+        return view('error/404');
+        
     }
 
     /**
@@ -79,7 +86,9 @@ class SumberDana extends ResourcePresenter
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $this->sumberDanaModel->update($id, $data);
+        return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil update');
     }
 
     /**
