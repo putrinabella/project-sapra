@@ -48,7 +48,7 @@
                 <div class="d-flex justify-content-between">
                     <h1> </h1>
                     <div class="secion-header-button">
-                        <a href="<?= site_url('sumberDana/add') ?>" class="btn btn-outline-primary btn-icon-text">
+                        <a href="<?= site_url('sumberDana/new') ?>" class="btn btn-outline-primary btn-icon-text">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Tambah Data
                         </a>
@@ -108,8 +108,6 @@
                                     <button  class="btn btn-danger btn-icon"> 
                                         <i data-feather="trash"></i>
                                     </button>
-                                    <!-- <a href="" class="btn btn-danger btn-icon"> <i data-feather="trash"></i></a> -->
-                                    <!-- <a href="" class="btn btn-danger btn-icon"> <i data-feather="trash"></i></a> -->
                                     </form>
                                 </td>
                             </tr>

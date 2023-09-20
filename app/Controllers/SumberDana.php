@@ -8,7 +8,7 @@ use App\Models\SumberDanaModels;
 class SumberDana extends ResourcePresenter
 {
     function __construct() {
-        $this->sumberDana = new SumberDanaModels();
+        $this->sumberDanaModel = new SumberDanaModels();
     }
     /**
      * Present a view of resource objects
@@ -17,7 +17,7 @@ class SumberDana extends ResourcePresenter
      */
     public function index()
     {
-        $data['dataSumberDana'] = $this->sumberDana->findAll();
+        $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
         return view('sumberDanaView/index', $data);
     }
 
@@ -51,7 +51,9 @@ class SumberDana extends ResourcePresenter
      */
     public function create()
     {
-        //
+        $data = $this->request->getPost();
+        $this->sumberDanaModel->insert($data);
+        return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil disimpan');
     }
 
     /**
