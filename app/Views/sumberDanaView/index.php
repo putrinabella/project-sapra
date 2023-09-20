@@ -90,7 +90,30 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-
+                        <?php foreach ($dataSumberDana as $key => $value) : ?>
+                            <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
+                                <td class="text-center">
+                                    <?=$key + 1?>
+                                </td>
+                                <td class="text-center">
+                                    <?= sprintf('%03d', $value->idSumberDana) ?>
+                                </td>
+                                <td class="text-left"><?=$value->namaSumberDana?></td>
+                                <td class="text-center">
+                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>" class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
+                                    <form action="<?=site_url('sumberDana/'.$value->idSumberDana)?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button  class="btn btn-danger btn-icon"> 
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                    <!-- <a href="" class="btn btn-danger btn-icon"> <i data-feather="trash"></i></a> -->
+                                    <!-- <a href="" class="btn btn-danger btn-icon"> <i data-feather="trash"></i></a> -->
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>

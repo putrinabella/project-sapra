@@ -3,9 +3,13 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
+use App\Models\SumberDanaModels;
 
 class SumberDana extends ResourcePresenter
 {
+    function __construct() {
+        $this->sumberDana = new SumberDanaModels();
+    }
     /**
      * Present a view of resource objects
      *
@@ -13,7 +17,8 @@ class SumberDana extends ResourcePresenter
      */
     public function index()
     {
-        return view('sumberDanaView/index');
+        $data['dataSumberDana'] = $this->sumberDana->findAll();
+        return view('sumberDanaView/index', $data);
     }
 
     /**
@@ -58,6 +63,7 @@ class SumberDana extends ResourcePresenter
      */
     public function edit($id = null)
     {
+
         return view('sumberDanaView/edit');
     }
 

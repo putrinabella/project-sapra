@@ -85,23 +85,23 @@
                     <table class="table table-hover table-bordered">
                         <thead>
                             <tr class="text-center">
-                                <th>No.</th>
-                                <th>ID Sarana</th>
+                                <th style="width: 10%;">No.</th>
+                                <th style="width: 15%;">ID Sarana</th>
                                 <th>Nama Sarana</th>
-                                <th>Aksi</th>
+                                <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
                             <?php foreach ($dataIdentitasSarana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td class="text-center " style="width: 10%;">
+                                <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center" style="width: 15%;">
+                                <td class="text-center">
                                     <?= sprintf('%03d', $value->idIdentitasSarana) ?>
                                 </td>
                                 <td class="text-left"><?=$value->namaSarana?></td>
-                                <td class="text-center" style="width: 20%;">
+                                <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('identitasSarana/edit/'.$value->idIdentitasSarana) ?>" class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('identitasSarana/'.$value->idIdentitasSarana)?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
