@@ -112,6 +112,8 @@ class SumberDana extends ResourcePresenter
      */
     public function delete($id = null)
     {
-        //
+        // $this->sumberDanaModel->where('idSumberDana', $id)->delete();
+        $this->sumberDanaModel->delete($id);
+        return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil dihapus');
     }
 }

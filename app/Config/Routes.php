@@ -73,4 +73,4 @@ $routes->get('layananAsetSarana', 'SaranaController::getLayananAsetSarana');
 $routes->get('layananNonAsetSarana', 'SaranaController::getLayananNonAsetSarana');
 $routes->get('rincianAsetSarana', 'SaranaController::getRincianAsetSarana');
 
-$routes->presenter('sumberDana');
+$routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);

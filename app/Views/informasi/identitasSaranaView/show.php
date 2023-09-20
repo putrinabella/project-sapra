@@ -124,12 +124,7 @@
     </div>
 </div>
 
-<!-- set auto close alert -->
-<script>
-    setTimeout(function() {
-        document.getElementById('alert').style.display = 'none';
-    }, 2000);
-</script>
+
 
 <!-- MODAL FOR INPUT DATA -->
 <div class="modal fade" id="inlineForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -183,6 +183,8 @@
     <script src="<?= base_url(); ?>/assets/js/form-validation.js"></script>
     <script src="<?= base_url(); ?>/assets/js/dashboard-light.js"></script>
     <script src="<?= base_url(); ?>/assets/js/datepicker.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/hide-alert.js"></script>
+    
     <!-- End custom js for this page -->
 
 </body>

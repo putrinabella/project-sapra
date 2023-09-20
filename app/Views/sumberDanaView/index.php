@@ -102,9 +102,8 @@
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>" class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                        <form action="<?=site_url('sumberDana/delete'.$value->idSumberDana)?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                        <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
                                             <?= csrf_field() ?>
-                                            <input type="hidden" name="_method" value="DELETE">
                                             <button  class="btn btn-danger btn-icon"> 
                                                 <i data-feather="trash"></i>
                                             </button>
@@ -120,11 +119,5 @@
     </div>
 </div>
 
-<!-- set auto close alert -->
-<script>
-    setTimeout(function () {
-        document.getElementById('alert').style.display = 'none';
-    }, 2000);
-</script>
 
 <?= $this->endSection(); ?>
