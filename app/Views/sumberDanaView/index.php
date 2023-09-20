@@ -45,15 +45,24 @@
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h1> </h1>
-                    <div class="secion-header-button">
-                        <a href="<?= site_url('sumberDana/new') ?>" class="btn btn-outline-primary btn-icon-text">
+                <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+                    <div>
+                        <h4 class="mb-3 mb-md-0">Sumber Dana</h4>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap text-nowrap">
+                        <a href="<?= site_url('sumberDana/new') ?>"
+                            class="btn btn-outline-danger btn-icon-text me-2 mb-2 mb-md-0">
+                            <i class=" btn-icon-prepend" data-feather="trash"></i>
+                            Recycle bin
+                        </a>
+                        <a href="<?= site_url('sumberDana/new') ?>"
+                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Tambah Data
                         </a>
                     </div>
                 </div>
+
                 <br>
                 <div>
                     <?php if(session()->getFlashdata('success')) :?>
@@ -90,7 +99,7 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataSumberDana as $key => $value) : ?>
+                            <?php foreach ($dataSumberDana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
@@ -101,13 +110,15 @@
                                 <td class="text-left"><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>" class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                        <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>" method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
-                                            <?= csrf_field() ?>
-                                            <button  class="btn btn-danger btn-icon"> 
-                                                <i data-feather="trash"></i>
-                                            </button>
-                                        </form>
+                                    <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>"
+                                        class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
+                                    <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>"
+                                        method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                        <?= csrf_field() ?>
+                                        <button class="btn btn-danger btn-icon">
+                                            <i data-feather="trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
