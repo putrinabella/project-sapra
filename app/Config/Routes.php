@@ -41,7 +41,23 @@ $routes->get('identitasSarana/edit/(:num)', 'InformasiController::editIdentitasS
 $routes->put('identitasSarana/(:any)', 'InformasiController::updateIdentitasSarana/$1');
 $routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdentitasSarana/$1');
 
-$routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');
+// Identitas Prasarana
+$routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
+
+
+// Sumber Dana
+$routes->get('sumberDana/trash', 'SumberDana::trash');
+$routes->get('sumberDana/restore/(:any)', 'SumberDana::restore/$1');
+$routes->get('sumberDana/restore', 'SumberDana::restore');
+$routes->delete('sumberDana/deletePermanent/(:any)', 'SumberDana::deletePermanent/$1');
+$routes->delete('sumberDana/deletePermanent', 'SumberDana::deletePermanent');
+$routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);
+
+
+
+
+
+// $routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');
 $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
 $routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
 // $routes->get('sumberDana', 'InformasiController::getSumberDana');
@@ -73,9 +89,3 @@ $routes->get('layananAsetSarana', 'SaranaController::getLayananAsetSarana');
 $routes->get('layananNonAsetSarana', 'SaranaController::getLayananNonAsetSarana');
 $routes->get('rincianAsetSarana', 'SaranaController::getRincianAsetSarana');
 
-$routes->get('sumberDana/trash', 'SumberDana::trash');
-$routes->get('sumberDana/restore/(:any)', 'SumberDana::restore/$1');
-$routes->get('sumberDana/restore', 'SumberDana::restore');
-$routes->delete('sumberDana/deletePermanent/(:any)', 'SumberDana::deletePermanent/$1');
-$routes->delete('sumberDana/deletePermanent', 'SumberDana::deletePermanent');
-$routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);

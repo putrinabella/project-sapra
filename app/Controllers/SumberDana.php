@@ -18,7 +18,7 @@ class SumberDana extends ResourcePresenter
     public function index()
     {
         $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
-        return view('sumberDanaView/index', $data);
+        return view('informasi/sumberDanaView/index', $data);
     }
 
     /**
@@ -40,7 +40,7 @@ class SumberDana extends ResourcePresenter
      */
     public function new()
     {
-        return view('sumberDanaView/new');
+        return view('informasi/sumberDanaView/new');
     }
 
     /**
@@ -69,7 +69,7 @@ class SumberDana extends ResourcePresenter
 
         if (is_object($dataSumberDana)) {
             $data['dataSumberDana'] = $dataSumberDana;
-            return view('sumberDanaView/edit', $data);
+            return view('informasi/sumberDanaView/edit', $data);
         }
         
         return view('error/404');
@@ -119,7 +119,7 @@ class SumberDana extends ResourcePresenter
 
     public function trash() {
         $data['dataSumberDana'] = $this->sumberDanaModel->onlyDeleted()->findAll();
-        return view('sumberDanaView/trash', $data);
+        return view('informasi/sumberDanaView/trash', $data);
     } 
 
     public function restore($id = null) {
