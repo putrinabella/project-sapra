@@ -98,20 +98,27 @@
                     <i data-feather="menu"></i>
                 </a>
                 <div class="navbar-content">
-                    <img class="" src="<?= base_url(); ?>/assets/images/header-pic.png" alt="Logo SMK TELKOM BJB" style="padding-top: 10px; padding-bottom: 10px;">
+                    <img class="" src="<?= base_url(); ?>/assets/images/header-pic.png" alt="Logo SMK TELKOM BJB"
+                        style="padding-top: 10px; padding-bottom: 10px;">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="wd-30 ht-30 rounded-circle" src="https://via.placeholder.com/30x30" alt="profile">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="d-flex align-items-center">
+                                    <img class="wd-30 ht-30 rounded-circle mr-2 pr-2"
+                                        src="<?= base_url(); ?>/assets/images/user.png" alt="profile">
+                                </div>
                             </a>
+
+
                             <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
-                                    <div class="mb-3">
-                                        <img class="wd-80 ht-80 rounded-circle" src="https://via.placeholder.com/80x80" alt="">
-                                    </div>
+                                    <!-- <div class="mb-3">
+                                        <img class="wd-80 ht-80 rounded-circle" src="<?= base_url(); ?>/assets/images/user.png" alt="">
+                                    </div> -->
                                     <div class="text-center">
-                                        <p class="tx-16 fw-bolder">Amiah Burton</p>
-                                        <p class="tx-12 text-muted">amiahburton@gmail.com</p>
+                                        <div class="tx-16 fw-bolder"> <?=userLogin()->nama?> </div>
+                                        <div class="tx-12 text-muted"> <?=userLogin()->role?> </div>
                                     </div>
                                 </div>
                                 <ul class="list-unstyled p-1">
@@ -152,9 +159,12 @@
             </div>
 
             <!-- partial:partials/_footer.html -->
-            <footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
-                <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://www.nobleui.com" target="_blank">NobleUI</a>.</p>
-                <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart"></i></p>
+            <footer
+                class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
+                <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://www.nobleui.com"
+                        target="_blank">NobleUI</a>.</p>
+                <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm"
+                        data-feather="heart"></i></p>
             </footer>
             <!-- partial -->
 
@@ -184,7 +194,7 @@
     <script src="<?= base_url(); ?>/assets/js/dashboard-light.js"></script>
     <script src="<?= base_url(); ?>/assets/js/datepicker.js"></script>
     <script src="<?= base_url(); ?>/assets/js/hide-alert.js"></script>
-    
+
     <!-- End custom js for this page -->
 
 </body>
