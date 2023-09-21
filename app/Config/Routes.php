@@ -44,7 +44,6 @@ $routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdenti
 // Identitas Prasarana
 $routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
 
-
 // Sumber Dana
 $routes->get('sumberDana/trash', 'SumberDana::trash');
 $routes->get('sumberDana/restore/(:any)', 'SumberDana::restore/$1');
@@ -53,39 +52,41 @@ $routes->delete('sumberDana/deletePermanent/(:any)', 'SumberDana::deletePermanen
 $routes->delete('sumberDana/deletePermanent', 'SumberDana::deletePermanent');
 $routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);
 
+// Identitas Gedung
+$routes->presenter('identitasGedung', ['filter' => 'isLoggedIn']);
 
 
 
 
-// $routes->get('identitasPrasarana', 'InformasiController::getIdentitasPrasarana');
-$routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
-$routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
-// $routes->get('sumberDana', 'InformasiController::getSumberDana');
-$routes->get('statusManajemen', 'InformasiController::getStatusManajemen');
-$routes->get('kategoriManajemen', 'InformasiController::getKategoriManajemen');
-$routes->get('profilSekolah', 'InformasiController::getProfilSekolah');
 
-$routes->get('manajemenUser', 'UserController::getManajemenUser');
 
-$routes->get('layananAsetIt', 'ItController::getLayananAset');
-$routes->get('rincianAsetIt', 'ItController::getRincianAset');
-$routes->get('perangkatIt', 'ItController::getPerangkatIt');
-$routes->get('websiteSosmed', 'ItController::getWebsiteSosmed');
+// $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
+// $routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
+// $routes->get('statusManajemen', 'InformasiController::getStatusManajemen');
+// $routes->get('kategoriManajemen', 'InformasiController::getKategoriManajemen');
+// $routes->get('profilSekolah', 'InformasiController::getProfilSekolah');
 
-$routes->get('manajemenPeminjamanLab', 'LabController::getManajemenPeminjamanLab');
-$routes->get('layananAsetLab', 'LabController::getLayananAsetLab');
-$routes->get('layananNonAsetLab', 'LabController::getLayananNonAsetLab');
-$routes->get('rincianAsetLab', 'LabController::getRincianAsetLab');
-$routes->get('manajemenLab', 'LabController::getManajemenLab');
+// $routes->get('manajemenUser', 'UserController::getManajemenUser');
 
-$routes->get('kantin', 'PrasaranaController::getKantin');
-$routes->get('lapangan', 'PrasaranaController::getLapangan');
-$routes->get('parkiran', 'PrasaranaController::getParkiran');
-$routes->get('parkiran', 'PrasaranaController::getParkiran');
-$routes->get('ruangan', 'PrasaranaController::getRuangan');
-$routes->get('toilet', 'PrasaranaController::getToilet');
+// $routes->get('layananAsetIt', 'ItController::getLayananAset');
+// $routes->get('rincianAsetIt', 'ItController::getRincianAset');
+// $routes->get('perangkatIt', 'ItController::getPerangkatIt');
+// $routes->get('websiteSosmed', 'ItController::getWebsiteSosmed');
 
-$routes->get('layananAsetSarana', 'SaranaController::getLayananAsetSarana');
-$routes->get('layananNonAsetSarana', 'SaranaController::getLayananNonAsetSarana');
-$routes->get('rincianAsetSarana', 'SaranaController::getRincianAsetSarana');
+// $routes->get('manajemenPeminjamanLab', 'LabController::getManajemenPeminjamanLab');
+// $routes->get('layananAsetLab', 'LabController::getLayananAsetLab');
+// $routes->get('layananNonAsetLab', 'LabController::getLayananNonAsetLab');
+// $routes->get('rincianAsetLab', 'LabController::getRincianAsetLab');
+// $routes->get('manajemenLab', 'LabController::getManajemenLab');
+
+// $routes->get('kantin', 'PrasaranaController::getKantin');
+// $routes->get('lapangan', 'PrasaranaController::getLapangan');
+// $routes->get('parkiran', 'PrasaranaController::getParkiran');
+// $routes->get('parkiran', 'PrasaranaController::getParkiran');
+// $routes->get('ruangan', 'PrasaranaController::getRuangan');
+// $routes->get('toilet', 'PrasaranaController::getToilet');
+
+// $routes->get('layananAsetSarana', 'SaranaController::getLayananAsetSarana');
+// $routes->get('layananNonAsetSarana', 'SaranaController::getLayananNonAsetSarana');
+// $routes->get('rincianAsetSarana', 'SaranaController::getRincianAsetSarana');
 

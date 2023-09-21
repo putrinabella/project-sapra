@@ -151,7 +151,7 @@
                     <a href="<?= site_url('sumberDana') ?>" class="nav-link">Sumber Dana</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('statusManajemen') ?>" class="nav-link">Status Manajemen</a>
+                    <a href="<?= site_url('statusLayanan') ?>" class="nav-link">Status Layanan</a>
                 </li>
                 <li class="nav-item">
                     <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Manajemen </a>
