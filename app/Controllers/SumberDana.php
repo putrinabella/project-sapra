@@ -112,8 +112,41 @@ class SumberDana extends ResourcePresenter
      */
     public function delete($id = null)
     {
-        // $this->sumberDanaModel->where('idSumberDana', $id)->delete();
-        $this->sumberDanaModel->delete($id);
+        // $this->sumberDanaModel->delete($id);
+        $this->sumberDanaModel->where('idSumberDana', $id)->delete();
         return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil dihapus');
     }
+
+    public function trash() {
+        $data['dataSumberDana'] = $this->sumberDanaModel->onlyDeleted()->findAll();
+        return view('sumberDanaView/trash', $data);
+    } 
+
+    public function restore($id = null) {
+        $this->db = \Config\Database::connect();
+        if($id != null) {
+            $this->db->table('tblSumberDana')
+                ->set('deleted_at', null, true)
+                ->where(['idSumberDana' => $id])
+                ->update();
+        } else {
+            $this->db->table('tblSumberDana')
+                ->set('deleted_at', null, true)
+                ->where('deleted_at is NOT NULL', NULL, FALSE)
+                ->update();
+            }
+        if($this->db->affectedRows() > 0) {
+            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil direstore');
+        } 
+    } 
+
+    public function deletePermanent($id = null) {
+        if($id != null) {
+        $this->sumberDanaModel->delete($id, true);
+        return redirect()->to(site_url('sumberDana/trash'))->with('success', 'Data berhasil dihapus permanen');
+        } else {
+            $this->sumberDanaModel->purgeDeleted($id);
+            return redirect()->to(site_url('sumberDana/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+        }
+    }  
 }

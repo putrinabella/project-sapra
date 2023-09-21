@@ -1,36 +1,13 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Sumber Dana &verbar; SARPRA </title>
+<title>Recycle Bin Sumber Dana &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
-<nav class="page-breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Informasi</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Sumber Dana</li>
-    </ol>
-</nav>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Sumber Dana</h4>
-    </div>
-    <div class="d-flex align-items-center flex-wrap text-nowrap">
-
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="printer"></i>
-        </a>
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
-        </a>
-        <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="trash"></i>
-            Recycle Bin
-        </a>
-    </div>
-</div>
-
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Sumber Dana</h4>
+<br>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -38,29 +15,24 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <!-- <h4 class="mb-3 mb-md-0">Sumber Dana</h4> -->
-                        <a href="<?= site_url('sumberDana/new') ?>"
+                        <a href="<?= site_url('sumberDana')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Show
-                        </a>
-                        <a href="<?= site_url('sumberDana/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Search
+                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
+                            Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('sumberDana/trash') ?>"
-                            class="btn btn-outline-danger btn-icon-text me-2 mb-2 mb-md-0">
-                            <i class=" btn-icon-prepend" data-feather="trash"></i>
-                            <!-- Ganti jadi  -->
-                            Import data
+                        <a href="<?= site_url('sumberDana/restore')?>"
+                            class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
+                            <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
+                            Restore All
                         </a>
-                        <a href="<?= site_url('sumberDana/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Tambah Data
+                        <form action="<?= site_url('sumberDana/deletePermanent/') ?>" method="POST"
+                            class="d-inline me-2 mb-2 mb-md-0">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger" type="submit"> Delete All Permanent </button>
+                        </form>
                         </a>
                     </div>
                 </div>
@@ -111,16 +83,15 @@
                                 </td>
                                 <td class="text-left"><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
-                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>"
-                                        class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>"
-                                        method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                    <a href="<?=site_url('sumberDana/restore/'.$value->idSumberDana) ?>"
+                                        class="btn btn-primary"> Restore</a>
+                                    <form action="<?= site_url('sumberDana/deletePermanent/'.$value->idSumberDana) ?>"
+                                        method="POST" class="d-inline">
                                         <?= csrf_field() ?>
-                                        <button class="btn btn-danger btn-icon">
-                                            <i data-feather="trash"></i>
-                                        </button>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="btn btn-danger" type="submit"> Delete Permanent </button>
                                     </form>
+
                                 </td>
                             </tr>
                             <?php endforeach; ?>

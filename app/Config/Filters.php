@@ -100,6 +100,7 @@ class Filters extends BaseConfig
                 // 'rincianAsetSarana',
                 'home/*',
                 'identitasSarana/*',
+                'sumberDana/*',
                 // 'identitasPrasarana/*',
                 // 'identitasGedung/*',
                 // 'identitasLantai/*',
