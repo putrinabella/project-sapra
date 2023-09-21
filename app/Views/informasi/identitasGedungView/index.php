@@ -107,9 +107,9 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center">
-                                    <?= sprintf('%03d', $value->idIdentitasGedung) ?>
+                                    <?= sprintf('%02d', $value->idIdentitasGedung) ?>
                                 </td>
-                                <td class="text-left"><?=$value->namaIdentitasGedung?></td>
+                                <td class="text-left"><?=$value->namaGedung?></td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('identitasGedung/edit/'.$value->idIdentitasGedung) ?>"

@@ -45,6 +45,7 @@ $routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdenti
 $routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
 
 // Sumber Dana
+$routes->get('sumberDana/edit', 'SumberDana::edit');
 $routes->get('sumberDana/trash', 'SumberDana::trash');
 $routes->get('sumberDana/restore/(:any)', 'SumberDana::restore/$1');
 $routes->get('sumberDana/restore', 'SumberDana::restore');
@@ -53,6 +54,7 @@ $routes->delete('sumberDana/deletePermanent', 'SumberDana::deletePermanent');
 $routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);
 
 // Identitas Gedung
+$routes->get('identitasGedung/edit', 'IdentitasGedung::edit');
 $routes->presenter('identitasGedung', ['filter' => 'isLoggedIn']);
 
 

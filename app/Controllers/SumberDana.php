@@ -65,16 +65,20 @@ class SumberDana extends ResourcePresenter
      */
     public function edit($id = null)
     {
-        $dataSumberDana = $this->sumberDanaModel->where('idSumberDana', $id)->first();
-
-        if (is_object($dataSumberDana)) {
-            $data['dataSumberDana'] = $dataSumberDana;
-            return view('informasi/sumberDanaView/edit', $data);
+        if ($id != null) {
+            $dataSumberDana = $this->sumberDanaModel->where('idSumberDana', $id)->first();
+    
+            if (is_object($dataSumberDana)) {
+                $data['dataSumberDana'] = $dataSumberDana;
+                return view('informasi/sumberDanaView/edit', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
         }
-        
-        return view('error/404');
-        
     }
+    
 
     /**
      * Process the updating, full or partial, of a specific resource object.

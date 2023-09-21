@@ -65,14 +65,18 @@ class IdentitasGedung extends ResourcePresenter
      */
     public function edit($id = null)
     {
-        $dataIdentitasGedung = $this->identitasGedungModel->where('idIdentitasGedung', $id)->first();
-
-        if (is_object($dataIdentitasGedung)) {
-            $data['dataIdentitasGedung'] = $dataIdentitasGedung;
-            return view('informasi/identitasGedungView/edit', $data);
+        if ($id != null) {
+            $dataIdentitasGedung = $this->identitasGedungModel->where('idIdentitasGedung', $id)->first();
+    
+            if (is_object($dataIdentitasGedung)) {
+                $data['dataIdentitasGedung'] = $dataIdentitasGedung;
+                return view('informasi/identitasGedungView/edit', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
         }
-        
-        return view('error/404');
     }
 
     /**
