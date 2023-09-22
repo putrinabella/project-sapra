@@ -118,7 +118,7 @@
                                 <td class="text-center"><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('identitasPrasarana/edit/'.$value->idIdentitasPrasarana) ?>"
+                                    <a href="<?=site_url('identitasPrasarana/'.$value->idIdentitasPrasarana.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('identitasPrasarana/delete/'.$value->idIdentitasPrasarana)?>"
                                         method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">

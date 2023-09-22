@@ -71,8 +71,24 @@ class IdentitasPrasarana extends ResourceController
      */
     public function edit($id = null)
     {
-        return view('informasi/identitasPrasaranaView/edit');
+        if ($id != null) {
+            $dataIdentitasPrasarana = $this->identitasPrasaranaModel->find($id);
+    
+            if (is_object($dataIdentitasPrasarana)) {
+                $data = [
+                    'dataIdentitasPrasarana' => $dataIdentitasPrasarana,
+                    'dataIdentitasGedung' => $this->identitasGedungModel->findAll(),
+                    'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
+                ];
+                return view('informasi/identitasPrasaranaView/edit', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
     }
+    
 
     /**
      * Add or update a model resource, from "posted" properties
@@ -81,7 +97,9 @@ class IdentitasPrasarana extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $data = $this->request->getPost();
+        $this->identitasPrasaranaModel->update($id, $data);
+        return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil update'); 
     }
 
     /**
