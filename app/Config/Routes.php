@@ -55,8 +55,14 @@ $routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);
 
 // Identitas Gedung
 $routes->get('identitasGedung/edit', 'IdentitasGedung::edit');
+$routes->get('identitasGedung/trash', 'IdentitasGedung::trash');
+$routes->get('identitasGedung/restore/(:any)', 'IdentitasGedung::restore/$1');
+$routes->get('identitasGedung/restore', 'IdentitasGedung::restore');
+$routes->delete('identitasGedung/deletePermanent/(:any)', 'IdentitasGedung::deletePermanent/$1');
+$routes->delete('identitasGedung/deletePermanent', 'IdentitasGedung::deletePermanent');
 $routes->presenter('identitasGedung', ['filter' => 'isLoggedIn']);
 
+// Identitas Lantai
 
 
 

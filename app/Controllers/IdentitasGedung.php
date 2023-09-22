@@ -136,10 +136,12 @@ class IdentitasGedung extends ResourcePresenter
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
-            }
+        }
+
         if($this->db->affectedRows() > 0) {
             return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil direstore');
         } 
+        return redirect()->to(site_url('identitasGedung/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
@@ -147,8 +149,15 @@ class IdentitasGedung extends ResourcePresenter
         $this->identitasGedungModel->delete($id, true);
         return redirect()->to(site_url('identitasGedung/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $this->identitasGedungModel->purgeDeleted($id);
-            return redirect()->to(site_url('identitasGedung/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+            $countInTrash = $this->identitasGedungModel->onlyDeleted()->countAllResults();
+            
+            if ($countInTrash > 0) {
+                $this->identitasGedungModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('identitasGedung'))->with('success', 'Semua data trash berhasil dihapus permanen');
+            } else {
+                return redirect()->to(site_url('identitasGedung/trash'))->with('error', 'Tempat sampah sudah kosong!');
+            }
         }
+        
     }  
 }

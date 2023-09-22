@@ -36,6 +36,7 @@
                         <input type="text" class="form-control" id="namaGedung" name="namaGedung" placeholder="Masukkan Identitas Gedung" required>
                         </div>
                     </div>
+                    
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('identitasGedung') ?>" class="btn btn-secondary me-2">Cancel</a>

@@ -1,12 +1,12 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Sumber Dana &verbar; SARPRA </title>
+<title>Recycle Bin Identitas Gedung &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Sumber Dana</h4>
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Identitas Gedung</h4>
 <br>
 
 <div class="row">
@@ -15,19 +15,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('sumberDana')?>"
+                        <a href="<?= site_url('identitasGedung')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('sumberDana/restore')?>"
+                        <a href="<?= site_url('identitasGedung/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('sumberDana/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('identitasGedung/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
@@ -67,25 +67,25 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID Sumber Dana</th>
-                                <th>Nama Sumber Dana</th>
+                                <th style="width: 15%;">ID Identitas Gedung</th>
+                                <th>Nama Gedung</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataSumberDana as $key => $value) : ?>
+                            <?php foreach ($dataIdentitasGedung as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center">
-                                    <?= sprintf('%03d', $value->idSumberDana) ?>
+                                    <?= sprintf('%03d', $value->idIdentitasGedung) ?>
                                 </td>
-                                <td class="text-left"><?=$value->namaSumberDana?></td>
+                                <td class="text-left"><?=$value->namaGedung?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('sumberDana/restore/'.$value->idSumberDana) ?>"
+                                    <a href="<?=site_url('identitasGedung/restore/'.$value->idIdentitasGedung) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('sumberDana/deletePermanent/'.$value->idSumberDana) ?>"
+                                    <form action="<?= site_url('identitasGedung/deletePermanent/'.$value->idIdentitasGedung) ?>"
                                         method="POST" class="d-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">

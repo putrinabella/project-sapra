@@ -51,9 +51,9 @@
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('identitasGedung/trash') ?>"
-                            class="btn btn-outline-danger btn-icon-text me-2 mb-2 mb-md-0">
-                            <i class=" btn-icon-prepend" data-feather="trash"></i>
+                        <a href="<?= site_url() ?>"
+                            class="btn btn-outline-success btn-icon-text me-2 mb-2 mb-md-0">
+                            <i class=" btn-icon-prepend" data-feather="file-plus"></i>
                             <!-- Ganti jadi  -->
                             Import data
                         </a>
