@@ -24,7 +24,7 @@
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
         </a>
-        <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('identitasPrasarana/trash') ?>" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -39,25 +39,25 @@
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
                         <!-- <h4 class="mb-3 mb-md-0">Identitas Prasarana</h4> -->
-                        <a href="<?= site_url('sumberDana/new') ?>"
+                        <a href="<?= site_url('identitasPrasarana/new') ?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Show
                         </a>
-                        <a href="<?= site_url('sumberDana/new') ?>"
+                        <a href="<?= site_url('identitasPrasarana/new') ?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Search
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('sumberDana/trash') ?>"
+                        <a href="<?= site_url('identitasPrasarana/trash') ?>"
                             class="btn btn-outline-danger btn-icon-text me-2 mb-2 mb-md-0">
                             <i class=" btn-icon-prepend" data-feather="trash"></i>
                             <!-- Ganti jadi  -->
                             Import data
                         </a>
-                        <a href="<?= site_url('sumberDana/new') ?>"
+                        <a href="<?= site_url('identitasPrasarana/new') ?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Tambah Data
@@ -115,12 +115,12 @@
                                 <td class="text-left"><?=$value->namaPrasarana?></td>
                                 <td class="text-center"><?=$value->namaGedung?></td>
                                 <td class="text-center"><?=$value->namaLantai?></td>
-                                <td class="text-center"><?=$value->luas?></td>
+                                <td class="text-center"><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('sumberDana/edit/'.$value->idIdentitasPrasarana) ?>"
+                                    <a href="<?=site_url('identitasPrasarana/edit/'.$value->idIdentitasPrasarana) ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('sumberDana/delete/'.$value->idIdentitasPrasarana)?>"
+                                    <form action="<?=site_url('identitasPrasarana/delete/'.$value->idIdentitasPrasarana)?>"
                                         method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
                                         <?= csrf_field() ?>
                                         <button class="btn btn-danger btn-icon">

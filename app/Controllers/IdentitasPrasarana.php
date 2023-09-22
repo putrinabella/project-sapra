@@ -44,7 +44,12 @@ class IdentitasPrasarana extends ResourceController
      */
     public function new()
     {
-        return view('informasi/identitasPrasaranaView/new');
+        $data = [
+            'dataIdentitasGedung' => $this->identitasGedungModel->findAll(),
+            'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
+        ];
+        
+        return view('informasi/identitasPrasaranaView/new', $data);        
     }
 
     /**
@@ -54,7 +59,9 @@ class IdentitasPrasarana extends ResourceController
      */
     public function create()
     {
-        //
+        $data = $this->request->getPost();
+        $this->identitasPrasaranaModel->insert($data);
+        return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
     }
 
     /**

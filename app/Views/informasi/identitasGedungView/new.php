@@ -19,12 +19,12 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h4>Tambah Data</h4>
-                    <div class="secion-header-back">
+                    <!-- <div class="secion-header-back">
                         <a href="<?= site_url('identitasGedung')?>" class="btn btn-outline-primary btn-icon-text">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="card-body">
