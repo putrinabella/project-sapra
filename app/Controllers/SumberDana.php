@@ -153,7 +153,7 @@ class SumberDana extends ResourcePresenter
         
             if ($countInTrash > 0) {
                 $this->sumberDanaModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('sumberDana'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                return redirect()->to(site_url('sumberDana/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
                 return redirect()->to(site_url('sumberDana/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }

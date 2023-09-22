@@ -1,20 +1,20 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Identitas Gedung &verbar; SARPRA </title>
+<title>Identitas Lantai &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Informasi</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Identitas Gedung</li>
+        <li class="breadcrumb-item active" aria-current="page">Identitas Lantai</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Identitas Gedung</h4>
+        <h4 class="mb-3 mb-md-0">Identitas Lantai</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
 
@@ -24,7 +24,7 @@
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
         </a>
-        <a href="<?= site_url('identitasGedung/trash') ?>" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('identitasLantai/trash') ?>" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -38,13 +38,13 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <!-- <h4 class="mb-3 mb-md-0">Identitas Gedung</h4> -->
-                        <a href="<?= site_url('identitasGedung/new') ?>"
+                        <!-- <h4 class="mb-3 mb-md-0">Identitas Lantai</h4> -->
+                        <a href="<?= site_url('identitasLantai/new') ?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Show
                         </a>
-                        <a href="<?= site_url('identitasGedung/new') ?>"
+                        <a href="<?= site_url('identitasLantai/new') ?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Search
@@ -57,7 +57,7 @@
                             <!-- Ganti jadi  -->
                             Import data
                         </a>
-                        <a href="<?= site_url('identitasGedung/new') ?>"
+                        <a href="<?= site_url('identitasLantai/new') ?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="edit"></i>
                             Tambah Data
@@ -96,25 +96,25 @@
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
                                 <th style="width: 15%;">ID</th>
-                                <th>Nama Gedung</th>
+                                <th>Nama Lantai</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataIdentitasGedung as $key => $value) : ?>
+                            <?php foreach ($dataIdentitasLantai as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center">
-                                    <?= sprintf('%02d', $value->idIdentitasGedung) ?>
+                                    <?= sprintf('%02d', $value->idIdentitasLantai) ?>
                                 </td>
-                                <td class="text-left"><?=$value->namaGedung?></td>
+                                <td class="text-left"><?=$value->namaLantai?></td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('identitasGedung/edit/'.$value->idIdentitasGedung) ?>"
+                                    <a href="<?=site_url('identitasLantai/edit/'.$value->idIdentitasLantai) ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('identitasGedung/delete/'.$value->idIdentitasGedung)?>"
+                                    <form action="<?=site_url('identitasLantai/delete/'.$value->idIdentitasLantai)?>"
                                         method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
                                         <?= csrf_field() ?>
                                         <button class="btn btn-danger btn-icon">

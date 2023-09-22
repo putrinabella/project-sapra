@@ -3,12 +3,12 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
-use App\Models\IdentitasGedungModels;
+use App\Models\IdentitasLantaiModels;
 
-class IdentitasGedung extends ResourcePresenter
+class IdentitasLantai extends ResourcePresenter
 {
     function __construct() {
-        $this->identitasGedungModel = new IdentitasGedungModels();
+        $this->identitasLantaiModel = new IdentitasLantaiModels();
     }
     /**
      * Present a view of resource objects
@@ -17,8 +17,8 @@ class IdentitasGedung extends ResourcePresenter
      */
     public function index()
     {
-        $data['dataIdentitasGedung'] = $this->identitasGedungModel->findAll();
-        return view('informasi/identitasGedungView/index', $data);
+        $data['dataIdentitasLantai'] = $this->identitasLantaiModel->findAll();
+        return view('informasi/identitasLantaiView/index', $data);
     }
 
     /**
@@ -40,7 +40,7 @@ class IdentitasGedung extends ResourcePresenter
      */
     public function new()
     {
-        return view('informasi/identitasGedungView/new');
+        return view('informasi/identitasLantaiView/new');
     }
 
     /**
@@ -52,8 +52,8 @@ class IdentitasGedung extends ResourcePresenter
     public function create()
     {
         $data = $this->request->getPost();
-        $this->identitasGedungModel->insert($data);
-        return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil disimpan');
+        $this->identitasLantaiModel->insert($data);
+        return redirect()->to(site_url('identitasLantai'))->with('success', 'Data berhasil disimpan');
     }
 
     /**
@@ -66,11 +66,11 @@ class IdentitasGedung extends ResourcePresenter
     public function edit($id = null)
     {
         if ($id != null) {
-            $dataIdentitasGedung = $this->identitasGedungModel->where('idIdentitasGedung', $id)->first();
+            $dataIdentitasLantai = $this->identitasLantaiModel->where('idIdentitasLantai', $id)->first();
     
-            if (is_object($dataIdentitasGedung)) {
-                $data['dataIdentitasGedung'] = $dataIdentitasGedung;
-                return view('informasi/identitasGedungView/edit', $data);
+            if (is_object($dataIdentitasLantai)) {
+                $data['dataIdentitasLantai'] = $dataIdentitasLantai;
+                return view('informasi/identitasLantaiView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -90,8 +90,8 @@ class IdentitasGedung extends ResourcePresenter
     public function update($id = null)
     {
         $data = $this->request->getPost();
-        $this->identitasGedungModel->update($id, $data);
-        return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil update');
+        $this->identitasLantaiModel->update($id, $data);
+        return redirect()->to(site_url('identitasLantai'))->with('success', 'Data berhasil update');
     }
 
     /**
@@ -115,47 +115,47 @@ class IdentitasGedung extends ResourcePresenter
      */
     public function delete($id = null)
     {
-        $this->identitasGedungModel->where('idIdentitasGedung', $id)->delete();
-        return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil dihapus');
+        $this->identitasLantaiModel->where('idIdentitasLantai', $id)->delete();
+        return redirect()->to(site_url('identitasLantai'))->with('success', 'Data berhasil dihapus');
     }
 
     public function trash() {
-        $data['dataIdentitasGedung'] = $this->identitasGedungModel->onlyDeleted()->findAll();
-        return view('informasi/identitasGedungView/trash', $data);
+        $data['dataIdentitasLantai'] = $this->identitasLantaiModel->onlyDeleted()->findAll();
+        return view('informasi/identitasLantaiView/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblIdentitasGedung')
+            $this->db->table('tblIdentitasLantai')
                 ->set('deleted_at', null, true)
-                ->where(['idIdentitasGedung' => $id])
+                ->where(['idIdentitasLantai' => $id])
                 ->update();
         } else {
-            $this->db->table('tblIdentitasGedung')
+            $this->db->table('tblIdentitasLantai')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
         }
 
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('identitasLantai'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('identitasGedung/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('identitasLantai/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->identitasGedungModel->delete($id, true);
-        return redirect()->to(site_url('identitasGedung/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->identitasLantaiModel->delete($id, true);
+        return redirect()->to(site_url('identitasLantai/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->identitasGedungModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->identitasLantaiModel->onlyDeleted()->countAllResults();
             
             if ($countInTrash > 0) {
-                $this->identitasGedungModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('identitasGedung/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->identitasLantaiModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('identitasLantai/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('identitasGedung/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('identitasLantai/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
         
