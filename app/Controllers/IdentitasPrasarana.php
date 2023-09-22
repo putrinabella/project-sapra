@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
+use App\Models\IdentitasGedungModels; 
+use App\Models\IdentitasLantaiModels; 
+use App\Models\IdentitasPrasaranaModels; 
 
 class IdentitasPrasarana extends ResourceController
 {
@@ -11,9 +14,17 @@ class IdentitasPrasarana extends ResourceController
      *
      * @return mixed
      */
+
+     function __construct() {
+        $this->identitasGedungModel = new IdentitasGedungModels();
+        $this->identitasLantaiModel = new IdentitasLantaiModels();
+        $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
+    }
+
     public function index()
     {
-        return view('informasi/identitasPrasaranaView/index');
+        $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
+        return view('informasi/identitasPrasaranaView/index', $data);
     }
 
     /**

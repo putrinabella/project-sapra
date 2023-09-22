@@ -104,7 +104,32 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            
+                        <?php foreach ($dataIdentitasPrasarana as $key => $value) : ?>
+                            <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
+                                <td class="text-center">
+                                    <?=$key + 1?>
+                                </td>
+                                <td class="text-center">
+                                    <?= sprintf('%03d', $value->idIdentitasPrasarana) ?>
+                                </td>
+                                <td class="text-left"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->namaGedung?></td>
+                                <td class="text-center"><?=$value->namaLantai?></td>
+                                <td class="text-center"><?=$value->luas?></td>
+                                <td class="text-center">
+                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <a href="<?=site_url('sumberDana/edit/'.$value->idIdentitasPrasarana) ?>"
+                                        class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
+                                    <form action="<?=site_url('sumberDana/delete/'.$value->idIdentitasPrasarana)?>"
+                                        method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                        <?= csrf_field() ?>
+                                        <button class="btn btn-danger btn-icon">
+                                            <i data-feather="trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
