@@ -22,6 +22,7 @@
 
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -182,6 +183,8 @@
     <script src="<?= base_url(); ?>/assets/vendors/jquery.flot/jquery.flot.resize.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
@@ -194,8 +197,7 @@
     <script src="<?= base_url(); ?>/assets/js/dashboard-light.js"></script>
     <script src="<?= base_url(); ?>/assets/js/datepicker.js"></script>
     <script src="<?= base_url(); ?>/assets/js/hide-alert.js"></script>
-    
-
+    <script src="<?= base_url(); ?>/assets/js/data-table.js"></script>
     <!-- End custom js for this page -->
 
 </body>

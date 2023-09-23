@@ -31,7 +31,6 @@
     </div>
 </div>
 
-
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
@@ -64,7 +63,6 @@
                         </a>
                     </div>
                 </div>
-
                 <br>
                 <div>
                     <?php if(session()->getFlashdata('success')) :?>
@@ -91,7 +89,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover"  id="dataTable">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
