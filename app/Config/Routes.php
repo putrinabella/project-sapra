@@ -42,6 +42,12 @@ $routes->put('identitasSarana/(:any)', 'InformasiController::updateIdentitasSara
 $routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdentitasSarana/$1');
 
 // Identitas Prasarana
+$routes->get('identitasPrasarana/edit', 'IdentitasPrasarana::edit');
+$routes->get('identitasPrasarana/trash', 'IdentitasPrasarana::trash');
+$routes->get('identitasPrasarana/restore/(:any)', 'IdentitasPrasarana::restore/$1');
+$routes->get('identitasPrasarana/restore', 'IdentitasPrasarana::restore');
+$routes->delete('identitasPrasarana/deletePermanent/(:any)', 'IdentitasPrasarana::deletePermanent/$1');
+$routes->delete('identitasPrasarana/deletePermanent', 'IdentitasPrasarana::deletePermanent');
 $routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
 
 // Sumber Dana

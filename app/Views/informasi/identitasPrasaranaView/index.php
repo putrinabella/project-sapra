@@ -120,9 +120,10 @@
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('identitasPrasarana/'.$value->idIdentitasPrasarana.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('identitasPrasarana/delete/'.$value->idIdentitasPrasarana)?>"
+                                    <form action="<?=site_url('identitasPrasarana/'.$value->idIdentitasPrasarana)?>"
                                         method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
                                         <?= csrf_field() ?>
+                                        <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon">
                                             <i data-feather="trash"></i>
                                         </button>
