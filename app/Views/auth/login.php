@@ -72,11 +72,11 @@
                                                 placeholder="Masukkan password">
                                         </div>
                                         <div class="form-check mb-3">
-                                            <input type="checkbox" class="form-check-input" id="authCheck">
-                                            <label class="form-check-label" for="authCheck">
-                                                Remember me
-                                            </label>
+                                            <input type="checkbox" class="form-check-input" id="rememberMe"
+                                                name="rememberMe">
+                                            <label class="form-check-label" for="rememberMe">Remember me</label>
                                         </div>
+
                                         <!-- <button type="reset" class="btn btn-danger me-2">Reset</button> -->
                                         <button type="submit" class="btn btn-primary">Login</button>
                                         <div>
