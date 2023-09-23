@@ -15,19 +15,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('sumberDana')?>"
+                        <a href="<?= site_url('identitasPrasarana')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('sumberDana/restore')?>"
+                        <a href="<?= site_url('identitasPrasarana/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('sumberDana/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('identitasPrasarana/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
@@ -65,27 +65,33 @@
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered">
                         <thead>
-                            <tr class="text-center">
-                                <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID Sumber Dana</th>
-                                <th>Nama Sumber Dana</th>
+                        <tr class="text-center">
+                                <th style="width: 5%;">No.</th>
+                                <th style="width: 12%;">ID</th>
+                                <th>Identitas Prasarana</th>
+                                <th>Lokasi Gedung</th>
+                                <th>Lokasi Lantai</th>
+                                <th>Luas</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataSumberDana as $key => $value) : ?>
+                        <?php foreach ($dataIdentitasPrasarana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center">
-                                    <?= sprintf('%03d', $value->idSumberDana) ?>
+                                    <?= sprintf('%03d', $value->idIdentitasPrasarana) ?>
                                 </td>
-                                <td class="text-left"><?=$value->namaSumberDana?></td>
+                                <td class="text-left"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('sumberDana/restore/'.$value->idSumberDana) ?>"
+                                    <a href="<?=site_url('identitasPrasarana/restore/'.$value->idIdentitasPrasarana) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('sumberDana/deletePermanent/'.$value->idSumberDana) ?>"
+                                    <form action="<?= site_url('identitasPrasarana/deletePermanent/'.$value->idIdentitasPrasarana) ?>"
                                         method="POST" class="d-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">

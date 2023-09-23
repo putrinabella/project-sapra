@@ -17,6 +17,7 @@ class IdentitasPrasaranaModels extends Model
         $builder = $this->db->table('tblIdentitasPrasarana');
         $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
         $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
+        $builder->where('tblIdentitasPrasarana.deleted_at', null);
         $query = $builder->get();
         return $query->getResult();
     }

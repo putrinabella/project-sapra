@@ -114,19 +114,19 @@ class IdentitasPrasarana extends ResourceController
     }
 
     public function trash() {
-        $data['dataSumberDana'] = $this->identitasPrasaranaModel->onlyDeleted()->findAll();
+        $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->onlyDeleted()->findAll();
         return view('informasi/identitasPrasaranaView/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblSumberDana')
+            $this->db->table('tblIdentitasPrasarana')
                 ->set('deleted_at', null, true)
                 ->where(['idIdentitasPrasarana' => $id])
                 ->update();
         } else {
-            $this->db->table('tblSumberDana')
+            $this->db->table('tblIdentitasPrasarana')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
