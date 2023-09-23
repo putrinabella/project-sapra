@@ -23,6 +23,7 @@
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.css">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -171,6 +172,7 @@
 
         </div>
     </div>
+    
 
     <!-- core:js -->
     <script src="<?= base_url(); ?>/assets/vendors/core/core.js"></script>
@@ -185,6 +187,7 @@
     <script src="<?= base_url(); ?>/assets/vendors/apexcharts/apexcharts.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.js"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
@@ -198,6 +201,7 @@
     <script src="<?= base_url(); ?>/assets/js/datepicker.js"></script>
     <script src="<?= base_url(); ?>/assets/js/hide-alert.js"></script>
     <script src="<?= base_url(); ?>/assets/js/data-table.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/sweet-alert.js"></script>
     <!-- End custom js for this page -->
 
 </body>

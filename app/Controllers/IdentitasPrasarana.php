@@ -110,7 +110,7 @@ class IdentitasPrasarana extends ResourceController
     public function delete($id = null)
     {
         $this->identitasPrasaranaModel->delete($id);
-        return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil dihapus');
+        return redirect()->to(site_url('identitasPrasarana'));
     }
 
     public function trash() {
