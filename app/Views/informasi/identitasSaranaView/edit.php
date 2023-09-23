@@ -34,13 +34,13 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('identitasSarana/'.$dataIdentitasSarana->idIdentitasSarana)?>" method="post" autocomplete="off" was-validate>
+                <form action="<?= site_url('identitasSarana/'.$dataIdentitasSarana->idIdentitasSarana)?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row mb-3">
                         <label for="namaSarana" class="col-sm-3 col-form-label">Nama Sarana</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaSarana" name="namaSarana" value="<?=$dataIdentitasSarana->namaSarana?>" placeholder="Masukkan Nama Sarana" required>
+                        <input type="text" class="form-control" id="namaSarana" name="namaSarana" value="<?=$dataIdentitasSarana->namaSarana?>" placeholder="Masukkan Nama Sarana" >
                         </div>
                     </div>
                     <div class="row mb-3">

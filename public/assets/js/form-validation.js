@@ -1,112 +1,96 @@
-// $(function() {
-//   'use strict';
-
-//   $.validator.setDefaults({
-//     submitHandler: function() {
-//       // alert("submitted!");
-//     }
-//   });
-//   $(function() {
-//     // validate signup form on keyup and submit
-//     $("#signupForm").validate({
-//       rules: {
-//         name: {
-//           required: true,
-//           minlength: 3
-//         },
-//         username: {
-//           required: true,
-//           minlength: 3
-//         },
-//         password: {
-//           required: true,
-//           minlength: 5
-//         },
-//         confirm_password: {
-//           required: true,
-//           minlength: 5,
-//           equalTo: "#password"
-//         },
-//         email: {
-//           required: true,
-//           email: true
-//         },
-//         topic: {
-//           required: "#newsletter:checked",
-//           minlength: 2
-//         },
-//         agree: "required"
-//       },
-//       messages: {
-//         name: {
-//           required: "Please enter a name",
-//           minlength: "Name must consist of at least 3 characters"
-//         },
-//         username: {
-//           required: "Please enter a username",
-//           minlength: "Username must consist of at least 3 characters"
-//         },
-//         password: {
-//           required: "Please provide a password",
-//           minlength: "Your password must be at least 5 characters long"
-//         },
-//         confirm_password: {
-//           required: "Please provide a password",
-//           minlength: "Your password must be at least 5 characters long",
-//           equalTo: "Please enter the same password as above"
-//         },
-//         email: "Please enter a valid email address",
-//       },
-//       errorPlacement: function(label, element) {
-//         label.addClass('mt-1 tx-13 text-danger');
-//         label.insertAfter(element);
-//       },
-//       highlight: function(element, errorClass) {
-//         $(element).parent().addClass('validation-error')
-//         $(element).addClass('border-danger')
-//       },
-//       unhighlight: function(element, errorClass) {
-//         $(element).parent().removeClass('validation-error')
-//         $(element).removeClass('border-danger')
-//         $(element).addClass('border-success');
-//       }
-//     });
-//   });
-// });
 $(document).ready(function () {
-  $("#loginForm").validate({
-      rules: {
-          username: {
-              required: true,
-              minlength: 3
-          },
-          password: {
-              required: true,
-              minlength: 5
-          }
+  $("#custom-validation").validate({
+    rules: {
+      username: {
+        required: true
       },
-      messages: {
-          username: {
-              required: "Please enter a username",
-              minlength: "Username must consist of at least 3 characters"
-          },
-          password: {
-              required: "Please provide a password",
-              minlength: "Your password must be at least 5 characters long"
-          }
+      password: {
+        required: true,
+        minlength: 5,
       },
-      errorPlacement: function (label, element) {
-          label.addClass('mt-1 tx-13 text-danger');
-          label.insertAfter(element);
+      namaSumberDana: {
+        required: true,
+        maxlength: 255,
       },
-      highlight: function (element, errorClass) {
-          $(element).parent().addClass('validation-error');
-          $(element).addClass('border-danger');
+      namaSarana: {
+        required: true,
+        maxlength: 255,
       },
-      unhighlight: function (element, errorClass) {
-          $(element).parent().removeClass('validation-error');
-          $(element).removeClass('border-danger');
-          $(element).addClass('border-success');
-      }
+      namaLantai: {
+        required: true,
+        maxlength: 255,
+      },
+      namaGedung: {
+        required: true,
+        maxlength: 255,
+      },
+      namaPrasarana: {
+        required: true,
+        maxlength: 255,
+      },
+      luas: {
+        required: true,
+        maxlength: 255,
+      },
+      idIdentitasLantai: {
+        required: true,
+      },
+      idIdentitasGedung: {
+        required: true,
+      },
+    },
+    messages: {
+      username: {
+        required: "Silahkan masukkan username",
+      },
+      password: {
+        required: "Silahkan masukkan kata sandi",
+        minlength: "Kata sandi harus terdiri dari setidaknya 5 karakter",
+      },
+      namaSumberDana: {
+        required: "Silahkan masukkan nama sumber dana",
+        maxlength: "Nama sumber dana tidak boleh melebihi 255 karakter",
+      },
+      namaSarana: {
+        required: "Silahkan masukkan nama sarana",
+        maxlength: "Nama sarana tidak boleh melebihi 255 karakter",
+      },
+      namaLantai: {
+        required: "Silahkan masukkan nama lantai",
+        maxlength: "Nama lantai tidak boleh melebihi 255 karakter",
+      },
+      namaGedung: {
+        required: "Silahkan masukkan nama gedung",
+        maxlength: "Nama gedung tidak boleh melebihi 255 karakter",
+      },
+      namaPrasarana: {
+        required: "Silahkan masukkan nama prasarana",
+        maxlength: "Nama prasarana tidak boleh melebihi 255 karakter",
+      },
+      luas: {
+        required: "Silahkan masukkan luas",
+        maxlength: "Luas tidak boleh melebihi 255 karakter",
+      },
+      idIdentitasLantai: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      idIdentitasGedung: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+
+    },
+    errorPlacement: function (label, element) {
+      label.addClass("mt-1 tx-13 text-danger");
+      label.insertAfter(element);
+    },
+    highlight: function (element, errorClass) {
+      $(element).parent().addClass("validation-error");
+      $(element).addClass("border-danger");
+    },
+    unhighlight: function (element, errorClass) {
+      $(element).parent().removeClass("validation-error");
+      $(element).removeClass("border-danger");
+      $(element).addClass("border-success");
+    },
   });
 });

@@ -22,12 +22,12 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('identitasGedung/update/'.$dataIdentitasGedung->idIdentitasGedung)?>" method="post" autocomplete="off" was-validate>
+                <form action="<?= site_url('identitasGedung/update/'.$dataIdentitasGedung->idIdentitasGedung)?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
                         <label for="namaGedung" class="col-sm-3 col-form-label">Nama Identitas Gedung</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaGedung" name="namaGedung" value="<?=$dataIdentitasGedung->namaGedung?>" placeholder="Masukkan Nama Sarana" required>
+                        <input type="text" class="form-control" id="namaGedung" name="namaGedung" value="<?=$dataIdentitasGedung->namaGedung?>" placeholder="Masukkan Nama Sarana" >
                         </div>
                     </div>
                     <div class="row mb-3">

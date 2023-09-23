@@ -28,12 +28,13 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('sumberDana')?>" method="post" autocomplete="off" was-validate>
+                <form action="<?= site_url('sumberDana')?>" method="post" autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
                         <label for="namaSumberDana" class="col-sm-3 col-form-label">Nama Sumber Dana</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaSumberDana" name="namaSumberDana" placeholder="Masukkan Nama Sumber Dana" required>
+                            <input type="text" class="form-control" id="namaSumberDana" name="namaSumberDana"
+                                placeholder="Masukkan Nama Sumber Dana">
                         </div>
                     </div>
                     <div class="row mb-3">
