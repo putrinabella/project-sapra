@@ -89,7 +89,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="dataTable2">
+                    <table class="table table-hover" id="dataTable">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -102,13 +102,10 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php 
-                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                         $no = 1 + (10 * ($page - 1));
-                        foreach ($dataIdentitasPrasarana as $key => $value) : ?>
+                            <?php foreach ($dataIdentitasPrasarana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
-                                    <?=$no++?>
+                                    <?=$key + 1?>
                                 </td>
                                 <td class="text-center">
                                     <?= sprintf('%03d', $value->idIdentitasPrasarana) ?>
@@ -125,7 +122,8 @@
                                         method="post" class="d-inline" id="del-<?= $value->idIdentitasPrasarana;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <button class="btn btn-danger btn-icon"
+                                            data-confirm="Apakah anda yakin menghapus data ini?">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
@@ -134,7 +132,6 @@
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                    <?= $pager->links('default', 'pagination'); ?> 
                 </div>
             </div>
         </div>

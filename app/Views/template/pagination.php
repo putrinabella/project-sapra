@@ -1,9 +1,9 @@
+
 <?php
 use CodeIgniter\Pager\PagerRenderer;
 
 $pager->setSurroundCount(2);
 ?>
-
 <br>
 <nav aria-label="<?= lang('Pager.pageNavigation') ?>">
     <ul class="pagination justify-content-center">

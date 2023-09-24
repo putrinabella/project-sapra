@@ -28,8 +28,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('identitasPrasarana')?>" method="post" autocomplete="off"
-                    id="custom-validation">
+                <form action="<?= site_url('identitasPrasarana')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
                         <label for="namaPrasarana" class="col-sm-3 col-form-label">Identitas Prasarana</label>
@@ -41,29 +40,30 @@
                     <div class="row mb-3">
                         <label for="idIdentitasGedung" class="col-sm-3 col-form-label">Lokasi Gedung</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasGedung" name="idIdentitasGedung">
-                                <option value="" hidden>Pilih lokasi gedung</option>
-                                <?php foreach($dataIdentitasGedung as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasGedung?>"><?=$value->namaGedung?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <select class="form-select" id="idIdentitasGedung" name="idIdentitasGedung">
+                            <option value="" hidden>Pilih lokasi gedung</option>
+                            <?php foreach($dataIdentitasGedung as $key =>$value): ?>
+                            <option value="<?=$value->idIdentitasGedung?>"><?=$value->namaGedung?></option>
+                            <?php endforeach; ?>
+                        </select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idIdentitasLantai" class="col-sm-3 col-form-label">Lokasi Lantai</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasLantai" name="idIdentitasLantai">
-                                <option value="" hidden>Pilih lokasi lantai</option>
-                                <?php foreach($dataIdentitasLantai as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasLantai?>"><?=$value->namaLantai?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <select class="form-select" id="idIdentitasLantai" name="idIdentitasLantai">
+                            <option value="" hidden>Pilih lokasi lantai</option>
+                            <?php foreach($dataIdentitasLantai as $key =>$value): ?>
+                            <option value="<?=$value->idIdentitasLantai?>"><?=$value->namaLantai?></option>
+                            <?php endforeach; ?>
+                        </select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="luas" class="col-sm-3 col-form-label">Luas</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="luas" name="luas" placeholder="Masukkan Luas">
+                            <input type="number" class="form-control" id="luas" name="luas"
+                                placeholder="Masukkan Luas">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -78,5 +78,7 @@
         </div>
     </div>
 </div>
+
+
 
 <?= $this->endSection(); ?>

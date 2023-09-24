@@ -23,13 +23,17 @@ class IdentitasPrasaranaModels extends Model
     }
 
     function getPaginated($num, $keyword = null) {
-        $builder =$this->builder();
+        $builder = $this->builder();
         $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
         $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
         $builder->where('tblIdentitasPrasarana.deleted_at', null);
-        return [
+    
+        $data = [
             'dataIdentitasPrasarana' => $this->paginate($num),
             'pager' => $this->pager,
         ];
+    
+        return $data;
     }
+    
 }
