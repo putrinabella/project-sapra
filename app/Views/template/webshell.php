@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/prismjs/themes/prism.css">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -188,6 +189,8 @@
     <script src="<?= base_url(); ?>/assets/vendors/datatables.net/jquery.dataTables.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/prismjs/prism.js"></script>
+	<script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->

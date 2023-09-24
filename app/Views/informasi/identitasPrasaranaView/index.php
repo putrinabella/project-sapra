@@ -89,7 +89,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="dataTable">
+                    <table class="table table-hover"  id="dataTable2">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -102,10 +102,13 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataIdentitasPrasarana as $key => $value) : ?>
+                        <?php 
+                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                         $no = 1 + (10 * ($page - 1));
+                        foreach ($dataIdentitasPrasarana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
-                                    <?=$key + 1?>
+                                    <?=$no++?>
                                 </td>
                                 <td class="text-center">
                                     <?= sprintf('%03d', $value->idIdentitasPrasarana) ?>
@@ -131,6 +134,7 @@
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <?= $pager->links('default', 'pagination'); ?> 
                 </div>
             </div>
         </div>

@@ -1,12 +1,12 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Sumber Dana &verbar; SARPRA </title>
+<title>Recycle Bin Identitas Prasarana &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Sumber Dana</h4>
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Identitas Prasarana</h4>
 <br>
 
 <div class="row">

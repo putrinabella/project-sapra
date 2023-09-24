@@ -12,7 +12,7 @@ document.querySelectorAll('[data-confirm]').forEach(function(button) {
           confirmButtonClass: 'me-2',
           confirmButtonText: 'Ya',
           cancelButtonText: 'Tidak',
-          reverseButtons: true
+          reverseButtons: true,
       }).then(function(result) {
           if (result.isConfirmed) {
               var formId = button.closest('form').id;

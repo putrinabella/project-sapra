@@ -23,7 +23,9 @@ class IdentitasPrasarana extends ResourceController
 
     public function index()
     {
-        $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
+        $data = $this->identitasPrasaranaModel->getPaginated(10);
+        // $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->paginate(10);
+        // $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
         return view('informasi/identitasPrasaranaView/index', $data);
     }
 
