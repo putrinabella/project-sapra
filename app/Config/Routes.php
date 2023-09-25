@@ -33,13 +33,22 @@ $routes->get('home/generate', 'Home::generate');
 
 // INFORMATION ROUTES
 // Identitas Sarana
-$routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
-$routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');
-$routes->post('identitasSarana', 'InformasiController::saveIdentitasSarana');
-$routes->get('identitasSarana/edit', 'InformasiController::editIdentitasSarana');
-$routes->get('identitasSarana/edit/(:num)', 'InformasiController::editIdentitasSarana/$1');
-$routes->put('identitasSarana/(:any)', 'InformasiController::updateIdentitasSarana/$1');
-$routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdentitasSarana/$1');
+// $routes->get('identitasSarana', 'InformasiController::getIdentitasSarana');
+// $routes->get('identitasSarana/add', 'InformasiController::addIdentitasSarana');
+// $routes->post('identitasSarana', 'InformasiController::saveIdentitasSarana');
+// $routes->get('identitasSarana/edit', 'InformasiController::editIdentitasSarana');
+// $routes->get('identitasSarana/edit/(:num)', 'InformasiController::editIdentitasSarana/$1');
+// $routes->put('identitasSarana/(:any)', 'InformasiController::updateIdentitasSarana/$1');
+// $routes->delete('identitasSarana/(:segment)', 'InformasiController::deleteIdentitasSarana/$1');
+
+// Identitas Sarana
+$routes->get('identitasSarana/edit', 'IdentitasSarana::edit');
+$routes->get('identitasSarana/trash', 'IdentitasSarana::trash');
+$routes->get('identitasSarana/restore/(:any)', 'IdentitasSarana::restore/$1');
+$routes->get('identitasSarana/restore', 'IdentitasSarana::restore');
+$routes->delete('identitasSarana/deletePermanent/(:any)', 'IdentitasSarana::deletePermanent/$1');
+$routes->delete('identitasSarana/deletePermanent', 'IdentitasSarana::deletePermanent');
+$routes->presenter('identitasSarana', ['filter' => 'isLoggedIn']);
 
 // Identitas Prasarana
 $routes->get('identitasPrasarana/edit', 'IdentitasPrasarana::edit');

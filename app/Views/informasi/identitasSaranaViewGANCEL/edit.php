@@ -5,6 +5,12 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
+<!-- <nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Informasi</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tambah Identitas Sarana</li>
+    </ol>
+</nav> -->
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
@@ -19,13 +25,20 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h4>Edit Data</h4>
+                    <div class="secion-header-back">
+                        <a href="<?= site_url('identitasSarana')?>" class="btn btn-outline-primary btn-icon-text">
+                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
+                            Back
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('identitasSarana/update/'.$dataIdentitasSarana->idIdentitasSarana)?>" method="post" autocomplete="off"  id="custom-validation">
+                <form action="<?= site_url('identitasSarana/'.$dataIdentitasSarana->idIdentitasSarana)?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
+                    <input type="hidden" name="_method" value="PUT">
                     <div class="row mb-3">
-                        <label for="namaSarana" class="col-sm-3 col-form-label">Nama Identitas Sarana</label>
+                        <label for="namaSarana" class="col-sm-3 col-form-label">Nama Sarana</label>
                         <div class="col-sm-9">
                         <input type="text" class="form-control" id="namaSarana" name="namaSarana" value="<?=$dataIdentitasSarana->namaSarana?>" placeholder="Masukkan Nama Sarana" >
                         </div>
