@@ -17,7 +17,6 @@
         <h4 class="mb-3 mb-md-0">Identitas Prasarana</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="printer"></i>
         </a>
@@ -36,7 +35,6 @@
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
-        
     </div>
 </div>
 
@@ -44,33 +42,6 @@
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-                <!-- <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-                    <div>
-                        <a href="<?= site_url('identitasPrasarana/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Show
-                        </a>
-                        <a href="<?= site_url('identitasPrasarana/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Search
-                        </a>
-                    </div>
-                    <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('identitasPrasarana/trash') ?>"
-                            class="btn btn-outline-danger btn-icon-text me-2 mb-2 mb-md-0">
-                            <i class=" btn-icon-prepend" data-feather="trash"></i>
-                            Import data
-                        </a>
-                        <a href="<?= site_url('identitasPrasarana/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Tambah Data
-                        </a>
-                    </div>
-                </div>
-                <br> -->
                 <div>
                     <?php if(session()->getFlashdata('success')) :?>
                     <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">

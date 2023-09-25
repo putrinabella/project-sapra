@@ -116,7 +116,7 @@ class IdentitasLantai extends ResourcePresenter
     public function delete($id = null)
     {
         $this->identitasLantaiModel->where('idIdentitasLantai', $id)->delete();
-        return redirect()->to(site_url('identitasLantai'))->with('success', 'Data berhasil dihapus');
+        return redirect()->to(site_url('identitasLantai'));
     }
 
     public function trash() {

@@ -116,7 +116,7 @@ class IdentitasGedung extends ResourcePresenter
     public function delete($id = null)
     {
         $this->identitasGedungModel->where('idIdentitasGedung', $id)->delete();
-        return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil dihapus');
+        return redirect()->to(site_url('identitasGedung'));
     }
 
     public function trash() {

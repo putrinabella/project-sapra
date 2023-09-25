@@ -3,12 +3,12 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
-use App\Models\SumberDanaModels;
+use App\Models\StatusLayananModels;
 
-class SumberDana extends ResourcePresenter
+class StatusLayanan extends ResourcePresenter
 {
     function __construct() {
-        $this->sumberDanaModel = new SumberDanaModels();
+        $this->statusLayananModel = new StatusLayananModels();
     }
     /**
      * Present a view of resource objects
@@ -17,8 +17,8 @@ class SumberDana extends ResourcePresenter
      */
     public function index()
     {
-        $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
-        return view('informasi/sumberDanaView/index', $data);
+        $data['dataStatusLayanan'] = $this->statusLayananModel->findAll();
+        return view('informasi/statusLayananView/index', $data);
     }
 
     /**
@@ -40,7 +40,7 @@ class SumberDana extends ResourcePresenter
      */
     public function new()
     {
-        return view('informasi/sumberDanaView/new');
+        return view('informasi/statusLayananView/new');
     }
 
     /**
@@ -52,8 +52,8 @@ class SumberDana extends ResourcePresenter
     public function create()
     {
         $data = $this->request->getPost();
-        $this->sumberDanaModel->insert($data);
-        return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil disimpan');
+        $this->statusLayananModel->insert($data);
+        return redirect()->to(site_url('statusLayanan'))->with('success', 'Data berhasil disimpan');
     }
 
     /**
@@ -66,11 +66,11 @@ class SumberDana extends ResourcePresenter
     public function edit($id = null)
     {
         if ($id != null) {
-            $dataSumberDana = $this->sumberDanaModel->where('idSumberDana', $id)->first();
+            $dataStatusLayanan = $this->statusLayananModel->where('idStatusLayanan', $id)->first();
     
-            if (is_object($dataSumberDana)) {
-                $data['dataSumberDana'] = $dataSumberDana;
-                return view('informasi/sumberDanaView/edit', $data);
+            if (is_object($dataStatusLayanan)) {
+                $data['dataStatusLayanan'] = $dataStatusLayanan;
+                return view('informasi/statusLayananView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -91,8 +91,8 @@ class SumberDana extends ResourcePresenter
     public function update($id = null)
     {
         $data = $this->request->getPost();
-        $this->sumberDanaModel->update($id, $data);
-        return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil update');
+        $this->statusLayananModel->update($id, $data);
+        return redirect()->to(site_url('statusLayanan'))->with('success', 'Data berhasil update');
     }
 
     /**
@@ -116,46 +116,46 @@ class SumberDana extends ResourcePresenter
      */
     public function delete($id = null)
     {
-        $this->sumberDanaModel->delete($id);
-        return redirect()->to(site_url('sumberDana'));
+        $this->statusLayananModel->delete($id);
+        return redirect()->to(site_url('statusLayanan'));
     }
 
     public function trash() {
-        $data['dataSumberDana'] = $this->sumberDanaModel->onlyDeleted()->findAll();
-        return view('informasi/sumberDanaView/trash', $data);
+        $data['dataStatusLayanan'] = $this->statusLayananModel->onlyDeleted()->findAll();
+        return view('informasi/statusLayananView/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblSumberDana')
+            $this->db->table('tblStatusLayanan')
                 ->set('deleted_at', null, true)
-                ->where(['idSumberDana' => $id])
+                ->where(['idStatusLayanan' => $id])
                 ->update();
         } else {
-            $this->db->table('tblSumberDana')
+            $this->db->table('tblStatusLayanan')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
             }
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('statusLayanan'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('sumberDana/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('statusLayanan/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->sumberDanaModel->delete($id, true);
-        return redirect()->to(site_url('sumberDana/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->statusLayananModel->delete($id, true);
+        return redirect()->to(site_url('statusLayanan/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->sumberDanaModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->statusLayananModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->sumberDanaModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('sumberDana/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->statusLayananModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('statusLayanan/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('sumberDana/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('statusLayanan/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     }  

@@ -1,49 +1,43 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Sumber Dana &verbar; SARPRA </title>
+<title>Recycle Bin Status Layanan &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
-<nav class="page-breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Informasi</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Sumber Dana</li>
-    </ol>
-</nav>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Sumber Dana</h4>
-    </div>
-    <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="printer"></i>
-        </a>
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
-        </a>
-        <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="trash"></i>
-            Recycle Bin
-        </a>
-        <a href="<?= site_url() ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="file-plus"></i>
-            Import Data
-        </a>
-        <a href="<?= site_url('sumberDana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="edit"></i>
-            Tambah Data
-        </a>
-    </div>
-</div>
-
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Status Layanan</h4>
+<br>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+                    <div>
+                        <a href="<?= site_url('statusLayanan')?>"
+                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
+                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap text-nowrap">
+                        <a href="<?= site_url('statusLayanan/restore')?>"
+                            class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
+                            <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
+                            Restore All
+                        </a>
+                        <form action="<?= site_url('statusLayanan/deletePermanent/') ?>" method="POST"
+                            class="d-inline me-2 mb-2 mb-md-0">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger" type="submit"> Delete All Permanent </button>
+                        </form>
+                        </a>
+                    </div>
+                </div>
 
+                <br>
                 <div>
                     <?php if(session()->getFlashdata('success')) :?>
                     <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
@@ -69,36 +63,35 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                <table class="table table-hover"  id="dataTable">
+                    <table class="table table-hover table-bordered">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID Sumber Dana</th>
-                                <th>Nama Sumber Dana</th>
+                                <th style="width: 15%;">ID Status Layanan</th>
+                                <th>Nama Status Layanan</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataSumberDana as $key => $value) : ?>
+                            <?php foreach ($dataStatusLayanan as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center">
-                                    <?= sprintf('%03d', $value->idSumberDana) ?>
+                                    <?= sprintf('%03d', $value->idStatusLayanan) ?>
                                 </td>
-                                <td class="text-left"><?=$value->namaSumberDana?></td>
+                                <td class="text-left"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center">
-                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>"
-                                        class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idSumberDana;?>">
+                                    <a href="<?=site_url('statusLayanan/restore/'.$value->idStatusLayanan) ?>"
+                                        class="btn btn-primary"> Restore</a>
+                                    <form action="<?= site_url('statusLayanan/deletePermanent/'.$value->idStatusLayanan) ?>"
+                                        method="POST" class="d-inline">
                                         <?= csrf_field() ?>
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
-                                            <i data-feather="trash"></i>
-                                        </button>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="btn btn-danger" type="submit"> Delete Permanent </button>
                                     </form>
+
                                 </td>
                             </tr>
                             <?php endforeach; ?>

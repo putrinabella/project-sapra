@@ -32,6 +32,10 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      namaStatusLayanan: {
+        required: true,
+        maxlength: 255,
+      },
       idIdentitasLantai: {
         required: true,
       },
@@ -70,6 +74,10 @@ $(document).ready(function () {
       luas: {
         required: "Silahkan masukkan luas",
         maxlength: "Luas tidak boleh melebihi 255 karakter",
+      },
+      namaStatusLayanan: {
+        required: "Silahkan masukkan nama status layanan",
+        maxlength: "Nama status layanan tidak boleh melebihi 255 karakter",
       },
       idIdentitasLantai: {
         required: "Silahkan pilih sebuah opsi",

@@ -69,7 +69,6 @@ $routes->delete('identitasGedung/deletePermanent', 'IdentitasGedung::deletePerma
 $routes->presenter('identitasGedung', ['filter' => 'isLoggedIn']);
 
 // Identitas Lantai
-
 $routes->get('identitasLantai/edit', 'IdentitasLantai::edit');
 $routes->get('identitasLantai/trash', 'IdentitasLantai::trash');
 $routes->get('identitasLantai/restore/(:any)', 'IdentitasLantai::restore/$1');
@@ -77,6 +76,15 @@ $routes->get('identitasLantai/restore', 'IdentitasLantai::restore');
 $routes->delete('identitasLantai/deletePermanent/(:any)', 'IdentitasLantai::deletePermanent/$1');
 $routes->delete('identitasLantai/deletePermanent', 'IdentitasLantai::deletePermanent');
 $routes->presenter('identitasLantai', ['filter' => 'isLoggedIn']);
+
+// Status Layanan
+$routes->get('statusLayanan/edit', 'StatusLayanan::edit');
+$routes->get('statusLayanan/trash', 'StatusLayanan::trash');
+$routes->get('statusLayanan/restore/(:any)', 'StatusLayanan::restore/$1');
+$routes->get('statusLayanan/restore', 'StatusLayanan::restore');
+$routes->delete('statusLayanan/deletePermanent/(:any)', 'StatusLayanan::deletePermanent/$1');
+$routes->delete('statusLayanan/deletePermanent', 'StatusLayanan::deletePermanent');
+$routes->presenter('statusLayanan', ['filter' => 'isLoggedIn']);
 
 
 

@@ -17,16 +17,23 @@
         <h4 class="mb-3 mb-md-0">Identitas Gedung</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="printer"></i>
         </a>
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
         </a>
-        <a href="<?= site_url('identitasGedung/trash') ?>" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('identitasGedung/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
+        </a>
+        <a href="<?= site_url() ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="file-plus"></i>
+            Import Data
+        </a>
+        <a href="<?= site_url('identitasGedung/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="edit"></i>
+            Tambah Data
         </a>
     </div>
 </div>
@@ -36,36 +43,6 @@
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-                    <div>
-                        <!-- <h4 class="mb-3 mb-md-0">Identitas Gedung</h4> -->
-                        <a href="<?= site_url('identitasGedung/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Show
-                        </a>
-                        <a href="<?= site_url('identitasGedung/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Search
-                        </a>
-                    </div>
-                    <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url() ?>"
-                            class="btn btn-outline-success btn-icon-text me-2 mb-2 mb-md-0">
-                            <i class=" btn-icon-prepend" data-feather="file-plus"></i>
-                            <!-- Ganti jadi  -->
-                            Import data
-                        </a>
-                        <a href="<?= site_url('identitasGedung/new') ?>"
-                            class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="edit"></i>
-                            Tambah Data
-                        </a>
-                    </div>
-                </div>
-
-                <br>
                 <div>
                     <?php if(session()->getFlashdata('success')) :?>
                     <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
@@ -91,7 +68,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover" id="dataTable">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
@@ -115,9 +92,9 @@
                                     <a href="<?=site_url('identitasGedung/edit/'.$value->idIdentitasGedung) ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('identitasGedung/delete/'.$value->idIdentitasGedung)?>"
-                                        method="post" class="d-inline" onsubmit="return confirm('Yakin hapus data?')">
+                                        method="post" class="d-inline"  id="del-<?= $value->idIdentitasGedung;?>">
                                         <?= csrf_field() ?>
-                                        <button class="btn btn-danger btn-icon">
+                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>

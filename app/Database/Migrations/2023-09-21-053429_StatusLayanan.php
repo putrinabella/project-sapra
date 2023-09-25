@@ -15,7 +15,7 @@ class StatusLayanan extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'namaGedung' => [
+            'namaStatusLayanan' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
