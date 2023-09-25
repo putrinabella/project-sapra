@@ -33,7 +33,7 @@
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('statusLayanan') ?>" class="btn btn-secondary me-2">Cancel</a>
-                            <button type="reset" class="btn btn-danger me-2">Reset</button>
+                            <button type="reset" class="btn btn-danger me-2">Undo</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
