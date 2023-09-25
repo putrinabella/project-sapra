@@ -36,6 +36,10 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      namaKategoriManajemen: {
+        required: true,
+        maxlength: 255,
+      },
       idIdentitasLantai: {
         required: true,
       },
@@ -78,6 +82,10 @@ $(document).ready(function () {
       namaStatusLayanan: {
         required: "Silahkan masukkan nama status layanan",
         maxlength: "Nama status layanan tidak boleh melebihi 255 karakter",
+      },
+      namaKategoriManajemen: {
+        required: "Silahkan masukkan nama kategori manajemen",
+        maxlength: "Nama kategori manajemen tidak boleh melebihi 255 karakter",
       },
       idIdentitasLantai: {
         required: "Silahkan pilih sebuah opsi",

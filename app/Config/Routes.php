@@ -86,6 +86,15 @@ $routes->delete('statusLayanan/deletePermanent/(:any)', 'StatusLayanan::deletePe
 $routes->delete('statusLayanan/deletePermanent', 'StatusLayanan::deletePermanent');
 $routes->presenter('statusLayanan', ['filter' => 'isLoggedIn']);
 
+// Kategori Manajemen
+$routes->get('kategoriManajemen/edit', 'KategoriManajemen::edit');
+$routes->get('kategoriManajemen/trash', 'KategoriManajemen::trash');
+$routes->get('kategoriManajemen/restore/(:any)', 'KategoriManajemen::restore/$1');
+$routes->get('kategoriManajemen/restore', 'KategoriManajemen::restore');
+$routes->delete('kategoriManajemen/deletePermanent/(:any)', 'KategoriManajemen::deletePermanent/$1');
+$routes->delete('kategoriManajemen/deletePermanent', 'KategoriManajemen::deletePermanent');
+$routes->presenter('kategoriManajemen', ['filter' => 'isLoggedIn']);
+
 
 
 

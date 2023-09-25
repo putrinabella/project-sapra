@@ -15,7 +15,7 @@ class KategoriManjemen extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'namaGedung' => [
+            'namaKategoriManajemen' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
