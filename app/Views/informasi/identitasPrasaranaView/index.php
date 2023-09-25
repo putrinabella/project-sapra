@@ -72,6 +72,7 @@
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
                                 <th style="width: 12%;">ID</th>
+                                <th>Kode Prasarana</th>
                                 <th>Identitas Prasarana</th>
                                 <th>Lokasi Gedung</th>
                                 <th>Lokasi Lantai</th>
@@ -88,6 +89,7 @@
                                 <td class="text-center">
                                     <?= sprintf('%03d', $value->idIdentitasPrasarana) ?>
                                 </td>
+                                <td class="text-center"><?=$value->kodePrasarana?></td>
                                 <td class="text-left"><?=$value->namaPrasarana?></td>
                                 <td class="text-center"><?=$value->namaGedung?></td>
                                 <td class="text-center"><?=$value->namaLantai?></td>

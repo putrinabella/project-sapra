@@ -33,6 +33,10 @@ class IdentitasPrasarana extends Migration
                 'constraint' => 3,
                 'unsigned' => true,
             ],
+            'kodePrasarana' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -48,15 +52,11 @@ class IdentitasPrasarana extends Migration
         ]);
 
         $this->forge->addKey('idIdentitasPrasarana', true);
-        $this->forge->addForeignKey('idIdentitasGedung', 'tblIdentitasGedung', 'idIdentitasGedung');
-        $this->forge->addForeignKey('idIdentitasLantai', 'tblIdentitasLantai', 'idIdentitasLantai');
         $this->forge->createTable('tblIdentitasPrasarana');
     }
 
     public function down()
     {
-        $this->forge->dropForeignKey('tblIdentitasPrasarana', 'tblIdentitasPrasarana_idIdentitasGedung_foreign');
-        $this->forge->dropForeignKey('tblIdentitasPrasarana', 'tblIdentitasPrasarana_idIdentitasLantai_foreign');
         $this->forge->dropTable('tblIdentitasPrasarana');
     }
 }

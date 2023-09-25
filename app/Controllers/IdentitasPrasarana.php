@@ -19,6 +19,7 @@ class IdentitasPrasarana extends ResourceController
         $this->identitasGedungModel = new IdentitasGedungModels();
         $this->identitasLantaiModel = new IdentitasLantaiModels();
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
+        $this->db = \Config\Database::connect();
     }
 
     // DATATABLES
@@ -65,12 +66,20 @@ class IdentitasPrasarana extends ResourceController
      *
      * @return mixed
      */
-    public function create()
-    {
+
+    public function create() {
         $data = $this->request->getPost();
-        $this->identitasPrasaranaModel->insert($data);
-        return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
+        if (!empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai'])) {
+            unset($data['idIdentitasPrasarana']);
+            $this->identitasPrasaranaModel->insert($data);
+            $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 3, '0'), '/L', LPAD(idIdentitasLantai, 3, '0'))";
+            $this->db->query($query);
+            return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Id Gedung dan Lantai harus diisi.');
+        }
     }
+
 
     /**
      * Return the editable properties of a resource object
@@ -103,11 +112,32 @@ class IdentitasPrasarana extends ResourceController
      *
      * @return mixed
      */
+    // public function update($id = null)
+    // {
+    //     $data = $this->request->getPost();
+    //     $this->identitasPrasaranaModel->update($id, $data);
+    //     return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil update'); 
+    // }
     public function update($id = null)
     {
-        $data = $this->request->getPost();
-        $this->identitasPrasaranaModel->update($id, $data);
-        return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil update'); 
+        if ($id != null) {
+            $data = $this->request->getPost();
+
+            // Check if idIdentitasGedung and idIdentitasLantai exist and are not empty
+            if (!empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai'])) {
+                $this->identitasPrasaranaModel->update($id, $data);
+
+                // Update kodePrasarana using an SQL query
+                $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 3, '0'), '/L', LPAD(idIdentitasLantai, 3, '0')) WHERE idIdentitasPrasarana = ?";
+                $this->db->query($query, [$id]);
+
+                return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
+            } else {
+                return redirect()->to(site_url('identitasPrasarana/edit/'.$id))->with('error', 'Id Gedung dan Lantai harus diisi.');
+            }
+        } else {
+            return view('error/404');
+        }
     }
 
     /**

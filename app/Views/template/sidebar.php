@@ -45,7 +45,7 @@
                     <a href="<?= site_url('parkiran') ?>" class="nav-link">Parkiran</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('ruangan') ?>" class="nav-link">Ruangan</a>
+                    <a href="<?= site_url('dataPrasarana') ?>" class="nav-link">Ruangan</a>
                 </li>
                 <li class="nav-item">
                     <a href="<?= site_url('toilet') ?>" class="nav-link">Toilet</a>
