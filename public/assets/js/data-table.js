@@ -7,7 +7,10 @@ $(function() {
         [5, 10, 25, 50, 100 -1],
         [5, 10, 25, 50, 100, "All"]
       ],
-      "iDisplayLength": 5,
+      "iDisplayLength": 10,
+      "search": {
+        "smart": true
+      },
       "language": {
         search: ""
       }

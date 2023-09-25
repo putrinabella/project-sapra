@@ -21,11 +21,19 @@ class IdentitasPrasarana extends ResourceController
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
     }
 
+    // DATATABLES
     public function index()
     {
         $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
         return view('informasi/identitasPrasaranaView/index', $data);
     }
+
+    // Manual Pagination
+    // public function index()
+    // {
+    //     $data = $this->identitasPrasaranaModel->getPaginated(10);
+    //     return view('informasi/identitasPrasaranaView/index', $data);
+    // }
 
     /**
      * Return the properties of a resource object
