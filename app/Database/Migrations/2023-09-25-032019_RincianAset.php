@@ -9,17 +9,19 @@ class RincianAset extends Migration
     public function up()
     {
         $this->forge->addField([
-            'idDataSarana' => [
+            'idRincianAset' => [
+                'type' => 'INT',
+                'constraint' => 3,
+                'unsigned' => true,
+                'auto_increment' => true,
+            ],
+            'kodeRincianAset' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
             'idIdentitasSarana' => [
                 'type' => 'INT',
                 'constraint' => 3,
-            ],
-            'idDataPrasarana' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
             ],
             'idSumberDana' => [
                 'type' => 'INT',
@@ -28,6 +30,10 @@ class RincianAset extends Migration
             'idKategoriManajemen' => [
                 'type' => 'INT',
                 'constraint' => 3,
+            ],
+            'kodePrasarana' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'tahunPengadaan' => [
                 'type' => 'INT',
@@ -66,7 +72,7 @@ class RincianAset extends Migration
             ],
         ]);
 
-        $this->forge->addKey('idDataSarana', true);
+        $this->forge->addKey('idRincianAset', true);
         $this->forge->createTable('tblRincianAset');
     }
 

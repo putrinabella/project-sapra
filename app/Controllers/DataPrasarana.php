@@ -22,7 +22,7 @@ class DataPrasarana extends ResourceController
     // DATATABLES
     public function index()
     {
-        $data['dataPrasaranaModel'] = $this->dataPrasaranaModel->getAll();
+        $data['dataPrasarana'] = $this->dataPrasaranaModel->getAll();
         return view('prasarana/RuanganView', $data);
     }
 

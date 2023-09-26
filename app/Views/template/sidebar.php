@@ -22,7 +22,7 @@
                     <a href="<?= site_url('layananNonAsetSarana') ?>" class="nav-link">Layanan Non Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('rincianAsetSarana') ?>" class="nav-link">Rincian Aset</a>
+                    <a href="<?= site_url('rincianAset') ?>" class="nav-link">Rincian Aset</a>
                 </li>
             </ul>
         </div>
@@ -73,7 +73,7 @@
                     <a href="<?= site_url('layananNonAsetLab') ?>" class="nav-link">Layanan Non Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('rincianAsetLab') ?>" class="nav-link">Rincian Aset </a>
+                    <a href="<?= site_url() ?>" class="nav-link">Rincian Aset </a>
                 </li>
             </ul>
         </div>
@@ -97,7 +97,7 @@
                     <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('rincianAsetIt') ?>" class="nav-link">Rincian Aset </a>
+                    <a href="<?= site_url() ?>" class="nav-link">Rincian Aset </a>
                 </li>
             </ul>
         </div>

@@ -10,12 +10,14 @@ class DataPrasarana extends Migration
     {
         $this->forge->addField([
             'idDataPrasarana' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'idIdentitasPrasarana' => [
                 'type' => 'INT',
                 'constraint' => 3,
+                'unsigned' => true,
+                'auto_increment' => true,
+            ],
+            'kodePrasarana' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'idDataSarana' => [
                 'type' => 'VARCHAR',

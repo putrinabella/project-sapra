@@ -71,11 +71,11 @@
                                             <input id="password" class="form-control" name="password" type="password"
                                                 placeholder="Masukkan password">
                                         </div>
-                                        <div class="form-check mb-3">
+                                        <!-- <div class="form-check mb-3">
                                             <input type="checkbox" class="form-check-input" id="rememberMe"
                                                 name="rememberMe">
                                             <label class="form-check-label" for="rememberMe">Remember me</label>
-                                        </div>
+                                        </div> -->
 
                                         <!-- <button type="reset" class="btn btn-danger me-2">Reset</button> -->
                                         <button type="submit" class="btn btn-primary">Login</button>

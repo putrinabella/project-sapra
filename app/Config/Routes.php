@@ -97,6 +97,7 @@ $routes->delete('kategoriManajemen/deletePermanent', 'KategoriManajemen::deleteP
 $routes->presenter('kategoriManajemen', ['filter' => 'isLoggedIn']);
 
 // PRASARANA
+// 
 $routes->get('dataPrasarana/edit', 'DataPrasarana::edit');
 $routes->get('dataPrasarana/trash', 'DataPrasarana::trash');
 $routes->get('dataPrasarana/restore/(:any)', 'DataPrasarana::restore/$1');
@@ -104,6 +105,17 @@ $routes->get('dataPrasarana/restore', 'DataPrasarana::restore');
 $routes->delete('dataPrasarana/deletePermanent/(:any)', 'DataPrasarana::deletePermanent/$1');
 $routes->delete('dataPrasarana/deletePermanent', 'DataPrasarana::deletePermanent');
 $routes->presenter('dataPrasarana', ['filter' => 'isLoggedIn']);
+
+// SARANA
+
+// Rincian Aset
+$routes->get('rincianAset/edit', 'RincianAset::edit');
+$routes->get('rincianAset/trash', 'RincianAset::trash');
+$routes->get('rincianAset/restore/(:any)', 'RincianAset::restore/$1');
+$routes->get('rincianAset/restore', 'RincianAset::restore');
+$routes->delete('rincianAset/deletePermanent/(:any)', 'RincianAset::deletePermanent/$1');
+$routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
+$routes->presenter('rincianAset', ['filter' => 'isLoggedIn']);
 
 
 
