@@ -115,8 +115,7 @@ $routes->get('rincianAset/restore/(:any)', 'RincianAset::restore/$1');
 $routes->get('rincianAset/restore', 'RincianAset::restore');
 $routes->delete('rincianAset/deletePermanent/(:any)', 'RincianAset::deletePermanent/$1');
 $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
-$routes->presenter('rincianAset', ['filter' => 'isLoggedIn']);
-
+$routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
 
 // $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');

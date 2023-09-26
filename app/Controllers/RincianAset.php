@@ -74,7 +74,7 @@ class RincianAset extends ResourceController
         $data['totalSarana'] = $totalSarana;
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
             $this->rincianAsetModel->insert($data);
-            $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 3, '0'), '/', kodePrasarana)";
+            $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)";
             $this->db->query($query);
             return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
         } else {
@@ -86,13 +86,13 @@ class RincianAset extends ResourceController
     //     $data = $this->request->getPost();
         
     //     if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-            // // Calculate totalSarana
-            // $saranaLayak = intval($data['saranaLayak']);
-            // $saranaRusak = intval($data['saranaRusak']);
-            // $totalSarana = $saranaLayak + $saranaRusak;
+    //         // Calculate totalSarana
+    //         $saranaLayak = intval($data['saranaLayak']);
+    //         $saranaRusak = intval($data['saranaRusak']);
+    //         $totalSarana = $saranaLayak + $saranaRusak;
             
-            // // Add totalSarana to the data array
-            // $data['totalSarana'] = $totalSarana;
+    //         // Add totalSarana to the data array
+    //         $data['totalSarana'] = $totalSarana;
     
     //         // Insert the data into the database
     //         $this->rincianAsetModel->insert($data);
@@ -120,9 +120,11 @@ class RincianAset extends ResourceController
                 $data = [
                     'dataRincianAset' => $dataRincianAset,
                     'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-                    'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
+                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
                 ];
-                return view('informasi/rincianAsetView/edit', $data);
+                return view('saranaView/rincianAset/edit', $data);
             } else {
                 return view('error/404');
             }
