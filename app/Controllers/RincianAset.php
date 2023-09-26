@@ -82,30 +82,6 @@ class RincianAset extends ResourceController
         }
     }
 
-    // public function create() {
-    //     $data = $this->request->getPost();
-        
-    //     if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-    //         // Calculate totalSarana
-    //         $saranaLayak = intval($data['saranaLayak']);
-    //         $saranaRusak = intval($data['saranaRusak']);
-    //         $totalSarana = $saranaLayak + $saranaRusak;
-            
-    //         // Add totalSarana to the data array
-    //         $data['totalSarana'] = $totalSarana;
-    
-    //         // Insert the data into the database
-    //         $this->rincianAsetModel->insert($data);
-    
-    //         return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
-    //     } else {
-    //         return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
-    //     }
-    // }
-    
-
-    
-
     /**
      * Return the editable properties of a resource object
      *
@@ -139,23 +115,14 @@ class RincianAset extends ResourceController
      *
      * @return mixed
      */
-    // public function update($id = null)
-    // {
-    //     $data = $this->request->getPost();
-    //     $this->rincianAsetModel->update($id, $data);
-    //     return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil update'); 
-    // }
+
     public function update($id = null)
     {
         if ($id != null) {
             $data = $this->request->getPost();
-
-            // Check if idIdentitasSarana and idIdentitasLantai exist and are not empty
-            if (!empty($data['idIdentitasSarana']) && !empty($data['idIdentitasLantai'])) {
+            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
                 $this->rincianAsetModel->update($id, $data);
-
-                // Update kodePrasarana using an SQL query
-                $query = "UPDATE tblRincianAset SET kodePrasarana = CONCAT('P', LPAD(idRincianAset, 3, '0'), '/G', LPAD(idIdentitasSarana, 3, '0'), '/L', LPAD(idIdentitasLantai, 3, '0')) WHERE idRincianAset = ?";
+                $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)  WHERE idRincianAset = ?";
                 $this->db->query($query, [$id]);
 
                 return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
