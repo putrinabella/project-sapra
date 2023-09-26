@@ -147,7 +147,7 @@ class RincianAset extends ResourceController
 
     public function trash() {
         $data['dataRincianAset'] = $this->rincianAsetModel->onlyDeleted()->findAll();
-        return view('informasi/rincianAsetView/trash', $data);
+        return view('saranaView/rincianAset/trash', $data);
     } 
 
     public function restore($id = null) {
