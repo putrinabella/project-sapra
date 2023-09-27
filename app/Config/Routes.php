@@ -118,13 +118,13 @@ $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
 // Layanan Aset
-$routes->get('layananAset/edit', 'LayananAset::edit');
-$routes->get('layananAset/trash', 'LayananAset::trash');
-$routes->get('layananAset/restore/(:any)', 'LayananAset::restore/$1');
-$routes->get('layananAset/restore', 'LayananAset::restore');
-$routes->delete('layananAset/deletePermanent/(:any)', 'LayananAset::deletePermanent/$1');
-$routes->delete('layananAset/deletePermanent', 'LayananAset::deletePermanent');
-$routes->resource('layananAset', ['filter' => 'isLoggedIn']);
+$routes->get('saranaLayananAset/edit', 'SaranaLayananAset::edit');
+$routes->get('saranaLayananAset/trash', 'SaranaLayananAset::trash');
+$routes->get('saranaLayananAset/restore/(:any)', 'SaranaLayananAset::restore/$1');
+$routes->get('saranaLayananAset/restore', 'SaranaLayananAset::restore');
+$routes->delete('saranaLayananAset/deletePermanent/(:any)', 'SaranaLayananAset::deletePermanent/$1');
+$routes->delete('saranaLayananAset/deletePermanent', 'SaranaLayananAset::deletePermanent');
+$routes->resource('saranaLayananAset', ['filter' => 'isLoggedIn']);
 
 // $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
 // $routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');

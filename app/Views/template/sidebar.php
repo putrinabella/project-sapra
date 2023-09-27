@@ -16,10 +16,10 @@
         <div class="collapse" id="sarana">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url('layananAsetSarana') ?>" class="nav-link">Layanan Aset</a>
+                    <a href="<?= site_url('saranaLayananAset') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('layananNonAsetSarana') ?>" class="nav-link">Layanan Non Aset</a>
+                    <a href="<?= site_url() ?>" class="nav-link">Layanan Non Aset</a>
                 </li>
                 <li class="nav-item">
                     <a href="<?= site_url('rincianAset') ?>" class="nav-link">Rincian Aset</a>
