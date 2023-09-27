@@ -15,23 +15,24 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('identitasPrasarana')?>"
+                        <a href="<?= site_url('rincianAset')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('identitasPrasarana/restore')?>"
+                        <a href="<?= site_url('rincianAset/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('identitasPrasarana/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('rincianAset/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
-                            <button class="btn btn-danger" type="submit"> Delete All Permanent </button>
+                            <button class="btn btn-danger btn-icon-text" type="submit">
+                            <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent </button>
                         </form>
                         </a>
                     </div>
@@ -93,9 +94,9 @@
                                 <td class="text-center"><?=$value->saranaRusak?></td>
                                 <td class="text-center"><?=$value->totalSarana?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('identitasPrasarana/restore/'.$value->idRincianAset) ?>"
+                                    <a href="<?=site_url('rincianAset/restore/'.$value->idRincianAset) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('identitasPrasarana/deletePermanent/'.$value->idRincianAset) ?>"
+                                    <form action="<?= site_url('rincianAset/deletePermanent/'.$value->idRincianAset) ?>"
                                         method="POST" class="d-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">

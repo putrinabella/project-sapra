@@ -31,7 +31,8 @@
                             class="d-inline me-2 mb-2 mb-md-0">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
-                            <button class="btn btn-danger" type="submit"> Delete All Permanent </button>
+                            <button class="btn btn-danger btn-icon-text" type="submit">
+                            <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent </button>
                         </form>
                         </a>
                     </div>
