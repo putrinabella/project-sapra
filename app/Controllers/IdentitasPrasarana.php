@@ -152,7 +152,7 @@ class IdentitasPrasarana extends ResourceController
     }
 
     public function trash() {
-        $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->onlyDeleted()->findAll();
+        $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->onlyDeleted()->getRecycle();
         return view('informasi/identitasPrasaranaView/trash', $data);
     } 
 

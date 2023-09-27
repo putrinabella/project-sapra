@@ -86,8 +86,8 @@
                                     <?= sprintf('%03d', $value->idIdentitasPrasarana) ?>
                                 </td>
                                 <td class="text-left"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->namaGedung?></td>
+                                <td class="text-center"><?=$value->namaLantai?></td>
                                 <td class="text-center"><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
                                     <a href="<?=site_url('identitasPrasarana/restore/'.$value->idIdentitasPrasarana) ?>"
