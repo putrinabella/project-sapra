@@ -8,6 +8,11 @@ $(document).ready(function () {
         required: true,
         minlength: 5,
       },
+      tahunPengadaan: {
+        required: true,
+        minlength: 4,
+        maxlength: 4,
+      },
       namaSumberDana: {
         required: true,
         maxlength: 255,
@@ -40,10 +45,37 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      saranaLayak: {
+        required: true,
+        maxlength: 4,
+      },
+      saranaRusak: {
+        required: true,
+        maxlength: 4,
+      },
+      spesifikasi: {
+        required: true,
+      },
+      link: {
+        required: true,
+      },
+
       idIdentitasLantai: {
         required: true,
       },
       idIdentitasGedung: {
+        required: true,
+      },
+      idIdentitasSarana: {
+        required: true,
+      },
+      idSumberDana: {
+        required: true,
+      },
+      idKategoriManajemen: {
+        required: true,
+      },
+      kodePrasarana: {
         required: true,
       },
     },
@@ -54,6 +86,11 @@ $(document).ready(function () {
       password: {
         required: "Silahkan masukkan kata sandi",
         minlength: "Kata sandi harus terdiri dari setidaknya 5 karakter",
+      },
+      tahunPengadaan: {
+        required: "Silahkan masukkan tahun pengadaan",
+        minlength: "Tahun pengadaan minimal terdiri dari 4 karakter",
+        maxlength: "Tahun pengadaan maksimal terdiri dari 4 karakter",
       },
       namaSumberDana: {
         required: "Silahkan masukkan nama sumber dana",
@@ -87,13 +124,38 @@ $(document).ready(function () {
         required: "Silahkan masukkan nama kategori manajemen",
         maxlength: "Nama kategori manajemen tidak boleh melebihi 255 karakter",
       },
+      saranaLayak: {
+        required: "Silahkan masukkan jumlah sarana layak",
+        maxlength: "Angka yang dimasukkan tidak boleh melebihi 4 karakter",
+      },
+      saranaRusak: {
+        required: "Silahkan masukkan jumlah sarana rusak",
+        maxlength: "Angka yang dimasukkan tidak boleh melebihi 4 karakter",
+      },
+      spesifikasi: {
+        required: "Silahkan masukkan spesifikasi",
+      },
+      link: {
+        required: "Silahkan masukkan link dokumentasi",
+      },
       idIdentitasLantai: {
         required: "Silahkan pilih sebuah opsi",
       },
       idIdentitasGedung: {
         required: "Silahkan pilih sebuah opsi",
       },
-
+      idIdentitasSarana: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      idSumberDana: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      idKategoriManajemen: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      kodePrasarana: {
+        required: "Silahkan pilih sebuah opsi",
+      },
     },
     errorPlacement: function (label, element) {
       label.addClass("mt-1 tx-13 text-danger");

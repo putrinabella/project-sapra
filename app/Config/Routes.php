@@ -117,6 +117,14 @@ $routes->delete('rincianAset/deletePermanent/(:any)', 'RincianAset::deletePerman
 $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
+// Layanan Aset
+$routes->get('layananAset/edit', 'LayananAset::edit');
+$routes->get('layananAset/trash', 'LayananAset::trash');
+$routes->get('layananAset/restore/(:any)', 'LayananAset::restore/$1');
+$routes->get('layananAset/restore', 'LayananAset::restore');
+$routes->delete('layananAset/deletePermanent/(:any)', 'LayananAset::deletePermanent/$1');
+$routes->delete('layananAset/deletePermanent', 'LayananAset::deletePermanent');
+$routes->resource('layananAset', ['filter' => 'isLoggedIn']);
 
 // $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
 // $routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
