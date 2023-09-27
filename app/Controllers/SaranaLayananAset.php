@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\RincianAsetModels; 
+use App\Models\SaranaLayananAsetModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
@@ -18,7 +18,7 @@ class SaranaLayananAset extends ResourceController
      */
 
      function __construct() {
-        $this->rincianAsetModel = new RincianAsetModels();
+        $this->saranaLayananAsetModel = new SaranaLayananAsetModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
@@ -28,8 +28,8 @@ class SaranaLayananAset extends ResourceController
 
     public function index()
     {
-        $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
-        return view('saranaView/rincianAset/index', $data);
+        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
+        return view('saranaView/layananAset/index', $data);
     }
 
     /**
@@ -56,7 +56,7 @@ class SaranaLayananAset extends ResourceController
             'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
         ];
         
-        return view('saranaView/rincianAset/new', $data);        
+        return view('saranaView/saranaLayananAset/new', $data);        
     }
 
     /**
@@ -73,12 +73,12 @@ class SaranaLayananAset extends ResourceController
 
         $data['totalSarana'] = $totalSarana;
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-            $this->rincianAsetModel->insert($data);
-            $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)";
+            $this->saranaLayananAsetModel->insert($data);
+            $query = "UPDATE tblSaranaLayananAset SET kodeSaranaLayananAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)";
             $this->db->query($query);
-            return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
+            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('saranaLayananAset'))->with('error', 'Semua field harus terisi');
         }
     }
 
@@ -90,17 +90,17 @@ class SaranaLayananAset extends ResourceController
     public function edit($id = null)
     {
         if ($id != null) {
-            $dataRincianAset = $this->rincianAsetModel->find($id);
+            $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
     
-            if (is_object($dataRincianAset)) {
+            if (is_object($dataSaranaLayananAset)) {
                 $data = [
-                    'dataRincianAset' => $dataRincianAset,
+                    'dataSaranaLayananAset' => $dataSaranaLayananAset,
                     'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana' => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
                     'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
                 ];
-                return view('saranaView/rincianAset/edit', $data);
+                return view('saranaView/saranaLayananAset/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -121,13 +121,13 @@ class SaranaLayananAset extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
             if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-                $this->rincianAsetModel->update($id, $data);
-                $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)  WHERE idRincianAset = ?";
+                $this->saranaLayananAsetModel->update($id, $data);
+                $query = "UPDATE tblSaranaLayananAset SET kodeSaranaLayananAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)  WHERE idSaranaLayananAset = ?";
                 $this->db->query($query, [$id]);
 
-                return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
+                return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil diupdate');
             } else {
-                return redirect()->to(site_url('rincianAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                return redirect()->to(site_url('saranaLayananAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
             }
         } else {
             return view('error/404');
@@ -141,46 +141,46 @@ class SaranaLayananAset extends ResourceController
      */
     public function delete($id = null)
     {
-        $this->rincianAsetModel->delete($id);
-        return redirect()->to(site_url('rincianAset'));
+        $this->saranaLayananAsetModel->delete($id);
+        return redirect()->to(site_url('saranaLayananAset'));
     }
 
     public function trash() {
-        $data['dataRincianAset'] = $this->rincianAsetModel->onlyDeleted()->getRecycle();
-        return view('saranaView/rincianAset/trash', $data);
+        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->onlyDeleted()->getRecycle();
+        return view('saranaView/saranaLayananAset/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblRincianAset')
+            $this->db->table('tblSaranaLayananAset')
                 ->set('deleted_at', null, true)
-                ->where(['idRincianAset' => $id])
+                ->where(['idSaranaLayananAset' => $id])
                 ->update();
         } else {
-            $this->db->table('tblRincianAset')
+            $this->db->table('tblSaranaLayananAset')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
             }
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('rincianAset/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('saranaLayananAset/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->rincianAsetModel->delete($id, true);
-        return redirect()->to(site_url('rincianAset/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->saranaLayananAsetModel->delete($id, true);
+        return redirect()->to(site_url('saranaLayananAset/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->rincianAsetModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->saranaLayananAsetModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->rincianAsetModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('rincianAset/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->saranaLayananAsetModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('saranaLayananAset/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('rincianAset/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('saranaLayananAset/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     }  

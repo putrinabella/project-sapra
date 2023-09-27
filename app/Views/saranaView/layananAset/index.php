@@ -1,20 +1,20 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Rincian Aset &verbar; SARPRA </title>
+<title>Layanan Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Informasi</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Rincian Aset</li>
+        <li class="breadcrumb-item active" aria-current="page">Layanan Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
+        <h4 class="mb-3 mb-md-0">Layanan Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
@@ -23,7 +23,7 @@
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
         </a>
-        <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('saranaLayananAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -31,7 +31,7 @@
             <i class=" btn-icon-prepend" data-feather="file-plus"></i>
             Import Data
         </a>
-        <a href="<?= site_url('rincianAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('saranaLayananAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -71,37 +71,37 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th style="width: 12%;">Kode Aset</th>
+                                <th>Tanggal</th>
                                 <th>Nama Aset</th>
-                                <th>Tahun Pengadaan</th>
+                                <th>Lokasi</th>
+                                <th>Status Layanan</th>
                                 <th>Kategori Manajemen</th>
                                 <th>Sumber Dana</th>
-                                <th>Aset Layak</th>
-                                <th>Aset Rusak</th>
-                                <th>Total Aset</th>
+                                <th>Biaya</th>
+                                <th>Bukti</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataRincianAset as $key => $value) : ?>
+                        <?php foreach ($dataSaranaLayananAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->kodeRincianAset?></td>
+                                <td class="text-center"><?=$value->created_at?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->tahunPengadaan?></td>
+                                <td class="text-center"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->saranaLayak?></td>
-                                <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?=$value->totalSarana?></td>
+                                <td class="text-center"><?=$value->biaya?></td>
+                                <td class="text-center"><?=$value->bukti?></td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>"
+                                    <a href="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idRincianAset;?>">
+                                    <form action="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset)?>"
+                                        method="post" class="d-inline" id="del-<?= $value->idSaranaLayananAset;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
