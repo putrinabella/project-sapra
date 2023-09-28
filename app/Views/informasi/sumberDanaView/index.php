@@ -20,7 +20,7 @@
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="printer"></i>
         </a>
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('sumberDana/export') ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
         </a>
         <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">

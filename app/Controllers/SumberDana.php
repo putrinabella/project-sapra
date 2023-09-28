@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\SumberDanaModels;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class SumberDana extends ResourcePresenter
 {
@@ -159,4 +161,102 @@ class SumberDana extends ResourcePresenter
             }
         }
     }  
+
+    public function export() {
+        $data = $this->sumberDanaModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setCellValue('A1', 'No.');
+        $activeWorksheet->setCellValue('B1', 'ID Sumber Dana');
+        $activeWorksheet->setCellValue('C1', 'Nama Sumber Dana');
+    
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        $column = 2;
+        foreach ($data as $key => $value) {
+            $idSumberDana = str_pad($value->idSumberDana, 3, '0', STR_PAD_LEFT); // Ensure ID is always 3 digits
+            $activeWorksheet->setCellValue('A'.$column, ($column-1));
+            $activeWorksheet->setCellValue('B'.$column, $idSumberDana);
+            $activeWorksheet->setCellValue('C'.$column, $value->namaSumberDana);
+    
+            $activeWorksheet->getStyle('A'.$column)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $activeWorksheet->getStyle('B'.$column)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $activeWorksheet->getStyle('C'.$column)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+
+            $column++;
+        }
+    
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('FFFFFF00');
+        
+        $styleArray = [
+            'borders'=> [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['ARGB' => 'FF000000'],
+                ],
+            ],
+        ];
+    
+        $activeWorksheet->getStyle('A1:C'.($column-1))->applyFromArray($styleArray);
+    
+        $activeWorksheet->getColumnDimension('A')->setAutoSize(true);
+        $activeWorksheet->getColumnDimension('B')->setAutoSize(true);
+        $activeWorksheet->getColumnDimension('C')->setAutoSize(true);
+    
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Sumber Dana.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+    
+    
+
+    // public function export() {
+    //     $data = $this->sumberDanaModel->findAll();
+    //     $spreadsheet = new Spreadsheet();
+    //     $activeWorksheet = $spreadsheet->getActiveSheet();
+    //     $activeWorksheet->setCellValue('A1', 'No.');
+    //     $activeWorksheet->setCellValue('B1', 'ID Sumber Dana');
+    //     $activeWorksheet->setCellValue('C1', 'Nama Sumber Dana');
+        
+    //     $column = 2;
+    //     foreach ($data as $key => $value) {
+    //         $activeWorksheet->setCellValue('A'.$column, ($column-1));
+    //         $activeWorksheet->setCellValue('B'.$column, $value->idSumberDana);
+    //         $activeWorksheet->setCellValue('C'.$column, $value->namaSumberDana);
+    //         $column++;
+    //     }
+
+    //     $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+    //     $activeWorksheet->getStyle('A1:C1')->getFill()
+    //         ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+    //         ->getStartColor()->setARGB('FFFFFF00');
+        
+    //     $styleArray = [
+    //         'borders'=> [
+    //             'allBorders' => [
+    //                 'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+    //                 'color' => ['ARGB' => 'FF000000'],
+    //             ],
+    //         ],
+    //     ];
+
+    //     $activeWorksheet->getStyle('A1:C'.($column-1))->applyFromArray($styleArray);
+
+    //     $activeWorksheet->getColumnDimension('A')->setAutoSize(true);
+    //     $activeWorksheet->getColumnDimension('B')->setAutoSize(true);
+    //     $activeWorksheet->getColumnDimension('C')->setAutoSize(true);
+
+    //     $writer = new Xlsx($spreadsheet);
+    //     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    //     header('Content-Disposition: attachment;filename=Sumber Dana.xlsx');
+    //     header('Cache-Control: max-age=0');
+    //     $writer->save('php://output');
+    //     exit();
+    // }
 }
