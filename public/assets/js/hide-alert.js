@@ -3,6 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (alertElement) {
         setTimeout(function () {
             alertElement.style.display = 'none';
-        }, 2000);
+        }, 5000);
     }
 });

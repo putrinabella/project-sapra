@@ -78,6 +78,9 @@ $(document).ready(function () {
       kodePrasarana: {
         required: true,
       },
+      formExcel: {
+        required: true,
+      },
     },
     messages: {
       username: {
@@ -155,6 +158,9 @@ $(document).ready(function () {
       },
       kodePrasarana: {
         required: "Silahkan pilih sebuah opsi",
+      },
+      formExcel: {
+        required: "Silahkan masukkan sebuah file",
       },
     },
     errorPlacement: function (label, element) {

@@ -53,6 +53,7 @@ $routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
 
 // Sumber Dana
 $routes->get('sumberDana/export', 'SumberDana::export');
+$routes->post('sumberDana/import', 'SumberDana::import');
 $routes->get('sumberDana/edit', 'SumberDana::edit');
 $routes->get('sumberDana/trash', 'SumberDana::trash');
 $routes->get('sumberDana/restore/(:any)', 'SumberDana::restore/$1');

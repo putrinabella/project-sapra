@@ -20,17 +20,29 @@
         <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="printer"></i>
         </a>
-        <a href="<?= site_url('sumberDana/export') ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
-        </a>
         <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
-        <a href="<?= site_url() ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="file-plus"></i>
-            Import Data
+        <a href="<?= site_url('sumberDana/export') ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="download"></i>
+            Export Excel
         </a>
+        <div class="dropdown">
+            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="upload"></i>
+                Import Excel
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?=base_url('Sumber_Dana_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload File</a>
+            </div>
+        </div>
+        <!-- <a href="<?= site_url() ?>" class="btn btn-secondary btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="upload"></i>
+            Import Excel
+        </a> -->
         <a href="<?= site_url('sumberDana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
@@ -69,7 +81,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                <table class="table table-hover"  id="dataTable">
+                    <table class="table table-hover" id="dataTable">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
@@ -95,7 +107,8 @@
                                     <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idSumberDana;?>">
                                         <?= csrf_field() ?>
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <button class="btn btn-danger btn-icon"
+                                            data-confirm="Apakah anda yakin menghapus data ini?">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
@@ -110,5 +123,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+            </div>
+            <form action="<?=site_url("sumberDana/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+                <div class="modal-body">
+                    <?= csrf_field() ?>
+                    <input class="form-control" type="file" id="formExcel" name="formExcel">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <?= $this->endSection(); ?>

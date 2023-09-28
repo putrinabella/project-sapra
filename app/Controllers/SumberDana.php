@@ -162,72 +162,18 @@ class SumberDana extends ResourcePresenter
         }
     }  
 
-    // public function export() {
-    //     $data = $this->sumberDanaModel->findAll();
-    //     $spreadsheet = new Spreadsheet();
-    //     $activeWorksheet = $spreadsheet->getActiveSheet();
-    //     $activeWorksheet->setCellValue('A1', 'No.');
-    //     $activeWorksheet->setCellValue('B1', 'ID Sumber Dana');
-    //     $activeWorksheet->setCellValue('C1', 'Nama Sumber Dana');
-    
-    //     $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
-    //     $column = 2;
-    //     foreach ($data as $key => $value) {
-    //         $idSumberDana = str_pad($value->idSumberDana, 3, '0', STR_PAD_LEFT); // Ensure ID is always 3 digits
-    //         $activeWorksheet->setCellValue('A'.$column, ($column-1));
-    //         $activeWorksheet->setCellValue('B'.$column, $idSumberDana);
-    //         $activeWorksheet->setCellValue('C'.$column, $value->namaSumberDana);
-    
-    //         $activeWorksheet->getStyle('A'.$column)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    //         $activeWorksheet->getStyle('B'.$column)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    //         $activeWorksheet->getStyle('C'.$column)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-
-    //         $column++;
-    //     }
-    
-    //     $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
-    //     $activeWorksheet->getStyle('A1:C1')->getFill()
-    //         ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-    //         ->getStartColor()->setARGB('FFFFFF00');
-        
-    //     $styleArray = [
-    //         'borders'=> [
-    //             'allBorders' => [
-    //                 'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-    //                 'color' => ['ARGB' => 'FF000000'],
-    //             ],
-    //         ],
-    //     ];
-    
-    //     $activeWorksheet->getStyle('A1:C'.($column-1))->applyFromArray($styleArray);
-    
-    //     $activeWorksheet->getColumnDimension('A')->setAutoSize(true);
-    //     $activeWorksheet->getColumnDimension('B')->setAutoSize(true);
-    //     $activeWorksheet->getColumnDimension('C')->setAutoSize(true);
-    
-    //     $writer = new Xlsx($spreadsheet);
-    //     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    //     header('Content-Disposition: attachment;filename=Sumber Dana.xlsx');
-    //     header('Cache-Control: max-age=0');
-    //     $writer->save('php://output');
-    //     exit();
-    // }
-
     public function export() {
         $data = $this->sumberDanaModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
     
-        // Set column headers
         $headers = ['No.', 'ID Sumber Dana', 'Nama Sumber Dana'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
-        // Fill data
         foreach ($data as $index => $value) {
             $idSumberDana = str_pad($value->idSumberDana, 3, '0', STR_PAD_LEFT);
-            $activeWorksheet->setCellValue('A'.($index + 2), $index);
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $idSumberDana);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSumberDana);
     
@@ -236,24 +182,54 @@ class SumberDana extends ResourcePresenter
             $activeWorksheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
         }
     
-        // Apply styles
         $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
         $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
     
-        // Auto-size columns
         foreach (range('A', 'C') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
-        // Output the file
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=Sumber Dana.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
+    }
+    
+    public function import() {
+        $file = $this->request->getFile('formExcel');
+        $extension = $file->getClientExtension();
+        if($extension == 'xlsx' || $extension == 'xls') {
+            if($extension == 'xls') {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            }
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            
+            $spreadsheet = $reader->load($file);
+            $theFile = $spreadsheet->getActiveSheet()->toArray();
+
+            foreach ($theFile as $key => $value) {
+                if ($key == 0) {
+                    continue;
+                }
+            
+                $namaSumberDana = $value[1] ?? null;
+            
+                if ($namaSumberDana !== null) {
+                    $data = [
+                        'namaSumberDana' => $namaSumberDana,
+                    ];
+                    
+                    $this->sumberDanaModel->insert($data);
+                }
+            }
+            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil diimport');
+        } else {
+            return redirect()->to(site_url('sumberDana'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+        }
     }
     
 }
