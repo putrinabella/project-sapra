@@ -17,17 +17,21 @@
         <h4 class="mb-3 mb-md-0">Sumber Dana</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('sumberDana/print') ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0" target="_blank">
-            <i class="btn-icon-prepend" data-feather="printer"></i>
-        </a>
         <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
-        <a href="<?= site_url('sumberDana/export') ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="download"></i>
-            Export Excel
-        </a>
+        <div class="dropdown">
+            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="download"></i>
+                Export
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= site_url('sumberDana/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('sumberDana/generatePDF') ?>">Download as PDF</a>
+            </div>
+        </div>
         <div class="dropdown">
             <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

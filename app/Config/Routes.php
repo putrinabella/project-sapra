@@ -52,6 +52,7 @@ $routes->delete('identitasPrasarana/deletePermanent', 'IdentitasPrasarana::delet
 $routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
 
 // Sumber Dana
+$routes->get('sumberDana/generatePDF', 'SumberDana::generatePDF');
 $routes->get('sumberDana/print', 'SumberDana::print');
 $routes->get('sumberDana/export', 'SumberDana::export');
 $routes->post('sumberDana/import', 'SumberDana::import');

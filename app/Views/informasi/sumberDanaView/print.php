@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,8 @@
             margin-bottom: 20px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
@@ -26,6 +28,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2 class="mt-3 mb-4">Sumber Dana Report</h2>
@@ -38,20 +41,27 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($dataSumberDana as $key => $value) : ?>
-                    <tr>
-                        <td><?= $key + 1 ?></td>
-                        <td><?= sprintf('%03d', $value->idSumberDana) ?></td>
-                        <td><?= $value->namaSumberDana ?></td>
-                    </tr>
+                <?php foreach ($data['dataSumberDana'] as $key => $value) : ?>
+                <tr>
+                    <td>
+                        <?= $key + 1 ?>
+                    </td>
+                    <td>
+                        <?= sprintf('%03d', $value->idSumberDana) ?>
+                    </td>
+                    <td>
+                        <?= $value->namaSumberDana ?>
+                    </td>
+                </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
     <script>
-        window.onload = function() {
-            window.print();
-        };
-    </script>
+    window.onload = function () {
+        window.print();
+    };
+</script>
 </body>
+
 </html>

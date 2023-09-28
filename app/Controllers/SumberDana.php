@@ -6,6 +6,8 @@ use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\SumberDanaModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class SumberDana extends ResourcePresenter
 {
@@ -183,8 +185,32 @@ class SumberDana extends ResourcePresenter
     public function print()
     {
         $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
-        return view('informasi/sumberDanaView/pdf', $data);
+        return view('informasi/sumberDanaView/print', $data);
     }
+
+    public function generatePDF()
+    {
+        $filePath = APPPATH . 'Views/informasi/sumberDanaView/print.php';
     
+        if (!file_exists($filePath)) {
+            die('HTML file not found');
+        }
+
+        $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
     
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'potrait');
+        $dompdf->render();
+        $dompdf->stream();
+    }
 }
