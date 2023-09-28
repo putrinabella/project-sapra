@@ -279,7 +279,7 @@ class IdentitasPrasarana extends ResourceController
             die('HTML file not found');
         }
 
-        $data['dataidentitasPrasarana'] = $this->identitasPrasaranaModel->findAll();
+        $data['dataidentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
 
         ob_start();
 
@@ -294,7 +294,8 @@ class IdentitasPrasarana extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $dompdf->stream();
+        $filename = 'Identitas Prasarana Report.pdf';
+        $dompdf->stream($filename);
     }
 }
 

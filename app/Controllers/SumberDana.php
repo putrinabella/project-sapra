@@ -205,6 +205,7 @@ class SumberDana extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $dompdf->stream();
+        $filename = 'Sumber Dana Report.pdf';
+        $dompdf->stream($filename);
     }
 }
