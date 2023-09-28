@@ -182,12 +182,6 @@ class SumberDana extends ResourcePresenter
         }
     }
 
-    public function print()
-    {
-        $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
-        return view('informasi/sumberDanaView/print', $data);
-    }
-
     public function generatePDF()
     {
         $filePath = APPPATH . 'Views/informasi/sumberDanaView/print.php';

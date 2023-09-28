@@ -25,7 +25,7 @@
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
-                Export
+                Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('sumberDana/export') ?>">Download as Excel</a>
@@ -36,11 +36,11 @@
             <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import Excel
+                Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/Sumber_Dana_Example_Import.xlsx') ?> ">Download Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload File</a>
+                <a class="dropdown-item" href="<?=base_url('excel/SumberDana_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
         <a href="<?= site_url('sumberDana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">

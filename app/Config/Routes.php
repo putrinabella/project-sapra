@@ -43,6 +43,9 @@ $routes->delete('identitasSarana/deletePermanent', 'IdentitasSarana::deletePerma
 $routes->presenter('identitasSarana', ['filter' => 'isLoggedIn']);
 
 // Identitas Prasarana
+$routes->get('identitasPrasarana/generatePDF', 'IdentitasPrasarana::generatePDF');
+$routes->get('identitasPrasarana/export', 'IdentitasPrasarana::export');
+$routes->post('identitasPrasarana/import', 'IdentitasPrasarana::import');
 $routes->get('identitasPrasarana/edit', 'IdentitasPrasarana::edit');
 $routes->get('identitasPrasarana/trash', 'IdentitasPrasarana::trash');
 $routes->get('identitasPrasarana/restore/(:any)', 'IdentitasPrasarana::restore/$1');
@@ -53,7 +56,6 @@ $routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
 
 // Sumber Dana
 $routes->get('sumberDana/generatePDF', 'SumberDana::generatePDF');
-$routes->get('sumberDana/print', 'SumberDana::print');
 $routes->get('sumberDana/export', 'SumberDana::export');
 $routes->post('sumberDana/import', 'SumberDana::import');
 $routes->get('sumberDana/edit', 'SumberDana::edit');
