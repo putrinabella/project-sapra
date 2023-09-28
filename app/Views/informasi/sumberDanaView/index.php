@@ -17,8 +17,8 @@
         <h4 class="mb-3 mb-md-0">Sumber Dana</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="printer"></i>
+        <a href="<?= site_url('sumberDana/print') ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0" target="_blank">
+            <i class="btn-icon-prepend" data-feather="printer"></i>
         </a>
         <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
@@ -35,21 +35,16 @@
                 Import Excel
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('Sumber_Dana_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="<?=base_url('excel/Sumber_Dana_Example_Import.xlsx') ?> ">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload File</a>
             </div>
         </div>
-        <!-- <a href="<?= site_url() ?>" class="btn btn-secondary btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="upload"></i>
-            Import Excel
-        </a> -->
         <a href="<?= site_url('sumberDana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
