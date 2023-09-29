@@ -1,12 +1,12 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Rincian Aset &verbar; SARPRA </title>
+<title>Recycle Bin Layanan Aset Sarana &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Rincian Aset</h4>
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Layanan Aset Sarana</h4>
 <br>
 
 <div class="row">
@@ -15,19 +15,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('rincianAset')?>"
+                        <a href="<?= site_url('saranaLayananAset')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('rincianAset/restore')?>"
+                        <a href="<?= site_url('saranaLayananAset/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('rincianAset/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('saranaLayananAset/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
@@ -68,35 +68,35 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th style="width: 12%;">Kode Aset</th>
+                                <th>Tanggal</th>
                                 <th>Nama Aset</th>
-                                <th>Tahun Pengadaan</th>
+                                <th>Lokasi</th>
+                                <th>Status Layanan</th>
                                 <th>Kategori Manajemen</th>
                                 <th>Sumber Dana</th>
-                                <th>Aset Layak</th>
-                                <th>Aset Rusak</th>
-                                <th>Total Aset</th>
+                                <th>Biaya</th>
+                                <th>Bukti</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataRincianAset as $key => $value) : ?>
+                        <?php foreach ($dataSaranaLayananAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->kodeRincianAset?></td>
+                                <td class="text-center"><?=$value->tanggal?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->tahunPengadaan?></td>
+                                <td class="text-center"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->saranaLayak?></td>
-                                <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?=$value->totalSarana?></td>
+                                <td class="text-center"><?=$value->biaya?></td>
+                                <td class="text-center"><?=$value->bukti?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('rincianAset/restore/'.$value->idRincianAset) ?>"
+                                    <a href="<?=site_url('saranaLayananAset/restore/'.$value->idSaranaLayananAset) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('rincianAset/deletePermanent/'.$value->idRincianAset) ?>"
+                                    <form action="<?= site_url('saranaLayananAset/deletePermanent/'.$value->idSaranaLayananAset) ?>"
                                         method="POST" class="d-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">

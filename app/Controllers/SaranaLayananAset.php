@@ -133,7 +133,7 @@ class SaranaLayananAset extends ResourceController
 
     public function trash() {
         $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->onlyDeleted()->getRecycle();
-        return view('saranaView/saranaLayananAset/trash', $data);
+        return view('saranaView/LayananAset/trash', $data);
     } 
 
     public function restore($id = null) {
