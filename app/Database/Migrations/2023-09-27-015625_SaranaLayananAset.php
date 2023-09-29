@@ -41,6 +41,10 @@ class SaranaLayananAset extends Migration
             'bukti' => [
                 'type' => 'TEXT',
             ],
+            'tanggal' => [ 
+                'type' => 'DATE', 
+                'null' => true,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

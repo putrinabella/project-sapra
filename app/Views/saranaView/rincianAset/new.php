@@ -36,6 +36,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="kodePrasarana" name="kodePrasarana">
+                                <option value="" hidden>Pilih lokasi</option>
+                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
+                                <option value="<?=$value->kodePrasarana?>"><?=$value->namaPrasarana?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="idSumberDana" name="idSumberDana">
@@ -54,17 +65,6 @@
                                 <?php foreach($dataKategoriManajemen as $key =>$value): ?>
                                 <option value="<?=$value->idKategoriManajemen?>"><?=$value->namaKategoriManajemen?>
                                 </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Lokasi</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="kodePrasarana" name="kodePrasarana">
-                                <option value="" hidden>Pilih lokasi</option>
-                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
-                                <option value="<?=$value->kodePrasarana?>"><?=$value->namaPrasarana?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

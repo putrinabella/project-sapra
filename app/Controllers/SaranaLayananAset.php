@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\SaranaLayananAsetModels; 
 use App\Models\IdentitasSaranaModels; 
+use App\Models\StatusLayananModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
 use App\Models\IdentitasPrasaranaModels; 
@@ -20,9 +21,10 @@ class SaranaLayananAset extends ResourceController
      function __construct() {
         $this->saranaLayananAsetModel = new SaranaLayananAsetModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
+        $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
+        $this->statusLayananModel = new StatusLayananModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
-        $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -50,13 +52,14 @@ class SaranaLayananAset extends ResourceController
     public function new()
     {
         $data = [
-            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-            'dataSumberDana' => $this->sumberDanaModel->findAll(),
-            'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-            'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+            'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+            'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+            'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
+            'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+            'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
         ];
         
-        return view('saranaView/saranaLayananAset/new', $data);        
+        return view('saranaView/layananAset/new', $data);        
     }
 
     /**
@@ -67,19 +70,8 @@ class SaranaLayananAset extends ResourceController
 
     public function create() {
         $data = $this->request->getPost();
-        $saranaLayak = intval($data['saranaLayak']);
-        $saranaRusak = intval($data['saranaRusak']);
-        $totalSarana = $saranaLayak + $saranaRusak;
-
-        $data['totalSarana'] = $totalSarana;
-        if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-            $this->saranaLayananAsetModel->insert($data);
-            $query = "UPDATE tblSaranaLayananAset SET kodeSaranaLayananAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)";
-            $this->db->query($query);
-            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
-        } else {
-            return redirect()->to(site_url('saranaLayananAset'))->with('error', 'Semua field harus terisi');
-        }
+        $this->saranaLayananAsetModel->insert($data);
+        return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
     }
 
     /**
@@ -94,13 +86,14 @@ class SaranaLayananAset extends ResourceController
     
             if (is_object($dataSaranaLayananAset)) {
                 $data = [
-                    'dataSaranaLayananAset' => $dataSaranaLayananAset,
-                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                    'dataSaranaLayananAset'     => $dataSaranaLayananAset,
+                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+                    'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
                 ];
-                return view('saranaView/saranaLayananAset/edit', $data);
+                return view('saranaView/layananAset/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -120,15 +113,8 @@ class SaranaLayananAset extends ResourceController
     {
         if ($id != null) {
             $data = $this->request->getPost();
-            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-                $this->saranaLayananAsetModel->update($id, $data);
-                $query = "UPDATE tblSaranaLayananAset SET kodeSaranaLayananAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)  WHERE idSaranaLayananAset = ?";
-                $this->db->query($query, [$id]);
-
-                return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil diupdate');
-            } else {
-                return redirect()->to(site_url('saranaLayananAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
-            }
+            $this->saranaLayananAsetModel->update($id, $data);
+            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }

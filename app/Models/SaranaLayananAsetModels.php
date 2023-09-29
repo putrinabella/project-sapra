@@ -9,7 +9,7 @@ class SaranaLayananAsetModels extends Model
     protected $table            = 'tblSaranaLayananAset';
     protected $primaryKey       = 'idSaranaLayananAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idSaranaLayananAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'idStatusLayanan', 'biaya', 'bukti'];
+    protected $allowedFields    = ['idSaranaLayananAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'idStatusLayanan', 'biaya', 'bukti','tanggal'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 

@@ -22,19 +22,56 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('rincianAset/'.$dataRincianAset->idRincianAset)?>" method="post"
+                <form action="<?= site_url('saranaLayananAset/'.$dataSaranaLayananAset->idSaranaLayananAset)?>" method="post"
                     autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
+                    <div class="row mb-3">
+                        <label for="bukti" class="col-sm-3 col-form-label">Tanggal</label>
+                        <div class="col-sm-9">
+                            <div class="input-group date datepicker" id="tanggal">
+                                <input type="text" class="form-control" name="tanggal">
+                                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataIdentitasSarana as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasSarana?>" <?=$dataRincianAset->idIdentitasSarana ==
+                                <option value="<?=$value->idIdentitasSarana?>" <?=$dataSaranaLayananAset->idIdentitasSarana ==
                                     $value->idIdentitasSarana ? 'selected' : null ?>>
                                     <?=$value->namaSarana?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
+                                <option value="" hidden>Pilih aset</option>
+                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasPrasarana?>" <?=$dataSaranaLayananAset->idIdentitasPrasarana ==
+                                    $value->idIdentitasPrasarana ? 'selected' : null ?>>
+                                    <?=$value->namaPrasarana?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idStatusLayanan" class="col-sm-3 col-form-label">Status Layanan</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idStatusLayanan" name="idStatusLayanan">
+                                <option value="" hidden>Pilih aset</option>
+                                <?php foreach($dataStatusLayanan as $key =>$value): ?>
+                                <option value="<?=$value->idStatusLayanan?>" <?=$dataSaranaLayananAset->idStatusLayanan ==
+                                    $value->idStatusLayanan ? 'selected' : null ?>>
+                                    <?=$value->namaStatusLayanan?>
                                 </option>
                                 <?php endforeach; ?>
                             </select>
@@ -46,7 +83,7 @@
                             <select class="form-select" id="idSumberDana" name="idSumberDana">
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataSumberDana as $key =>$value): ?>
-                                <option value="<?=$value->idSumberDana?>" <?=$dataRincianAset->idSumberDana ==
+                                <option value="<?=$value->idSumberDana?>" <?=$dataSaranaLayananAset->idSumberDana ==
                                     $value->idSumberDana ? 'selected' : null ?>>
                                     <?=$value->namaSumberDana?>
                                 </option>
@@ -60,7 +97,7 @@
                             <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataKategoriManajemen as $key =>$value): ?>
-                                <option value="<?=$value->idKategoriManajemen?>" <?=$dataRincianAset->
+                                <option value="<?=$value->idKategoriManajemen?>" <?=$dataSaranaLayananAset->
                                     idKategoriManajemen == $value->idKategoriManajemen ? 'selected' : null ?>>
                                     <?=$value->namaKategoriManajemen?>
                                 </option>
@@ -69,57 +106,22 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <label for="biaya" class="col-sm-3 col-form-label">Biaya</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="kodePrasarana" name="kodePrasarana">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
-                                <option value="<?=$value->kodePrasarana?>" <?=$dataRincianAset->kodePrasarana ==
-                                    $value->kodePrasarana ? 'selected' : null ?>>
-                                    <?=$value->namaPrasarana?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="number" class="form-control" id="biaya" name="biaya"
+                                value="<?=$dataSaranaLayananAset->biaya?>" placeholder="Masukkan biaya">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="tahunPengadaan" class="col-sm-3 col-form-label">Tahun Pengadaan</label>
+                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokuemntasi</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="tahunPengadaan" name="tahunPengadaan"
-                                value="<?=$dataRincianAset->tahunPengadaan?>" placeholder="Masukkan tahun pengadaan">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="saranaLayak" class="col-sm-3 col-form-label">Jumlah Aset Layak</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="saranaLayak" name="saranaLayak"
-                                value="<?=$dataRincianAset->saranaLayak?>" placeholder="Masukkan jumlah aset layak">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="saranaRusak" class="col-sm-3 col-form-label">Jumlah Aset Rusak</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="saranaRusak" name="saranaRusak"
-                                value="<?=$dataRincianAset->saranaRusak?>" placeholder="Masukkan jumlah aset rusak">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="spesifikasi" class="col-sm-3 col-form-label">Spesifikasi</label>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="5"
-                                placeholder="Masukkan spesifikasi aset"><?=$dataRincianAset->spesifikasi?></textarea>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="link" class="col-sm-3 col-form-label">Link Dokumentasi</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="link" name="link"
-                                value="<?=$dataRincianAset->link?>" placeholder="Masukkan link dokumentasi">
+                            <input type="text" class="form-control" id="bukti" name="bukti"
+                                value="<?=$dataSaranaLayananAset->bukti?>" placeholder="Masukkan bukti dokumentasi">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('rincianAset') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('saranaLayananAset') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

@@ -59,7 +59,6 @@ $(document).ready(function () {
       link: {
         required: true,
       },
-
       idIdentitasLantai: {
         required: true,
       },
@@ -80,7 +79,23 @@ $(document).ready(function () {
       },
       formExcel: {
         required: true,
-      },
+      },  
+      idIdentitasPrasarana: {
+        required: true,
+      },  
+      idStatusLayanan: {
+        required: true,
+      },  
+      biaya: {
+        required: true,
+        minlength: 4,
+      },  
+      bukti: {
+        required: true,
+      },  
+      tanggal: {
+        required: true,
+      },  
     },
     messages: {
       username: {
@@ -161,6 +176,22 @@ $(document).ready(function () {
       },
       formExcel: {
         required: "Silahkan masukkan sebuah file",
+      },
+      idIdentitasPrasarana: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      idStatusLayanan: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      biaya: {
+        required: "Silahkan masukkan biaya",
+        minlength: "Biaya minimal terdiri dari 4 digit",
+      },
+      bukti: {
+        required: "Silahkan masukkan link bukti",
+      },
+      tanggal: {
+        required: "Silahkan masukkan tanggal",
       },
     },
     errorPlacement: function (label, element) {

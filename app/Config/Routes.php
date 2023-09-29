@@ -103,6 +103,7 @@ $routes->delete('kategoriManajemen/deletePermanent', 'KategoriManajemen::deleteP
 $routes->presenter('kategoriManajemen', ['filter' => 'isLoggedIn']);
 
 // PRASARANA
+
 // 
 $routes->get('dataPrasarana/edit', 'DataPrasarana::edit');
 $routes->get('dataPrasarana/trash', 'DataPrasarana::trash');

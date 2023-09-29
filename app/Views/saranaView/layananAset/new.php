@@ -22,8 +22,17 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('rincianAset')?>" method="post" autocomplete="off" id="custom-validation">
+                <form action="<?= site_url('saranaLayananAset')?>" method="post" autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
+                    <div class="row mb-3">
+                        <label for="bukti" class="col-sm-3 col-form-label">Tanggal</label>
+                        <div class="col-sm-9">
+                            <div class="input-group date datepicker" id="tanggal">
+                                <input type="text" class="form-control" name="tanggal">
+                                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
@@ -31,6 +40,28 @@
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataIdentitasSarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasSarana?>"><?=$value->namaSarana?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
+                                <option value="" hidden>Pilih lokasi</option>
+                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idStatusLayanan" class="col-sm-3 col-form-label">Status Layanan</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idStatusLayanan" name="idStatusLayanan">
+                                <option value="" hidden>Pilih status layanan</option>
+                                <?php foreach($dataStatusLayanan as $key =>$value): ?>
+                                <option value="<?=$value->idStatusLayanan?>"><?=$value->namaStatusLayanan?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -59,52 +90,22 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <label for="biaya" class="col-sm-3 col-form-label">Biaya</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="kodePrasarana" name="kodePrasarana">
-                                <option value="" hidden>Pilih lokasi</option>
-                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
-                                <option value="<?=$value->kodePrasarana?>"><?=$value->namaPrasarana?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="number" class="form-control" id="biaya" name="biaya"
+                                placeholder="Masukkan biaya">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="tahunPengadaan" class="col-sm-3 col-form-label">Tahun Pengadaan</label>
+                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="tahunPengadaan" name="tahunPengadaan"
-                                placeholder="Masukkan tahun pengadaan">
+                            <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan bukti dokumentasi">
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="saranaLayak" class="col-sm-3 col-form-label">Jumlah Aset Layak</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="saranaLayak" name="saranaLayak"
-                                placeholder="Masukkan jumlah aset layak">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="saranaRusak" class="col-sm-3 col-form-label">Jumlah Aset Rusak</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="saranaRusak" name="saranaRusak"
-                                placeholder="Masukkan jumlah aset rusak">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="spesifikasi" class="col-sm-3 col-form-label">Spesifikasi</label>
-                        <div class="col-sm-9">
-                        <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="5" placeholder="Masukkan spesifikasi aset"></textarea>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="link" class="col-sm-3 col-form-label">Link Dokumentasi</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="link" name="link" placeholder="Masukkan link dokumentasi">
-                        </div>
-                    </div>
+                    
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('rincianAset') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('saranaLayananAset') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
