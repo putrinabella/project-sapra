@@ -125,6 +125,9 @@ $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
 // Layanan Aset
+$routes->get('saranaLayananAset/generatePDF', 'SaranaLayananAset::generatePDF');
+$routes->get('saranaLayananAset/export', 'SaranaLayananAset::export');
+$routes->post('saranaLayananAset/import', 'SaranaLayananAset::import');
 $routes->get('saranaLayananAset/edit', 'SaranaLayananAset::edit');
 $routes->get('saranaLayananAset/trash', 'SaranaLayananAset::trash');
 $routes->get('saranaLayananAset/restore/(:any)', 'SaranaLayananAset::restore/$1');

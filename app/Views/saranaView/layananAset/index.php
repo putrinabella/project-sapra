@@ -17,20 +17,32 @@
         <h4 class="mb-3 mb-md-0">Layanan Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="printer"></i>
-        </a>
-        <a href="<?= site_url() ?>" class="btn btn-primary btn-icon me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="download-cloud"></i>
-        </a>
         <a href="<?= site_url('saranaLayananAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
-        <a href="<?= site_url() ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="file-plus"></i>
-            Import Data
-        </a>
+        <div class="dropdown">
+            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="download"></i>
+                Export File
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= site_url('saranaLayananAset/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('saranaLayananAset/generatePDF') ?>">Download as PDF</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="upload"></i>
+                Import File
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?=base_url('excel/saranaLayananAset_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
+            </div>
+        </div>
         <a href="<?= site_url('saranaLayananAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data

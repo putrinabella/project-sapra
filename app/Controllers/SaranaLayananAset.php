@@ -9,6 +9,10 @@ use App\Models\StatusLayananModels;
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
 use App\Models\IdentitasPrasaranaModels; 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class SaranaLayananAset extends ResourceController
 {
@@ -170,5 +174,117 @@ class SaranaLayananAset extends ResourceController
             }
         }
     }  
+
+    public function export() {
+        $data = $this->saranaLayananAsetModel->getAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+    
+        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggal);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
+            // $activeWorksheet->setCellValue('D'.($index + 2), $value->kodePrasarana);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaStatusLayanan);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
+            $activeWorksheet->setCellValue('H'.($index + 2), $value->biaya);
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
+    
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }            
+        }
+    
+        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'I') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Layanan Aset Sarana.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+    
+    public function import() {
+        $file = $this->request->getFile('formExcel');
+        $extension = $file->getClientExtension();
+        if($extension == 'xlsx' || $extension == 'xls') {
+            if($extension == 'xls') {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            }
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            
+            $spreadsheet = $reader->load($file);
+            $theFile = $spreadsheet->getActiveSheet()->toArray();
+
+            foreach ($theFile as $key => $value) {
+                if ($key == 0) {
+                    continue;
+                }
+                $namaPrasarana  = $value[1] ?? null;
+                $luas           = $value[2] ?? null;
+                $namaGedung     = $value[3] ?? null;
+                $namaLantai     = $value[4] ?? null;
+            
+                if ($namaPrasarana !== null) {
+                    $data = [
+                        'namaPrasarana' => $namaPrasarana,
+                        'luas' => $luas,
+                        'idIdentitasGedung' => 99,
+                        'idIdentitasLantai' => 99,
+                    ];
+                    
+                    $this->identitasPrasaranaModel->insert($data);
+                }
+            }
+            return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diimport');
+        } else {
+            return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+        }
+    }
+
+    public function generatePDF()
+    {
+        $filePath = APPPATH . 'Views/informasi/identitasPrasaranaView/print.php';
+    
+        if (!file_exists($filePath)) {
+            die('HTML file not found');
+        }
+
+        $data['dataidentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'potrait');
+        $dompdf->render();
+        $filename = 'Identitas Prasarana Report.pdf';
+        $dompdf->stream($filename);
+    }
 }
 
