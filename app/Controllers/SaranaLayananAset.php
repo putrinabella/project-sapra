@@ -269,7 +269,7 @@ class SaranaLayananAset extends ResourceController
         $filePath = APPPATH . 'Views/saranaView/layananAset/print.php';
     
         if (!file_exists($filePath)) {
-            die('HTML file not found');
+            return view('error/404');
         }
 
         $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();

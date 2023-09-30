@@ -34,6 +34,9 @@ $routes->get('home/generate', 'Home::generate');
 // INFORMATION ROUTES
 
 // Identitas Sarana
+$routes->get('identitasSarana/generatePDF', 'IdentitasSarana::generatePDF');
+$routes->get('identitasSarana/export', 'IdentitasSarana::export');
+$routes->post('identitasSarana/import', 'IdentitasSarana::import');
 $routes->get('identitasSarana/edit', 'IdentitasSarana::edit');
 $routes->get('identitasSarana/trash', 'IdentitasSarana::trash');
 $routes->get('identitasSarana/restore/(:any)', 'IdentitasSarana::restore/$1');
@@ -67,6 +70,9 @@ $routes->delete('sumberDana/deletePermanent', 'SumberDana::deletePermanent');
 $routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);
 
 // Identitas Gedung
+$routes->get('identitasGedung/generatePDF', 'IdentitasGedung::generatePDF');
+$routes->get('identitasGedung/export', 'IdentitasGedung::export');
+$routes->post('identitasGedung/import', 'IdentitasGedung::import');
 $routes->get('identitasGedung/edit', 'IdentitasGedung::edit');
 $routes->get('identitasGedung/trash', 'IdentitasGedung::trash');
 $routes->get('identitasGedung/restore/(:any)', 'IdentitasGedung::restore/$1');
@@ -76,6 +82,9 @@ $routes->delete('identitasGedung/deletePermanent', 'IdentitasGedung::deletePerma
 $routes->presenter('identitasGedung', ['filter' => 'isLoggedIn']);
 
 // Identitas Lantai
+$routes->get('identitasLantai/generatePDF', 'IdentitasLantai::generatePDF');
+$routes->get('identitasLantai/export', 'IdentitasLantai::export');
+$routes->post('identitasLantai/import', 'IdentitasLantai::import');
 $routes->get('identitasLantai/edit', 'IdentitasLantai::edit');
 $routes->get('identitasLantai/trash', 'IdentitasLantai::trash');
 $routes->get('identitasLantai/restore/(:any)', 'IdentitasLantai::restore/$1');
@@ -85,6 +94,9 @@ $routes->delete('identitasLantai/deletePermanent', 'IdentitasLantai::deletePerma
 $routes->presenter('identitasLantai', ['filter' => 'isLoggedIn']);
 
 // Status Layanan
+$routes->get('statusLayanan/generatePDF', 'StatusLayanan::generatePDF');
+$routes->get('statusLayanan/export', 'StatusLayanan::export');
+$routes->post('statusLayanan/import', 'StatusLayanan::import');
 $routes->get('statusLayanan/edit', 'StatusLayanan::edit');
 $routes->get('statusLayanan/trash', 'StatusLayanan::trash');
 $routes->get('statusLayanan/restore/(:any)', 'StatusLayanan::restore/$1');
@@ -94,6 +106,9 @@ $routes->delete('statusLayanan/deletePermanent', 'StatusLayanan::deletePermanent
 $routes->presenter('statusLayanan', ['filter' => 'isLoggedIn']);
 
 // Kategori Manajemen
+$routes->get('kategoriManajemen/generatePDF', 'KategoriManajemen::generatePDF');
+$routes->get('kategoriManajemen/export', 'KategoriManajemen::export');
+$routes->post('kategoriManajemen/import', 'KategoriManajemen::import');
 $routes->get('kategoriManajemen/edit', 'KategoriManajemen::edit');
 $routes->get('kategoriManajemen/trash', 'KategoriManajemen::trash');
 $routes->get('kategoriManajemen/restore/(:any)', 'KategoriManajemen::restore/$1');

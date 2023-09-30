@@ -30,7 +30,7 @@ class DataPrasarana extends ResourceController
     // public function index()
     // {
     //     $data = $this->dataPrasaranaModel->getPaginated(10);
-    //     return view('informasi/dataPrasaranaView/index', $data);
+    //     return view('master/dataPrasaranaView/index', $data);
     // }
 
     /**
@@ -55,7 +55,7 @@ class DataPrasarana extends ResourceController
             'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
         ];
         
-        return view('informasi/dataPrasaranaView/new', $data);        
+        return view('master/dataPrasaranaView/new', $data);        
     }
 
     /**
@@ -86,7 +86,7 @@ class DataPrasarana extends ResourceController
                     'dataIdentitasGedung' => $this->dataPrasaranaModel->findAll(),
                     'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
                 ];
-                return view('informasi/dataPrasaranaView/edit', $data);
+                return view('master/dataPrasaranaView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -121,7 +121,7 @@ class DataPrasarana extends ResourceController
 
     public function trash() {
         $data['dataPrasaranaModel'] = $this->dataPrasaranaModel->onlyDeleted()->findAll();
-        return view('informasi/dataPrasaranaView/trash', $data);
+        return view('master/dataPrasaranaView/trash', $data);
     } 
 
     public function restore($id = null) {

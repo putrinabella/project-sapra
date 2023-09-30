@@ -30,14 +30,14 @@ class IdentitasPrasarana extends ResourceController
     public function index()
     {
         $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
-        return view('informasi/identitasPrasaranaView/index', $data);
+        return view('master/identitasPrasaranaView/index', $data);
     }
 
     // Manual Pagination
     // public function index()
     // {
     //     $data = $this->identitasPrasaranaModel->getPaginated(10);
-    //     return view('informasi/identitasPrasaranaView/index', $data);
+    //     return view('master/identitasPrasaranaView/index', $data);
     // }
 
     /**
@@ -62,7 +62,7 @@ class IdentitasPrasarana extends ResourceController
             'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
         ];
         
-        return view('informasi/identitasPrasaranaView/new', $data);        
+        return view('master/identitasPrasaranaView/new', $data);        
     }
 
     /**
@@ -73,15 +73,11 @@ class IdentitasPrasarana extends ResourceController
 
     public function create() {
         $data = $this->request->getPost();
-        if (!empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai'])) {
             unset($data['idIdentitasPrasarana']);
             $this->identitasPrasaranaModel->insert($data);
-            $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 3, '0'), '/L', LPAD(idIdentitasLantai, 3, '0'))";
+            $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 2, '0'), '/L', LPAD(idIdentitasLantai, 2, '0'))";
             $this->db->query($query);
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
-        } else {
-            return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Id Gedung dan Lantai harus diisi.');
-        }
     }
 
 
@@ -101,7 +97,7 @@ class IdentitasPrasarana extends ResourceController
                     'dataIdentitasGedung' => $this->identitasGedungModel->findAll(),
                     'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
                 ];
-                return view('informasi/identitasPrasaranaView/edit', $data);
+                return view('master/identitasPrasaranaView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -121,19 +117,10 @@ class IdentitasPrasarana extends ResourceController
     {
         if ($id != null) {
             $data = $this->request->getPost();
-
-            // Check if idIdentitasGedung and idIdentitasLantai exist and are not empty
-            if (!empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai'])) {
                 $this->identitasPrasaranaModel->update($id, $data);
-
-                // Update kodePrasarana using an SQL query
                 $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 3, '0'), '/L', LPAD(idIdentitasLantai, 3, '0')) WHERE idIdentitasPrasarana = ?";
                 $this->db->query($query, [$id]);
-
                 return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
-            } else {
-                return redirect()->to(site_url('identitasPrasarana/edit/'.$id))->with('error', 'Id Gedung dan Lantai harus diisi.');
-            }
         } else {
             return view('error/404');
         }
@@ -152,7 +139,7 @@ class IdentitasPrasarana extends ResourceController
 
     public function trash() {
         $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->onlyDeleted()->getRecycle();
-        return view('informasi/identitasPrasaranaView/trash', $data);
+        return view('master/identitasPrasaranaView/trash', $data);
     } 
 
     public function restore($id = null) {
@@ -256,8 +243,8 @@ class IdentitasPrasarana extends ResourceController
                     $data = [
                         'namaPrasarana' => $namaPrasarana,
                         'luas' => $luas,
-                        'idIdentitasGedung' => 99,
-                        'idIdentitasLantai' => 99,
+                        'idIdentitasGedung' => 0,
+                        'idIdentitasLantai' => 0,
                     ];
                     $this->identitasPrasaranaModel->insert($data);
                 }
@@ -270,10 +257,10 @@ class IdentitasPrasarana extends ResourceController
 
     public function generatePDF()
     {
-        $filePath = APPPATH . 'Views/informasi/identitasPrasaranaView/print.php';
+        $filePath = APPPATH . 'Views/master/identitasPrasaranaView/print.php';
     
         if (!file_exists($filePath)) {
-            die('HTML file not found');
+            return view('error/404');
         }
 
         $data['dataidentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();

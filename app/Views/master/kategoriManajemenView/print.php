@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sumber Dana Report</title>
+    <title>Kategori Manajemen Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,37 +31,31 @@
 
 <body>
     <div class="container">
-        <h2 class="mt-3 mb-4">Sumber Dana Report</h2>
+        <h2 class="mt-3 mb-4">Kategori Manajemen Report</h2>
         <table>
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>ID Sumber Dana</th>
-                    <th>Nama Sumber Dana</th>
+                    <th>ID Kategori Manajemen</th>
+                    <th>Kategori Manajemen</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($data['dataSumberDana'] as $key => $value) : ?>
+                <?php foreach ($data['dataKategoriManajemen'] as $key => $value) : ?>
                 <tr>
                     <td>
                         <?= $key + 1 ?>
                     </td>
                     <td>
-                        <?= sprintf('%03d', $value->idSumberDana) ?>
+                        KM<?= sprintf('%02d', $value->idKategoriManajemen) ?>
                     </td>
                     <td>
-                        <?= $value->namaSumberDana ?>
+                        <?= $value->namaKategoriManajemen ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-    <script>
-    window.onload = function () {
-        window.print();
-    };
-</script>
 </body>
-
 </html>

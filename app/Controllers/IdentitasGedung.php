@@ -4,51 +4,33 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\IdentitasGedungModels;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class IdentitasGedung extends ResourcePresenter
 {
     function __construct() {
         $this->identitasGedungModel = new IdentitasGedungModels();
     }
-    /**
-     * Present a view of resource objects
-     *
-     * @return mixed
-     */
+
     public function index()
     {
         $data['dataIdentitasGedung'] = $this->identitasGedungModel->findAll();
-        return view('informasi/identitasGedungView/index', $data);
+        return view('master/identitasGedungView/index', $data);
     }
 
-    /**
-     * Present a view to present a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function show($id = null)
     {
         //
     }
 
-    /**
-     * Present a view to present a new single resource object
-     *
-     * @return mixed
-     */
     public function new()
     {
-        return view('informasi/identitasGedungView/new');
+        return view('master/identitasGedungView/new');
     }
 
-    /**
-     * Process the creation/insertion of a new resource object.
-     * This should be a POST.
-     *
-     * @return mixed
-     */
     public function create()
     {
         $data = $this->request->getPost();
@@ -56,13 +38,6 @@ class IdentitasGedung extends ResourcePresenter
         return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil disimpan');
     }
 
-    /**
-     * Present a view to edit the properties of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function edit($id = null)
     {
         if ($id != null) {
@@ -70,7 +45,7 @@ class IdentitasGedung extends ResourcePresenter
     
             if (is_object($dataIdentitasGedung)) {
                 $data['dataIdentitasGedung'] = $dataIdentitasGedung;
-                return view('informasi/identitasGedungView/edit', $data);
+                return view('master/identitasGedungView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -79,14 +54,6 @@ class IdentitasGedung extends ResourcePresenter
         }
     }
 
-    /**
-     * Process the updating, full or partial, of a specific resource object.
-     * This should be a POST.
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function update($id = null)
     {
         $data = $this->request->getPost();
@@ -94,25 +61,11 @@ class IdentitasGedung extends ResourcePresenter
         return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil update');
     }
 
-    /**
-     * Present a view to confirm the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function remove($id = null)
     {
         //
     }
 
-    /**
-     * Process the deletion of a specific resource object
-     *
-     * @param mixed $id
-     *
-     * @return mixed
-     */
     public function delete($id = null)
     {
         $this->identitasGedungModel->where('idIdentitasGedung', $id)->delete();
@@ -121,7 +74,7 @@ class IdentitasGedung extends ResourcePresenter
 
     public function trash() {
         $data['dataIdentitasGedung'] = $this->identitasGedungModel->onlyDeleted()->findAll();
-        return view('informasi/identitasGedungView/trash', $data);
+        return view('master/identitasGedungView/trash', $data);
     } 
 
     public function restore($id = null) {
@@ -158,6 +111,106 @@ class IdentitasGedung extends ResourcePresenter
                 return redirect()->to(site_url('identitasGedung/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
-        
     }  
+
+    public function export() {
+        $data = $this->identitasGedungModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+    
+        $headers = ['No.', 'ID Identitas Gedung', 'Nama Gedung'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            $idIdentitasGedung = str_pad($value->idIdentitasGedung, 3, '0', STR_PAD_LEFT);
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), 'G'.$idIdentitasGedung);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaGedung);
+    
+            $columns = ['A', 'B'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+            $activeWorksheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        }
+    
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Identitas Gedung.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+
+    public function import() {
+        $file = $this->request->getFile('formExcel');
+        $extension = $file->getClientExtension();
+        if($extension == 'xlsx' || $extension == 'xls') {
+            if($extension == 'xls') {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            }
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            
+            $spreadsheet = $reader->load($file);
+            $theFile = $spreadsheet->getActiveSheet()->toArray();
+
+            foreach ($theFile as $key => $value) {
+                if ($key == 0) {
+                    continue;
+                }
+            
+                $namaGedung = $value[1] ?? null;
+            
+                if ($namaGedung !== null) {
+                    $data = [
+                        'namaGedung' => $namaGedung,
+                    ];
+                    
+                    $this->identitasGedungModel->insert($data);
+                }
+            }
+            return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil diimport');
+        } else {
+            return redirect()->to(site_url('identitasGedung'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+        }
+    }
+
+    public function generatePDF() {
+        $filePath = APPPATH . 'Views/master/identitasGedungView/print.php';
+    
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        $data['dataIdentitasGedung'] = $this->identitasGedungModel->findAll();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'potrait');
+        $dompdf->render();
+        $filename = 'Identitas Gedung Report.pdf';
+        $dompdf->stream($filename);
+    }
 }

@@ -17,7 +17,7 @@ class SumberDana extends ResourcePresenter
         public function index()
     {
         $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
-        return view('informasi/sumberDanaView/index', $data);
+        return view('master/sumberDanaView/index', $data);
     }
 
         public function show($id = null)
@@ -27,7 +27,7 @@ class SumberDana extends ResourcePresenter
 
         public function new()
     {
-        return view('informasi/sumberDanaView/new');
+        return view('master/sumberDanaView/new');
     }
 
         public function create()
@@ -44,7 +44,7 @@ class SumberDana extends ResourcePresenter
     
             if (is_object($dataSumberDana)) {
                 $data['dataSumberDana'] = $dataSumberDana;
-                return view('informasi/sumberDanaView/edit', $data);
+                return view('master/sumberDanaView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -74,7 +74,7 @@ class SumberDana extends ResourcePresenter
 
     public function trash() {
         $data['dataSumberDana'] = $this->sumberDanaModel->onlyDeleted()->findAll();
-        return view('informasi/sumberDanaView/trash', $data);
+        return view('master/sumberDanaView/trash', $data);
     } 
 
     public function restore($id = null) {
@@ -124,11 +124,16 @@ class SumberDana extends ResourcePresenter
         foreach ($data as $index => $value) {
             $idSumberDana = str_pad($value->idSumberDana, 3, '0', STR_PAD_LEFT);
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $idSumberDana);
+            $activeWorksheet->setCellValue('B'.($index + 2), 'SD'.$idSumberDana);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSumberDana);
     
-            $activeWorksheet->getStyle('A'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            $activeWorksheet->getStyle('B'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $columns = ['A', 'B'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
             $activeWorksheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
         }
     
@@ -184,10 +189,10 @@ class SumberDana extends ResourcePresenter
 
     public function generatePDF()
     {
-        $filePath = APPPATH . 'Views/informasi/sumberDanaView/print.php';
+        $filePath = APPPATH . 'Views/master/sumberDanaView/print.php';
     
         if (!file_exists($filePath)) {
-            die('HTML file not found');
+            return view('error/404');
         }
 
         $data['dataSumberDana'] = $this->sumberDanaModel->findAll();

@@ -8,11 +8,11 @@ class InformasiController extends BaseController
         $builder = $this->db->table('tblIdentitasSarana');
         $query = $builder->get()->getResult();
         $data['dataIdentitasSarana'] = $query;
-        return view('informasi/identitasSaranaView/show', $data);
+        return view('master/identitasSaranaView/show', $data);
     }
 
     public function addIdentitasSarana() {
-        return view('informasi/identitasSaranaView/add');
+        return view('master/identitasSaranaView/add');
     }
 
     public function saveIdentitasSarana() {
@@ -30,7 +30,7 @@ class InformasiController extends BaseController
             $query = $this->db->table('tblIdentitasSarana')->getWhere(['idIdentitasSarana' => $id]);
             if($query->resultID->num_rows > 0) {
                 $data['dataIdentitasSarana'] = $query->getRow();
-                return view('informasi/identitasSaranaView/edit', $data);
+                return view('master/identitasSaranaView/edit', $data);
             } else {
                 return view('error/404');
                 // throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -64,30 +64,30 @@ class InformasiController extends BaseController
     
 
     public function getIdentitasPrasarana() {
-        return view('informasi/identitasPrasaranaView');
+        return view('master/identitasPrasaranaView');
     }
 
     public function getIdentitasGedung() {
-        return view('informasi/identitasGedungView');
+        return view('master/identitasGedungView');
     }
 
     public function getIdentitasLantai() {
-        return view('informasi/identitasLantaiView');
+        return view('master/identitasLantaiView');
     }
 
     public function getSumberDana() {
-        return view('informasi/sumberDanaView');
+        return view('master/sumberDanaView');
     }
 
     public function getStatusManajemen() {
-        return view('informasi/statusManajemenView');
+        return view('master/statusManajemenView');
     }
 
     public function getKategoriManajemen() {
-        return view('informasi/kategoriManajemenView');
+        return view('master/kategoriManajemenView');
     }
 
     public function getProfilSekolah() {
-        return view('informasi/profilSekolahView');
+        return view('master/profilSekolahView');
     }
 }

@@ -1,23 +1,23 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Sumber Dana &verbar; SARPRA </title>
+<title>Identitas Prasarana &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Informasi</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Sumber Dana</li>
+        <li class="breadcrumb-item active" aria-current="page">Identitas Prasarana</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Sumber Dana</h4>
+        <h4 class="mb-3 mb-md-0">Identitas Prasarana</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('sumberDana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('identitasPrasarana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -28,8 +28,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('sumberDana/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('sumberDana/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('identitasPrasarana/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('identitasPrasarana/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -39,11 +39,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/SumberDana_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="<?=base_url('excel/identitasPrasarana_Example_Import.xlsx') ?> ">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('sumberDana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('identitasPrasarana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -54,7 +54,6 @@
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-
                 <div>
                     <?php if(session()->getFlashdata('success')) :?>
                     <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
@@ -80,34 +79,38 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover" id="dataTable">
+                    <table class="table table-hover"  id="dataTable">
                         <thead>
                             <tr class="text-center">
-                                <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID Sumber Dana</th>
-                                <th>Nama Sumber Dana</th>
+                                <th style="width: 5%;">No.</th>
+                                <th>Kode Prasarana</th>
+                                <th>Identitas Prasarana</th>
+                                <th>Lokasi Gedung</th>
+                                <th>Lokasi Lantai</th>
+                                <th>Luas</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataSumberDana as $key => $value) : ?>
+                        <?php foreach ($dataIdentitasPrasarana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center">
-                                    <?= sprintf('%03d', $value->idSumberDana) ?>
-                                </td>
-                                <td class="text-left"><?=$value->namaSumberDana?></td>
+                                <td class="text-center"><?=$value->kodePrasarana?></td>
+                                <td class="text-left"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->namaGedung?></td>
+                                <td class="text-center"><?=$value->namaLantai?></td>
+                                <td class="text-center"><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>"
+                                    <a href="<?=site_url('identitasPrasarana/'.$value->idIdentitasPrasarana.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idSumberDana;?>">
+                                    <form action="<?=site_url('identitasPrasarana/'.$value->idIdentitasPrasarana)?>"
+                                        method="post" class="d-inline" id="del-<?= $value->idIdentitasPrasarana;?>">
                                         <?= csrf_field() ?>
-                                        <button class="btn btn-danger btn-icon"
-                                            data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
@@ -129,7 +132,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("sumberDana/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url("identitasPrasarana/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
