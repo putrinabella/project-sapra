@@ -45,7 +45,26 @@ class SaranaLayananAset extends ResourceController
      */
     public function show($id = null)
     {
-        //
+        if ($id != null) {
+            $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
+    
+            if (is_object($dataSaranaLayananAset)) {
+                $data = [
+                    'dataSaranaLayananAset'     => $dataSaranaLayananAset,
+                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+                    'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
+                ];
+    
+                return view('saranaView/layananAset/show', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
     }
 
     /**
@@ -180,23 +199,23 @@ class SaranaLayananAset extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
     
-        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti'];
+        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti', 'Kode Lokasi'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggal);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
-            // $activeWorksheet->setCellValue('D'.($index + 2), $value->kodePrasarana);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaStatusLayanan);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('H'.($index + 2), $value->biaya);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->kodePrasarana);
     
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J'];
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -205,12 +224,12 @@ class SaranaLayananAset extends ResourceController
             }            
         }
     
-        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
-        $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'I') as $column) {
+        foreach (range('A', 'J') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -222,53 +241,16 @@ class SaranaLayananAset extends ResourceController
         exit();
     }
     
-    public function import() {
-        $file = $this->request->getFile('formExcel');
-        $extension = $file->getClientExtension();
-        if($extension == 'xlsx' || $extension == 'xls') {
-            if($extension == 'xls') {
-                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-            }
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-            
-            $spreadsheet = $reader->load($file);
-            $theFile = $spreadsheet->getActiveSheet()->toArray();
-
-            foreach ($theFile as $key => $value) {
-                if ($key == 0) {
-                    continue;
-                }
-                $namaPrasarana  = $value[1] ?? null;
-                $luas           = $value[2] ?? null;
-                $namaGedung     = $value[3] ?? null;
-                $namaLantai     = $value[4] ?? null;
-            
-                if ($namaPrasarana !== null) {
-                    $data = [
-                        'namaPrasarana' => $namaPrasarana,
-                        'luas' => $luas,
-                        'idIdentitasGedung' => 99,
-                        'idIdentitasLantai' => 99,
-                    ];
-                    
-                    $this->identitasPrasaranaModel->insert($data);
-                }
-            }
-            return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diimport');
-        } else {
-            return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
-        }
-    }
 
     public function generatePDF()
     {
-        $filePath = APPPATH . 'Views/informasi/identitasPrasaranaView/print.php';
+        $filePath = APPPATH . 'Views/saranaView/layananAset/print.php';
     
         if (!file_exists($filePath)) {
             die('HTML file not found');
         }
 
-        $data['dataidentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
+        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
 
         ob_start();
 
@@ -281,9 +263,9 @@ class SaranaLayananAset extends ResourceController
         $html = ob_get_clean();
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
+        $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Identitas Prasarana Report.pdf';
+        $filename = 'Sarana - Layanan Aset Report.pdf';
         $dompdf->stream($filename);
     }
 }

@@ -251,8 +251,6 @@ class IdentitasPrasarana extends ResourceController
                 }
                 $namaPrasarana  = $value[1] ?? null;
                 $luas           = $value[2] ?? null;
-                $namaGedung     = $value[3] ?? null;
-                $namaLantai     = $value[4] ?? null;
             
                 if ($namaPrasarana !== null) {
                     $data = [
@@ -261,7 +259,6 @@ class IdentitasPrasarana extends ResourceController
                         'idIdentitasGedung' => 99,
                         'idIdentitasLantai' => 99,
                     ];
-                    
                     $this->identitasPrasaranaModel->insert($data);
                 }
             }

@@ -32,17 +32,6 @@
                 <a class="dropdown-item" href="<?= site_url('saranaLayananAset/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/saranaLayananAset_Example_Import.xlsx') ?> ">Download Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
-            </div>
-        </div>
         <a href="<?= site_url('saranaLayananAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
@@ -106,10 +95,12 @@
                                 <td class="text-center"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->biaya?></td>
-                                <td class="text-center"><?=$value->bukti?></td>
+                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
-                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset)?>"

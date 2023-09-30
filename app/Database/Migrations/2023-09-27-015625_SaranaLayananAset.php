@@ -15,6 +15,10 @@ class SaranaLayananAset extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'tanggal' => [ 
+                'type' => 'DATE', 
+                'null' => true,
+            ],
             'idIdentitasSarana' => [
                 'type' => 'INT',
                 'constraint' => 3,
@@ -40,10 +44,6 @@ class SaranaLayananAset extends Migration
             ],
             'bukti' => [
                 'type' => 'TEXT',
-            ],
-            'tanggal' => [ 
-                'type' => 'DATE', 
-                'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
