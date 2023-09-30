@@ -43,29 +43,55 @@ class SaranaLayananAset extends ResourceController
      *
      * @return mixed
      */
-    public function show($id = null)
-    {
-        if ($id != null) {
-            $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
+
+     public function show($id = null)
+{
+    if ($id != null) {
+        // Use getAll method instead of find
+        $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
     
-            if (is_object($dataSaranaLayananAset)) {
-                $data = [
-                    'dataSaranaLayananAset'     => $dataSaranaLayananAset,
-                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-                    'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
-                ];
-    
-                return view('saranaView/layananAset/show', $data);
-            } else {
-                return view('error/404');
-            }
+        if (is_object($dataSaranaLayananAset)) {
+            $data = [
+                'dataSaranaLayananAset'     => $dataSaranaLayananAset,
+                'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+                'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+                'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+                'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
+            ];
+
+            return view('saranaView/layananAset/show', $data);
         } else {
             return view('error/404');
         }
+    } else {
+        return view('error/404');
     }
+}
+
+    // public function show($id = null)
+    // {
+    //     if ($id != null) {
+    //         $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
+    
+    //         if (is_object($dataSaranaLayananAset)) {
+    //             $data = [
+    //                 'dataSaranaLayananAset'     => $dataSaranaLayananAset,
+    //                 'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+    //                 'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+    //                 'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+    //                 'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+    //                 'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
+    //             ];
+    
+    //             return view('saranaView/layananAset/show', $data);
+    //         } else {
+    //             return view('error/404');
+    //         }
+    //     } else {
+    //         return view('error/404');
+    //     }
+    // }
 
     /**
      * Return a new resource object, with default properties

@@ -26,8 +26,18 @@
                         </a>
                     </div>
                 </div>
-                <?php var_dump($dataSaranaLayananAset); ?>
-                <p>Tanggal: <?= $dataSaranaLayananAset->tanggal?></p>
+                <table class="table">
+                    <tr>
+                        <td>Tanggal</td>
+                        <td style="width: 5%;">:</td>
+                        <td><?= $dataSaranaLayananAset->tanggal?></td>
+                    </tr>
+                    <tr>
+                        <td>Nama Aset</td>
+                        <td>:</td>
+                        <td><?= $dataSaranaLayananAset->namaSarana?></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

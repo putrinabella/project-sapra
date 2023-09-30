@@ -35,4 +35,21 @@ class SaranaLayananAsetModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
+    public function find($id = null, $columns = '*')
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select($columns);
+        
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblSaranaLayananAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblSaranaLayananAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblSaranaLayananAset.idIdentitasPrasarana');
+        $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
+        
+        $builder->where($this->primaryKey, $id);
+
+        $query = $builder->get();
+        return $query->getRow();
+    }
 }
