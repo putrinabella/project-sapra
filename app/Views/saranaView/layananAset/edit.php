@@ -27,7 +27,7 @@
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
-                        <label for="bukti" class="col-sm-3 col-form-label">Tanggal</label>
+                        <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
                                 <input type="text" class="form-control" name="tanggal">
@@ -112,13 +112,18 @@
                                 value="<?=$dataSaranaLayananAset->biaya?>" placeholder="Masukkan biaya">
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokuemntasi</label>
+                    <!-- <div class="row mb-3">
+                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bukti" name="bukti"
-                                value="<?=$dataSaranaLayananAset->bukti?>" placeholder="Masukkan bukti dokumentasi">
+                            <?php if (isset($dataSaranaLayananAset->bukti) && !empty($dataSaranaLayananAset->bukti)) : ?>
+                                <img src="<?= base_url($dataSaranaLayananAset->bukti) ?>" alt="Current Bukti" style="max-width: 100%;">
+                                <input type="file" class="form-control mt-2" id="bukti" name="bukti" accept="image/*">
+                                <small class="text-muted">Choose a new file to replace the current one.</small>
+                            <?php else : ?>
+                                <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
+                            <?php endif; ?>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('saranaLayananAset') ?>" class="btn btn-secondary me-2">Cancel</a>

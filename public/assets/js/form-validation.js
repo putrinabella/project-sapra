@@ -188,7 +188,7 @@ $(document).ready(function () {
         minlength: "Biaya minimal terdiri dari 4 digit",
       },
       bukti: {
-        required: "Silahkan masukkan link bukti",
+        required: "Silahkan masukkan bukti",
       },
       tanggal: {
         required: "Silahkan masukkan tanggal",

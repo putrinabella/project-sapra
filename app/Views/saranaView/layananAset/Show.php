@@ -26,6 +26,10 @@
                         </a>
                     </div>
                 </div>
+                <div class="text-center">
+                    <img src="<?= base_url($dataSaranaLayananAset->bukti) ?>" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">
+                </div>
+                <br>
                 <table class="table">
                     <tr>
                         <td>Tanggal</td>
@@ -36,6 +40,31 @@
                         <td>Nama Aset</td>
                         <td>:</td>
                         <td><?= $dataSaranaLayananAset->namaSarana?></td>
+                    </tr>
+                    <tr>
+                        <td>Lokasi</td>
+                        <td>:</td>
+                        <td><?= $dataSaranaLayananAset->namaPrasarana?></td>
+                    </tr>
+                    <tr>
+                        <td>Status Layanan</td>
+                        <td>:</td>
+                        <td><?= $dataSaranaLayananAset->namaStatusLayanan?></td>
+                    </tr>
+                    <tr>
+                        <td>Kategori Manajemen</td>
+                        <td>:</td>
+                        <td><?= $dataSaranaLayananAset->namaKategoriManajemen?></td>
+                    </tr>
+                    <tr>
+                        <td>Sumber Dana</td>
+                        <td>:</td>
+                        <td><?= $dataSaranaLayananAset->namaSumberDana?></td>
+                    </tr>
+                    <tr>
+                        <td>Biaya</td>
+                        <td>:</td>
+                        <td>Rp<?=number_format($dataSaranaLayananAset->biaya, 0, ',', '.')?></td>
                     </tr>
                 </table>
             </div>

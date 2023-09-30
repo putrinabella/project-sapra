@@ -44,54 +44,30 @@ class SaranaLayananAset extends ResourceController
      * @return mixed
      */
 
-     public function show($id = null)
-{
-    if ($id != null) {
-        // Use getAll method instead of find
-        $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
-    
-        if (is_object($dataSaranaLayananAset)) {
-            $data = [
-                'dataSaranaLayananAset'     => $dataSaranaLayananAset,
-                'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-                'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-                'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
-            ];
+    public function show($id = null) {
+        if ($id != null) {
+            // Use getAll method instead of find
+            $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
+        
+            if (is_object($dataSaranaLayananAset)) {
+                $data = [
+                    'dataSaranaLayananAset'     => $dataSaranaLayananAset,
+                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+                    'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
+                ];
 
-            return view('saranaView/layananAset/show', $data);
+                return view('saranaView/layananAset/show', $data);
+            } else {
+                return view('error/404');
+            }
         } else {
             return view('error/404');
         }
-    } else {
-        return view('error/404');
     }
-}
 
-    // public function show($id = null)
-    // {
-    //     if ($id != null) {
-    //         $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
-    
-    //         if (is_object($dataSaranaLayananAset)) {
-    //             $data = [
-    //                 'dataSaranaLayananAset'     => $dataSaranaLayananAset,
-    //                 'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-    //                 'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-    //                 'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-    //                 'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-    //                 'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
-    //             ];
-    
-    //             return view('saranaView/layananAset/show', $data);
-    //         } else {
-    //             return view('error/404');
-    //         }
-    //     } else {
-    //         return view('error/404');
-    //     }
-    // }
 
     /**
      * Return a new resource object, with default properties
@@ -119,8 +95,28 @@ class SaranaLayananAset extends ResourceController
 
     public function create() {
         $data = $this->request->getPost();
-        $this->saranaLayananAsetModel->insert($data);
-        return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
+        $buktiPath = $this->uploadFile('bukti'); 
+        if ($buktiPath !== null) {
+            $data['bukti'] = $buktiPath;
+
+            $this->saranaLayananAsetModel->insert($data);
+    
+            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'File upload failed.');
+        }
+    }
+
+    private function uploadFile($fieldName) {
+        $file = $this->request->getFile($fieldName);
+    
+        if ($file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move(ROOTPATH . 'public/uploads', $newName);
+            return 'uploads/' . $newName;
+        }
+    
+        return null; 
     }
 
     /**
