@@ -22,8 +22,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('saranaLayananAset/'.$dataSaranaLayananAset->idSaranaLayananAset)?>" method="post"
-                    autocomplete="off" id="custom-validation">
+                <form action="<?= site_url('saranaLayananAset/'.$dataSaranaLayananAset->idSaranaLayananAset)?>"
+                    method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
@@ -41,7 +41,8 @@
                             <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataIdentitasSarana as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasSarana?>" <?=$dataSaranaLayananAset->idIdentitasSarana ==
+                                <option value="<?=$value->idIdentitasSarana?>" <?=$dataSaranaLayananAset->
+                                    idIdentitasSarana ==
                                     $value->idIdentitasSarana ? 'selected' : null ?>>
                                     <?=$value->namaSarana?>
                                 </option>
@@ -55,7 +56,8 @@
                             <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasPrasarana?>" <?=$dataSaranaLayananAset->idIdentitasPrasarana ==
+                                <option value="<?=$value->idIdentitasPrasarana?>" <?=$dataSaranaLayananAset->
+                                    idIdentitasPrasarana ==
                                     $value->idIdentitasPrasarana ? 'selected' : null ?>>
                                     <?=$value->namaPrasarana?>
                                 </option>
@@ -69,7 +71,8 @@
                             <select class="form-select" id="idStatusLayanan" name="idStatusLayanan">
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataStatusLayanan as $key =>$value): ?>
-                                <option value="<?=$value->idStatusLayanan?>" <?=$dataSaranaLayananAset->idStatusLayanan ==
+                                <option value="<?=$value->idStatusLayanan?>" <?=$dataSaranaLayananAset->idStatusLayanan
+                                    ==
                                     $value->idStatusLayanan ? 'selected' : null ?>>
                                     <?=$value->namaStatusLayanan?>
                                 </option>
@@ -112,18 +115,15 @@
                                 value="<?=$dataSaranaLayananAset->biaya?>" placeholder="Masukkan biaya">
                         </div>
                     </div>
-                    <!-- <div class="row mb-3">
+                    
+          
+
+                    <div class="row mb-3">
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <?php if (isset($dataSaranaLayananAset->bukti) && !empty($dataSaranaLayananAset->bukti)) : ?>
-                                <img src="<?= base_url($dataSaranaLayananAset->bukti) ?>" alt="Current Bukti" style="max-width: 100%;">
-                                <input type="file" class="form-control mt-2" id="bukti" name="bukti" accept="image/*">
-                                <small class="text-muted">Choose a new file to replace the current one.</small>
-                            <?php else : ?>
-                                <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
-                            <?php endif; ?>
+                            <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
                         </div>
-                    </div> -->
+                    </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('saranaLayananAset') ?>" class="btn btn-secondary me-2">Cancel</a>
@@ -136,5 +136,16 @@
         </div>
     </div>
 </div>
+          <!-- <div class="row mb-3">
+                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
+                        <div class="col-sm-9">
+                        <?php if (!empty($dataSaranaLayananAset->bukti)) : ?>
+                            <img src="<?= base_url($dataSaranaLayananAset->bukti) ?>" alt="Current Image"
+                                class="img-thumbnail mb-2" style="max-width: 200px;">
+                            <?php endif; ?>
+                            <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
+                            <input type="hidden" name="current_bukti" value="<?= $dataSaranaLayananAset->bukti ?>">
+                        </div>
+                    </div> -->
 
 <?= $this->endSection(); ?>

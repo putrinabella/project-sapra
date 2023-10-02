@@ -27,12 +27,12 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <img src="<?= base_url($dataSaranaLayananAset->bukti) ?>" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">
+                <img src="<?= base_url($dataSaranaLayananAset->bukti) ?>" alt="Foto Bukti" style="width: 100%; max-width: 200px;" class="mx-auto">
                 </div>
                 <br>
                 <table class="table">
                     <tr>
-                        <td>Tanggal</td>
+                        <td style="width: 10%;">Tanggal</td>
                         <td style="width: 5%;">:</td>
                         <td><?= $dataSaranaLayananAset->tanggal?></td>
                     </tr>

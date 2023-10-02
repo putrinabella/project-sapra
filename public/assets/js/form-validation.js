@@ -90,9 +90,9 @@ $(document).ready(function () {
         required: true,
         minlength: 4,
       },  
-      bukti: {
-        required: true,
-      },  
+      // bukti: {
+      //   required: true,
+      // },  
       tanggal: {
         required: true,
       },  
@@ -187,9 +187,9 @@ $(document).ready(function () {
         required: "Silahkan masukkan biaya",
         minlength: "Biaya minimal terdiri dari 4 digit",
       },
-      bukti: {
-        required: "Silahkan masukkan bukti",
-      },
+      // bukti: {
+      //   required: "Silahkan masukkan bukti",
+      // },
       tanggal: {
         required: "Silahkan masukkan tanggal",
       },

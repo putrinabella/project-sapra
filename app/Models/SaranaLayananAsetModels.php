@@ -52,4 +52,11 @@ class SaranaLayananAsetModels extends Model
         $query = $builder->get();
         return $query->getRow();
     }
+
+    public function updateRecord($id, $data)
+    {
+        $this->set($data);
+        $this->where('idSaranaLayananAset', $id);
+        return $this->update();
+    }
 }

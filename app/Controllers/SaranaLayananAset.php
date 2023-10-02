@@ -16,12 +16,7 @@ use Dompdf\Options;
 
 class SaranaLayananAset extends ResourceController
 {
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
-
+    
      function __construct() {
         $this->saranaLayananAsetModel = new SaranaLayananAsetModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
@@ -32,21 +27,14 @@ class SaranaLayananAset extends ResourceController
         $this->db = \Config\Database::connect();
     }
 
-    public function index()
-    {
+    public function index() {
         $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
         return view('saranaView/layananAset/index', $data);
     }
 
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
-
+    
     public function show($id = null) {
         if ($id != null) {
-            // Use getAll method instead of find
             $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
         
             if (is_object($dataSaranaLayananAset)) {
@@ -69,13 +57,7 @@ class SaranaLayananAset extends ResourceController
     }
 
 
-    /**
-     * Return a new resource object, with default properties
-     *
-     * @return mixed
-     */
-    public function new()
-    {
+        public function new() {
         $data = [
             'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
             'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
@@ -87,45 +69,49 @@ class SaranaLayananAset extends ResourceController
         return view('saranaView/layananAset/new', $data);        
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
-
+    
     public function create() {
         $data = $this->request->getPost();
         $buktiPath = $this->uploadFile('bukti'); 
         if ($buktiPath !== null) {
             $data['bukti'] = $buktiPath;
-
             $this->saranaLayananAsetModel->insert($data);
-    
             return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->back()->withInput()->with('error', 'File upload failed.');
         }
     }
-
+    
     private function uploadFile($fieldName) {
         $file = $this->request->getFile($fieldName);
-    
-        if ($file->isValid() && !$file->hasMoved()) {
-            $newName = $file->getRandomName();
-            $file->move(ROOTPATH . 'public/uploads', $newName);
-            return 'uploads/' . $newName;
+        if ($file !== null) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                $newName = $file->getRandomName();
+                $file->move(ROOTPATH . 'public/uploads', $newName);
+                return 'uploads/' . $newName;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
-    
-        return null; 
     }
 
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
-    public function edit($id = null)
-    {
+    public function update($id = null) {
+        if ($id != null) {
+            $data = $this->request->getPost();
+            $uploadedFilePath = $this->uploadFile('bukti');
+            if ($uploadedFilePath !== null) {
+                $data['bukti'] = $uploadedFilePath;
+            }
+            $this->saranaLayananAsetModel->updateRecord($id, $data);
+            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
+        }
+    }
+
+    public function edit($id = null) {
         if ($id != null) {
             $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
     
@@ -146,32 +132,8 @@ class SaranaLayananAset extends ResourceController
             return view('error/404');
         }
     }
-    
 
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
-
-    public function update($id = null)
-    {
-        if ($id != null) {
-            $data = $this->request->getPost();
-            $this->saranaLayananAsetModel->update($id, $data);
-            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil diupdate');
-        } else {
-            return view('error/404');
-        }
-    }
-
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->saranaLayananAsetModel->delete($id);
         return redirect()->to(site_url('saranaLayananAset'));
     }
