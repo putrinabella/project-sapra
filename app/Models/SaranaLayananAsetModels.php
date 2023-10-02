@@ -36,8 +36,7 @@ class SaranaLayananAsetModels extends Model
         return $query->getResult();
     }
 
-    public function find($id = null, $columns = '*')
-    {
+    public function find($id = null, $columns = '*') {
         $builder = $this->db->table($this->table);
         $builder->select($columns);
         
@@ -51,12 +50,5 @@ class SaranaLayananAsetModels extends Model
 
         $query = $builder->get();
         return $query->getRow();
-    }
-
-    public function updateRecord($id, $data)
-    {
-        $this->set($data);
-        $this->where('idSaranaLayananAset', $id);
-        return $this->update();
     }
 }

@@ -24,7 +24,7 @@ class RincianAsetModels extends Model
         return $query->getResult();
     }
     function getRecycle() {
-        $builder = $this->db->table('tblRincianAset');
+        $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
@@ -32,5 +32,20 @@ class RincianAsetModels extends Model
         $builder->where('tblRincianAset.deleted_at IS NOT NULL');
         $query = $builder->get();
         return $query->getResult();
+    }
+
+    public function find($id = null, $columns = '*') {
+        $builder = $this->db->table($this->table);
+        $builder->select($columns);
+        
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.kodePrasarana = tblRincianAset.kodePrasarana');
+        
+        $builder->where($this->primaryKey, $id);
+
+        $query = $builder->get();
+        return $query->getRow();
     }
 }

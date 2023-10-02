@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarana Layanan Aset Report</title>
+    <title>Rincian Aset Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,29 +36,31 @@
 
 <body>
     <div class="table-responsive">
-    <h2 class="mt-3 mb-4">Sarana Layanan Aset Report</h2>
+    <h2 class="mt-3 mb-4">Rincian Aset Report</h2>
         <table class="table table-hover" id="dataTable">
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
-                    <th>Tanggal</th>
+                    <th>Kode Rincian Aset</th>
                     <th>Nama Aset</th>
                     <th>Lokasi</th>
-                    <th>Status Layanan</th>
-                    <th>Kategori Manajemen</th>
                     <th>Sumber Dana</th>
-                    <th>Biaya</th>
-                    <th>Bukti</th>
+                    <th>Kategori Manajemen</th>
+                    <th>Tahun Pengadaan</th>
+                    <th>Sarana Layak</th>
+                    <th>Sarana Rusak</th>
+                    <th>Total Sarana</th>
+                    <th>Dokumentasi</th>
                 </tr>
             </thead>
             <tbody class="py-2">
-                <?php foreach ($data['dataSaranaLayananAset'] as $key => $value) : ?>
+                <?php foreach ($data['dataRincianAset'] as $key => $value) : ?>
                     <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                         <td>
                             <?= $key + 1 ?>
                         </td>
                         <td>
-                            <?= $value->tanggal ?>
+                            <?= $value->kodeRincianAset ?>
                         </td>
                         <td>
                             <?= $value->namaSarana ?>
@@ -67,21 +69,27 @@
                             <?= $value->namaPrasarana ?>
                         </td>
                         <td>
-                            <?= $value->namaStatusLayanan ?>
+                            <?= $value->namaSumberDana ?>
                         </td>
                         <td>
                             <?= $value->namaKategoriManajemen ?>
                         </td>
                         <td>
-                            <?= $value->namaSumberDana ?>
+                            <?= $value->tahunPengadaan ?>
                         </td>
                         <td>
-                            Rp<?= number_format($value->biaya, 0, ',', '.') ?>
+                            <?= $value->saranaLayak ?>
+                        </td>
+                        <td>
+                            <?= $value->saranaRusak ?>
+                        </td>
+                        <td>
+                            <?= $value->totalSarana ?>
                         </td>
                         <td>
                         <?php
-                        if (file_exists($value->bukti)) {
-                            $imageData = base64_encode(file_get_contents($value->bukti));
+                        if (file_exists($value->link)) {
+                            $imageData = base64_encode(file_get_contents($value->link));
                             echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">';
                         } else {
                             echo '-';

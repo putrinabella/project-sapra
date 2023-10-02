@@ -75,7 +75,6 @@
                                 <th>Kategori Manajemen</th>
                                 <th>Sumber Dana</th>
                                 <th>Biaya</th>
-                                <th>Bukti</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -91,8 +90,7 @@
                                 <td class="text-center"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->biaya?></td>
-                                <td class="text-center"><?=$value->bukti?></td>
+                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('saranaLayananAset/restore/'.$value->idSaranaLayananAset) ?>"
                                         class="btn btn-primary"> Restore</a>
@@ -102,7 +100,6 @@
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger" type="submit"> Delete Permanent </button>
                                     </form>
-
                                 </td>
                             </tr>
                             <?php endforeach; ?>

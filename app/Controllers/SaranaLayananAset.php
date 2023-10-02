@@ -56,7 +56,6 @@ class SaranaLayananAset extends ResourceController
         }
     }
 
-
         public function new() {
         $data = [
             'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
@@ -78,7 +77,7 @@ class SaranaLayananAset extends ResourceController
             $this->saranaLayananAsetModel->insert($data);
             return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->back()->withInput()->with('error', 'File upload failed.');
+            return redirect()->to(site_url('saranaLayananAset'))->with('error', 'File error');
         }
     }
     
@@ -104,7 +103,7 @@ class SaranaLayananAset extends ResourceController
             if ($uploadedFilePath !== null) {
                 $data['bukti'] = $uploadedFilePath;
             }
-            $this->saranaLayananAsetModel->updateRecord($id, $data);
+            $this->saranaLayananAsetModel->update($id, $data);
             return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
