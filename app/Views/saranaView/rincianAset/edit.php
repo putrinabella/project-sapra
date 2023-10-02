@@ -106,7 +106,7 @@
                     <div class="row mb-3">
                         <label for="spesifikasi" class="col-sm-3 col-form-label">Spesifikasi</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="5"
+                            <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="10"
                                 placeholder="Masukkan spesifikasi aset"><?=$dataRincianAset->spesifikasi?></textarea>
                         </div>
                     </div>

@@ -2,9 +2,9 @@ $(function() {
   'use strict';
 
   /*simplemde editor*/
-  if ($("#simpleMdeExample").length) {
+  if ($("#spesifikasi").length) {
     var simplemde = new SimpleMDE({
-      element: $("#simpleMdeExample")[0]
+      element: $("#spesifikasi")[0]
     });
   }
 

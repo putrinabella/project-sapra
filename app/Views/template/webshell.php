@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/prismjs/themes/prism.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/simplemde/simplemde.min.css">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -195,6 +196,7 @@
     <script src="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/prismjs/prism.js"></script>
 	<script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
+	<script src="<?= base_url(); ?>/assets/vendors/simplemde/simplemde.min.js"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
@@ -209,6 +211,8 @@
     <script src="<?= base_url(); ?>/assets/js/hide-alert.js"></script>
     <script src="<?= base_url(); ?>/assets/js/data-table.js"></script>
     <script src="<?= base_url(); ?>/assets/js/sweet-alert.js"></script>
+	<script src="<?= base_url(); ?>/assets/js/simplemde.js"></script>
+	<script src="<?= base_url(); ?>/assets/js/my-simplemde.js"></script>
     <!-- End custom js for this page -->
 
 </body>
