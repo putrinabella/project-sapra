@@ -196,33 +196,47 @@ class IdentitasPrasarana extends ResourceController
     public function createTemplate() {
         $data = $this->identitasPrasaranaModel->getAll();
         $keyGedung = $this->identitasGedungModel->findAll();
+        $keyLantai = $this->identitasLantaiModel->findAll();
+        $keyPrasarana = $this->identitasPrasaranaModel->findAll();
         $spreadsheet = new Spreadsheet();
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
+        $headerInputTable = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         $headerGedungID = ['ID Identitas Gedung', 'Nama Gedung'];
         $activeWorksheet->fromArray([$headerGedungID], NULL, 'I1');
         $activeWorksheet->getStyle('I1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $headerLantaiID = ['ID Identitas Lantai', 'Nama Lantai'];
+        $activeWorksheet->fromArray([$headerLantaiID], NULL, 'L1');
+        $activeWorksheet->getStyle('L1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        $headerPrasaranaID = ['ID Identitas Prasarana', 'Nama Prasarana'];
+        $activeWorksheet->fromArray([$headerLantaiID], NULL, 'O1');
+        $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePrasarana);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->luas . ' m²');
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaGedung);
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLantai);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->luas);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->idIdentitasGedung);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->idIdentitasLantai);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->idIdentitasPrasarana);
             
             $activeWorksheet->getStyle('B'.($index + 2))
                 ->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
                 
-            $columns = ['A', 'C', 'D', 'E', 'F'];
+            $columns = ['A', 'C', 'D', 'E', 'F', 'G'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -230,12 +244,12 @@ class IdentitasPrasarana extends ResourceController
             }    
         }
     
-        $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('DF2E38');
-        $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:F')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
         
-        foreach (range('A', 'F') as $column) {
+        foreach (range('A', 'G') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -253,10 +267,52 @@ class IdentitasPrasarana extends ResourceController
 
         $activeWorksheet->getStyle('I1:J1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('I1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('I1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('I1:J'.(count($keyGedung) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('I:J')->getAlignment()->setWrapText(true);
     
         foreach (range('I', 'J') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        foreach ($keyLantai as $index => $value) {
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->idIdentitasLantai);
+            $activeWorksheet->setCellValue('M'.($index + 2), $value->namaLantai);
+    
+            $columns = ['L', 'M'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('L1:M1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('L1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('L1:M'.(count($keyLantai) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('L:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('L', 'M') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        foreach ($keyPrasarana as $index => $value) {
+            $activeWorksheet->setCellValue('O'.($index + 2), $value->idIdentitasPrasarana);
+            $activeWorksheet->setCellValue('P'.($index + 2), $value->namaPrasarana);
+    
+            $columns = ['O', 'P'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('O1:P1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('O1:P1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('O1:P'.(count($keyPrasarana) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('O:P')->getAlignment()->setWrapText(true);
+    
+        foreach (range('O', 'P') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -285,15 +341,19 @@ class IdentitasPrasarana extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $namaPrasarana  = $value[1] ?? null;
-                $luas           = $value[2] ?? null;
-            
+                $namaPrasarana      = $value[2] ?? null;
+                $luas               = $value[3] ?? null;
+                $idIdentitasGedung  = $value[4] ?? null;
+                $idIdentitasLantai  = $value[5] ?? null;
+                $kodePrasarana      = $value[1] ?? null;
+
                 if ($namaPrasarana !== null) {
                     $data = [
                         'namaPrasarana' => $namaPrasarana,
                         'luas' => $luas,
-                        'idIdentitasGedung' => 0,
-                        'idIdentitasLantai' => 0,
+                        'idIdentitasGedung' => $idIdentitasGedung,
+                        'idIdentitasLantai' => $idIdentitasLantai,
+                        'kodePrasarana' => $kodePrasarana,
                     ];
                     $this->identitasPrasaranaModel->insert($data);
                 }
