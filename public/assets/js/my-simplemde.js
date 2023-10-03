@@ -13,5 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         simplemde.togglePreview();
         simplemde.codemirror.options.readOnly = true;
+
+        editspekElement.addEventListener("input", function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
     }
 });

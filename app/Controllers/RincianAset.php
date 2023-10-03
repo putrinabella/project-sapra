@@ -281,42 +281,27 @@ class RincianAset extends ResourceController
         $filename = 'Sarana - Rincian Aset Report.pdf';
         $dompdf->stream($filename);
     }
-    
-    public function generatePDFById($id) {
-        $dataRincianAset = $this->rincianAsetModel->find($id);
-    
-        if (!$dataRincianAset) {
-            return view('error/404');
-        }
-    
-        $data = [
-            'dataRincianAset' => $dataRincianAset,
-        ];
-    
-        $filePath = APPPATH . 'Views/saranaView/rincianAset/printInfo.php';
-    
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-    
-        ob_start();
-    
-        // $includeFile = function ($filePath, $data) {
-        //     include $filePath;
-        // };
-    
-        include $filePath;
 
-        // $includeFile($filePath, $data);
+    public function print($id = null) {
+        if ($id != null) {
+            $dataRincianAset = $this->rincianAsetModel->find($id);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $filename = 'Sarana - Rincian Aset Detail Report.pdf';
-        $dompdf->stream($filename);
+            if (is_object($dataRincianAset)) {
+                $data = [
+                    'dataRincianAset'     => $dataRincianAset,
+                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana'      => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                ];
+    
+                return view('saranaView/rincianAset/printInfo', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
     }
-    
     
 }

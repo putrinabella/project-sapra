@@ -24,10 +24,11 @@
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                        <a href="<?= site_url('rincianAset/generatePDFById/'.$dataRincianAset->idRincianAset)?>" class="btn btn-outline-success btn-icon-text mb-2 mb-md-0">
+                        <a href="<?= site_url('rincianAset/print/'.$dataRincianAset->idRincianAset)?>" class="btn btn-outline-success btn-icon-text mb-2 mb-md-0" target="_blank">
                             <i class="btn-icon-prepend" data-feather="printer"></i>
                             Print
                         </a>
+
 
                     </div>
                 </div>
@@ -85,7 +86,6 @@
                         <td>Spesifikasi</td>
                         <td>:</td>
                         <td>
-                        <!-- <td style="white-space: pre-wrap; padding: 0; margin-top: 0;"> -->
                                 <textarea class="form-control" id="editspek" name="spesifikasi" rows="10"
                                 placeholder="Masukkan spesifikasi aset"><?=$dataRincianAset->spesifikasi?></textarea>
                         </td>
