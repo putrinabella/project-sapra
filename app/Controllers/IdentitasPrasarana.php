@@ -149,10 +149,12 @@ class IdentitasPrasarana extends ResourceController
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $headers = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
-        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        
+        $headerInputTable = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
+        $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    
+        
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePrasarana);
@@ -173,20 +175,54 @@ class IdentitasPrasarana extends ResourceController
             }    
         }
     
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
         $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:F')->getAlignment()->setWrapText(true);
-    
+        
         foreach (range('A', 'F') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
-        foreach ($keyGedung as $index => $value) {
-            $activeWorksheet->setCellValue('I'.($index + 2), $value->idIdentitasGedung);
-            $activeWorksheet->setCellValue('J'.($index + 2), $value->namaGedung);
     
-            $columns = ['I', 'K'];
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Identitas Prasarana.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+    
+
+    public function createTemplate() {
+        $data = $this->identitasPrasaranaModel->getAll();
+        $keyGedung = $this->identitasGedungModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        
+        $headerInputTable = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
+        $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        $headerGedungID = ['ID Identitas Gedung', 'Nama Gedung'];
+        $activeWorksheet->fromArray([$headerGedungID], NULL, 'I1');
+        $activeWorksheet->getStyle('I1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($data as $index => $value) {
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePrasarana);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->luas . ' m²');
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaGedung);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLantai);
+            
+            $activeWorksheet->getStyle('B'.($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                
+            $columns = ['A', 'C', 'D', 'E', 'F'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -194,9 +230,39 @@ class IdentitasPrasarana extends ResourceController
             }    
         }
     
+        $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('DF2E38');
+        $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:F')->getAlignment()->setWrapText(true);
+        
+        foreach (range('A', 'F') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        foreach ($keyGedung as $index => $value) {
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->idIdentitasGedung);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->namaGedung);
+    
+            $columns = ['I', 'J'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('I1:J1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('I1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('I1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('I:J')->getAlignment()->setWrapText(true);
+    
+        foreach (range('I', 'J') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Prasarana.xlsx');
+        header('Content-Disposition: attachment;filename=Identitas Prasarana Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();

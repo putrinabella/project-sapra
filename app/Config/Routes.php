@@ -48,6 +48,7 @@ $routes->presenter('identitasSarana', ['filter' => 'isLoggedIn']);
 // Identitas Prasarana
 $routes->get('identitasPrasarana/generatePDF', 'IdentitasPrasarana::generatePDF');
 $routes->get('identitasPrasarana/export', 'IdentitasPrasarana::export');
+$routes->get('identitasPrasarana/createTemplate', 'IdentitasPrasarana::createTemplate');
 $routes->post('identitasPrasarana/import', 'IdentitasPrasarana::import');
 $routes->get('identitasPrasarana/edit', 'IdentitasPrasarana::edit');
 $routes->get('identitasPrasarana/trash', 'IdentitasPrasarana::trash');
