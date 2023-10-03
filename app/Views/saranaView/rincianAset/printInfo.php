@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Rincian Aset Report</title>
 
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/simplemde/simplemde.min.css">
+    <bukti rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/simplemde/simplemde.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,7 +55,7 @@
         <div class="card-body">
             <h3>Data Rincian Aset</h3>
             <div class="text-center">
-                <img src="<?= base_url($dataRincianAset->link) ?>" alt="Foto Bukti"
+                <img src="<?= base_url($dataRincianAset->bukti) ?>" alt="Foto Bukti"
                     style="width: 100%; max-width: 200px;" class="mx-auto">
             </div>
             <br>
@@ -127,8 +127,7 @@
                     <td>Spesifikasi</td>
                     <td>:</td>
                     <td>
-                        <textarea class="form-control" id="editspek" name="spesifikasi" rows="10"
-                            placeholder="Masukkan spesifikasi aset"><?=$dataRincianAset->spesifikasi?></textarea>
+                        <textarea class="form-control" id="editspek" name="spesifikasi" rows="10"><?=$dataRincianAset->spesifikasi?></textarea>
                     </td>
                 </tr>
             </table>
@@ -140,10 +139,11 @@
 <script src="<?= base_url(); ?>/assets/js/simplemde.js"></script>
 <script src="<?= base_url(); ?>/assets/js/my-simplemde.js"></script>
 
-<script>
+
+<!-- <script>
     window.onload = function () {
         window.print();
     };
-</script>
+</script> -->
 
 </html>

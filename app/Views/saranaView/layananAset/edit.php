@@ -115,9 +115,6 @@
                                 value="<?=$dataSaranaLayananAset->biaya?>" placeholder="Masukkan biaya">
                         </div>
                     </div>
-                    
-          
-
                     <div class="row mb-3">
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">

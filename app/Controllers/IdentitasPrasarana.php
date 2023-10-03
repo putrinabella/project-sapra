@@ -13,12 +13,7 @@ use Dompdf\Options;
 
 class IdentitasPrasarana extends ResourceController
 {
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
-
+    
      function __construct() {
         $this->identitasGedungModel = new IdentitasGedungModels();
         $this->identitasLantaiModel = new IdentitasLantaiModels();
@@ -40,22 +35,12 @@ class IdentitasPrasarana extends ResourceController
     //     return view('master/identitasPrasaranaView/index', $data);
     // }
 
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
-    public function show($id = null)
+        public function show($id = null)
     {
         //
     }
 
-    /**
-     * Return a new resource object, with default properties
-     *
-     * @return mixed
-     */
-    public function new()
+        public function new()
     {
         $data = [
             'dataIdentitasGedung' => $this->identitasGedungModel->findAll(),
@@ -65,12 +50,7 @@ class IdentitasPrasarana extends ResourceController
         return view('master/identitasPrasaranaView/new', $data);        
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
-
+    
     public function create() {
         $data = $this->request->getPost();
             unset($data['idIdentitasPrasarana']);
@@ -81,12 +61,7 @@ class IdentitasPrasarana extends ResourceController
     }
 
 
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
-    public function edit($id = null)
+        public function edit($id = null)
     {
         if ($id != null) {
             $dataIdentitasPrasarana = $this->identitasPrasaranaModel->find($id);
@@ -107,18 +82,13 @@ class IdentitasPrasarana extends ResourceController
     }
     
 
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
-
+    
     public function update($id = null)
     {
         if ($id != null) {
             $data = $this->request->getPost();
                 $this->identitasPrasaranaModel->update($id, $data);
-                $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 3, '0'), '/L', LPAD(idIdentitasLantai, 3, '0')) WHERE idIdentitasPrasarana = ?";
+                $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 2, '0'), '/L', LPAD(idIdentitasLantai, 2, '0')) WHERE idIdentitasPrasarana = ?";
                 $this->db->query($query, [$id]);
                 return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
         } else {
@@ -126,12 +96,7 @@ class IdentitasPrasarana extends ResourceController
         }
     }
 
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
-    public function delete($id = null)
+        public function delete($id = null)
     {
         $this->identitasPrasaranaModel->delete($id);
         return redirect()->to(site_url('identitasPrasarana'));
@@ -179,9 +144,11 @@ class IdentitasPrasarana extends ResourceController
 
     public function export() {
         $data = $this->identitasPrasaranaModel->getAll();
+        $keyGedung = $this->identitasGedungModel->findAll();
         $spreadsheet = new Spreadsheet();
+        
         $activeWorksheet = $spreadsheet->getActiveSheet();
-    
+        $activeWorksheet->setTitle('Input Sheet');
         $headers = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -193,16 +160,20 @@ class IdentitasPrasarana extends ResourceController
             $activeWorksheet->setCellValue('D'.($index + 2), $value->luas . ' m²');
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaGedung);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLantai);
-    
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F'];
-
+            
+            $activeWorksheet->getStyle('B'.($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                
+            $columns = ['A', 'C', 'D', 'E', 'F'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
-                                ->getAlignment()
-                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
         }
     
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
         $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
         $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
@@ -210,6 +181,17 @@ class IdentitasPrasarana extends ResourceController
     
         foreach (range('A', 'F') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+        foreach ($keyGedung as $index => $value) {
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->idIdentitasGedung);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->namaGedung);
+    
+            $columns = ['I', 'K'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
         }
     
         $writer = new Xlsx($spreadsheet);
@@ -219,6 +201,7 @@ class IdentitasPrasarana extends ResourceController
         $writer->save('php://output');
         exit();
     }
+    
     
     public function import() {
         $file = $this->request->getFile('formExcel');
@@ -255,8 +238,7 @@ class IdentitasPrasarana extends ResourceController
         }
     }
 
-    public function generatePDF()
-    {
+    public function generatePDF() {
         $filePath = APPPATH . 'Views/master/identitasPrasaranaView/print.php';
     
         if (!file_exists($filePath)) {

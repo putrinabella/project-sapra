@@ -15,12 +15,7 @@ use Dompdf\Options;
 
 class RincianAset extends ResourceController
 {
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
-
+    
      function __construct() {
         $this->rincianAsetModel = new RincianAsetModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
@@ -36,13 +31,7 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/index', $data);
     }
 
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
-    public function show($id = null)
-    {
+        public function show($id = null) {
         if ($id != null) {
             $dataRincianAset = $this->rincianAsetModel->find($id);
         
@@ -64,13 +53,7 @@ class RincianAset extends ResourceController
         }
     }
 
-    /**
-     * Return a new resource object, with default properties
-     *
-     * @return mixed
-     */
-    public function new()
-    {
+        public function new() {
         $data = [
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataSumberDana' => $this->sumberDanaModel->findAll(),
@@ -81,12 +64,7 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/new', $data);        
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
-
+    
     public function create() {
         $data = $this->request->getPost();
         $saranaLayak = intval($data['saranaLayak']);
@@ -94,7 +72,9 @@ class RincianAset extends ResourceController
         $totalSarana = $saranaLayak + $saranaRusak;
 
         $data['totalSarana'] = $totalSarana;
+        $buktiPath = $this->uploadFile('bukti'); 
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
+            $data['bukti'] = $buktiPath;
             $this->rincianAsetModel->insert($data);
             $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)";
             $this->db->query($query);
@@ -104,13 +84,22 @@ class RincianAset extends ResourceController
         }
     }
 
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
-    public function edit($id = null)
-    {
+    private function uploadFile($fieldName) {
+        $file = $this->request->getFile($fieldName);
+        if ($file !== null) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                $newName = $file->getRandomName();
+                $file->move(ROOTPATH . 'public/uploads', $newName);
+                return 'uploads/' . $newName;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public function edit($id = null) {
         if ($id != null) {
             $dataRincianAset = $this->rincianAsetModel->find($id);
     
@@ -131,37 +120,28 @@ class RincianAset extends ResourceController
         }
     }
     
-
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
-
-    public function update($id = null)
-    {
+    public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
+            $uploadedFilePath = $this->uploadFile('bukti');
             if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
+                if ($uploadedFilePath !== null) {
+                    $data['bukti'] = $uploadedFilePath;
+                }
                 $this->rincianAsetModel->update($id, $data);
                 $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)  WHERE idRincianAset = ?";
                 $this->db->query($query, [$id]);
-
                 return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
             } else {
-                return redirect()->to(site_url('rincianAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                return redirect()->to
+                (site_url('rincianAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
             }
         } else {
             return view('error/404');
         }
     }
 
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
-    public function delete($id = null)
+        public function delete($id = null)
     {
         $this->rincianAsetModel->delete($id);
         return redirect()->to(site_url('rincianAset'));

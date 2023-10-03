@@ -25,7 +25,7 @@
                 <form action="<?= site_url('saranaLayananAset')?>" method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
-                        <label for="bukti" class="col-sm-3 col-form-label">Tanggal</label>
+                        <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
                                 <input type="text" class="form-control" name="tanggal">
@@ -101,11 +101,6 @@
                         <div class="col-sm-9">
                             <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
                         </div>
-
-                        <!-- <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan bukti dokumentasi">
-                        </div> -->
                     </div>
                     
                     <div class="row mb-3">

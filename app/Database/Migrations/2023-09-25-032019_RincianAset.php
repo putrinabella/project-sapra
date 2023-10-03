@@ -54,9 +54,8 @@ class RincianAset extends Migration
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'link' => [
+            'bukti' => [
                 'type' => 'TEXT',
-                'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

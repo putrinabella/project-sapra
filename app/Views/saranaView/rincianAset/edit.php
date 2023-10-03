@@ -23,7 +23,7 @@
             </div>
             <div class="card-body">
                 <form action="<?= site_url('rincianAset/'.$dataRincianAset->idRincianAset)?>" method="post"
-                    autocomplete="off" id="custom-validation">
+                    autocomplete="off" id="custom-validation"  enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
@@ -111,10 +111,9 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="link" class="col-sm-3 col-form-label">Link Dokumentasi</label>
+                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="link" name="link"
-                                value="<?=$dataRincianAset->link?>" placeholder="Masukkan link dokumentasi">
+                            <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
                         </div>
                     </div>
                     <div class="row mb-3">

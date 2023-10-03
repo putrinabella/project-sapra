@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('rincianAset')?>" method="post" autocomplete="off" id="custom-validation">
+                <form action="<?= site_url('rincianAset')?>" method="post" enctype="multipart/form-data" autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
@@ -97,9 +97,9 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="link" class="col-sm-3 col-form-label">Link Dokumentasi</label>
+                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="link" name="link" placeholder="Masukkan link dokumentasi">
+                            <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
                         </div>
                     </div>
                     <div class="row mb-3">

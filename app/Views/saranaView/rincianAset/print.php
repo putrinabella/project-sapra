@@ -88,8 +88,8 @@
                         </td>
                         <td>
                         <?php
-                        if (file_exists($value->link)) {
-                            $imageData = base64_encode(file_get_contents($value->link));
+                        if (file_exists($value->bukti)) {
+                            $imageData = base64_encode(file_get_contents($value->bukti));
                             echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">';
                         } else {
                             echo '-';

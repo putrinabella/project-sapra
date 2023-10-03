@@ -9,7 +9,7 @@ class RincianAsetModels extends Model
     protected $table            = 'tblRincianAset';
     protected $primaryKey       = 'idRincianAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'kodePrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'link'];
+    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'kodePrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'bukti'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 

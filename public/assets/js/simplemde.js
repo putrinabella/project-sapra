@@ -1,11 +1,11 @@
-$(function() {
+document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
-  /*simplemde editor*/
-  if ($("#spesifikasi").length) {
-    var simplemde = new SimpleMDE({
-      element: $("#spesifikasi")[0]
-    });
-  }
+  var spesifikasiElement = document.getElementById('spesifikasi');
 
+  if (spesifikasiElement) {
+      var simplemde = new SimpleMDE({
+          element: spesifikasiElement
+      });
+  }
 });

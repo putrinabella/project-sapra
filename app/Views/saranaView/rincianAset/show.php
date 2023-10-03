@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                <img src="<?= base_url($dataRincianAset->link) ?>" alt="Foto Bukti" style="width: 100%; max-width: 200px;" class="mx-auto">
+                <img src="<?= base_url($dataRincianAset->bukti) ?>" alt="Foto Bukti" style="width: 100%; max-width: 200px;" class="mx-auto">
                 </div>
                 <br>
                 <table class="table" style="max-width: 90%; margin: 0 auto;">
