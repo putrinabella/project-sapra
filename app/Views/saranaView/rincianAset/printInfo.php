@@ -1,37 +1,43 @@
-<?= $this->extend('template/webshell'); ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<?= $this->section("title"); ?>
-<title>Layanan Aset &verbar; SARPRA </title>
-<?= $this->endSection(); ?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rincian Aset Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-<?= $this->section("content"); ?>
+        .table-responsive {
+            margin-bottom: 20px;
+        }
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Detail Layanan Aset</h4>
-    </div>
-</div>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
 
-<div class="row">
-    <div class="col-12 col-xl-12 grid-margin stretch-card">
-        <div class="card overflow-hidden">
-            <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-                    <div>
-                        <a href="<?= site_url('rincianAset')?>"
-                            class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
-                            Back
-                        </a>
-                        <a href="<?= site_url('rincianAset/generatePDFById/'.$dataRincianAset->idRincianAset)?>" class="btn btn-outline-success btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="printer"></i>
-                            Print
-                        </a>
+        th {
+            background-color: #f2f2f2;
+            width: 5%;
+        }
+    </style>
+</head>
 
-                    </div>
-                </div>
-                <div class="text-center">
+<body>
+    <div class="table-responsive">
+    <h2 class="mt-3 mb-4">Rincian Aset Report</h2>
+    <div class="text-center">
                 <img src="<?= base_url($dataRincianAset->link) ?>" alt="Foto Bukti" style="width: 100%; max-width: 200px;" class="mx-auto">
                 </div>
                 <br>
@@ -85,14 +91,12 @@
                         <td>Spesifikasi</td>
                         <td>:</td>
                         <td>
-                        <!-- <td style="white-space: pre-wrap; padding: 0; margin-top: 0;"> -->
                                 <textarea class="form-control" id="editspek" name="spesifikasi" rows="10"
                                 placeholder="Masukkan spesifikasi aset"><?=$dataRincianAset->spesifikasi?></textarea>
                         </td>
                     </tr>
                 </table>
-            </div>
-        </div>
     </div>
-</div>
-<?= $this->endSection(); ?>
+</body>
+
+</html>

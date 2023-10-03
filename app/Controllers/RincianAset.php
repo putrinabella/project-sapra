@@ -281,4 +281,42 @@ class RincianAset extends ResourceController
         $filename = 'Sarana - Rincian Aset Report.pdf';
         $dompdf->stream($filename);
     }
+    
+    public function generatePDFById($id) {
+        $dataRincianAset = $this->rincianAsetModel->find($id);
+    
+        if (!$dataRincianAset) {
+            return view('error/404');
+        }
+    
+        $data = [
+            'dataRincianAset' => $dataRincianAset,
+        ];
+    
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/printInfo.php';
+    
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+    
+        ob_start();
+    
+        // $includeFile = function ($filePath, $data) {
+        //     include $filePath;
+        // };
+    
+        include $filePath;
+
+        // $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $filename = 'Sarana - Rincian Aset Detail Report.pdf';
+        $dompdf->stream($filename);
+    }
+    
+    
 }

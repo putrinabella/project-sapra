@@ -131,6 +131,7 @@ $routes->presenter('dataPrasarana', ['filter' => 'isLoggedIn']);
 // SARANA
 
 // Rincian Aset
+$routes->get('rincianAset/generatePDFById/(:num)', 'RincianAset::generatePDFById/$1');
 $routes->get('rincianAset/generatePDF', 'RincianAset::generatePDF');
 $routes->get('rincianAset/export', 'RincianAset::export');
 $routes->post('rincianAset/import', 'RincianAset::import');
