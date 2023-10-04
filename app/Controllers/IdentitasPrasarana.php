@@ -186,7 +186,7 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
+        $headerInputTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -202,19 +202,29 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->fromArray([$headerLantaiID], NULL, 'O1');
         $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
+        $latestID = null;
+
         foreach ($data as $index => $value) {
-            if ($index >= 1) {
+            if ($index >= 3) {
                 break;
+            }
+
+            $latestData = end($data); 
+
+            if ($latestID === null) {
+                $latestID = $latestData->idIdentitasPrasarana +1;
+            } else {
+                $latestID = "=G".($index + 1)." + 1";
             }
 
             $formula = '=CONCAT("P", TEXT(G'.($index + 2).', "000"), "/G", TEXT(E'.($index + 2).', "00"), "/L", TEXT(F'.($index + 2).', "00"))';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $formula);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->luas);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->idIdentitasGedung);
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->idIdentitasLantai);
-            $activeWorksheet->setCellValue('G'.($index + 2), $value->idIdentitasPrasarana);
+            $activeWorksheet->setCellValue('C'.($index + 2), '');
+            $activeWorksheet->setCellValue('D'.($index + 2), '');
+            $activeWorksheet->setCellValue('E'.($index + 2), '');
+            $activeWorksheet->setCellValue('F'.($index + 2), '');
+            $activeWorksheet->setCellValue('G'.($index + 2), $latestID);
             
             $activeWorksheet->getStyle('B'.($index + 2))
                 ->getAlignment()
@@ -304,7 +314,7 @@ class IdentitasPrasarana extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headerExampleTable = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
+        $headerExampleTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -341,8 +351,8 @@ class IdentitasPrasarana extends ResourceController
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
-
         $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=Identitas Prasarana Example.xlsx');
         header('Cache-Control: max-age=0');
