@@ -43,7 +43,7 @@ class IdentitasPrasaranaModels extends Model
     //     return $data;
     // }
 
-    public function updateKodePrasarana($id) {
+    function updateKodePrasarana($id) {
         $builder = $this->db->table('tblIdentitasPrasarana');
         $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
                         "/G", LPAD(idIdentitasGedung, 2, "0"), 
@@ -52,14 +52,11 @@ class IdentitasPrasaranaModels extends Model
         $builder->update();
     }
 
-    public function setKodePrasarana() {
+    function setKodePrasarana() {
         $builder = $this->db->table('tblIdentitasPrasarana');
         $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
                         "/G", LPAD(idIdentitasGedung, 2, "0"), 
                         "/L", LPAD(idIdentitasLantai, 2, "0"))', false);
         $builder->update();
     }
-
-
-    
 }

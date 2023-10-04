@@ -74,8 +74,7 @@ class RincianAset extends ResourceController
             $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
             $data['totalSarana'] = $totalSarana;
             $this->rincianAsetModel->insert($data);
-            $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)";
-            $this->db->query($query);
+            $this->rincianAsetModel->setKodeAset();
             return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
@@ -143,8 +142,7 @@ class RincianAset extends ResourceController
                 $data['totalSarana'] = $totalSarana;
 
                 $this->rincianAsetModel->update($id, $data);
-                $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)  WHERE idRincianAset = ?";
-                $this->db->query($query, [$id]);
+                $this->rincianAsetModel->updateKodeAset($id);
                 return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to
