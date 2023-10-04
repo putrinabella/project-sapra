@@ -199,7 +199,7 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->getStyle('L1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         $headerPrasaranaID = ['ID Identitas Prasarana', 'Nama Prasarana'];
-        $activeWorksheet->fromArray([$headerLantaiID], NULL, 'O1');
+        $activeWorksheet->fromArray([$headerPrasaranaID], NULL, 'O1');
         $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         $latestID = null;
