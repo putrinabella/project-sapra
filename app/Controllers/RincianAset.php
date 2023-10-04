@@ -25,23 +25,24 @@ class RincianAset extends ResourceController
         $this->db = \Config\Database::connect();
     }
 
-    public function index()
-    {
+    public function index() {
         $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
         return view('saranaView/rincianAset/index', $data);
     }
 
-        public function show($id = null) {
+    public function show($id = null) {
         if ($id != null) {
             $dataRincianAset = $this->rincianAsetModel->find($id);
         
             if (is_object($dataRincianAset)) {
+                $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
                 $data = [
                     'dataRincianAset'     => $dataRincianAset,
                     'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana' => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
                     'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                    'buktiUrl' => $buktiUrl,
                 ];
 
                 return view('saranaView/rincianAset/show', $data);
@@ -53,7 +54,7 @@ class RincianAset extends ResourceController
         }
     }
 
-    public function new() {
+        public function new() {
         $data = [
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataSumberDana' => $this->sumberDanaModel->findAll(),
@@ -67,14 +68,11 @@ class RincianAset extends ResourceController
     
     public function create() {
         $data = $this->request->getPost();
-        $saranaLayak = intval($data['saranaLayak']);
-        $saranaRusak = intval($data['saranaRusak']);
-        $totalSarana = $saranaLayak + $saranaRusak;
-
-        $data['totalSarana'] = $totalSarana;
-        $buktiPath = $this->uploadFile('bukti'); 
+        // $buktiPath = $this->uploadFile('bukti'); 
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-            $data['bukti'] = $buktiPath;
+            // $data['bukti'] = $buktiPath;
+            $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+            $data['totalSarana'] = $totalSarana;
             $this->rincianAsetModel->insert($data);
             $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)";
             $this->db->query($query);
@@ -98,6 +96,18 @@ class RincianAset extends ResourceController
             return null;
         }
     }
+
+    private function generateFileId($url) {
+        preg_match('/\/file\/d\/(.*?)\//', $url, $matches);
+        
+        if (isset($matches[1])) {
+            $fileId = $matches[1];
+            return "https://drive.google.com/uc?export=view&id=" . $fileId;
+        } else {
+            return "Invalid Google Drive URL";
+        }
+    }
+    
 
     public function edit($id = null) {
         if ($id != null) {
@@ -123,11 +133,15 @@ class RincianAset extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            $uploadedFilePath = $this->uploadFile('bukti');
+            // $uploadedFilePath = $this->uploadFile('bukti');
             if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-                if ($uploadedFilePath !== null) {
-                    $data['bukti'] = $uploadedFilePath;
-                }
+                // if ($uploadedFilePath !== null) {
+                //     $data['bukti'] = $uploadedFilePath;
+                // }
+
+                $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+                $data['totalSarana'] = $totalSarana;
+
                 $this->rincianAsetModel->update($id, $data);
                 $query = "UPDATE tblRincianAset SET kodeRincianAset = CONCAT('A', LPAD(idIdentitasSarana, 3, '0'), '/', tahunPengadaan, '/', 'SD', LPAD(idSumberDana, 2, '0'), '/', kodePrasarana)  WHERE idRincianAset = ?";
                 $this->db->query($query, [$id]);

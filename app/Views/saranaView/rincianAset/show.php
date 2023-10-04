@@ -28,12 +28,10 @@
                             <i class="btn-icon-prepend" data-feather="printer"></i>
                             Print
                         </a>
-
-
                     </div>
                 </div>
                 <div class="text-center">
-                <img src="<?= base_url($dataRincianAset->bukti) ?>" alt="Foto Bukti" style="width: 100%; max-width: 200px;" class="mx-auto">
+                <img src="<?= $buktiUrl ?>" alt="Foto Bukti" style="width: 100%; max-width: 200px;" class="mx-auto">
                 </div>
                 <br>
                 <table class="table" style="max-width: 90%; margin: 0 auto;">
@@ -81,6 +79,11 @@
                         <td>Total Sarana</td>
                         <td>:</td>
                         <td><?= $dataRincianAset->totalSarana?></td>
+                    </tr>
+                    <tr>
+                        <td>Link Bukti</td>
+                        <td>:</td>
+                        <td><?= $dataRincianAset->bukti?></td>
                     </tr>
                     <tr>
                         <td>Spesifikasi</td>

@@ -23,6 +23,7 @@ class RincianAsetModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
     function getRecycle() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -34,7 +35,7 @@ class RincianAsetModels extends Model
         return $query->getResult();
     }
 
-    public function find($id = null, $columns = '*') {
+    function find($id = null, $columns = '*') {
         $builder = $this->db->table($this->table);
         $builder->select($columns);
         
@@ -47,5 +48,12 @@ class RincianAsetModels extends Model
 
         $query = $builder->get();
         return $query->getRow();
+    }
+
+    function calculateTotalSarana($saranaLayak, $saranaRusak) {
+        $saranaLayak = intval($saranaLayak);
+        $saranaRusak = intval($saranaRusak);
+        $totalSarana = $saranaLayak + $saranaRusak;
+        return $totalSarana;
     }
 }

@@ -99,7 +99,7 @@
                     <div class="row mb-3">
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="file" class="form-control" id="bukti" name="bukti" accept="image/*">
+                            <input type="text" class="form-control" id="bukti" name="bukti" accept="image/*">
                         </div>
                     </div>
                     <div class="row mb-3">
