@@ -39,7 +39,7 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/IdentitasGedung_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('identitasGedung/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>

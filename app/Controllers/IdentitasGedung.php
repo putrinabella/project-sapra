@@ -155,6 +155,81 @@ class IdentitasGedung extends ResourcePresenter
         exit();
     }
 
+    public function createTemplate() {
+        $data = $this->identitasGedungModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+
+        $headers = ['No.', 'Nama Gedung'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), '');
+    
+            $columns = ['A', 'B'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $activeWorksheet->getStyle('A1:B1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:B1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:B'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:B')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'B') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headers = ['No.', 'Nama Gedung'];
+        $exampleSheet->fromArray([$headers], NULL, 'A1');
+        $exampleSheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->namaGedung);
+    
+            $columns = ['A', 'B'];
+
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $exampleSheet->getStyle('A1:B1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:B1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $exampleSheet->getStyle('A1:B'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:B')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'B') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Identitas Gedung Example.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+
     public function import() {
         $file = $this->request->getFile('formExcel');
         $extension = $file->getClientExtension();
@@ -213,4 +288,6 @@ class IdentitasGedung extends ResourcePresenter
         $filename = 'Identitas Gedung Report.pdf';
         $dompdf->stream($filename);
     }
+
+    
 }

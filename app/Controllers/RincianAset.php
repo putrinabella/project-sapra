@@ -53,7 +53,7 @@ class RincianAset extends ResourceController
         }
     }
 
-        public function new() {
+    public function new() {
         $data = [
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataSumberDana' => $this->sumberDanaModel->findAll(),
