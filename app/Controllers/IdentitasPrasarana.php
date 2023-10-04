@@ -21,27 +21,16 @@ class IdentitasPrasarana extends ResourceController
         $this->db = \Config\Database::connect();
     }
 
-    // DATATABLES
-    public function index()
-    {
+    public function index() {
         $data['dataIdentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
         return view('master/identitasPrasaranaView/index', $data);
     }
 
-    // Manual Pagination
-    // public function index()
-    // {
-    //     $data = $this->identitasPrasaranaModel->getPaginated(10);
-    //     return view('master/identitasPrasaranaView/index', $data);
-    // }
-
-        public function show($id = null)
-    {
+        public function show($id = null) {
         //
     }
 
-        public function new()
-    {
+        public function new() {
         $data = [
             'dataIdentitasGedung' => $this->identitasGedungModel->findAll(),
             'dataIdentitasLantai' => $this->identitasLantaiModel->findAll(),
@@ -56,14 +45,11 @@ class IdentitasPrasarana extends ResourceController
             unset($data['idIdentitasPrasarana']);
             $this->identitasPrasaranaModel->insert($data);
             $this->identitasPrasaranaModel->setKodePrasarana();
-            // $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 2, '0'), '/L', LPAD(idIdentitasLantai, 2, '0'))";
-            // $this->db->query($query);
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
     }
 
 
-        public function edit($id = null)
-    {
+    public function edit($id = null) {
         if ($id != null) {
             $dataIdentitasPrasarana = $this->identitasPrasaranaModel->find($id);
     
@@ -82,8 +68,6 @@ class IdentitasPrasarana extends ResourceController
         }
     }
     
-
-    
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
@@ -95,8 +79,7 @@ class IdentitasPrasarana extends ResourceController
         }
     }
 
-        public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->identitasPrasaranaModel->delete($id);
         return redirect()->to(site_url('identitasPrasarana'));
     }
@@ -220,7 +203,7 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
-            if ($index >= 3) {
+            if ($index >= 1) {
                 break;
             }
 
@@ -317,6 +300,48 @@ class IdentitasPrasarana extends ResourceController
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headerExampleTable = ['No.', 'Kode', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
+        $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
+        $exampleSheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
+
+        foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->kodePrasarana);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->luas);
+            $exampleSheet->setCellValue('E'.($index + 2), $value->idIdentitasGedung);
+            $exampleSheet->setCellValue('F'.($index + 2), $value->idIdentitasLantai);
+            $exampleSheet->setCellValue('G'.($index + 2), $value->idIdentitasPrasarana);
+            
+            $exampleSheet->getStyle('B'.($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                
+            $columns = ['A', 'C', 'D', 'E', 'F', 'G'];
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $exampleSheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $exampleSheet->getStyle('A1:G'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+        
+        foreach (range('A', 'G') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=Identitas Prasarana Example.xlsx');
