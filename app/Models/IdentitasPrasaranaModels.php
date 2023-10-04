@@ -31,16 +31,35 @@ class IdentitasPrasaranaModels extends Model
         return $query->getResult();
     }
 
-    function getPaginated($num, $keyword = null) {
-        $builder = $this->builder();
-        $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
-        $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
-        $builder->where('tblIdentitasPrasarana.deleted_at', null);
-        $data = [
-            'dataIdentitasPrasarana' => $this->paginate($num),
-            'pager' => $this->pager,
-        ];
-        return $data;
+    // function getPaginated($num, $keyword = null) {
+    //     $builder = $this->builder();
+    //     $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
+    //     $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
+    //     $builder->where('tblIdentitasPrasarana.deleted_at', null);
+    //     $data = [
+    //         'dataIdentitasPrasarana' => $this->paginate($num),
+    //         'pager' => $this->pager,
+    //     ];
+    //     return $data;
+    // }
+
+    public function updateKodePrasarana($id) {
+        $builder = $this->db->table('tblIdentitasPrasarana');
+        $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
+                        "/G", LPAD(idIdentitasGedung, 2, "0"), 
+                        "/L", LPAD(idIdentitasLantai, 2, "0"))', false);
+        $builder->where('idIdentitasPrasarana', $id);
+        $builder->update();
     }
+
+    public function setKodePrasarana() {
+        $builder = $this->db->table('tblIdentitasPrasarana');
+        $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
+                        "/G", LPAD(idIdentitasGedung, 2, "0"), 
+                        "/L", LPAD(idIdentitasLantai, 2, "0"))', false);
+        $builder->update();
+    }
+
+
     
 }

@@ -55,8 +55,9 @@ class IdentitasPrasarana extends ResourceController
         $data = $this->request->getPost();
             unset($data['idIdentitasPrasarana']);
             $this->identitasPrasaranaModel->insert($data);
-            $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 2, '0'), '/L', LPAD(idIdentitasLantai, 2, '0'))";
-            $this->db->query($query);
+            $this->identitasPrasaranaModel->setKodePrasarana();
+            // $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 2, '0'), '/L', LPAD(idIdentitasLantai, 2, '0'))";
+            // $this->db->query($query);
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
     }
 
@@ -83,13 +84,11 @@ class IdentitasPrasarana extends ResourceController
     
 
     
-    public function update($id = null)
-    {
+    public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
                 $this->identitasPrasaranaModel->update($id, $data);
-                $query = "UPDATE tblIdentitasPrasarana SET kodePrasarana = CONCAT('P', LPAD(idIdentitasPrasarana, 3, '0'), '/G', LPAD(idIdentitasGedung, 2, '0'), '/L', LPAD(idIdentitasLantai, 2, '0')) WHERE idIdentitasPrasarana = ?";
-                $this->db->query($query, [$id]);
+                $this->identitasPrasaranaModel->updateKodePrasarana($id);
                 return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
@@ -224,8 +223,10 @@ class IdentitasPrasarana extends ResourceController
             if ($index >= 3) {
                 break;
             }
+
+            $formula = '=CONCAT("P", TEXT(G'.($index + 2).', "000"), "/G", TEXT(E'.($index + 2).', "00"), "/L", TEXT(F'.($index + 2).', "00"))';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePrasarana);
+            $activeWorksheet->setCellValue('B'.($index + 2), $formula);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->luas);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->idIdentitasGedung);
