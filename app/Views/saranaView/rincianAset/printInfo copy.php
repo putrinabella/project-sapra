@@ -7,136 +7,141 @@
     <title>Detail Rincian Aset Report</title>
 
     <bukti rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/simplemde/simplemde.min.css">
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-            .table-responsive {
-                margin-bottom: 20px;
-            }
+        .table-responsive {
+            margin-bottom: 20px;
+        }
 
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-            th,
-            td {
-                border: none;
-                border-bottom: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
+        th,
+        td {
+            border: none;
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
 
-            th {
-                background-color: #f2f2f2;
-                width: 5%;
-            }
+        th {
+            background-color: #f2f2f2;
+            width: 5%;
+        }
 
 
-            h3 {
-                text-align: center;
-            }
+        h3 {
+            text-align: center;
+        }
 
-            img {
-                display: block;
-                margin: 0 auto;
-                max-width: 200px;
-                width: 100%;
-                padding: 20px 0;
-            }
-        </style>
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+            width: 100%;
+            padding: 20px 0;
+        }
+    </style>
 </head>
 
 <body>
     <div class="card overflow-hidden">
         <div class="card-body">
-            <h3>Data Rincian Aset
-                <?= $data['dataRincianAset']->namaSarana?>
-            </h3>
+            <h3>Data Rincian Aset</h3>
             <div class="text-center">
-                <?php
-                $imageData = base64_encode(file_get_contents($data['buktiUrl'] ));
-                echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">';
-            ?>
+                <img src="<?= $buktiUrl ?>" alt="Foto Bukti"
+                    style="width: 100%; max-width: 200px;" class="mx-auto">
             </div>
             <br>
             <table class="table" style="max-width: 90%; margin: 0 auto;">
                 <tr>
-                    <td style="width: 30%;">Kode Aset</td>
+                    <td style="width: 20%;">Kode Aset</td>
                     <td style="width: 5%;">:</td>
                     <td>
-                        <?= $data['dataRincianAset']->kodeRincianAset ?>
+                        <?= $dataRincianAset->kodeRincianAset?>
                     </td>
                 </tr>
                 <tr>
                     <td>Nama Aset</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->namaSarana?>
+                        <?= $dataRincianAset->namaSarana?>
                     </td>
                 </tr>
                 <tr>
                     <td>Lokasi</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->namaPrasarana?>
+                        <?= $dataRincianAset->namaPrasarana?>
                     </td>
                 </tr>
                 <tr>
                     <td>Sumber Dana</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->namaSumberDana?>
+                        <?= $dataRincianAset->namaSumberDana?>
                     </td>
                 </tr>
                 <tr>
                     <td>Kategori Manajemen</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->namaKategoriManajemen?>
+                        <?= $dataRincianAset->namaKategoriManajemen?>
                     </td>
                 </tr>
                 <tr>
                     <td>Tahun Pengadaan</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->tahunPengadaan?>
+                        <?= $dataRincianAset->tahunPengadaan?>
                     </td>
                 </tr>
                 <tr>
                     <td>Sarana Layak</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->saranaLayak?>
+                        <?= $dataRincianAset->saranaLayak?>
                     </td>
                 </tr>
                 <tr>
                     <td>Sarana Rusak</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->saranaRusak?>
+                        <?= $dataRincianAset->saranaRusak?>
                     </td>
                 </tr>
                 <tr>
                     <td>Total Sarana</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianAset']->totalSarana?>
+                        <?= $dataRincianAset->totalSarana?>
                     </td>
                 </tr>
                 <tr>
                     <td>Spesifikasi</td>
                     <td>:</td>
-                    <td>
-                        <?=  $data['spesifikasiHtml']  ?>
-                    </td>
+                    <td> <?= $spesifikasiHtml ?></td>
                 </tr>
             </table>
         </div>
     </div>
 </body>
+
+<script src="<?= base_url(); ?>/assets/vendors/simplemde/simplemde.min.js"></script>
+<script src="<?= base_url(); ?>/assets/js/simplemde.js"></script>
+<script src="<?= base_url(); ?>/assets/js/my-simplemde.js"></script>
+
+
+<!-- <script>
+    window.onload = function () {
+        window.print();
+    };
+</script> -->
 
 </html>

@@ -277,56 +277,51 @@ class RincianAset extends ResourceController
         $dompdf->stream($filename);
     }
 
+
     public function print($id = null) {
-        $filePath = APPPATH . 'Views/saranaView/rincianAset/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataRincianAset = $this->rincianAsetModel->find($id);
+        
+        if (!is_object($dataRincianAset)) {
             return view('error/404');
         }
 
-        $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
+        $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
+        $parsedown = new Parsedown();
+        $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+        $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
+
+        $data = [
+            'dataRincianAset'           => $dataRincianAset,
+            'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+            'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+            'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+            'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+            'buktiUrl'                  => $buktiUrl,
+            'spesifikasiHtml'           => $spesifikasiHtml,
+        ];
+
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/printInfo.php';
+
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
 
         ob_start();
 
         $includeFile = function ($filePath, $data) {
             include $filePath;
         };
-    
+
         $includeFile($filePath, $data);
-    
+
         $html = ob_get_clean();
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $filename = 'Sarana - Rincian Aset Report.pdf';
+        $filename = 'Sarana - Detail Rincian Aset.pdf';
+        $namaSarana = $data['dataRincianAset']->namaSarana;
+        $filename = "Sarana - Detail Rincian Aset $namaSarana.pdf";
         $dompdf->stream($filename);
-        
-        if ($id != null) {
-            $dataRincianAset = $this->rincianAsetModel->find($id);
-            $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
-            $parsedown = new Parsedown();
-            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-
-            $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
-            if (is_object($dataRincianAset)) {
-                $data = [
-                    'dataRincianAset'     => $dataRincianAset,
-                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana'      => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
-                    'buktiUrl'                  => $buktiUrl,
-                    'spesifikasiHtml'           => $spesifikasiHtml,
-                ];
-    
-                return view('saranaView/rincianAset/printInfo', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
     }
-    
 }
