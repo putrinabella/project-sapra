@@ -22,7 +22,7 @@
 
         th,
         td {
-            border: 1px solid #ddd;
+            border: 1px solid black;
             padding: 8px;
             text-align: center;
         }
@@ -30,6 +30,10 @@
         th {
             background-color: #f2f2f2;
             width: 5%;
+        }
+
+        h2 {
+            text-align: center;
         }
     </style>
 </head>
@@ -41,7 +45,6 @@
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
-                    <th>Kode Rincian Aset</th>
                     <th>Nama Aset</th>
                     <th>Lokasi</th>
                     <th>Sumber Dana</th>
@@ -50,18 +53,19 @@
                     <th>Sarana Layak</th>
                     <th>Sarana Rusak</th>
                     <th>Total Sarana</th>
-                    <th>Dokumentasi</th>
                 </tr>
             </thead>
             <tbody class="py-2">
                 <?php foreach ($data['dataRincianAset'] as $key => $value) : ?>
                     <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                        <td>
+                        <td rowspan="2" >
                             <?= $key + 1 ?>
                         </td>
-                        <td>
+                        <td colspan="8">  
                             <?= $value->kodeRincianAset ?>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             <?= $value->namaSarana ?>
                         </td>
@@ -85,16 +89,6 @@
                         </td>
                         <td>
                             <?= $value->totalSarana ?>
-                        </td>
-                        <td>
-                        <?php
-                        if (file_exists($value->bukti)) {
-                            $imageData = base64_encode(file_get_contents($value->bukti));
-                            echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">';
-                        } else {
-                            echo '-';
-                        }
-                        ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
