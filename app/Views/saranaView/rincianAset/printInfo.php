@@ -39,13 +39,15 @@
             h3 {
                 text-align: center;
             }
+            
+            .image-container {
+                text-align: center;
+            }
 
-            img {
+            .image-container img {
+                max-height: 300px;
                 display: block;
                 margin: 0 auto;
-                max-width: 200px;
-                width: 100%;
-                padding: 20px 0;
             }
         </style>
 </head>
@@ -56,12 +58,14 @@
             <h3>Data Rincian Aset
                 <?= $data['dataRincianAset']->namaSarana?>
             </h3>
-            <div class="text-center">
+            <div class="image-container">
                 <?php
-                $imageData = base64_encode(file_get_contents($data['buktiUrl'] ));
-                echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">';
-            ?>
+                    $imageData = base64_encode(file_get_contents($data['buktiUrl']));
+                    echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti">';
+                ?>
             </div>
+
+
             <br>
             <table class="table" style="max-width: 90%; margin: 0 auto;">
                 <tr>

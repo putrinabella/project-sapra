@@ -266,6 +266,190 @@ class RincianAset extends ResourceController
         exit();
     }
     
+    public function createTemplate() {
+        $data = $this->rincianAsetModel->getAll();
+        $keyGedung = $this->identitasGedungModel->findAll();
+        $keyLantai = $this->identitasLantaiModel->findAll();
+        $keyPrasarana = $this->identitasPrasaranaModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        
+        $headerInputTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
+        $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        $headerGedungID = ['ID Identitas Gedung', 'Nama Gedung'];
+        $activeWorksheet->fromArray([$headerGedungID], NULL, 'I1');
+        $activeWorksheet->getStyle('I1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $headerLantaiID = ['ID Identitas Lantai', 'Nama Lantai'];
+        $activeWorksheet->fromArray([$headerLantaiID], NULL, 'L1');
+        $activeWorksheet->getStyle('L1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        $headerPrasaranaID = ['ID Identitas Prasarana', 'Nama Prasarana'];
+        $activeWorksheet->fromArray([$headerPrasaranaID], NULL, 'O1');
+        $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        $latestID = null;
+
+        foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
+
+            $latestData = end($data); 
+
+            if ($latestID === null) {
+                $latestID = $latestData->idIdentitasPrasarana +1;
+            } else {
+                $latestID = "=G".($index + 1)." + 1";
+            }
+
+            $formula = '=CONCAT("P", TEXT(G'.($index + 2).', "000"), "/G", TEXT(E'.($index + 2).', "00"), "/L", TEXT(F'.($index + 2).', "00"))';
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), $formula);
+            $activeWorksheet->setCellValue('C'.($index + 2), '');
+            $activeWorksheet->setCellValue('D'.($index + 2), '');
+            $activeWorksheet->setCellValue('E'.($index + 2), '');
+            $activeWorksheet->setCellValue('F'.($index + 2), '');
+            $activeWorksheet->setCellValue('G'.($index + 2), $latestID);
+            
+            $activeWorksheet->getStyle('B'.($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                
+            $columns = ['A', 'C', 'D', 'E', 'F', 'G'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+    
+        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+        
+        foreach (range('A', 'G') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        foreach ($keyGedung as $index => $value) {
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->idIdentitasGedung);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->namaGedung);
+    
+            $columns = ['I', 'J'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('I1:J1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('I1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('I1:J'.(count($keyGedung) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('I:J')->getAlignment()->setWrapText(true);
+    
+        foreach (range('I', 'J') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        foreach ($keyLantai as $index => $value) {
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->idIdentitasLantai);
+            $activeWorksheet->setCellValue('M'.($index + 2), $value->namaLantai);
+    
+            $columns = ['L', 'M'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('L1:M1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('L1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('L1:M'.(count($keyLantai) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('L:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('L', 'M') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        foreach ($keyPrasarana as $index => $value) {
+            $activeWorksheet->setCellValue('O'.($index + 2), $value->idIdentitasPrasarana);
+            $activeWorksheet->setCellValue('P'.($index + 2), $value->namaPrasarana);
+    
+            $columns = ['O', 'P'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('O1:P1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('O1:P1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('O1:P'.(count($keyPrasarana) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('O:P')->getAlignment()->setWrapText(true);
+    
+        foreach (range('O', 'P') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headerExampleTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
+        $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
+        $exampleSheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
+
+        foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->kodePrasarana);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->luas);
+            $exampleSheet->setCellValue('E'.($index + 2), $value->idIdentitasGedung);
+            $exampleSheet->setCellValue('F'.($index + 2), $value->idIdentitasLantai);
+            $exampleSheet->setCellValue('G'.($index + 2), $value->idIdentitasPrasarana);
+            
+            $exampleSheet->getStyle('B'.($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                
+            $columns = ['A', 'C', 'D', 'E', 'F', 'G'];
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $exampleSheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $exampleSheet->getStyle('A1:G'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+        
+        foreach (range('A', 'G') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Identitas Prasarana Example.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
 
     public function generatePDF() {
         $filePath = APPPATH . 'Views/saranaView/rincianAset/print.php';

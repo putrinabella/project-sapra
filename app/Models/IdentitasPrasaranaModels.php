@@ -14,7 +14,7 @@ class IdentitasPrasaranaModels extends Model
     protected $useSoftDeletes   = true;
 
     function getAll() {
-        $builder = $this->db->table('tblIdentitasPrasarana');
+        $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
         $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
         $builder->where('tblIdentitasPrasarana.deleted_at', null);
@@ -23,7 +23,7 @@ class IdentitasPrasaranaModels extends Model
     }
     
     function getRecycle() {
-        $builder = $this->db->table('tblIdentitasPrasarana');
+        $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
         $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
         $builder->where('tblIdentitasPrasarana.deleted_at IS NOT NULL');
@@ -44,7 +44,7 @@ class IdentitasPrasaranaModels extends Model
     // }
 
     function updateKodePrasarana($id) {
-        $builder = $this->db->table('tblIdentitasPrasarana');
+        $builder = $this->db->table($this->table);
         $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
                         "/G", LPAD(idIdentitasGedung, 2, "0"), 
                         "/L", LPAD(idIdentitasLantai, 2, "0"))', false);
@@ -53,7 +53,7 @@ class IdentitasPrasaranaModels extends Model
     }
 
     function setKodePrasarana() {
-        $builder = $this->db->table('tblIdentitasPrasarana');
+        $builder = $this->db->table($this->table);
         $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
                         "/G", LPAD(idIdentitasGedung, 2, "0"), 
                         "/L", LPAD(idIdentitasLantai, 2, "0"))', false);

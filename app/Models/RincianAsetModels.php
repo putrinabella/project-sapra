@@ -14,7 +14,7 @@ class RincianAsetModels extends Model
     protected $useSoftDeletes   = true;
 
     function getAll() {
-        $builder = $this->db->table('tblRincianAset');
+        $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
