@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Parsedown;
 
 class RincianAset extends ResourceController
 {
@@ -35,16 +36,20 @@ class RincianAset extends ResourceController
             $dataRincianAset = $this->rincianAsetModel->find($id);
         
             if (is_object($dataRincianAset)) {
+                $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
+                $parsedown = new Parsedown();
+                $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+
                 $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
                 $data = [
-                    'dataRincianAset'     => $dataRincianAset,
-                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
-                    'buktiUrl' => $buktiUrl,
+                    'dataRincianAset'           => $dataRincianAset,
+                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+                    'buktiUrl'                  => $buktiUrl,
+                    'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
-
                 return view('saranaView/rincianAset/show', $data);
             } else {
                 return view('error/404');
@@ -54,7 +59,7 @@ class RincianAset extends ResourceController
         }
     }
 
-        public function new() {
+    public function new() {
         $data = [
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataSumberDana' => $this->sumberDanaModel->findAll(),
@@ -153,8 +158,7 @@ class RincianAset extends ResourceController
         }
     }
 
-        public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->rincianAsetModel->delete($id);
         return redirect()->to(site_url('rincianAset'));
     }
@@ -247,8 +251,7 @@ class RincianAset extends ResourceController
     }
     
 
-    public function generatePDF()
-    {
+    public function generatePDF() {
         $filePath = APPPATH . 'Views/saranaView/rincianAset/print.php';
     
         if (!file_exists($filePath)) {
@@ -275,9 +278,37 @@ class RincianAset extends ResourceController
     }
 
     public function print($id = null) {
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/print.php';
+    
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $filename = 'Sarana - Rincian Aset Report.pdf';
+        $dompdf->stream($filename);
+        
         if ($id != null) {
             $dataRincianAset = $this->rincianAsetModel->find($id);
-    
+            $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
+            $parsedown = new Parsedown();
+            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+
+            $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
             if (is_object($dataRincianAset)) {
                 $data = [
                     'dataRincianAset'     => $dataRincianAset,
@@ -285,6 +316,8 @@ class RincianAset extends ResourceController
                     'dataSumberDana'      => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
                     'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                    'buktiUrl'                  => $buktiUrl,
+                    'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
     
                 return view('saranaView/rincianAset/printInfo', $data);

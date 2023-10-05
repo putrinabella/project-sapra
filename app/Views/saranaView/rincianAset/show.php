@@ -88,10 +88,7 @@
                     <tr>
                         <td>Spesifikasi</td>
                         <td>:</td>
-                        <td>
-                                <textarea class="form-control" id="editspek" name="spesifikasi" rows="10"
-                                placeholder="Masukkan spesifikasi aset"><?=$dataRincianAset->spesifikasi?></textarea>
-                        </td>
+                        <td> <?= $spesifikasiHtml ?></td>
                     </tr>
                 </table>
             </div>

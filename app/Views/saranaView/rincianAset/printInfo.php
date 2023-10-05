@@ -55,7 +55,7 @@
         <div class="card-body">
             <h3>Data Rincian Aset</h3>
             <div class="text-center">
-                <img src="<?= base_url($dataRincianAset->bukti) ?>" alt="Foto Bukti"
+                <img src="<?= $buktiUrl ?>" alt="Foto Bukti"
                     style="width: 100%; max-width: 200px;" class="mx-auto">
             </div>
             <br>
@@ -126,9 +126,7 @@
                 <tr>
                     <td>Spesifikasi</td>
                     <td>:</td>
-                    <td>
-                        <textarea class="form-control" id="editspek" name="spesifikasi" rows="10"><?=$dataRincianAset->spesifikasi?></textarea>
-                    </td>
+                    <td> <?= $spesifikasiHtml ?></td>
                 </tr>
             </table>
         </div>
