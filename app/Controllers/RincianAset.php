@@ -202,17 +202,30 @@ class RincianAset extends ResourceController
             }
         }
     } 
+
+    private function html2text($html) {
+        $plainText = strip_tags(str_replace('<br />', "\n", $html));
+        $plainText = preg_replace('/\n+/', "\n", $plainText);
+        return $plainText;
+    }
     
     public function export() {
         $data = $this->rincianAsetModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Kode Aset', 'Nama Aset', 'Tahun Pengadaan', 'Kategori Manajemen', 'Sumber Dana', 'Aset Layak', 'Aset Rusak', 'Total Aset' , 'Link Dokumentasi', 'Spesifikasi'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:L1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    
+        
         foreach ($data as $index => $value) {
+            $spesifikasiMarkup = $value->spesifikasi; 
+            $parsedown = new Parsedown();
+            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+            $spesifikasiText = $this->html2text($spesifikasiHtml);
+            
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
@@ -223,18 +236,20 @@ class RincianAset extends ResourceController
             $activeWorksheet->setCellValue('H'.($index + 2), $value->saranaRusak);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->totalSarana);
             $activeWorksheet->setCellValue('J'.($index + 2), $value->bukti);
-            $activeWorksheet->setCellValue('K'.($index + 2), $value->spesifikasi);
-    
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K'];
-
+            $activeWorksheet->setCellValue('K'.($index + 2), $spesifikasiText);
+            
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J'];
+            
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
-                                ->getAlignment()
-                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                ->getAlignment()
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             }            
         }
-    
-        $activeWorksheet->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('K')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        
+        $activeWorksheet->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $activeWorksheet->getStyle('A1:K1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('A1:K'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:K')->getAlignment()->setWrapText(true);
