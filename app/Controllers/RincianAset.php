@@ -477,6 +477,57 @@ class RincianAset extends ResourceController
         exit();
     }
 
+    public function import() {
+        $file = $this->request->getFile('formExcel');
+        $extension = $file->getClientExtension();
+        if($extension == 'xlsx' || $extension == 'xls') {
+            if($extension == 'xls') {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            }
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            
+            $spreadsheet = $reader->load($file);
+            $theFile = $spreadsheet->getActiveSheet()->toArray();
+
+            foreach ($theFile as $key => $value) {
+                if ($key == 0) {
+                    continue;
+                }
+                $kodeRincianAset        = $value[1] ?? null;
+                $idIdentitasSarana      = $value[2] ?? null;
+                $idSumberDana           = $value[4] ?? null;
+                $idKategoriManajemen    = $value[5] ?? null;
+                $tahunPengadaan         = $value[6] ?? null;
+                $saranaLayak            = $value[7] ?? null;
+                $saranaRusak            = $value[8] ?? null;
+                $totalSarana            = $value[9] ?? null;
+                $bukti                  = $value[10] ?? null;
+                $kodePrasarana          = $value[11] ?? null;
+
+                if ($kodeRincianAset !== null) {
+                    $data = [
+                        'kodeRincianAset' => $kodeRincianAset,
+                        'idIdentitasSarana' => $idIdentitasSarana,
+                        'idSumberDana' => $idSumberDana,
+                        'idKategoriManajemen' => $idKategoriManajemen,
+                        'kodePrasarana' => $kodePrasarana,
+                        'tahunPengadaan' => $tahunPengadaan,
+                        'saranaLayak' => $saranaLayak,
+                        'saranaRusak' => $saranaRusak,
+                        'spesifikasi' => '',
+                        'totalSarana' => $totalSarana,
+                        'bukti' => $bukti,
+                    ];
+                    $this->rincianAsetModel->insert($data);
+                }
+            }
+            return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diimport');
+        } else {
+            return redirect()->to(site_url('rincianAset'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+        }
+    }
+
+
     public function generatePDF() {
         $filePath = APPPATH . 'Views/saranaView/rincianAset/print.php';
     
