@@ -93,7 +93,7 @@
                     <div class="row mb-3">
                         <label for="spesifikasi" class="col-sm-3 col-form-label">Spesifikasi</label>
                         <div class="col-sm-9">
-                        <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="5" placeholder="Masukkan spesifikasi aset" rows="10"></textarea>
+                            <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="5" placeholder="Masukkan spesifikasi aset" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="row mb-3">

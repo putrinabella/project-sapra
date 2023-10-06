@@ -320,6 +320,7 @@ class RincianAset extends ResourceController
             $activeWorksheet->setCellValue('J'.($index + 2), $getTotalSarana);
             $activeWorksheet->setCellValue('K'.($index + 2), '');
             $activeWorksheet->setCellValue('L'.($index + 2), $getKodePrasarana);
+            
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
