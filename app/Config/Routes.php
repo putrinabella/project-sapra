@@ -147,6 +147,7 @@ $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
 // Layanan Aset
+$routes->get('saranaLayananAset/createTemplate', 'SaranaLayananAset::createTemplate');
 $routes->get('saranaLayananAset/generatePDF', 'SaranaLayananAset::generatePDF');
 $routes->get('saranaLayananAset/export', 'SaranaLayananAset::export');
 $routes->post('saranaLayananAset/import', 'SaranaLayananAset::import');

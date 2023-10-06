@@ -31,6 +31,10 @@
             background-color: #f2f2f2;
             width: 5%;
         }
+
+        h2 {
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -48,7 +52,6 @@
                     <th>Kategori Manajemen</th>
                     <th>Sumber Dana</th>
                     <th>Biaya</th>
-                    <th>Bukti</th>
                 </tr>
             </thead>
             <tbody class="py-2">
@@ -77,16 +80,6 @@
                         </td>
                         <td>
                             Rp<?= number_format($value->biaya, 0, ',', '.') ?>
-                        </td>
-                        <td>
-                        <?php
-                        if (file_exists($value->bukti)) {
-                            $imageData = base64_encode(file_get_contents($value->bukti));
-                            echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti" style="max-width: 100%;" class="mx-auto">';
-                        } else {
-                            echo '-';
-                        }
-                        ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

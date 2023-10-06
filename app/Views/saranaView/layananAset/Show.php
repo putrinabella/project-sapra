@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                <img src="<?= base_url($dataSaranaLayananAset->bukti) ?>" alt="Foto Bukti" style="width: 100%; max-width: 200px;" class="mx-auto">
+                    <img src="<?= $buktiUrl ?>" alt="Foto Bukti" style=" max-height: 300px;" class="mx-auto">
                 </div>
                 <br>
                 <table class="table">
@@ -65,6 +65,11 @@
                         <td>Biaya</td>
                         <td>:</td>
                         <td>Rp<?=number_format($dataSaranaLayananAset->biaya, 0, ',', '.')?></td>
+                    </tr>
+                    <tr>
+                        <td>Link Bukti</td>
+                        <td>:</td>
+                        <td><?= $dataSaranaLayananAset->bukti?></td>
                     </tr>
                 </table>
             </div>

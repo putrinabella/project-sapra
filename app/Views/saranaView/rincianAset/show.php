@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                <img src="<?= $buktiUrl ?>" alt="Foto Bukti" style=" max-height: 300px;" class="mx-auto">
+                    <img src="<?= $buktiUrl ?>" alt="Foto Bukti" style=" max-height: 300px;" class="mx-auto">
                 </div>
                 <br>
                 <table class="table" style="max-width: 90%; margin: 0 auto;">

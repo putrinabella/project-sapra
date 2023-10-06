@@ -112,27 +112,6 @@ class RincianAset extends ResourceController
         }
     }
     
-
-    public function edit($id = null) {
-        if ($id != null) {
-            $dataRincianAset = $this->rincianAsetModel->find($id);
-    
-            if (is_object($dataRincianAset)) {
-                $data = [
-                    'dataRincianAset' => $dataRincianAset,
-                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
-                ];
-                return view('saranaView/rincianAset/edit', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
-    }
     
     public function update($id = null) {
         if ($id != null) {
@@ -152,6 +131,27 @@ class RincianAset extends ResourceController
             } else {
                 return redirect()->to
                 (site_url('rincianAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+
+    public function edit($id = null) {
+        if ($id != null) {
+            $dataRincianAset = $this->rincianAsetModel->find($id);
+    
+            if (is_object($dataRincianAset)) {
+                $data = [
+                    'dataRincianAset' => $dataRincianAset,
+                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                ];
+                return view('saranaView/rincianAset/edit', $data);
+            } else {
+                return view('error/404');
             }
         } else {
             return view('error/404');
@@ -203,7 +203,7 @@ class RincianAset extends ResourceController
         }
     } 
 
-    private function html2text($html) {
+    private function htmlConverter($html) {
         $plainText = strip_tags(str_replace('<br />', "\n", $html));
         $plainText = preg_replace('/\n+/', "\n", $plainText);
         return $plainText;  
@@ -224,7 +224,7 @@ class RincianAset extends ResourceController
             $spesifikasiMarkup = $value->spesifikasi; 
             $parsedown = new Parsedown();
             $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-            $spesifikasiText = $this->html2text($spesifikasiHtml);
+            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
             
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
@@ -471,7 +471,7 @@ class RincianAset extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Prasarana Example.xlsx');
+        header('Content-Disposition: attachment;filename=Rincian Aset Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
