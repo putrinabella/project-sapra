@@ -36,10 +36,15 @@ class RincianAset extends ResourceController
             $dataRincianAset = $this->rincianAsetModel->find($id);
         
             if (is_object($dataRincianAset)) {
-                $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
+                $spesifikasiMarkup = $dataRincianAset->spesifikasi;
                 $parsedown = new Parsedown();
                 $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+                $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
 
+                // $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
+                // $parsedown = new Parsedown();
+                // $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+                
                 $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
                 $data = [
                     'dataRincianAset'           => $dataRincianAset,
@@ -249,6 +254,7 @@ class RincianAset extends ResourceController
             }            
         }
         $activeWorksheet->getStyle('L')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        $activeWorksheet->getStyle('L')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         
         $activeWorksheet->getStyle('A1:Q1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $activeWorksheet->getStyle('A1:Q1')->getFont()->setBold(true);
@@ -256,7 +262,14 @@ class RincianAset extends ResourceController
         $activeWorksheet->getStyle('A:L')->getAlignment()->setWrapText(true);
     
         foreach (range('A', 'L') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            if ($column === 'K') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(20);
+            } else if ($column === 'L') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            }
+
         }
     
         $writer = new Xlsx($spreadsheet);

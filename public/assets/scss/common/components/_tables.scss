@@ -1,11 +1,11 @@
-// Tables 
+// Tables
 
 .table {
   margin-bottom: 0;
 
-  >:not(:last-child)>:last-child>* {
-		border-bottom-color: inherit;
-	}
+  > :not(:last-child) > :last-child > * {
+    border-bottom-color: inherit;
+  }
 
   thead {
     th {
@@ -24,7 +24,7 @@
   td {
     white-space: nowrap;
   }
-  
+
   td {
     img {
       width: 36px;

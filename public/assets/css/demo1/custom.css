@@ -1,14 +1,13 @@
-/* .dropdown-container {
-  width: 100%;
+.my-table {
+  max-width: 90vw;
+  border-collapse: collapse;
 }
 
-.dropdown-toggle {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.my-table td,
+.my-table th {
+  border-bottom: 1px solid #e6dfdf;
+  padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
 }
-
-.dropdown-toggle .arrow {
-  margin-left: auto;
-} */

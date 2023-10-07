@@ -149,7 +149,7 @@ class SaranaLayananNonAset extends ResourceController
 
     public function trash() {
         $data['dataSaranaLayananNonAset'] = $this->saranaLayananNonAsetModel->onlyDeleted()->getRecycle();
-        return view('saranaView/LayananAset/trash', $data);
+        return view('saranaView/LayananNonAset/trash', $data);
     } 
 
     public function restore($id = null) {
@@ -192,51 +192,65 @@ class SaranaLayananNonAset extends ResourceController
         $plainText = preg_replace('/\n+/', "\n", $plainText);
         return $plainText;  
     }
-
+    
     public function export() {
         $data = $this->saranaLayananNonAsetModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Layanan Aset');
+        $activeWorksheet->setTitle('Layanan Non Aset');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti', 'Kode Lokasi'];
+        $headers = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Spesifikasi'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    
+        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
         foreach ($data as $index => $value) {
+            $spesifikasiMarkup = $value->spesifikasi; 
+            $parsedown = new Parsedown();
+            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
+            
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggal);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaStatusLayanan);
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
-            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
-            $activeWorksheet->setCellValue('H'.($index + 2), $value->biaya);
-            $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
-            $activeWorksheet->setCellValue('J'.($index + 2), $value->kodePrasarana);
-    
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J'];
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaStatusLayanan);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaKategoriManajemen);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->biaya);
+            $activeWorksheet->setCellValue('H'.($index + 2), $value->bukti);
+            $activeWorksheet->setCellValue('I'.($index + 2), $spesifikasiText);
+            
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+            
+            $activeWorksheet->getStyle('I')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
-                                ->getAlignment()
-                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                ->getAlignment()
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             }            
         }
+        
+        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
     
-        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
-        $activeWorksheet->getStyle('A1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
-    
-        foreach (range('A', 'J') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        foreach (range('A', 'I') as $column) {
+            if ($column === 'H') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(20);
+            } else if ($column === 'I') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            }
         }
+        
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Layanan Aset Sarana.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Layanan Non Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -254,7 +268,7 @@ class SaranaLayananNonAset extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Tanggal', 'ID Aset', 'ID Prasarana', 'ID Status Layanan', 'ID Sumber Dana', 'ID Kategori Manajemen', 'Biaya', 'Bukti'];
+        $headerInputTable = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Spesifikasi'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -465,7 +479,7 @@ class SaranaLayananNonAset extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Layanan Aset Example.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Layanan Non Aset Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -540,7 +554,7 @@ class SaranaLayananNonAset extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Sarana - Layanan Aset Report.pdf';
+        $filename = 'Sarana - Layanan Non Aset Report.pdf';
         $dompdf->stream($filename);
     }
 
