@@ -6,13 +6,6 @@
 
 <?= $this->section("content"); ?>
 
-<!-- <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Detail Rincian Aset</h4>
-    </div>
-</div> -->
-
-
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
@@ -24,7 +17,7 @@
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                        <a href="<?= site_url('rincianAset/print/'.$dataPrasaranaNonRuangan->idIdentitasPrasarana)?>"
+                        <a href="<?= site_url('prasaranaNonRuangan/print/'.$dataPrasaranaNonRuangan->idIdentitasPrasarana)?>"
                             class="btn btn-outline-success btn-icon-text mb-2 mb-md-0" target="_blank">
                             <i class="btn-icon-prepend" data-feather="printer"></i>
                             Print

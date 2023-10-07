@@ -181,6 +181,8 @@ $routes->get('prasaranaRuangan/export', 'PrasaranaRuangan::export');
 $routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
 
 // Non Ruangan
+$routes->get('prasaranaNonRuangan/print/(:num)', 'PrasaranaNonRuangan::print/$1');
+// $routes->get('prasaranaNonRuangan/print', 'PrasaranaNonRuangan::print');
 $routes->get('prasaranaNonRuangan/createTemplate', 'PrasaranaNonRuangan::createTemplate');
 $routes->get('prasaranaNonRuangan/generatePDF', 'PrasaranaNonRuangan::generatePDF');
 $routes->get('prasaranaNonRuangan/export', 'PrasaranaNonRuangan::export');
