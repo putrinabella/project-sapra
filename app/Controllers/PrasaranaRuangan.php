@@ -8,6 +8,9 @@ use App\Models\IdentitasSaranaModels;
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
 use App\Models\IdentitasPrasaranaModels; 
+use App\Models\IdentitasGedungModels; 
+use App\Models\IdentitasLantaiModels; 
+use App\Models\RincianAsetModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -23,37 +26,37 @@ class PrasaranaRuangan extends ResourceController
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
+        $this->identitasGedungModel = new IdentitasGedungModels();
+        $this->identitasLantaiModel = new IdentitasLantaiModels();
+        $this->rincianAsetModel = new RincianAsetModels();
         $this->db = \Config\Database::connect();
     }
 
+    // public function index() {
+    //     $data['dataPrasaranaRuangan'] = $this->prasaranaRuanganModel->getRuangan();
+    //     return view('prasaranaView/ruangan/index', $data);
+    // }
+
     public function index() {
-        $data['dataPrasaranaRuangan'] = $this->prasaranaRuanganModel->getAll();
+        $data['dataPrasaranaRuangan'] = $this->prasaranaRuanganModel->getRuangan();
         return view('prasaranaView/ruangan/index', $data);
     }
-
+    
     public function show($id = null) {
         if ($id != null) {
             $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);
-        
+            
             if (is_object($dataPrasaranaRuangan)) {
-                $spesifikasiMarkup = $dataPrasaranaRuangan->spesifikasi;
-                $parsedown = new Parsedown();
-                $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-                $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-
-                // $spesifikasiMarkup = $dataPrasaranaRuangan->spesifikasi; 
-                // $parsedown = new Parsedown();
-                // $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 
-                $buktiUrl = $this->generateFileId($dataPrasaranaRuangan->bukti);
+                $dataInfoPrasarana = $this->prasaranaRuanganModel->getIdentitasGedung($dataPrasaranaRuangan->idIdentitasPrasarana);
+                $dataInfoPrasarana->namaLantai = $this->prasaranaRuanganModel->getIdentitasLantai($dataPrasaranaRuangan->idIdentitasPrasarana)->namaLantai;
+                $dataSarana = $this->prasaranaRuanganModel->getSaranaByPrasaranaId($dataPrasaranaRuangan->idIdentitasPrasarana);
+
                 $data = [
-                    'dataPrasaranaRuangan'           => $dataPrasaranaRuangan,
-                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-                    'buktiUrl'                  => $buktiUrl,
-                    'spesifikasiHtml'           => $spesifikasiHtml,
+                    'dataPrasaranaRuangan'  => $dataPrasaranaRuangan,
+                    'dataInfoPrasarana'     => $dataInfoPrasarana,
+                    'dataSarana'            => $dataSarana,
+                    
                 ];
                 return view('prasaranaView/ruangan/show', $data);
             } else {
@@ -63,7 +66,13 @@ class PrasaranaRuangan extends ResourceController
             return view('error/404');
         }
     }
-
+    
+    // $spesifikasiMarkup = $dataPrasaranaRuangan->spesifikasi;
+    // $parsedown = new Parsedown();
+    // $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+    // $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
+    
+    // $buktiUrl = $this->generateFileId($dataPrasaranaRuangan->bukti);
     public function new() {
         $data = [
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
