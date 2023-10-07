@@ -38,6 +38,16 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="tipe" class="col-sm-3 col-form-label">Lokasi Gedung</label>
+                        <div class="col-sm-9">
+                        <select class="form-select" id="tipe" name="tipe">
+                            <option value="" hidden>Pilih tipe</option>
+                            <option value="Ruangan" >Ruangan</option>
+                            <option value="Non Ruangan" >Non Ruangan</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="idIdentitasGedung" class="col-sm-3 col-form-label">Lokasi Gedung</label>
                         <div class="col-sm-9">
                         <select class="form-select" id="idIdentitasGedung" name="idIdentitasGedung">

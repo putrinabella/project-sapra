@@ -172,33 +172,19 @@ $routes->delete('saranaLayananNonAset/deletePermanent/(:any)', 'SaranaLayananNon
 $routes->delete('saranaLayananNonAset/deletePermanent', 'SaranaLayananNonAset::deletePermanent');
 $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 
-// $routes->get('identitasGedung', 'InformasiController::getIdentitasGedung');
-// $routes->get('identitasLantai', 'InformasiController::getIdentitasLantai');
-// $routes->get('statusManajemen', 'InformasiController::getStatusManajemen');
-// $routes->get('kategoriManajemen', 'InformasiController::getKategoriManajemen');
-// $routes->get('profilSekolah', 'InformasiController::getProfilSekolah');
+// PRASARANA
 
-// $routes->get('manajemenUser', 'UserController::getManajemenUser');
+// Ruangan
+$routes->get('prasaranaRuangan/createTemplate', 'PrasaranaRuangan::createTemplate');
+$routes->get('prasaranaRuangan/generatePDF', 'PrasaranaRuangan::generatePDF');
+$routes->get('prasaranaRuangan/export', 'PrasaranaRuangan::export');
+$routes->post('prasaranaRuangan/import', 'PrasaranaRuangan::import');
+$routes->get('prasaranaRuangan/edit', 'PrasaranaRuangan::edit');
+$routes->get('prasaranaRuangan/trash', 'PrasaranaRuangan::trash');
+$routes->get('prasaranaRuangan/restore/(:any)', 'PrasaranaRuangan::restore/$1');
+$routes->get('prasaranaRuangan/restore', 'PrasaranaRuangan::restore');
+$routes->delete('prasaranaRuangan/deletePermanent/(:any)', 'PrasaranaRuangan::deletePermanent/$1');
+$routes->delete('prasaranaRuangan/deletePermanent', 'PrasaranaRuangan::deletePermanent');
+$routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
 
-// $routes->get('layananAsetIt', 'ItController::getLayananAset');
-// $routes->get('rincianAsetIt', 'ItController::getRincianAset');
-// $routes->get('perangkatIt', 'ItController::getPerangkatIt');
-// $routes->get('websiteSosmed', 'ItController::getWebsiteSosmed');
-
-// $routes->get('manajemenPeminjamanLab', 'LabController::getManajemenPeminjamanLab');
-// $routes->get('layananAsetLab', 'LabController::getLayananAsetLab');
-// $routes->get('layananNonAsetLab', 'LabController::getLayananNonAsetLab');
-// $routes->get('rincianAsetLab', 'LabController::getRincianAsetLab');
-// $routes->get('manajemenLab', 'LabController::getManajemenLab');
-
-// $routes->get('kantin', 'PrasaranaController::getKantin');
-// $routes->get('lapangan', 'PrasaranaController::getLapangan');
-// $routes->get('parkiran', 'PrasaranaController::getParkiran');
-// $routes->get('parkiran', 'PrasaranaController::getParkiran');
-// $routes->get('ruangan', 'PrasaranaController::getRuangan');
-// $routes->get('toilet', 'PrasaranaController::getToilet');
-
-// $routes->get('layananAsetSarana', 'SaranaController::getLayananAsetSarana');
-// $routes->get('layananNonAsetSarana', 'SaranaController::getLayananNonAsetSarana');
-// $routes->get('rincianAsetSarana', 'SaranaController::getRincianAsetSarana');
-
+// Non Ruangan

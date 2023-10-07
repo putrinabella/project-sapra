@@ -21,10 +21,15 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
+            text-align: center;
         }
 
         th {
-            background-color: #f2f2f2;
+           text-align: center;
+        }
+
+        h2 {
+            text-align: center;
         }
     </style>
 </head>
@@ -36,8 +41,9 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Kode Prasarana</th>
-                    <th>Nama Prasarana</th>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Tipe</th>
                     <th>Lokasi Gedung</th>
                     <th>Lokasi Lantai</th>
                     <th>Luas</th>
@@ -54,6 +60,9 @@
                     </td>
                     <td>
                         <?= $value->namaPrasarana ?>
+                    </td>
+                    <td>
+                        <?= $value->tipe ?>
                     </td>
                     <td>
                         <?= $value->namaGedung ?>

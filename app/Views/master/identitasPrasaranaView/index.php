@@ -84,7 +84,8 @@
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
                                 <th>Kode Prasarana</th>
-                                <th>Identitas Prasarana</th>
+                                <th>Nama</th>
+                                <th>Tipe</th>
                                 <th>Lokasi Gedung</th>
                                 <th>Lokasi Lantai</th>
                                 <th>Luas</th>
@@ -99,6 +100,7 @@
                                 </td>
                                 <td class="text-center"><?=$value->kodePrasarana?></td>
                                 <td class="text-left"><?=$value->namaPrasarana?></td>
+                                <td class="text-left"><?=$value->tipe?></td>
                                 <td class="text-center"><?=$value->namaGedung?></td>
                                 <td class="text-center"><?=$value->namaLantai?></td>
                                 <td class="text-center"><?=$value->luas?> m&sup2;</td>

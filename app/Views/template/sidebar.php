@@ -36,19 +36,10 @@
         <div class="collapse" id="prasarana">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url('kantin') ?>" class="nav-link">Kantin</a>
+                    <a href="<?= site_url('prasaranaRuangan') ?>" class="nav-link">Ruangan</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('lapangan') ?>" class="nav-link">Lapangan</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('parkiran') ?>" class="nav-link">Parkiran</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('dataPrasarana') ?>" class="nav-link">Ruangan</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('toilet') ?>" class="nav-link">Toilet</a>
+                    <a href="<?= site_url() ?>" class="nav-link">Non Ruangan</a>
                 </li>
             </ul>
         </div>

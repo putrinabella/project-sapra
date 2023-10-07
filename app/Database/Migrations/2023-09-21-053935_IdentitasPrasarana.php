@@ -19,6 +19,10 @@ class IdentitasPrasarana extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'tipe' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'luas' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
