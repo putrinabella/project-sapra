@@ -39,7 +39,7 @@
                     <a href="<?= site_url('prasaranaRuangan') ?>" class="nav-link">Ruangan</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Non Ruangan</a>
+                    <a href="<?= site_url('prasaranaNonRuangan') ?>" class="nav-link">Non Ruangan</a>
                 </li>
             </ul>
         </div>

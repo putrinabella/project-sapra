@@ -1,14 +1,14 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title> <?= $dataPrasaranaRuangan->namaPrasarana; ?> &verbar; SARPRA </title>
+<title>  <?= $dataPrasaranaNonRuangan->namaPrasarana; ?> &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
 <!-- <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Detail Ruangan</h4>
+        <h4 class="mb-3 mb-md-0">Detail Rincian Aset</h4>
     </div>
 </div> -->
 
@@ -19,12 +19,12 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('prasaranaRuangan')?>"
+                        <a href="<?= site_url('prasaranaNonRuangan')?>"
                             class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                        <a href="<?= site_url('rincianAset/print/'.$dataPrasaranaRuangan->idIdentitasPrasarana)?>"
+                        <a href="<?= site_url('rincianAset/print/'.$dataPrasaranaNonRuangan->idIdentitasPrasarana)?>"
                             class="btn btn-outline-success btn-icon-text mb-2 mb-md-0" target="_blank">
                             <i class="btn-icon-prepend" data-feather="printer"></i>
                             Print
@@ -35,13 +35,13 @@
                     <div class="col-md-8">
                         <h5 class="p-2">Nama Prasarana</h5>
                         <div class="border rounded-2 p-2">
-                            <?= $dataPrasaranaRuangan->namaPrasarana; ?>
+                            <?= $dataPrasaranaNonRuangan->namaPrasarana; ?>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <h5 class="p-2">Kode Prasarana</h5>
                         <div class="border rounded-2 p-2">
-                            <?= $dataPrasaranaRuangan->kodePrasarana; ?>
+                            <?= $dataPrasaranaNonRuangan->kodePrasarana; ?>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <div class="col">
                         <h5 class="p-2">Luas</h5>
                         <div class="border rounded-2 p-2">
-                            <?= $luasFormatted = number_format($dataPrasaranaRuangan->luas, 0, ',', '.'); ?> m&sup2
+                            <?= $luasFormatted = number_format($dataPrasaranaNonRuangan->luas, 0, ',', '.'); ?> m&sup2
                         </div>
                     </div>
                 </div>

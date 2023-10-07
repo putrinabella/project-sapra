@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\PrasaranaRuanganModels; 
+use App\Models\PrasaranaNonRuanganModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
@@ -17,11 +17,11 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class PrasaranaRuangan extends ResourceController
+class PrasaranaNonRuangan extends ResourceController
 {
     
      function __construct() {
-        $this->prasaranaRuanganModel = new PrasaranaRuanganModels();
+        $this->prasaranaNonRuanganModel = new PrasaranaNonRuanganModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
@@ -33,27 +33,27 @@ class PrasaranaRuangan extends ResourceController
     }
 
     public function index() {
-        $data['dataPrasaranaRuangan'] = $this->prasaranaRuanganModel->getRuangan();
-        return view('prasaranaView/ruangan/index', $data);
+        $data['dataPrasaranaNonRuangan'] = $this->prasaranaNonRuanganModel->getRuangan();
+        return view('prasaranaView/nonRuangan/index', $data);
     }
     
     public function show($id = null) {
         if ($id != null) {
-            $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);
+            $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
             
-            if (is_object($dataPrasaranaRuangan)) {
+            if (is_object($dataPrasaranaNonRuangan)) {
                 
-                $dataInfoPrasarana = $this->prasaranaRuanganModel->getIdentitasGedung($dataPrasaranaRuangan->idIdentitasPrasarana);
-                $dataInfoPrasarana->namaLantai = $this->prasaranaRuanganModel->getIdentitasLantai($dataPrasaranaRuangan->idIdentitasPrasarana)->namaLantai;
-                $dataSarana = $this->prasaranaRuanganModel->getSaranaByPrasaranaId($dataPrasaranaRuangan->idIdentitasPrasarana);
+                $dataInfoPrasarana = $this->prasaranaNonRuanganModel->getIdentitasGedung($dataPrasaranaNonRuangan->idIdentitasPrasarana);
+                $dataInfoPrasarana->namaLantai = $this->prasaranaNonRuanganModel->getIdentitasLantai($dataPrasaranaNonRuangan->idIdentitasPrasarana)->namaLantai;
+                $dataSarana = $this->prasaranaNonRuanganModel->getSaranaByPrasaranaId($dataPrasaranaNonRuangan->idIdentitasPrasarana);
 
                 $data = [
-                    'dataPrasaranaRuangan'  => $dataPrasaranaRuangan,
+                    'dataPrasaranaNonRuangan'  => $dataPrasaranaNonRuangan,
                     'dataInfoPrasarana'     => $dataInfoPrasarana,
                     'dataSarana'            => $dataSarana,
                     
                 ];
-                return view('prasaranaView/ruangan/show', $data);
+                return view('prasaranaView/nonRuangan/show', $data);
             } else {
                 return view('error/404');
             }
@@ -70,7 +70,7 @@ class PrasaranaRuangan extends ResourceController
     }
     
     public function export() {
-        $data = $this->prasaranaRuanganModel->getAll();
+        $data = $this->prasaranaNonRuanganModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Rincian Aset');
@@ -87,7 +87,7 @@ class PrasaranaRuangan extends ResourceController
             $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
             
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePrasaranaRuangan);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePrasaranaNonRuangan);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->tahunPengadaan);
@@ -137,13 +137,13 @@ class PrasaranaRuangan extends ResourceController
     
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/prasaranaView/ruangan/print.php';
+        $filePath = APPPATH . 'Views/prasaranaView/nonRuangan/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataPrasaranaRuangan'] = $this->prasaranaRuanganModel->getAll();
+        $data['dataPrasaranaNonRuangan'] = $this->prasaranaNonRuanganModel->getAll();
 
         ob_start();
 
@@ -164,19 +164,19 @@ class PrasaranaRuangan extends ResourceController
 
 
     public function print($id = null) {
-        $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);
+        $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
         
-        if (!is_object($dataPrasaranaRuangan)) {
+        if (!is_object($dataPrasaranaNonRuangan)) {
             return view('error/404');
         }
 
-        $spesifikasiMarkup = $dataPrasaranaRuangan->spesifikasi; 
+        $spesifikasiMarkup = $dataPrasaranaNonRuangan->spesifikasi; 
         $parsedown = new Parsedown();
         $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-        $buktiUrl = $this->generateFileId($dataPrasaranaRuangan->bukti);
+        $buktiUrl = $this->generateFileId($dataPrasaranaNonRuangan->bukti);
 
         $data = [
-            'dataPrasaranaRuangan'           => $dataPrasaranaRuangan,
+            'dataPrasaranaNonRuangan'           => $dataPrasaranaNonRuangan,
             'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
             'dataSumberDana'            => $this->sumberDanaModel->findAll(),
             'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
@@ -185,7 +185,7 @@ class PrasaranaRuangan extends ResourceController
             'spesifikasiHtml'           => $spesifikasiHtml,
         ];
 
-        $filePath = APPPATH . 'Views/prasaranaView/ruangan/printInfo.php';
+        $filePath = APPPATH . 'Views/prasaranaView/nonRuangan/printInfo.php';
 
         if (!file_exists($filePath)) {
             return view('error/404');
@@ -205,7 +205,7 @@ class PrasaranaRuangan extends ResourceController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $filename = 'Sarana - Detail Rincian Aset.pdf';
-        $namaSarana = $data['dataPrasaranaRuangan']->namaSarana;
+        $namaSarana = $data['dataPrasaranaNonRuangan']->namaSarana;
         $filename = "Sarana - Detail Rincian Aset $namaSarana.pdf";
         $dompdf->stream($filename);
     }

@@ -178,13 +178,10 @@ $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 $routes->get('prasaranaRuangan/createTemplate', 'PrasaranaRuangan::createTemplate');
 $routes->get('prasaranaRuangan/generatePDF', 'PrasaranaRuangan::generatePDF');
 $routes->get('prasaranaRuangan/export', 'PrasaranaRuangan::export');
-$routes->post('prasaranaRuangan/import', 'PrasaranaRuangan::import');
-$routes->get('prasaranaRuangan/edit', 'PrasaranaRuangan::edit');
-$routes->get('prasaranaRuangan/trash', 'PrasaranaRuangan::trash');
-$routes->get('prasaranaRuangan/restore/(:any)', 'PrasaranaRuangan::restore/$1');
-$routes->get('prasaranaRuangan/restore', 'PrasaranaRuangan::restore');
-$routes->delete('prasaranaRuangan/deletePermanent/(:any)', 'PrasaranaRuangan::deletePermanent/$1');
-$routes->delete('prasaranaRuangan/deletePermanent', 'PrasaranaRuangan::deletePermanent');
 $routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
 
 // Non Ruangan
+$routes->get('prasaranaNonRuangan/createTemplate', 'PrasaranaNonRuangan::createTemplate');
+$routes->get('prasaranaNonRuangan/generatePDF', 'PrasaranaNonRuangan::generatePDF');
+$routes->get('prasaranaNonRuangan/export', 'PrasaranaNonRuangan::export');
+$routes->resource('prasaranaNonRuangan', ['filter' => 'isLoggedIn']);

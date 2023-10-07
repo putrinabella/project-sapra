@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PrasaranaRuanganModels extends Model
+class PrasaranaNonRuanganModels extends Model
 {
     protected $table            = 'tblIdentitasPrasarana';
     protected $primaryKey       = 'idIdentitasPrasarana';
@@ -18,7 +18,7 @@ class PrasaranaRuanganModels extends Model
     
     function getRuangan() {
         $builder = $this->db->table($this->table);
-        $builder->where('tblIdentitasPrasarana.tipe', 'Ruangan'); 
+        $builder->where('tblIdentitasPrasarana.tipe', 'Non Ruangan'); 
         $query = $builder->get();
         return $query->getResult();
     }
