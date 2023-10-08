@@ -31,9 +31,12 @@ class IdentitasSarana extends ResourcePresenter
         return view('master/identitasSaranaView/new');
     }
 
-    public function create()
-    {
-        $data = $this->request->getPost();
+    public function create() {
+        $data = [
+        'namaSarana' => $this->request->getPost('namaSarana'),
+        'perangkatIT' => $this->request->getPost('perangkatIT') ? 1 : 0,
+        ];
+
         $this->identitasSaranaModel->insert($data);
         return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil disimpan');
     }
@@ -56,7 +59,11 @@ class IdentitasSarana extends ResourcePresenter
 
     public function update($id = null)
     {
-        $data = $this->request->getPost();
+        $data = [
+            'namaSarana' => $this->request->getPost('namaSarana'),
+            'perangkatIT' => $this->request->getPost('perangkatIT') ? 1 : 0,
+            ];
+    
         $this->identitasSaranaModel->update($id, $data);
         return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil update');
     }

@@ -86,6 +86,7 @@
                                 <th style="width: 10%;">No.</th>
                                 <th style="width: 15%;">ID</th>
                                 <th>Nama Sarana</th>
+                                <th>Tipe</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -99,6 +100,15 @@
                                     S<?= sprintf('%03d', $value->idIdentitasSarana) ?>
                                 </td>
                                 <td class="text-left"><?=$value->namaSarana?></td>
+                                <td class="text-left">
+                                    <?php if ($value->perangkatIT == 1): ?>
+                                        <span class="label label-success">Perangkat IT</span>
+                                        <!-- Perangkat IT -->
+                                    <?php else: ?>
+                                        <!-- <span class="label label-danger">Bukan Perangkat IT</span> -->
+                                        Bukan Perangkat IT
+                                    <?php endif; ?>
+                                </td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('identitasSarana/edit/'.$value->idIdentitasSarana) ?>"

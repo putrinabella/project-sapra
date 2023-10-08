@@ -19,6 +19,10 @@ class IdentitasSarana extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'perangkatIT' => [
+                'type' => 'BOOLEAN',
+                'default' => false, 
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

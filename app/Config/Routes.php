@@ -20,15 +20,10 @@ $routes->post('loginProcess', 'Auth::loginProcess');
 $routes->get('logout', 'Auth::logout');
 
 
-// Register
-
-
 // HOME
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
 $routes->get('home/generate', 'Home::generate');
-
-
 
 
 // INFORMATION ROUTES
@@ -119,16 +114,6 @@ $routes->delete('kategoriManajemen/deletePermanent/(:any)', 'KategoriManajemen::
 $routes->delete('kategoriManajemen/deletePermanent', 'KategoriManajemen::deletePermanent');
 $routes->presenter('kategoriManajemen', ['filter' => 'isLoggedIn']);
 
-// PRASARANA
-
-// 
-$routes->get('dataPrasarana/edit', 'DataPrasarana::edit');
-$routes->get('dataPrasarana/trash', 'DataPrasarana::trash');
-$routes->get('dataPrasarana/restore/(:any)', 'DataPrasarana::restore/$1');
-$routes->get('dataPrasarana/restore', 'DataPrasarana::restore');
-$routes->delete('dataPrasarana/deletePermanent/(:any)', 'DataPrasarana::deletePermanent/$1');
-$routes->delete('dataPrasarana/deletePermanent', 'DataPrasarana::deletePermanent');
-$routes->presenter('dataPrasarana', ['filter' => 'isLoggedIn']);
 
 // SARANA
 
