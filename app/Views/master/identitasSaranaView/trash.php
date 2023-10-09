@@ -70,6 +70,7 @@
                                 <th style="width: 10%;">No.</th>
                                 <th style="width: 15%;">ID Identitas Sarana</th>
                                 <th>Nama Sarana</th>
+                                <th>Tipe</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -82,7 +83,14 @@
                                 <td class="text-center">
                                     <?= sprintf('%03d', $value->idIdentitasSarana) ?>
                                 </td>
-                                <td class="text-left"><?=$value->namaSarana?></td>
+                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td class="text-center">
+                                    <?php if ($value->perangkatIT == 1): ?>
+                                        <span class="label label-success">Perangkat IT</span>
+                                    <?php else: ?>
+                                        Bukan Perangkat IT
+                                    <?php endif; ?>
+                                </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('identitasSarana/restore/'.$value->idIdentitasSarana) ?>"
                                         class="btn btn-primary"> Restore</a>

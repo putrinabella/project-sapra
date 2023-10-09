@@ -125,17 +125,22 @@ class IdentitasSarana extends ResourcePresenter
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
     
-        $headers = ['No.', 'ID Identitas Sarana', 'Nama Sarana'];
+        $headers = ['No.', 'ID Identitas Sarana', 'Nama Sarana', 'Tipe'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
             $idIdentitasSarana = str_pad($value->idIdentitasSarana, 3, '0', STR_PAD_LEFT);
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), 'S'.$idIdentitasSarana);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
+            if ($value->perangkatIT == 1) {
+                $activeWorksheet->setCellValue('D'.($index + 2), 'Perangkat IT');
+            } else {
+                $activeWorksheet->setCellValue('D'.($index + 2), 'Bukan Perangkat IT');
+            }
     
-            $columns = ['A', 'B'];
+            $columns = ['A', 'B', 'D'];
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -145,12 +150,12 @@ class IdentitasSarana extends ResourcePresenter
             $activeWorksheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
         }
     
-        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
-        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'C') as $column) {
+        foreach (range('A', 'D') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -180,10 +185,12 @@ class IdentitasSarana extends ResourcePresenter
                 }
             
                 $namaSarana = $value[1] ?? null;
+                $perangkatIT = $value[2] ?? null;
             
                 if ($namaSarana !== null) {
                     $data = [
                         'namaSarana' => $namaSarana,
+                        'perangkatIT' => $perangkatIT,
                     ];
                     
                     $this->identitasSaranaModel->insert($data);

@@ -25,6 +25,7 @@
 
         th {
             background-color: #f2f2f2;
+            text-align: center;
         }
     </style>
 </head>
@@ -38,6 +39,7 @@
                     <th>No.</th>
                     <th>ID Identitas Sarana</th>
                     <th>Nama Sarana</th>
+                    <th>Tipe</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,6 +53,13 @@
                     </td>
                     <td>
                         <?= $value->namaSarana ?>
+                    </td>
+                    <td>
+                        <?php if ($value->perangkatIT == 1): ?>
+                            <span class="label label-success">Perangkat IT</span>
+                        <?php else: ?>
+                            Bukan Perangkat IT
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
