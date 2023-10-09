@@ -60,12 +60,14 @@
             </h3>
             <div class="image-container">
                 <?php
-                    $imageData = base64_encode(file_get_contents($data['buktiUrl']));
-                    echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti">';
+                    if (!empty($imageData = base64_encode(@file_get_contents($data['buktiUrl'])))) {
+                        echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti">';
+                    } else {
+                        echo '(no image)';
+                    }
                 ?>
+
             </div>
-
-
             <br>
             <table class="table" style="max-width: 90%; margin: 0 auto;">
                 <tr>

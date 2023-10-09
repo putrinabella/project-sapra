@@ -132,12 +132,6 @@ class PerangkatIt extends ResourceController
             $dataPerangkatIt = $this->perangkatItModel->find($id);
             
             if (is_object($dataPerangkatIt)) {
-                // $dataRincianAset = $this->perangkatItModel->findAll();
-                // $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
-                // $parsedown = new Parsedown();
-                // $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-                // $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-
                 $dataAsetIT = $this->perangkatItModel->getData($dataPerangkatIt->idIdentitasSarana);
                 $totalSarana = $this->perangkatItModel->getTotalSarana($dataPerangkatIt->idIdentitasSarana);
                 $saranaLayak = $this->perangkatItModel->getSaranaLayak($dataPerangkatIt->idIdentitasSarana);
