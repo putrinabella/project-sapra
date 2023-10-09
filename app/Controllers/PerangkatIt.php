@@ -3,13 +3,8 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\PrasaranaNonRuanganModels; 
+use App\Models\PerangkatItModels; 
 use App\Models\IdentitasSaranaModels; 
-use App\Models\SumberDanaModels; 
-use App\Models\KategoriManajemenModels; 
-use App\Models\IdentitasPrasaranaModels; 
-use App\Models\IdentitasGedungModels; 
-use App\Models\IdentitasLantaiModels; 
 use App\Models\RincianAsetModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -17,43 +12,39 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class PrasaranaNonRuangan extends ResourceController
+class PerangkatIt extends ResourceController
 {
     
      function __construct() {
-        $this->prasaranaNonRuanganModel = new PrasaranaNonRuanganModels();
-        $this->identitasSaranaModel = new IdentitasSaranaModels();
-        $this->sumberDanaModel = new SumberDanaModels();
-        $this->kategoriManajemenModel = new KategoriManajemenModels();
-        $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
-        $this->identitasGedungModel = new IdentitasGedungModels();
-        $this->identitasLantaiModel = new IdentitasLantaiModels();
-        $this->rincianAsetModel = new RincianAsetModels();
+        $this->perangkatItModel = new PerangkatItModels();
         $this->db = \Config\Database::connect();
     }
 
     public function index() {
-        $data['dataPrasaranaNonRuangan'] = $this->prasaranaNonRuanganModel->getRuangan();
-        return view('prasaranaView/nonRuangan/index', $data);
+        $data['dataPerangkatIt'] = $this->perangkatItModel->getPerangkatIT();
+        return view('itView/perangkatIt/index', $data);
     }
     
     public function show($id = null) {
         if ($id != null) {
-            $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
+            $dataPerangkatIt = $this->perangkatItModel->find($id);
             
-            if (is_object($dataPrasaranaNonRuangan)) {
-                
-                $dataInfoPrasarana = $this->prasaranaNonRuanganModel->getIdentitasGedung($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-                $dataInfoPrasarana->namaLantai = $this->prasaranaNonRuanganModel->getIdentitasLantai($dataPrasaranaNonRuangan->idIdentitasPrasarana)->namaLantai;
-                $dataSarana = $this->prasaranaNonRuanganModel->getSaranaByPrasaranaId($dataPrasaranaNonRuangan->idIdentitasPrasarana);
+            if (is_object($dataPerangkatIt)) {
+
+                $dataAsetIT = $this->perangkatItModel->getData($dataPerangkatIt->idIdentitasSarana);
+                $totalSarana = $this->perangkatItModel->getTotalSarana($dataPerangkatIt->idIdentitasSarana);
+                $saranaLayak = $this->perangkatItModel->getSaranaLayak($dataPerangkatIt->idIdentitasSarana);
+                $saranaRusak = $this->perangkatItModel->getSaranaRusak($dataPerangkatIt->idIdentitasSarana);
 
                 $data = [
-                    'dataPrasaranaNonRuangan'  => $dataPrasaranaNonRuangan,
-                    'dataInfoPrasarana'     => $dataInfoPrasarana,
-                    'dataSarana'            => $dataSarana,
+                    'dataPerangkatIt'  => $dataPerangkatIt,
+                    'dataAsetIT'       => $dataAsetIT,
+                    'totalSarana'      => $totalSarana,
+                    'saranaLayak'      => $saranaLayak,
+                    'saranaRusak'      => $saranaRusak,
                     
                 ];
-                return view('prasaranaView/nonRuangan/show', $data);
+                return view('itView/perangkatIt/show', $data);
             } else {
                 return view('error/404');
             }
@@ -70,7 +61,7 @@ class PrasaranaNonRuangan extends ResourceController
     }
     
     public function export() {
-        $data = $this->prasaranaNonRuanganModel->getAll();
+        $data = $this->perangkatItModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Rincian Aset');
@@ -87,7 +78,7 @@ class PrasaranaNonRuangan extends ResourceController
             $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
             
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePrasaranaNonRuangan);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodePerangkatIt);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->tahunPengadaan);
@@ -136,64 +127,32 @@ class PrasaranaNonRuangan extends ResourceController
     }
     
 
-
-    // public function print($id = null) {
-    //     $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
-    
-    //     if (!$dataPrasaranaNonRuangan) {
-    //         return view('error/404');
-    //     }
-    
-    //     $dataInfoPrasarana = $this->prasaranaNonRuanganModel->getIdentitasGedung($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-    //     $dataInfoPrasarana->namaLantai = $this->prasaranaNonRuanganModel->getIdentitasLantai($dataPrasaranaNonRuangan->idIdentitasPrasarana)->namaLantai;
-    //     $dataSarana = $this->prasaranaNonRuanganModel->getSaranaByPrasaranaId($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-    
-    //     $data = [
-    //         'dataPrasaranaNonRuangan'  => $dataPrasaranaNonRuangan,
-    //         'dataInfoPrasarana'        => $dataInfoPrasarana,
-    //         'dataSarana'               => $dataSarana,
-    //     ];
-        
-    //     $filePath = APPPATH . 'Views/prasaranaView/nonRuangan/print.php';
-        
-    //     ob_start();
-        
-    //     $includeFile = function ($filePath, $data) {
-    //         include $filePath;
-    //     };
-        
-    //     $includeFile($filePath, $data);
-        
-    //     $html = ob_get_clean();
-        
-    //     $dompdf = new Dompdf();
-    //     $dompdf->loadHtml($html);
-    //     $dompdf->setPaper('A4', 'portrait');
-    //     $dompdf->render();
-    //     $filename = 'Sarana - Detail Rincian Aset.pdf';
-    //     $namaSarana = $data['dataPrasaranaNonRuangan']->namaSarana;
-    //     $filename = "Sarana - Detail Rincian Aset $namaSarana.pdf";
-    //     $dompdf->stream($filename);
-    // }
-
     public function print($id = null) {
         if ($id != null) {
-            $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
-    
-            if (is_object($dataPrasaranaNonRuangan)) {
-    
-                $dataInfoPrasarana = $this->prasaranaNonRuanganModel->getIdentitasGedung($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-                $dataInfoPrasarana->namaLantai = $this->prasaranaNonRuanganModel->getIdentitasLantai($dataPrasaranaNonRuangan->idIdentitasPrasarana)->namaLantai;
-                $dataSarana = $this->prasaranaNonRuanganModel->getSaranaByPrasaranaId($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-    
+            $dataPerangkatIt = $this->perangkatItModel->find($id);
+            
+            if (is_object($dataPerangkatIt)) {
+                // $dataRincianAset = $this->perangkatItModel->findAll();
+                // $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
+                // $parsedown = new Parsedown();
+                // $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+                // $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
+
+                $dataAsetIT = $this->perangkatItModel->getData($dataPerangkatIt->idIdentitasSarana);
+                $totalSarana = $this->perangkatItModel->getTotalSarana($dataPerangkatIt->idIdentitasSarana);
+                $saranaLayak = $this->perangkatItModel->getSaranaLayak($dataPerangkatIt->idIdentitasSarana);
+                $saranaRusak = $this->perangkatItModel->getSaranaRusak($dataPerangkatIt->idIdentitasSarana);
+
                 $data = [
-                    'dataPrasaranaNonRuangan'  => $dataPrasaranaNonRuangan,
-                    'dataInfoPrasarana'     => $dataInfoPrasarana,
-                    'dataSarana'            => $dataSarana,
+                    'dataPerangkatIt'  => $dataPerangkatIt,
+                    'dataAsetIT'       => $dataAsetIT,
+                    'totalSarana'      => $totalSarana,
+                    'saranaLayak'      => $saranaLayak,
+                    'saranaRusak'      => $saranaRusak,
+                    
                 ];
-    
-                $html = view('prasaranaView/nonRuangan/print', $data); 
-    
+                $html =  view('itView/perangkatIt/print', $data);
+
                 $options = new Options();
                 $options->set('isHtml5ParserEnabled', true);
                 $options->set('isPhpEnabled', true);
@@ -202,8 +161,8 @@ class PrasaranaNonRuangan extends ResourceController
                 $dompdf->loadHtml($html);
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
-                $namaPrasarana = $data['dataPrasaranaNonRuangan']->namaPrasarana;
-                $filename = "Prasarana - $namaPrasarana.pdf";
+                $namaSarana = $data['dataPerangkatIt']->namaSarana;
+                $filename = "Perangkat IT - $namaSarana.pdf";
                 $dompdf->stream($filename);
             } else {
                 return view('error/404');

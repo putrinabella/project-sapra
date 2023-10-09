@@ -40,10 +40,6 @@ class RincianAset extends ResourceController
                 $parsedown = new Parsedown();
                 $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-
-                // $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
-                // $parsedown = new Parsedown();
-                // $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 
                 $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
                 $data = [

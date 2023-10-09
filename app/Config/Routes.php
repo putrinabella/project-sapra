@@ -167,8 +167,17 @@ $routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
 
 // Non Ruangan
 $routes->get('prasaranaNonRuangan/print/(:num)', 'PrasaranaNonRuangan::print/$1');
-// $routes->get('prasaranaNonRuangan/print', 'PrasaranaNonRuangan::print');
 $routes->get('prasaranaNonRuangan/createTemplate', 'PrasaranaNonRuangan::createTemplate');
 $routes->get('prasaranaNonRuangan/generatePDF', 'PrasaranaNonRuangan::generatePDF');
 $routes->get('prasaranaNonRuangan/export', 'PrasaranaNonRuangan::export');
 $routes->resource('prasaranaNonRuangan', ['filter' => 'isLoggedIn']);
+
+
+// IT 
+
+// Perangkat IT
+$routes->get('perangkatIt/print/(:num)', 'perangkatIt::print/$1');
+$routes->get('perangkatIt/createTemplate', 'perangkatIt::createTemplate');
+$routes->get('perangkatIt/generatePDF', 'perangkatIt::generatePDF');
+$routes->get('perangkatIt/export', 'perangkatIt::export');
+$routes->resource('perangkatIt', ['filter' => 'isLoggedIn']);
