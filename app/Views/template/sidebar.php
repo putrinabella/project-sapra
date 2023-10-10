@@ -69,6 +69,7 @@
             </ul>
         </div>
     </li>
+
     <li class="nav-item">
         <a href="<?= site_url('manajemenLab') ?>" class="nav-link">
             <i class="link-icon" data-feather="message-square"></i>
@@ -88,23 +89,32 @@
             <span class="link-title">Layanan Aset IT</span>
         </a>
     </li>
+
+    <li class="nav-item nav-category">Profil</li>
     <li class="nav-item">
-        <a href="<?= site_url('websiteSosmed') ?>" class="nav-link">
-            <i class="link-icon" data-feather="globe"></i>
-            <span class="link-title">Website dan Media Sosial</span>
+        <a href="<?= site_url() ?>" class="nav-link">
+            <i class="link-icon" data-feather="home"></i>
+            <span class="link-title">Profil Sekolah</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="<?= site_url('website') ?>" class="nav-link">
+            <i class="link-icon" data-feather="link"></i>
+            <span class="link-title">Website</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('sosmed') ?>" class="nav-link">
+            <i class="link-icon" data-feather="globe"></i>
+            <span class="link-title">Sosial Media</span>
+        </a>
+    </li>
+
     <li class="nav-item nav-category">Settings</li>
     <li class="nav-item">
         <a href="<?= site_url('manajemenUser') ?>" class="nav-link">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">Manajemen User</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?= site_url('profilSekolah') ?>" class="nav-link">
-            <i class="link-icon" data-feather="bookmark"></i>
-            <span class="link-title">Profil Sekolah</span>
         </a>
     </li>
     <li class="nav-item">

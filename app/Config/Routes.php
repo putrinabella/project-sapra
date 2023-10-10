@@ -196,14 +196,14 @@ $routes->delete('layananAsetIt/deletePermanent', 'LayananAsetIt::deletePermanent
 $routes->resource('layananAsetIt', ['filter' => 'isLoggedIn']);
 
 // Website dan Sosmed
-$routes->get('websiteSosmed/createTemplate', 'WebsiteSosmed::createTemplate');
-$routes->get('websiteSosmed/generatePDF', 'WebsiteSosmed::generatePDF');
-$routes->get('websiteSosmed/export', 'WebsiteSosmed::export');
-$routes->post('websiteSosmed/import', 'WebsiteSosmed::import');
-$routes->get('websiteSosmed/edit', 'WebsiteSosmed::edit');
-$routes->get('websiteSosmed/trash', 'WebsiteSosmed::trash');
-$routes->get('websiteSosmed/restore/(:any)', 'WebsiteSosmed::restore/$1');
-$routes->get('websiteSosmed/restore', 'WebsiteSosmed::restore');
-$routes->delete('websiteSosmed/deletePermanent/(:any)', 'WebsiteSosmed::deletePermanent/$1');
-$routes->delete('websiteSosmed/deletePermanent', 'WebsiteSosmed::deletePermanent');
-$routes->resource('websiteSosmed', ['filter' => 'isLoggedIn']);
+$routes->get('website/createTemplate', 'Website::createTemplate');
+$routes->get('website/generatePDF', 'Website::generatePDF');
+$routes->get('website/export', 'Website::export');
+$routes->post('website/import', 'Website::import');
+$routes->get('website/edit', 'Website::edit');
+$routes->get('website/trash', 'Website::trash');
+$routes->get('website/restore/(:any)', 'Website::restore/$1');
+$routes->get('website/restore', 'Website::restore');
+$routes->delete('website/deletePermanent/(:any)', 'Website::deletePermanent/$1');
+$routes->delete('website/deletePermanent', 'Website::deletePermanent');
+$routes->resource('website', ['filter' => 'isLoggedIn']);

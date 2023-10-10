@@ -92,7 +92,19 @@ $(document).ready(function () {
       },  
       // bukti: {
       //   required: true,
-      // },  
+      // }, 
+      namaWebsite: {
+        required: true,
+      }, 
+      fungsiWebsite: {
+        required: true,
+      }, 
+      linkWebsite: {
+        required: true,
+      }, 
+      picWebsite: {
+        required: true,
+      }, 
       tanggal: {
         required: true,
       },  
@@ -190,6 +202,18 @@ $(document).ready(function () {
       // bukti: {
       //   required: "Silahkan masukkan bukti",
       // },
+      namaWebsite: {
+        required: "Silahkan masukkan nama website",
+      },
+      fungsiWebsite: {
+        required: "Silahkan masukkan fungsi website",
+      },
+      linkWebsite: {
+        required: "Silahkan masukkan link website",
+      },
+      picWebsite: {
+        required: "Silahkan masukkan PIC website",
+      },
       tanggal: {
         required: "Silahkan masukkan tanggal",
       },
