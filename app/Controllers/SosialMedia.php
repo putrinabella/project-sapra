@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\WebsiteModels; 
+use App\Models\SosialMediaModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
@@ -14,32 +14,32 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class Website extends ResourceController
+class SosialMedia extends ResourceController
 {
     
      function __construct() {
-        $this->websiteModel = new WebsiteModels();
+        $this->sosialMediaModel = new SosialMediaModels();
         $this->db = \Config\Database::connect();
     }
 
     public function index() {
-        $data['dataWebsite'] = $this->websiteModel->findAll();
-        return view('itView/website/index', $data);
+        $data['dataSosialMedia'] = $this->sosialMediaModel->findAll();
+        return view('itView/sosialMedia/index', $data);
     }
 
     public function show($id = null) {
         if ($id != null) {
-            $dataWebsite = $this->websiteModel->find($id);
+            $dataSosialMedia = $this->sosialMediaModel->find($id);
         
-            if (is_object($dataWebsite)) {
-                $spesifikasiMarkup = $dataWebsite->spesifikasi;
+            if (is_object($dataSosialMedia)) {
+                $spesifikasiMarkup = $dataSosialMedia->spesifikasi;
                 $parsedown = new Parsedown();
                 $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
                 
-                $buktiUrl = $this->generateFileId($dataWebsite->bukti);
+                $buktiUrl = $this->generateFileId($dataSosialMedia->bukti);
                 $data = [
-                    'dataWebsite'           => $dataWebsite,
+                    'dataSosialMedia'           => $dataSosialMedia,
                     'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
@@ -47,7 +47,7 @@ class Website extends ResourceController
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
-                return view('itView/website/show', $data);
+                return view('itView/sosialMedia/show', $data);
             } else {
                 return view('error/404');
             }
@@ -57,31 +57,31 @@ class Website extends ResourceController
     }
 
     public function new() {
-        $data['dataWebsite'] = $this->websiteModel->findAll();
+        $data['dataSosialMedia'] = $this->sosialMediaModel->findAll();
         
-        return view('itView/website/new', $data);        
+        return view('itView/sosialMedia/new', $data);        
     }
 
     
     public function create() {
         $data = $this->request->getPost(); 
-        if (!empty($data['namaWebsite']) && !empty($data['fungsiWebsite']) && !empty($data['linkWebsite']) && !empty($data['picWebsite'])) {
-            $this->websiteModel->insert($data);
-            return redirect()->to(site_url('website'))->with('success', 'Data berhasil disimpan');
+        if (!empty($data['namaSosialMedia']) && !empty($data['usernameSosialMedia']) && !empty($data['linkSosialMedia'])) {
+            $this->sosialMediaModel->insert($data);
+            return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('website'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('sosialMedia'))->with('error', 'Semua field harus terisi');
         }
     }
 
     public function edit($id = null) {
         if ($id != null) {
-            $dataWebsite = $this->websiteModel->find($id);
+            $dataSosialMedia = $this->sosialMediaModel->find($id);
     
-            if (is_object($dataWebsite)) {
+            if (is_object($dataSosialMedia)) {
                 $data = [
-                    'dataWebsite' => $dataWebsite,
+                    'dataSosialMedia' => $dataSosialMedia,
                 ];
-                return view('itView/website/edit', $data);
+                return view('itView/sosialMedia/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -93,12 +93,12 @@ class Website extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            if (!empty($data['namaWebsite']) && !empty($data['fungsiWebsite']) && !empty($data['linkWebsite']) && !empty($data['picWebsite'])) {
-                $this->websiteModel->update($id, $data);
-                return redirect()->to(site_url('website'))->with('success', 'Data berhasil diupdate');
+            if (!empty($data['namaSosialMedia']) && !empty($data['usernameSosialMedia']) && !empty($data['linkSosialMedia'])) {
+                $this->sosialMediaModel->update($id, $data);
+                return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to
-                (site_url('website/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                (site_url('sosialMedia/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
             }
         } else {
             return view('error/404');
@@ -106,74 +106,73 @@ class Website extends ResourceController
     }
 
     public function delete($id = null) {
-        $this->websiteModel->delete($id);
-        return redirect()->to(site_url('website'));
+        $this->sosialMediaModel->delete($id);
+        return redirect()->to(site_url('sosialMedia'));
     }
 
     public function trash() {
-        $data['dataWebsite'] = $this->websiteModel->onlyDeleted()->getRecycle();
-        return view('itView/website/trash', $data);
+        $data['dataSosialMedia'] = $this->sosialMediaModel->onlyDeleted()->getRecycle();
+        return view('itView/sosialMedia/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblWebsite')
+            $this->db->table('tblSosialMedia')
                 ->set('deleted_at', null, true)
-                ->where(['idWebsite' => $id])
+                ->where(['idSosialMedia' => $id])
                 ->update();
         } else {
-            $this->db->table('tblWebsite')
+            $this->db->table('tblSosialMedia')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
             }
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('website'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('website/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('sosialMedia/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->websiteModel->delete($id, true);
-        return redirect()->to(site_url('website/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->sosialMediaModel->delete($id, true);
+        return redirect()->to(site_url('sosialMedia/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->websiteModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->sosialMediaModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->websiteModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('website/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->sosialMediaModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('sosialMedia/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('website/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('sosialMedia/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     } 
     
     public function export() {
-        $data = $this->websiteModel->findAll();
+        $data = $this->sosialMediaModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - Website');
+        $activeWorksheet->setTitle('IT - SosialMedia');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Nama', 'Fungsi', 'Link','PIC'];
+        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaWebsite);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->fungsiWebsite);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->linkWebsite);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->picWebsite);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaSosialMedia);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->usernameSosialMedia);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->linkSosialMedia);
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C', 'D', 'E'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -183,33 +182,33 @@ class Website extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
+        foreach (range('A', 'D') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - Website.xlsx');
+        header('Content-Disposition: attachment;filename=IT - SosialMedia.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
     
     public function createTemplate() {
-        $data = $this->websiteModel->findAll();
+        $data = $this->sosialMediaModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - Website');
+        $activeWorksheet->setTitle('IT - SosialMedia');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Nama', 'Fungsi', 'Link','PIC'];
+        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             if ($index >= 3) {
@@ -219,14 +218,13 @@ class Website extends ResourceController
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
-            $activeWorksheet->setCellValue('E'.($index + 2), '');
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             
-            $columns = ['B', 'C', 'D', 'E'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -236,12 +234,12 @@ class Website extends ResourceController
             }           
         }
         
-        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
+        foreach (range('A', 'D') as $column) {
             if ($column === 'A') {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
             }
@@ -252,7 +250,7 @@ class Website extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Nama', 'Fungsi', 'Link','PIC'];
+        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -261,17 +259,15 @@ class Website extends ResourceController
                 break;
             }
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->namaWebsite);
-            $exampleSheet->setCellValue('C'.($index + 2), $value->fungsiWebsite);
-            $exampleSheet->setCellValue('D'.($index + 2), $value->linkWebsite);
-            $exampleSheet->setCellValue('E'.($index + 2), $value->picWebsite);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->namaSosialMedia);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->usernameSosialMedia);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->linkSosialMedia);
 
             $exampleSheet->getStyle('A'.($index + 2))
                             ->getAlignment()
                             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-            $columns = ['B', 'C', 'D', 'E'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $exampleSheet->getStyle($column . ($index + 2))
@@ -281,19 +277,19 @@ class Website extends ResourceController
             }            
         }
         
-        $exampleSheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:E'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:D'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
+        foreach (range('A', 'D') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - Website Example.xlsx');
+        header('Content-Disposition: attachment;filename=IT - SosialMedia Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -315,37 +311,35 @@ class Website extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $namaWebsite            = $value[1] ?? null;
-                $fungsiWebsite          = $value[2] ?? null;
-                $linkWebsite            = $value[3] ?? null;
-                $picWebsite             = $value[4] ?? null;
+                $namaSosialMedia            = $value[1] ?? null;
+                $usernameSosialMedia        = $value[2] ?? null;
+                $linkSosialMedia            = $value[3] ?? null;
 
-                if ($namaWebsite !== null) {
+                if ($namaSosialMedia !== null) {
                     $data = [
-                        'namaWebsite'   => $namaWebsite,
-                        'fungsiWebsite' => $fungsiWebsite,
-                        'linkWebsite'   => $linkWebsite,
-                        'picWebsite'    => $picWebsite,
+                        'namaSosialMedia'       => $namaSosialMedia,
+                        'usernameSosialMedia'   => $usernameSosialMedia,
+                        'linkSosialMedia'       => $linkSosialMedia,
 
                     ];
-                    $this->websiteModel->insert($data);
+                    $this->sosialMediaModel->insert($data);
                 }
             }
-            return redirect()->to(site_url('website'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil diimport');
         } else {
-            return redirect()->to(site_url('website'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+            return redirect()->to(site_url('sosialMedia'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
 
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/itView/website/print.php';
+        $filePath = APPPATH . 'Views/itView/sosialMedia/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataWebsite'] = $this->websiteModel->findAll();
+        $data['dataSosialMedia'] = $this->sosialMediaModel->findAll();
 
         ob_start();
 
@@ -360,7 +354,7 @@ class Website extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'IT - Website Report.pdf';
+        $filename = 'IT - SosialMedia Report.pdf';
         $dompdf->stream($filename);
     }
 }

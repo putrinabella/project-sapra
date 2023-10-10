@@ -195,7 +195,7 @@ $routes->delete('layananAsetIt/deletePermanent/(:any)', 'LayananAsetIt::deletePe
 $routes->delete('layananAsetIt/deletePermanent', 'LayananAsetIt::deletePermanent');
 $routes->resource('layananAsetIt', ['filter' => 'isLoggedIn']);
 
-// Website dan Sosmed
+// Website
 $routes->get('website/createTemplate', 'Website::createTemplate');
 $routes->get('website/generatePDF', 'Website::generatePDF');
 $routes->get('website/export', 'Website::export');
@@ -207,3 +207,16 @@ $routes->get('website/restore', 'Website::restore');
 $routes->delete('website/deletePermanent/(:any)', 'Website::deletePermanent/$1');
 $routes->delete('website/deletePermanent', 'Website::deletePermanent');
 $routes->resource('website', ['filter' => 'isLoggedIn']);
+
+// Sosial Media
+$routes->get('sosialMedia/createTemplate', 'SosialMedia::createTemplate');
+$routes->get('sosialMedia/generatePDF', 'SosialMedia::generatePDF');
+$routes->get('sosialMedia/export', 'SosialMedia::export');
+$routes->post('sosialMedia/import', 'SosialMedia::import');
+$routes->get('sosialMedia/edit', 'SosialMedia::edit');
+$routes->get('sosialMedia/trash', 'SosialMedia::trash');
+$routes->get('sosialMedia/restore/(:any)', 'SosialMedia::restore/$1');
+$routes->get('sosialMedia/restore', 'SosialMedia::restore');
+$routes->delete('sosialMedia/deletePermanent/(:any)', 'SosialMedia::deletePermanent/$1');
+$routes->delete('sosialMedia/deletePermanent', 'SosialMedia::deletePermanent');
+$routes->resource('sosialMedia', ['filter' => 'isLoggedIn']);

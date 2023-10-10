@@ -90,9 +90,9 @@ $(document).ready(function () {
         required: true,
         minlength: 4,
       },  
-      // bukti: {
-      //   required: true,
-      // }, 
+      tanggal: {
+        required: true,
+      },  
       namaWebsite: {
         required: true,
       }, 
@@ -105,9 +105,15 @@ $(document).ready(function () {
       picWebsite: {
         required: true,
       }, 
-      tanggal: {
+      namaSosialMedia: {
         required: true,
-      },  
+      }, 
+      usernameSosialMedia: {
+        required: true,
+      }, 
+      linkSosialMedia: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -199,9 +205,9 @@ $(document).ready(function () {
         required: "Silahkan masukkan biaya",
         minlength: "Biaya minimal terdiri dari 4 digit",
       },
-      // bukti: {
-      //   required: "Silahkan masukkan bukti",
-      // },
+      tanggal: {
+        required: "Silahkan masukkan tanggal",
+      },
       namaWebsite: {
         required: "Silahkan masukkan nama website",
       },
@@ -214,8 +220,14 @@ $(document).ready(function () {
       picWebsite: {
         required: "Silahkan masukkan PIC website",
       },
-      tanggal: {
-        required: "Silahkan masukkan tanggal",
+      namaSosialMedia: {
+        required: "Silahkan masukkan jenis sosial media",
+      },
+      usernameSosialMedia: {
+        required: "Silahkan masukkan username sosial media",
+      },
+      linkSosialMedia: {
+        required: "Silahkan masukkan link sosial media",
       },
     },
     errorPlacement: function (label, element) {

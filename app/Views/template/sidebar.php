@@ -104,7 +104,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('sosmed') ?>" class="nav-link">
+        <a href="<?= site_url('sosialMedia') ?>" class="nav-link">
             <i class="link-icon" data-feather="globe"></i>
             <span class="link-title">Sosial Media</span>
         </a>
