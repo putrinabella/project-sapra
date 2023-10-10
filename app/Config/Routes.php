@@ -181,3 +181,29 @@ $routes->get('perangkatIt/createTemplate', 'perangkatIt::createTemplate');
 $routes->get('perangkatIt/generatePDF', 'perangkatIt::generatePDF');
 $routes->get('perangkatIt/export', 'perangkatIt::export');
 $routes->resource('perangkatIt', ['filter' => 'isLoggedIn']);
+
+// Layanan Aset IT
+$routes->get('layananAsetIt/createTemplate', 'LayananAsetIt::createTemplate');
+$routes->get('layananAsetIt/generatePDF', 'LayananAsetIt::generatePDF');
+$routes->get('layananAsetIt/export', 'LayananAsetIt::export');
+$routes->post('layananAsetIt/import', 'LayananAsetIt::import');
+$routes->get('layananAsetIt/edit', 'LayananAsetIt::edit');
+$routes->get('layananAsetIt/trash', 'LayananAsetIt::trash');
+$routes->get('layananAsetIt/restore/(:any)', 'LayananAsetIt::restore/$1');
+$routes->get('layananAsetIt/restore', 'LayananAsetIt::restore');
+$routes->delete('layananAsetIt/deletePermanent/(:any)', 'LayananAsetIt::deletePermanent/$1');
+$routes->delete('layananAsetIt/deletePermanent', 'LayananAsetIt::deletePermanent');
+$routes->resource('layananAsetIt', ['filter' => 'isLoggedIn']);
+
+// Website dan Sosmed
+$routes->get('websiteSosmed/createTemplate', 'WebsiteSosmed::createTemplate');
+$routes->get('websiteSosmed/generatePDF', 'WebsiteSosmed::generatePDF');
+$routes->get('websiteSosmed/export', 'WebsiteSosmed::export');
+$routes->post('websiteSosmed/import', 'WebsiteSosmed::import');
+$routes->get('websiteSosmed/edit', 'WebsiteSosmed::edit');
+$routes->get('websiteSosmed/trash', 'WebsiteSosmed::trash');
+$routes->get('websiteSosmed/restore/(:any)', 'WebsiteSosmed::restore/$1');
+$routes->get('websiteSosmed/restore', 'WebsiteSosmed::restore');
+$routes->delete('websiteSosmed/deletePermanent/(:any)', 'WebsiteSosmed::deletePermanent/$1');
+$routes->delete('websiteSosmed/deletePermanent', 'WebsiteSosmed::deletePermanent');
+$routes->resource('websiteSosmed', ['filter' => 'isLoggedIn']);

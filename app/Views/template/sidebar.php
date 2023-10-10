@@ -77,26 +77,15 @@
     </li>
     <li class="nav-item nav-category">IT</li>
     <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#masterIT" role="button" aria-expanded="false" aria-controls="masterIT">
-            <i class="link-icon" data-feather="shield"></i>
-            <span class="link-title">Master</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-        </a>
-        <div class="collapse" id="masterIT">
-            <ul class="nav sub-menu">
-                <li class="nav-item">
-                    <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">Layanan Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Rincian Aset </a>
-                </li>
-            </ul>
-        </div>
-    </li>
-    <li class="nav-item">
         <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
             <i class="link-icon" data-feather="wifi"></i>
             <span class="link-title">Perangkat IT</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">
+            <i class="link-icon" data-feather="list"></i>
+            <span class="link-title">Layanan Aset IT</span>
         </a>
     </li>
     <li class="nav-item">

@@ -1,14 +1,14 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Tambah Layanan Non Aset &verbar; SARPRA </title>
+<title>Tambah Layanan Perangkat IT &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Layanan Non Aset</h4>
+        <h4 class="mb-3 mb-md-0">Layanan Perangkat IT</h4>
     </div>
 </div>
 
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('saranaLayananNonAset')?>" method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
+                <form action="<?= site_url('layananAsetIt')?>" method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
                         <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
@@ -31,6 +31,17 @@
                                 <input type="text" class="form-control" name="tanggal">
                                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
+                                <option value="" hidden>Pilih aset</option>
+                                <?php foreach($dataSaranaIt as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasSarana?>"><?=$value->namaSarana?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -91,15 +102,10 @@
                             <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan link dokumentasi">
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="spesifikasi" class="col-sm-3 col-form-label">Keterangan</label>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="5" placeholder="Masukkan keterangan" rows="10"></textarea>
-                        </div>
-                    </div>
+                    
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('saranaLayananNonAset') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('layananAsetIt') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
