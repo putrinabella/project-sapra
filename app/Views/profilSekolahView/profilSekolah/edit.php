@@ -60,7 +60,7 @@
                         <label for="tanggalSkPendirian" class="col-sm-3 col-form-label">Tanggal SK Pendirian</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
-                                    <input type="text" class="form-control" name="tanggalSkPendirian">
+                                    <input type="text" class="form-control" name="tanggalSkPendirian" value="<?=$dataProfilSekolah->tanggalSkPendirian?>">
                                     <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
@@ -74,10 +74,10 @@
                     <div class="row mb-3">
                         <label for="tanggalSkIzinOperasional" class="col-sm-3 col-form-label">Tanggal SK Izin Operasional</label>
                         <div class="col-sm-9">
-                        <divw class="input-group date datepicker" id="tanggalSkIzinOperasional">
-                                <input type="text" class="form-control" name="tanggalSkIzinOperasional">
+                            <div class="input-group date datepicker" id="tanggalSkIzinOperasional">
+                                <input type="text" class="form-control" name="tanggalSkIzinOperasional" value="<?=$dataProfilSekolah->tanggalSkIzinOperasional?>">
                                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
-                            </divw>
+                            </div>
                         </div>
                     </div>
                     <br>
