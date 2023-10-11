@@ -19,14 +19,36 @@ class ProfilSekolah extends ResourceController
 
     public function index() {
         $dataProfilSekolah = $this->profilSekolahModel->findAll();
+        $firstRecord = $this->profilSekolahModel->first();
+        $firstRecordId = $firstRecord ? $firstRecord->idProfilSekolah : null;
         $rowCount =  $this->profilSekolahModel->getCount();
         $data = [
             'rowCount'              => $rowCount,
+            'firstRecordId'        => $firstRecordId,
             'dataProfilSekolah'     => $dataProfilSekolah,
         ];
         return view('profilSekolahView/profilSekolah/index', $data);
     }
+    
 
+    public function show($id = null) {
+        if ($id != null) {
+            $dataProfilSekolah = $this->profilSekolahModel->find($id);
+            $rowCount =  $this->profilSekolahModel->getCount();
+            if (is_object($dataProfilSekolah)) {
+                $data = [
+                    'dataProfilSekolah'     => $dataProfilSekolah,
+                    'rowCount'              => $rowCount,
+
+                ];
+                return view('profilSekolahView/profilSekolah/show', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
 
     public function new() {
         $data['dataProfilSekolah'] = $this->profilSekolahModel->findAll();
@@ -264,29 +286,37 @@ class ProfilSekolah extends ResourceController
     }
 
 
-    public function generatePDF() {
-        $filePath = APPPATH . 'Views/profilSekolahView/profilSekolah/print.php';
-    
-        if (!file_exists($filePath)) {
+    public function print($id = null) {
+        $dataProfilSekolah = $this->profilSekolahModel->find($id);
+        
+        if (!is_object($dataProfilSekolah)) {
             return view('error/404');
         }
 
-        $data['dataProfilSekolah'] = $this->profilSekolahModel->findAll();
+        $data = [
+            'dataProfilSekolah'         => $dataProfilSekolah,
+        ];
+
+        $filePath = APPPATH . 'Views/profilSekolahView/profilSekolah/print.php';
+
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
 
         ob_start();
 
         $includeFile = function ($filePath, $data) {
             include $filePath;
         };
-    
+
         $includeFile($filePath, $data);
-    
+
         $html = ob_get_clean();
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $filename = 'IT - ProfilSekolah Report.pdf';
+        $filename = "Profil - Identitas Sekolah.pdf";
         $dompdf->stream($filename);
     }
 }

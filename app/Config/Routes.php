@@ -222,4 +222,5 @@ $routes->delete('sosialMedia/deletePermanent', 'SosialMedia::deletePermanent');
 $routes->resource('sosialMedia', ['filter' => 'isLoggedIn']);
 
 // Profil Sekolah
+$routes->get('profilSekolah/print/(:num)', 'ProfilSekolah::print/$1');
 $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
