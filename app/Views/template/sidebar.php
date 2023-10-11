@@ -69,13 +69,14 @@
             </ul>
         </div>
     </li>
-
     <li class="nav-item">
         <a href="<?= site_url('manajemenLab') ?>" class="nav-link">
             <i class="link-icon" data-feather="message-square"></i>
             <span class="link-title">Laboratorium</span>
         </a>
     </li>
+
+
     <li class="nav-item nav-category">IT</li>
     <li class="nav-item">
         <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
@@ -92,7 +93,7 @@
 
     <li class="nav-item nav-category">Profil</li>
     <li class="nav-item">
-        <a href="<?= site_url() ?>" class="nav-link">
+        <a href="<?= site_url('profilSekolah') ?>" class="nav-link">
             <i class="link-icon" data-feather="home"></i>
             <span class="link-title">Profil Sekolah</span>
         </a>

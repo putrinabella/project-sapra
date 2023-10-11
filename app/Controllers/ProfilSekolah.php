@@ -3,85 +3,56 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\SosialMediaModels; 
-use App\Models\IdentitasSaranaModels; 
-use App\Models\SumberDanaModels; 
-use App\Models\KategoriManajemenModels; 
-use App\Models\IdentitasPrasaranaModels; 
+use App\Models\ProfilSekolahModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class SosialMedia extends ResourceController
+class ProfilSekolah extends ResourceController
 {
     
      function __construct() {
-        $this->sosialMediaModel = new SosialMediaModels();
-        $this->db = \Config\Database::connect();
+        $this->profilSekolahModel = new ProfilSekolahModels();
     }
 
     public function index() {
-        $data['dataSosialMedia'] = $this->sosialMediaModel->findAll();
-        return view('profilSekolahView/sosialMedia/index', $data);
+        $dataProfilSekolah = $this->profilSekolahModel->findAll();
+        $rowCount =  $this->profilSekolahModel->getCount();
+        $data = [
+            'rowCount'              => $rowCount,
+            'dataProfilSekolah'     => $dataProfilSekolah,
+        ];
+        return view('profilSekolahView/profilSekolah/index', $data);
     }
 
-    public function show($id = null) {
-        if ($id != null) {
-            $dataSosialMedia = $this->sosialMediaModel->find($id);
-        
-            if (is_object($dataSosialMedia)) {
-                $spesifikasiMarkup = $dataSosialMedia->spesifikasi;
-                $parsedown = new Parsedown();
-                $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-                $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-                
-                $buktiUrl = $this->generateFileId($dataSosialMedia->bukti);
-                $data = [
-                    'dataSosialMedia'           => $dataSosialMedia,
-                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-                    'buktiUrl'                  => $buktiUrl,
-                    'spesifikasiHtml'           => $spesifikasiHtml,
-                ];
-                return view('profilSekolahView/sosialMedia/show', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
-    }
 
     public function new() {
-        $data['dataSosialMedia'] = $this->sosialMediaModel->findAll();
-        
-        return view('profilSekolahView/sosialMedia/new', $data);        
+        $data['dataProfilSekolah'] = $this->profilSekolahModel->findAll();
+        return view('profilSekolahView/profilSekolah/new', $data);        
     }
 
     
     public function create() {
         $data = $this->request->getPost(); 
-        if (!empty($data['namaSosialMedia']) && !empty($data['usernameSosialMedia']) && !empty($data['linkSosialMedia'])) {
-            $this->sosialMediaModel->insert($data);
-            return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil disimpan');
+        if (!empty($data['npsn'])) {
+            $this->profilSekolahModel->insert($data);
+            return redirect()->to(site_url('profilSekolah'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('sosialMedia'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('profilSekolah'))->with('error', 'Semua field harus terisi');
         }
     }
 
     public function edit($id = null) {
         if ($id != null) {
-            $dataSosialMedia = $this->sosialMediaModel->find($id);
+            $dataProfilSekolah = $this->profilSekolahModel->find($id);
     
-            if (is_object($dataSosialMedia)) {
+            if (is_object($dataProfilSekolah)) {
                 $data = [
-                    'dataSosialMedia' => $dataSosialMedia,
+                    'dataProfilSekolah' => $dataProfilSekolah,
                 ];
-                return view('profilSekolahView/sosialMedia/edit', $data);
+                return view('profilSekolahView/profilSekolah/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -93,12 +64,12 @@ class SosialMedia extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            if (!empty($data['namaSosialMedia']) && !empty($data['usernameSosialMedia']) && !empty($data['linkSosialMedia'])) {
-                $this->sosialMediaModel->update($id, $data);
-                return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil diupdate');
+            if (!empty($data['npsn'])) {
+                $this->profilSekolahModel->update($id, $data);
+                return redirect()->to(site_url('profilSekolah'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to
-                (site_url('sosialMedia/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                (site_url('profilSekolah/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
             }
         } else {
             return view('error/404');
@@ -106,55 +77,16 @@ class SosialMedia extends ResourceController
     }
 
     public function delete($id = null) {
-        $this->sosialMediaModel->delete($id);
-        return redirect()->to(site_url('sosialMedia'));
+        $this->profilSekolahModel->delete($id);
+        return redirect()->to(site_url('profilSekolah'));
     }
 
-    public function trash() {
-        $data['dataSosialMedia'] = $this->sosialMediaModel->onlyDeleted()->getRecycle();
-        return view('profilSekolahView/sosialMedia/trash', $data);
-    } 
-
-    public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblSosialMedia')
-                ->set('deleted_at', null, true)
-                ->where(['idSosialMedia' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblSosialMedia')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil direstore');
-        } 
-        return redirect()->to(site_url('sosialMedia/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
-
-    public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->sosialMediaModel->delete($id, true);
-        return redirect()->to(site_url('sosialMedia/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->sosialMediaModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->sosialMediaModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('sosialMedia/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('sosialMedia/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    } 
     
     public function export() {
-        $data = $this->sosialMediaModel->findAll();
+        $data = $this->profilSekolahModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - SosialMedia');
+        $activeWorksheet->setTitle('IT - ProfilSekolah');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
@@ -163,9 +95,9 @@ class SosialMedia extends ResourceController
         
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaSosialMedia);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->usernameSosialMedia);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->linkSosialMedia);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaProfilSekolah);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->usernameProfilSekolah);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->linkProfilSekolah);
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
@@ -193,17 +125,17 @@ class SosialMedia extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - SosialMedia.xlsx');
+        header('Content-Disposition: attachment;filename=IT - ProfilSekolah.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
     
     public function createTemplate() {
-        $data = $this->sosialMediaModel->findAll();
+        $data = $this->profilSekolahModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - SosialMedia');
+        $activeWorksheet->setTitle('IT - ProfilSekolah');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
@@ -259,9 +191,9 @@ class SosialMedia extends ResourceController
                 break;
             }
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->namaSosialMedia);
-            $exampleSheet->setCellValue('C'.($index + 2), $value->usernameSosialMedia);
-            $exampleSheet->setCellValue('D'.($index + 2), $value->linkSosialMedia);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->namaProfilSekolah);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->usernameProfilSekolah);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->linkProfilSekolah);
 
             $exampleSheet->getStyle('A'.($index + 2))
                             ->getAlignment()
@@ -289,7 +221,7 @@ class SosialMedia extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - SosialMedia Example.xlsx');
+        header('Content-Disposition: attachment;filename=IT - ProfilSekolah Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -311,35 +243,35 @@ class SosialMedia extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $namaSosialMedia            = $value[1] ?? null;
-                $usernameSosialMedia        = $value[2] ?? null;
-                $linkSosialMedia            = $value[3] ?? null;
+                $namaProfilSekolah            = $value[1] ?? null;
+                $usernameProfilSekolah        = $value[2] ?? null;
+                $linkProfilSekolah            = $value[3] ?? null;
 
-                if ($namaSosialMedia !== null) {
+                if ($namaProfilSekolah !== null) {
                     $data = [
-                        'namaSosialMedia'       => $namaSosialMedia,
-                        'usernameSosialMedia'   => $usernameSosialMedia,
-                        'linkSosialMedia'       => $linkSosialMedia,
+                        'namaProfilSekolah'       => $namaProfilSekolah,
+                        'usernameProfilSekolah'   => $usernameProfilSekolah,
+                        'linkProfilSekolah'       => $linkProfilSekolah,
 
                     ];
-                    $this->sosialMediaModel->insert($data);
+                    $this->profilSekolahModel->insert($data);
                 }
             }
-            return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('profilSekolah'))->with('success', 'Data berhasil diimport');
         } else {
-            return redirect()->to(site_url('sosialMedia'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+            return redirect()->to(site_url('profilSekolah'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
 
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/profilSekolahView/sosialMedia/print.php';
+        $filePath = APPPATH . 'Views/profilSekolahView/profilSekolah/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataSosialMedia'] = $this->sosialMediaModel->findAll();
+        $data['dataProfilSekolah'] = $this->profilSekolahModel->findAll();
 
         ob_start();
 
@@ -354,7 +286,7 @@ class SosialMedia extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'IT - SosialMedia Report.pdf';
+        $filename = 'IT - ProfilSekolah Report.pdf';
         $dompdf->stream($filename);
     }
 }

@@ -1,23 +1,23 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Website &verbar; SARPRA </title>
+<title>Sosial Media &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">IT</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Website</li>
+        <li class="breadcrumb-item"><a href="#">Profil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Sosial Media</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Website</h4>
+        <h4 class="mb-3 mb-md-0">Sosial Media</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('website/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('sosialMedia/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -28,8 +28,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('website/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('website/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('sosialMedia/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('sosialMedia/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -39,11 +39,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('website/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('sosialMedia/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('website/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('sosialMedia/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -83,30 +83,28 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th>Nama</th>
-                                <th>Fungsi</th>
+                                <th>Aplikasi Sosial Media</th>
+                                <th>Username</th>
                                 <th>Link</th>
-                                <th>PIC</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataWebsite as $key => $value) : ?>
+                        <?php foreach ($dataSosialMedia as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                               <td> <?= $value->namaWebsite; ?> </td>
-                               <td> <?= $value->fungsiWebsite; ?> </td>
-                               <td>
-                               <a href="<?= $value->linkWebsite; ?>" target="_blank"><?= $value->linkWebsite; ?></a>
-                               <td> <?= $value->picWebsite; ?> </td>
+                                <td> <?= $value->namaSosialMedia; ?> </td>
+                                <td> <?= $value->usernameSosialMedia; ?> </td>
+                                <td>
+                                <a href="<?= $value->linkSosialMedia; ?>" target="_blank"><?= $value->linkSosialMedia; ?></a>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('website/'.$value->idWebsite.'/edit') ?>"
+                                    <a href="<?=site_url('sosialMedia/'.$value->idSosialMedia.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('website/'.$value->idWebsite)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idWebsite;?>">
+                                    <form action="<?=site_url('sosialMedia/'.$value->idSosialMedia)?>"
+                                        method="post" class="d-inline" id="del-<?= $value->idSosialMedia;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
@@ -131,7 +129,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("website/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url("sosialMedia/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <input class="form-control" type="file" id="formExcel" name="formExcel">

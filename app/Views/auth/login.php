@@ -79,9 +79,9 @@
 
                                         <!-- <button type="reset" class="btn btn-danger me-2">Reset</button> -->
                                         <button type="submit" class="btn btn-primary">Login</button>
-                                        <div>
+                                        <!-- <div>
                                             <a href="" class="d-block mt-3 text-muted">Not a user? Sign up</a>
-                                        </div>
+                                        </div> -->
                                     </form>
                                 </div>
                             </div>

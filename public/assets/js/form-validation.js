@@ -114,6 +114,56 @@ $(document).ready(function () {
       linkSosialMedia: {
         required: true,
       }, 
+      npsn: {
+        required: true,
+        minlength: 8,
+        maxlength: 15,
+      }, 
+      bentukPendidikan: {
+        required: true,
+      }, 
+      status: {
+        required: true,
+      }, 
+      statusKepemilikan: {
+        required: true,
+      }, 
+      skPendirian: {
+        required: true,
+      }, 
+      skIzinOperasional: {
+        required: true,
+      }, 
+      statusBos: {
+        required: true,
+      }, 
+      sertifikasiIso: {
+        required: true,
+      }, 
+      sumberListrik: {
+        required: true,
+      }, 
+      kecepatanInternet: {
+        required: true,
+      }, 
+      siswaKebutuhanKhusus: {
+        required: true,
+      }, 
+      namaBank: {
+        required: true,
+      }, 
+      cabangKcp: {
+        required: true,
+      }, 
+      atasNamaRekening: {
+        required: true,
+      }, 
+      tanggalSkPendirian: {
+        required: true,
+      }, 
+      tanggalSkIzinOperasional: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -229,6 +279,56 @@ $(document).ready(function () {
       linkSosialMedia: {
         required: "Silahkan masukkan link sosial media",
       },
+      npsn: {
+        required: "Silahkan masukkan NPS",
+        minlength: "NPSN minimal terdiri dari 8 karakter",
+        maxlength: "NPSN maksimal terdiri dari 15 karakter",
+      },
+      status: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      bentukPendidikan: {
+        required: "Silahkan masukkan bentuk pendidikan",
+      }, 
+      statusKepemilikan: {
+        required: "Silahkan masukkan status kepemilikan",
+      }, 
+      skPendirian: {
+        required: "Silahkan masukkan nomor SK pendirian",
+      }, 
+      skIzinOperasional: {
+        required: "Silahkan masukkan nomor SK izin operasional",
+      }, 
+      statusBos: {
+        required: "Silahkan masukkan status BOS",
+      }, 
+      sertifikasiIso: {
+        required: "Silahkan masukkan nomor sertifikasi ISO",
+      }, 
+      sumberListrik: {
+        required: "Silahkan masukkan sumber listrik",
+      }, 
+      kecepatanInternet: {
+        required: "Silahkan masukkan kecepatan internet",
+      }, 
+      siswaKebutuhanKhusus: {
+        required: "Silahkan masukkan jumlah siswa berkebutuhan khusus",
+      }, 
+      namaBank: {
+        required: "Silahkan masukkan nama bank",
+      }, 
+      cabangKcp: {
+        required: "Silahkan masukkan cabang KCP",
+      }, 
+      atasNamaRekening: {
+        required: "Silahkan masukkan atas nama rekening",
+      }, 
+      tanggalSkPendirian: {
+        required: "Silahkan masukkan tanggal",
+      }, 
+      tanggalSkIzinOperasional: {
+        required: "Silahkan masukkan tanggal",
+      }, 
     },
     errorPlacement: function (label, element) {
       label.addClass("mt-1 tx-13 text-danger");

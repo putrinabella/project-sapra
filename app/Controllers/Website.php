@@ -24,7 +24,7 @@ class Website extends ResourceController
 
     public function index() {
         $data['dataWebsite'] = $this->websiteModel->findAll();
-        return view('itView/website/index', $data);
+        return view('profilSekolahView/website/index', $data);
     }
 
     public function show($id = null) {
@@ -47,7 +47,7 @@ class Website extends ResourceController
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
-                return view('itView/website/show', $data);
+                return view('profilSekolahView/website/show', $data);
             } else {
                 return view('error/404');
             }
@@ -59,7 +59,7 @@ class Website extends ResourceController
     public function new() {
         $data['dataWebsite'] = $this->websiteModel->findAll();
         
-        return view('itView/website/new', $data);        
+        return view('profilSekolahView/website/new', $data);        
     }
 
     
@@ -81,7 +81,7 @@ class Website extends ResourceController
                 $data = [
                     'dataWebsite' => $dataWebsite,
                 ];
-                return view('itView/website/edit', $data);
+                return view('profilSekolahView/website/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -112,7 +112,7 @@ class Website extends ResourceController
 
     public function trash() {
         $data['dataWebsite'] = $this->websiteModel->onlyDeleted()->getRecycle();
-        return view('itView/website/trash', $data);
+        return view('profilSekolahView/website/trash', $data);
     } 
 
     public function restore($id = null) {
@@ -339,7 +339,7 @@ class Website extends ResourceController
 
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/itView/website/print.php';
+        $filePath = APPPATH . 'Views/profilSekolahView/website/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
