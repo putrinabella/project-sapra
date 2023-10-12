@@ -293,7 +293,6 @@ class LayananLabNonAset extends ResourceController
                 break;
             };
             $getStatus = '=IFERROR(IF(AND(ISNUMBER(MATCH(C'.($index + 2).', $L$2:$L$'.(count($keyLab) + 1).', 0)), ISNUMBER(MATCH(D'.($index + 2).', $O$2:$O$'.(count($keyKategoriManajemen) + 1).', 0)), ISNUMBER(MATCH(E'.($index + 2).', $R$2:$R$'.(count($keyStatusLayanan) + 1).', 0)), ISNUMBER(MATCH(F'.($index + 2).', $U$2:$U$'.(count($keySumberDana) + 1).', 0)), IF(OR(B'.($index + 2).'="", G'.($index + 2).'="", H'.($index + 2).'="", I'.($index + 2).'=""), FALSE, TRUE)), "CORRECT", "ERROR"), "ERROR")';
-            // $getStatus = '=IFERROR(IF(AND(ISNUMBER(MATCH(C'.($index + 2).', $K$2:$K$'.(count($keyLab) + 1).', 0)), ISNUMBER(MATCH(D'.($index + 2).', $N$2:$N$'.(count($keyKategoriManajemen) + 1).', 0)), ISNUMBER(MATCH(E'.($index + 2).', $Q$2:$Q$'.(count($keyStatusLayanan) + 1).', 0)), ISNUMBER(MATCH(F'.($index + 2).', $T$2:$T$'.(count($keySumberDana) + 1).', 0))), "CORRECT", "ERROR"), "ERROR")';
             $currentDate = '=TEXT(DATE(' . date('Y') . ',' . date('m') . ',' . date('d') . '),"yyyy-mm-dd")';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
@@ -491,12 +490,12 @@ class LayananLabNonAset extends ResourceController
                 $biaya                  = $value[6] ?? null;
                 $bukti                  = $value[7] ?? null;
                 $spesifikasi            = $value[8] ?? null;
+                $status                 = $value[9] ?? null;
 
                 if ($idIdentitasLab === null || $idIdentitasLab === '') {
                     continue; 
                 }
 
-                
                 $data = [
                     'tanggal' => $tanggal,
                     'idIdentitasLab' => $idIdentitasLab,
@@ -509,7 +508,11 @@ class LayananLabNonAset extends ResourceController
                     ];
 
                     if (!empty($data['tanggal']) && !empty($data['idIdentitasLab']) && !empty($data['idStatusLayanan']) && !empty($data['idKategoriManajemen']) && !empty($data['idSumberDana']) && !empty($data['biaya']) && !empty($data['bukti']) && !empty($data['spesifikasi'])) {
-                        $this->layananLabNonAsetModel->insert($data);
+                        if ($status == 'ERROR') {
+                            return redirect()->to(site_url('layananLabNonAset'))->with('error', 'Pastikan excel sudah benar');
+                        } else {
+                            $this->layananLabNonAsetModel->insert($data);
+                        }
                     } else {
                         return redirect()->to(site_url('layananLabNonAset'))->with('error', 'Pastikan semua data telah diisi!');
                     }

@@ -8,7 +8,7 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Layanan Non Aset</li>
+        <li class="breadcrumb-item active" aria-current="page">Layanan Non Aset Laboratorium</li>
     </ol>
 </nav>
 

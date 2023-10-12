@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Informasi</a></li>
+        <li class="breadcrumb-item"><a href="#">Data Master</a></li>
         <li class="breadcrumb-item active" aria-current="page">Identitas Lantai</li>
     </ol>
 </nav>

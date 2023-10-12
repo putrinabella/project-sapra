@@ -104,7 +104,7 @@
     <li class="nav-item">
         <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">
             <i class="link-icon" data-feather="list"></i>
-            <span class="link-title">Layanan Aset IT</span>
+            <span class="link-title">Layanan Perangkat IT</span>
         </a>
     </li>
 

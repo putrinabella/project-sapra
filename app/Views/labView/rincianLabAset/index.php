@@ -8,7 +8,7 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Rincian Aset Lab</li>
+        <li class="breadcrumb-item active" aria-current="page">Manajemen Aset Laboratorium</li>
     </ol>
 </nav>
 
