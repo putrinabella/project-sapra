@@ -254,7 +254,7 @@ $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
 
 // LABORATORIUM
 
-// Rincian Aset Lab
+// Manajemen Aset
 $routes->get('rincianLabAset/createTemplate', 'RincianLabAset::createTemplate');
 $routes->get('rincianLabAset/print/(:num)', 'RincianLabAset::print/$1');
 $routes->get('rincianLabAset/generatePDF', 'RincianLabAset::generatePDF');
@@ -273,3 +273,18 @@ $routes->get('laboratorium/print/(:num)', 'Laboratorium::print/$1');
 $routes->get('laboratorium/createTemplate', 'Laboratorium::createTemplate');
 $routes->get('laboratorium/export', 'Laboratorium::export');
 $routes->resource('laboratorium', ['filter' => 'isLoggedIn']);
+
+// MANAJEMEN LAYANAN
+
+// Layanan Aset Lab
+$routes->get('layananLabAset/createTemplate', 'LayananLabAset::createTemplate');
+$routes->get('layananLabAset/generatePDF', 'LayananLabAset::generatePDF');
+$routes->get('layananLabAset/export', 'LayananLabAset::export');
+$routes->post('layananLabAset/import', 'LayananLabAset::import');
+$routes->get('layananLabAset/edit', 'LayananLabAset::edit');
+$routes->get('layananLabAset/trash', 'LayananLabAset::trash');
+$routes->get('layananLabAset/restore/(:any)', 'LayananLabAset::restore/$1');
+$routes->get('layananLabAset/restore', 'LayananLabAset::restore');
+$routes->delete('layananLabAset/deletePermanent/(:any)', 'LayananLabAset::deletePermanent/$1');
+$routes->delete('layananLabAset/deletePermanent', 'LayananLabAset::deletePermanent');
+$routes->resource('layananLabAset', ['filter' => 'isLoggedIn']);

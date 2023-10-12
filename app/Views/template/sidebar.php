@@ -47,27 +47,44 @@
 
     <li class="nav-item nav-category">Laboratorium</li>
     <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#masterLaboratorium" role="button" aria-expanded="false" aria-controls="masterLaboratorium">
-            <i class="link-icon" data-feather="shield"></i>
-            <span class="link-title">Master</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLayanan" role="button" aria-expanded="false" aria-controls="manajemenLayanan">
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Layanan</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
-        <div class="collapse" id="masterLaboratorium">
+        <div class="collapse" id="manajemenLayanan">
             <ul class="nav sub-menu">
-                <li class="nav-item">
-                    <a href="<?= site_url('manajemenPeminjamanLab') ?>" class="nav-link">Manajemen Peminjaman</a>
-                </li>
                 <li class="nav-item">
                     <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
                     <a href="<?= site_url('layananNonLabAset') ?>" class="nav-link">Layanan Non Aset</a>
                 </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
+            <i class="link-icon" data-feather="user-check"></i>
+            <span class="link-title">Peminjaman</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="manajemenPeminjaman">
+            <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">Rincian Aset </a>
+                    <a href="<?= site_url('manajemenStokLab') ?>" class="nav-link">Manajemen Stok </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('manajemenPeminjamanLab') ?>" class="nav-link">Manajemen Peminjaman</a>
                 </li>
             </ul>
         </div>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
+            <i class="link-icon" data-feather="bookmark"></i>
+            <span class="link-title">Manajemen Aset</span>
+        </a>
     </li>
     <li class="nav-item">
         <a href="<?= site_url('laboratorium') ?>" class="nav-link">
