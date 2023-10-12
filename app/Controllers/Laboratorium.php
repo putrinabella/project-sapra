@@ -151,7 +151,7 @@ class Laboratorium extends ResourceController
                     'dataSarana'            => $dataSarana,
                 ];
     
-                $html = view('prasaranaView/Ruangan/print', $data); 
+                $html = view('labView/laboratorium/print', $data); 
     
                 $options = new Options();
                 $options->set('isHtml5ParserEnabled', true);
@@ -162,7 +162,7 @@ class Laboratorium extends ResourceController
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $namaLab = $data['dataLaboratorium']->namaLab;
-                $filename = "Lab - $namaLab.pdf";
+                $filename = "Laboratorium - $namaLab.pdf";
                 $dompdf->stream($filename);
             } else {
                 return view('error/404');

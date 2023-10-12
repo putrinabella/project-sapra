@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $dataPrasaranaRuangan->namaPrasarana; ?>
+        <?= $dataLaboratorium->namaLab; ?>
     </title>
     <style>
         body {
@@ -76,18 +76,18 @@
             <table class="table">
                 <tr>
                     <td>
-                        Nama Prasarana
+                        Nama Lab
                     </td>
                     <td>
-                        <?= $dataPrasaranaRuangan->namaPrasarana; ?>
+                        <?= $dataLaboratorium->namaLab; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        Kode Prasarana
+                        Kode Lab
                     </td>
                     <td>
-                        <?= $dataPrasaranaRuangan->kodePrasarana; ?>
+                        <?= $dataLaboratorium->kodeLab; ?>
                     </td>
                 </tr>
                 <tr>
@@ -95,7 +95,7 @@
                         Lokasi Gedung
                     </td>
                     <td>
-                        <?= $dataInfoPrasarana->namaGedung; ?>
+                        <?= $dataInfoLab->namaGedung; ?>
                     </td>
                 </tr>
                 <tr>
@@ -103,7 +103,7 @@
                         Lokasi Lantai
                     </td>
                     <td>
-                        <?= $dataInfoPrasarana->namaLantai; ?>
+                        <?= $dataInfoLab->namaLantai; ?>
                     </td>
                 </tr>
                 <tr>
@@ -111,7 +111,7 @@
                         Luas
                     </td>
                     <td>
-                        <?= $luasFormatted = number_format($dataPrasaranaRuangan->luas, 0, ',', '.'); ?> m2
+                        <?= $luasFormatted = number_format($dataLaboratorium->luas, 0, ',', '.'); ?> m2
                     </td>
                 </tr>
             </table>
