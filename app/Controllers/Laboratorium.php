@@ -7,7 +7,7 @@ use App\Models\LaboratoriumModels;
 use App\Models\IdentitasSaranaModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
-use App\Models\IdentitasPrasaranaModels; 
+use App\Models\IdentitasLabModels; 
 use App\Models\IdentitasGedungModels; 
 use App\Models\IdentitasLantaiModels; 
 use App\Models\RincianAsetModels; 
@@ -21,11 +21,11 @@ class Laboratorium extends ResourceController
 {
     
      function __construct() {
-        $this->prasaranaRuanganModel = new LaboratoriumModels();
+        $this->laboratoriumModel = new LaboratoriumModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
-        $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
+        $this->identitasLabModel = new IdentitasLabModels();
         $this->identitasGedungModel = new IdentitasGedungModels();
         $this->identitasLantaiModel = new IdentitasLantaiModels();
         $this->rincianAsetModel = new RincianAsetModels();
@@ -33,27 +33,27 @@ class Laboratorium extends ResourceController
     }
 
     public function index() {
-        $data['dataLaboratorium'] = $this->prasaranaRuanganModel->getRuangan();
-        return view('prasaranaView/ruangan/index', $data);
+        $data['dataLaboratorium'] = $this->laboratoriumModel->getRuangan();
+        return view('labView/laboratorium/index', $data);
     }
     
     public function show($id = null) {
         if ($id != null) {
-            $dataLaboratorium = $this->prasaranaRuanganModel->find($id);
+            $dataLaboratorium = $this->laboratoriumModel->find($id);
             
             if (is_object($dataLaboratorium)) {
                 
-                $dataInfoPrasarana = $this->prasaranaRuanganModel->getIdentitasGedung($dataLaboratorium->idIdentitasPrasarana);
-                $dataInfoPrasarana->namaLantai = $this->prasaranaRuanganModel->getIdentitasLantai($dataLaboratorium->idIdentitasPrasarana)->namaLantai;
-                $dataSarana = $this->prasaranaRuanganModel->getSaranaByPrasaranaId($dataLaboratorium->idIdentitasPrasarana);
+                $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
+                $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
+                $dataSarana = $this->laboratoriumModel->getSaranaByLabId($dataLaboratorium->idIdentitasLab);
 
                 $data = [
                     'dataLaboratorium'  => $dataLaboratorium,
-                    'dataInfoPrasarana'     => $dataInfoPrasarana,
+                    'dataInfoLab'     => $dataInfoLab,
                     'dataSarana'            => $dataSarana,
                     
                 ];
-                return view('prasaranaView/ruangan/show', $data);
+                return view('labView/laboratorium/show', $data);
             } else {
                 return view('error/404');
             }
@@ -70,7 +70,7 @@ class Laboratorium extends ResourceController
     }
     
     public function export() {
-        $data = $this->prasaranaRuanganModel->getAll();
+        $data = $this->laboratoriumModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Rincian Aset');
@@ -89,7 +89,7 @@ class Laboratorium extends ResourceController
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeLaboratorium);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaLab);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->tahunPengadaan);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
@@ -137,17 +137,17 @@ class Laboratorium extends ResourceController
     
     function print($id = null) {
         if ($id != null) {
-            $dataLaboratorium = $this->prasaranaRuanganModel->find($id);
+            $dataLaboratorium = $this->laboratoriumModel->find($id);
     
             if (is_object($dataLaboratorium)) {
     
-                $dataInfoPrasarana = $this->prasaranaRuanganModel->getIdentitasGedung($dataLaboratorium->idIdentitasPrasarana);
-                $dataInfoPrasarana->namaLantai = $this->prasaranaRuanganModel->getIdentitasLantai($dataLaboratorium->idIdentitasPrasarana)->namaLantai;
-                $dataSarana = $this->prasaranaRuanganModel->getSaranaByPrasaranaId($dataLaboratorium->idIdentitasPrasarana);
+                $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
+                $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
+                $dataSarana = $this->laboratoriumModel->getSaranaByLabId($dataLaboratorium->idIdentitasLab);
     
                 $data = [
                     'dataLaboratorium'  => $dataLaboratorium,
-                    'dataInfoPrasarana'     => $dataInfoPrasarana,
+                    'dataInfoLab'     => $dataInfoLab,
                     'dataSarana'            => $dataSarana,
                 ];
     
@@ -161,8 +161,8 @@ class Laboratorium extends ResourceController
                 $dompdf->loadHtml($html);
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
-                $namaPrasarana = $data['dataLaboratorium']->namaPrasarana;
-                $filename = "Prasarana - $namaPrasarana.pdf";
+                $namaLab = $data['dataLaboratorium']->namaLab;
+                $filename = "Lab - $namaLab.pdf";
                 $dompdf->stream($filename);
             } else {
                 return view('error/404');

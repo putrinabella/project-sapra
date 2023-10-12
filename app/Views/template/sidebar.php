@@ -70,7 +70,7 @@
         </div>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('manajemenLab') ?>" class="nav-link">
+        <a href="<?= site_url('laboratorium') ?>" class="nav-link">
             <i class="link-icon" data-feather="message-square"></i>
             <span class="link-title">Laboratorium</span>
         </a>

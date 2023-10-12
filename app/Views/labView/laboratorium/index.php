@@ -7,14 +7,14 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Prasarana</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Ruangan</li>
+        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Ruangan Laboratorium</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Ruangan</h4>
+        <h4 class="mb-3 mb-md-0">Ruangan Laboratorium</h4>
     </div>
 </div>
 
@@ -56,14 +56,14 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataPrasaranaRuangan as $key => $value) : ?>
+                        <?php foreach ($dataLaboratorium as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-left"><?=$value->namaPrasarana?></td>
+                                <td class="text-left"><?=$value->namaLab?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('prasaranaRuangan/'.$value->idIdentitasPrasarana) ?>" class="btn btn-success btn-icon-text"> <i  class="btn-icon-prepend" data-feather="info"></i> Show Detail</a>
+                                    <a href="<?=site_url('laboratorium/'.$value->idIdentitasLab) ?>" class="btn btn-success btn-icon-text"> <i  class="btn-icon-prepend" data-feather="info"></i> Show Detail</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -83,7 +83,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("prasaranaRuangan/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url("laboratorium/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
