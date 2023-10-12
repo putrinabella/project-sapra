@@ -15,6 +15,22 @@ class ProfilSekolah extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'kepsek' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'operator' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'akreditasi' => [
+                'type' => 'CHAR',
+                'constraint' => 5,
+            ],
+            'kurikulum' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'npsn' => [
                 'type' => 'VARCHAR',
                 'constraint' => 18,

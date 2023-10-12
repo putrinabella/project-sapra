@@ -19,6 +19,43 @@
             <div class="card-body">
             <form action="<?= site_url('profilSekolah')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
+                                        <h5>SMK TELKOM BANJARBARU</h5>
+                    <br>
+                    <div class="row mb-3">
+                        <label for="kepsek" class="col-sm-3 col-form-label">Nama Kepala Sekolah</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kepsek" name="kepsek" placeholder="Masukkan Nama Kepala Sekolah">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="operator" class="col-sm-3 col-form-label">Operator</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="operator" name="operator" placeholder="Masukkan Nama Operator">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="akreditasi" class="col-sm-3 col-form-label">akreditasi</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="akreditasi" name="akreditasi">
+                                <option value="" hidden>Pilih status</option>
+                                <option value="A" >A</option>
+                                <option value="B" >B</option>
+                                <option value="C" >C</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="kurikulum" class="col-sm-3 col-form-label">Kurikulum</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="kurikulum" name="kurikulum">
+                                <option value="" hidden>Pilih Kurikulum</option>
+                                <option value="Kurikulum 2006" >Kurikulum 2006</option>
+                                <option value="Kurikulum 2013" >Kurikulum 2013</option>
+                                <option value="Kurikulum Merdeka" >Kurikulum Merdeka</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
                     <h5>Identitas Sekolah</h5>
                     <br>
                     <div class="row mb-3">

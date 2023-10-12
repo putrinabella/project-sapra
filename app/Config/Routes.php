@@ -222,5 +222,19 @@ $routes->delete('sosialMedia/deletePermanent', 'SosialMedia::deletePermanent');
 $routes->resource('sosialMedia', ['filter' => 'isLoggedIn']);
 
 // Profil Sekolah
+$routes->get('profilSekolah/createTemplateDokumen', 'ProfilSekolah::createTemplateDokumen');
+$routes->get('profilSekolah/generatePDFDokumen', 'ProfilSekolah::generatePDFDokumen');
+$routes->get('profilSekolah/exportDokumen', 'ProfilSekolah::exportDokumen');
+$routes->post('profilSekolah/importDokumen', 'ProfilSekolah::importDokumen');
+$routes->get('profilSekolah/trashDokumen', 'ProfilSekolah::trashDokumen');
+$routes->get('profilSekolah/restoreDokumen/(:any)', 'ProfilSekolah::restoreDokumen/$1');
+$routes->get('profilSekolah/restoreDokumen', 'ProfilSekolah::restoreDokumen');
+$routes->get('profilSekolah/(:num)/editDokumen', 'ProfilSekolah::editDokumen/$1');
+$routes->get('profilSekolah/newDokumen', 'ProfilSekolah::newDokumen');
 $routes->get('profilSekolah/print/(:num)', 'ProfilSekolah::print/$1');
+$routes->post('profilSekolah/createDokumen', 'ProfilSekolah::createDokumen');
+$routes->patch('profilSekolah/updateDokumen/(:segment)', 'ProfilSekolah::updateDokumen/$1');
+$routes->delete('profilSekolah/deleteDokumen/(:num)', 'ProfilSekolah::deleteDokumen/$1');
+$routes->delete('profilSekolah/deletePermanent/(:any)', 'ProfilSekolah::deletePermanent/$1');
+$routes->delete('profilSekolah/deletePermanent', 'ProfilSekolah::deletePermanent');
 $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);

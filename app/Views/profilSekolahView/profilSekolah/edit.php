@@ -16,12 +16,49 @@
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-                    <h5>Identitas Sekolah</h5>
-                    <br>
                 <form action="<?= site_url('profilSekolah/'.$dataProfilSekolah->idProfilSekolah)?>"
                     method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
+                    <h5>SMK TELKOM BANJARBARU</h5>
+                    <br>
+                    <div class="row mb-3">
+                        <label for="kepsek" class="col-sm-3 col-form-label">Nama Kepala Sekolah</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kepsek" name="kepsek" value="<?=$dataProfilSekolah->kepsek?>">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="operator" class="col-sm-3 col-form-label">Operator</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="operator" name="operator" value="<?=$dataProfilSekolah->operator?>">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="akreditasi" class="col-sm-3 col-form-label">akreditasi</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="akreditasi" name="akreditasi">
+                                <option value="" hidden>Pilih akreditasi</option>
+                                <option value="A" <?= $dataProfilSekolah->akreditasi == "A" ? 'selected' : ''; ?>>A</option>
+                                <option value="B" <?= $dataProfilSekolah->akreditasi == "B" ? 'selected' : ''; ?>>B</option>
+                                <option value="C" <?= $dataProfilSekolah->akreditasi == "C" ? 'selected' : ''; ?>>C</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="kurikulum" class="col-sm-3 col-form-label">Kurikulum</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="kurikulum" name="kurikulum">
+                                <option value="" hidden>Pilih Kurikulum</option>
+                                <option value="Kurikulum 2006" <?= $dataProfilSekolah->kurikulum == "Kurikulum 2006" ? 'selected' : ''; ?>>Kurikulum 2006</option>
+                                <option value="Kurikulum 2013" <?= $dataProfilSekolah->kurikulum == "Kurikulum 2013" ? 'selected' : ''; ?>>Kurikulum 2013</option>
+                                <option value="Kurikulum Merdeka" <?= $dataProfilSekolah->kurikulum == "Kurikulum Merdeka" ? 'selected' : ''; ?>>Kurikulum Merdeka</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>Identitas Sekolah</h5>
+                    <br>
                     <div class="row mb-3">
                         <label for="npsn" class="col-sm-3 col-form-label">NPSN</label>
                         <div class="col-sm-9">
@@ -31,11 +68,11 @@
                     <div class="row mb-3">
                         <label for="status" class="col-sm-3 col-form-label">Status</label>
                         <div class="col-sm-9">
-                        <select class="form-select" id="status" name="status">
-                            <option value="" hidden>Pilih status</option>
-                            <option value="Swasta" <?= $dataProfilSekolah->status == "Swasta" ? 'selected' : ''; ?>>Swasta</option>
-                            <option value="Negeri" <?= $dataProfilSekolah->status == "Negeri" ? 'selected' : ''; ?>>Negeri</option>
-                        </select>
+                            <select class="form-select" id="status" name="status">
+                                <option value="" hidden>Pilih status</option>
+                                <option value="Swasta" <?= $dataProfilSekolah->status == "Swasta" ? 'selected' : ''; ?>>Swasta</option>
+                                <option value="Negeri" <?= $dataProfilSekolah->status == "Negeri" ? 'selected' : ''; ?>>Negeri</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">

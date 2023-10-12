@@ -98,7 +98,7 @@ class SosialMedia extends ResourceController
                 return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to
-                (site_url('sosialMedia/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                (site_url('sosialMedia/edit/'.$id))->with('error', 'Semua data harus diisi');
             }
         } else {
             return view('error/404');
@@ -203,7 +203,7 @@ class SosialMedia extends ResourceController
         $data = $this->sosialMediaModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - SosialMedia');
+        $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];

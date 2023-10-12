@@ -9,7 +9,7 @@ class ProfilSekolahModels extends Model
     protected $table            = 'tblProfilSekolah';
     protected $primaryKey       = 'idProfilSekolah';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idProfilSekolah', 'npsn', 'status', 'bentukPendidikan' ,'statusKepemilikan' ,'skPendirian', 'tanggalSkPendirian', 'skIzinOperasional', 'tanggalSkIzinOperasional', 'statusBos', 'waktuPenyelenggaraan', 'sertifikasiIso', 'sumberListrik', 'kecepatanInternet', 'siswaKebutuhanKhusus', 'namaBank', 'cabangKcp', 'atasNamaRekening'];
+    protected $allowedFields    = ['idProfilSekolah', 'kepsek', 'operator', 'akreditasi', 'kurikulum', 'npsn', 'status', 'bentukPendidikan' ,'statusKepemilikan' ,'skPendirian', 'tanggalSkPendirian', 'skIzinOperasional', 'tanggalSkIzinOperasional', 'statusBos', 'waktuPenyelenggaraan', 'sertifikasiIso', 'sumberListrik', 'kecepatanInternet', 'siswaKebutuhanKhusus', 'namaBank', 'cabangKcp', 'atasNamaRekening'];
 
     function find($id = null, $columns = '*') {
         $builder = $this->db->table($this->table);

@@ -164,6 +164,18 @@ $(document).ready(function () {
       tanggalSkIzinOperasional: {
         required: true,
       }, 
+      kepsek: {
+        required: true,
+      }, 
+      operator: {
+        required: true,
+      }, 
+      akreditasi: {
+        required: true,
+      }, 
+      kurikulum: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -328,6 +340,18 @@ $(document).ready(function () {
       }, 
       tanggalSkIzinOperasional: {
         required: "Silahkan masukkan tanggal",
+      }, 
+      kepsek: {
+        required: "Silahkan masukkan nama kepala sekolah",
+      }, 
+      operator: {
+        required: "Silahkan masukkan nama operator",
+      }, 
+      akreditasi: {
+        required: "Silahkan masukkan akreditasi",
+      }, 
+      kurikulum: {
+        required: "Silahkan masukkan kurikulum",
       }, 
     },
     errorPlacement: function (label, element) {
