@@ -26,7 +26,7 @@ $routes->get('home', 'Home::index');
 $routes->get('home/generate', 'Home::generate');
 
 
-// INFORMATION ROUTES
+// DATA MASTER
 
 // Identitas Sarana
 $routes->get('identitasSarana/generatePDF', 'IdentitasSarana::generatePDF');
@@ -302,3 +302,13 @@ $routes->delete('layananLabNonAset/deletePermanent/(:any)', 'LayananLabNonAset::
 $routes->delete('layananLabNonAset/deletePermanent', 'LayananLabNonAset::deletePermanent');
 $routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
 
+// MANAJEMEN PEMINJAMAN
+
+// Manajemen Stok
+$routes->get('manajemenStok/loan/(:num)', 'ManajemenStok::loan/$1');
+$routes->get('manajemenStok/print/(:num)', 'ManajemenStok::print/$1');
+$routes->get('manajemenStok/createTemplate', 'ManajemenStok::createTemplate');
+$routes->get('manajemenStok/export', 'ManajemenStok::export');
+$routes->resource('manajemenStok', ['filter' => 'isLoggedIn']);
+
+// Manajemen Peminjaman

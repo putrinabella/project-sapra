@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Manajemen Aset Laboratorium &verbar; SARPRA </title>
+<title>Manajemen Aset Peminjaman &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -14,10 +14,10 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Manajemen Aset Laboratorium</h4>
+        <h4 class="mb-3 mb-md-0">Manajemen Aset Peminjaman</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('rincianLabAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('manajemenStok/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -28,8 +28,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('rincianLabAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('rincianLabAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('manajemenStok/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('manajemenStok/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -39,11 +39,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('rincianLabAset/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('manajemenStok/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('rincianLabAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('manajemenStok/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -86,17 +86,12 @@
                                 <th style="width: 12%;">Kode Aset</th>
                                 <th>Nama Aset</th>
                                 <th>Lokasi</th>
-                                <th>Tahun Pengadaan</th>
-                                <th>Kategori Manajemen</th>
-                                <th>Sumber Dana</th>
-                                <th>Aset Layak</th>
-                                <th>Aset Rusak</th>
-                                <th>Total Aset</th>
+                                <th>Aset Tersedia</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataRincianLabAset as $key => $value) : ?>
+                        <?php foreach ($dataManajemenStok as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
@@ -104,24 +99,11 @@
                                 <td class="text-center"><?=$value->kodeRincianLabAset?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaLab?></td>
-                                <td class="text-center"><?=$value->tahunPengadaan?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=$value->saranaLayak?></td>
-                                <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?=$value->totalSarana?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset.'/edit') ?>"
-                                        class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('rincianLabAset/'.$value->idRincianLabAset)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idRincianLabAset;?>">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
-                                            <i data-feather="trash"></i>
-                                        </button>
-                                    </form>
+                                    <a href="<?=site_url('manajemenStok/loan/'.$value->idRincianLabAset) ?>" class="btn btn-outline-primary"> </i>Ajukan Peminjaman</a>
+                                    <!-- <a href="<?=site_url('manajemenStok/'.$value->idRincianLabAset.'/edit') ?>"
+                                        class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a> -->
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -141,7 +123,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("rincianLabAset/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url("manajemenStok/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
