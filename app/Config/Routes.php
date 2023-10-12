@@ -250,3 +250,26 @@ $routes->delete('profilSekolah/deleteDokumen/(:num)', 'ProfilSekolah::deleteDoku
 $routes->delete('profilSekolah/deletePermanent/(:any)', 'ProfilSekolah::deletePermanent/$1');
 $routes->delete('profilSekolah/deletePermanent', 'ProfilSekolah::deletePermanent');
 $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
+
+
+// LABORATORIUM
+
+// Rincian Aset Lab
+$routes->get('rincianLabAset/createTemplate', 'RincianLabAset::createTemplate');
+$routes->get('rincianLabAset/print/(:num)', 'RincianLabAset::print/$1');
+$routes->get('rincianLabAset/generatePDF', 'RincianLabAset::generatePDF');
+$routes->get('rincianLabAset/export', 'RincianLabAset::export');
+$routes->post('rincianLabAset/import', 'RincianLabAset::import');
+$routes->get('rincianLabAset/edit', 'RincianLabAset::edit');
+$routes->get('rincianLabAset/trash', 'RincianLabAset::trash');
+$routes->get('rincianLabAset/restore/(:any)', 'RincianLabAset::restore/$1');
+$routes->get('rincianLabAset/restore', 'RincianLabAset::restore');
+$routes->delete('rincianLabAset/deletePermanent/(:any)', 'RincianLabAset::deletePermanent/$1');
+$routes->delete('rincianLabAset/deletePermanent', 'RincianLabAset::deletePermanent');
+$routes->resource('rincianLabAset', ['filter' => 'isLoggedIn']);
+
+// Laboratorium
+$routes->get('laboratorium/print/(:num)', 'Laboratorium::print/$1');
+$routes->get('laboratorium/createTemplate', 'Laboratorium::createTemplate');
+$routes->get('laboratorium/export', 'Laboratorium::export');
+$routes->resource('laboratorium', ['filter' => 'isLoggedIn']);

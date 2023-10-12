@@ -81,6 +81,9 @@ $(document).ready(function () {
       kodePrasarana: {
         required: true,
       },
+      kodeLab: {
+        required: true,
+      },
       formExcel: {
         required: true,
       },  
@@ -260,6 +263,9 @@ $(document).ready(function () {
         required: "Silahkan pilih sebuah opsi",
       },
       kodePrasarana: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      kodeLab: {
         required: "Silahkan pilih sebuah opsi",
       },
       formExcel: {

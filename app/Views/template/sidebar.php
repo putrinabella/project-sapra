@@ -58,13 +58,13 @@
                     <a href="<?= site_url('manajemenPeminjamanLab') ?>" class="nav-link">Manajemen Peminjaman</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('layananAsetLab') ?>" class="nav-link">Layanan Aset</a>
+                    <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('layananNonAsetLab') ?>" class="nav-link">Layanan Non Aset</a>
+                    <a href="<?= site_url('layananNonLabAset') ?>" class="nav-link">Layanan Non Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link">Rincian Aset </a>
+                    <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">Rincian Aset </a>
                 </li>
             </ul>
         </div>
