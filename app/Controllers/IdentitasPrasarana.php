@@ -195,7 +195,6 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->fromArray([$headerTipePrasarana], NULL, 'J1');
         $activeWorksheet->getStyle('J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
-
         $headerGedungID = ['ID Identitas Gedung', 'Nama Gedung'];
         $activeWorksheet->fromArray([$headerGedungID], NULL, 'L1');
         $activeWorksheet->getStyle('L1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);

@@ -33,6 +33,10 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      namaLab: {
+        required: true,
+        maxlength: 255,
+      },
       luas: {
         required: true,
         maxlength: 255,
@@ -207,6 +211,10 @@ $(document).ready(function () {
         maxlength: "Nama gedung tidak boleh melebihi 255 karakter",
       },
       namaPrasarana: {
+        required: "Silahkan masukkan nama prasarana",
+        maxlength: "Nama prasarana tidak boleh melebihi 255 karakter",
+      },
+      namaLab: {
         required: "Silahkan masukkan nama prasarana",
         maxlength: "Nama prasarana tidak boleh melebihi 255 karakter",
       },

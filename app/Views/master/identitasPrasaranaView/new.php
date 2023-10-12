@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="tipe" class="col-sm-3 col-form-label">Lokasi Gedung</label>
+                        <label for="tipe" class="col-sm-3 col-form-label">Tipe</label>
                         <div class="col-sm-9">
                         <select class="form-select" id="tipe" name="tipe">
                             <option value="" hidden>Pilih tipe</option>

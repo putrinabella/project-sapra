@@ -53,6 +53,19 @@ $routes->delete('identitasPrasarana/deletePermanent/(:any)', 'IdentitasPrasarana
 $routes->delete('identitasPrasarana/deletePermanent', 'IdentitasPrasarana::deletePermanent');
 $routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
 
+// Identitas Laboratorium
+$routes->get('identitasLab/createTemplate', 'IdentitasLab::createTemplate');
+$routes->get('identitasLab/generatePDF', 'IdentitasLab::generatePDF');
+$routes->get('identitasLab/export', 'IdentitasLab::export');
+$routes->post('identitasLab/import', 'IdentitasLab::import');
+$routes->get('identitasLab/edit', 'IdentitasLab::edit');
+$routes->get('identitasLab/trash', 'IdentitasLab::trash');
+$routes->get('identitasLab/restore/(:any)', 'IdentitasLab::restore/$1');
+$routes->get('identitasLab/restore', 'IdentitasLab::restore');
+$routes->delete('identitasLab/deletePermanent/(:any)', 'IdentitasLab::deletePermanent/$1');
+$routes->delete('identitasLab/deletePermanent', 'IdentitasLab::deletePermanent');
+$routes->resource('identitasLab', ['filter' => 'isLoggedIn']);
+
 // Sumber Dana
 $routes->get('sumberDana/generatePDF', 'SumberDana::generatePDF');
 $routes->get('sumberDana/export', 'SumberDana::export');
