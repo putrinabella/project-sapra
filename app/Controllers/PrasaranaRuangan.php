@@ -135,78 +135,41 @@ class PrasaranaRuangan extends ResourceController
         exit();
     }
     
-
-    public function generatePDF() {
-        $filePath = APPPATH . 'Views/prasaranaView/ruangan/print.php';
+    function print($id = null) {
+        if ($id != null) {
+            $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);
     
-        if (!file_exists($filePath)) {
+            if (is_object($dataPrasaranaRuangan)) {
+    
+                $dataInfoPrasarana = $this->prasaranaRuanganModel->getIdentitasGedung($dataPrasaranaRuangan->idIdentitasPrasarana);
+                $dataInfoPrasarana->namaLantai = $this->prasaranaRuanganModel->getIdentitasLantai($dataPrasaranaRuangan->idIdentitasPrasarana)->namaLantai;
+                $dataSarana = $this->prasaranaRuanganModel->getSaranaByPrasaranaId($dataPrasaranaRuangan->idIdentitasPrasarana);
+    
+                $data = [
+                    'dataPrasaranaRuangan'  => $dataPrasaranaRuangan,
+                    'dataInfoPrasarana'     => $dataInfoPrasarana,
+                    'dataSarana'            => $dataSarana,
+                ];
+    
+                $html = view('prasaranaView/Ruangan/print', $data); 
+    
+                $options = new Options();
+                $options->set('isHtml5ParserEnabled', true);
+                $options->set('isPhpEnabled', true);
+    
+                $dompdf = new Dompdf($options);
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+                $namaPrasarana = $data['dataPrasaranaRuangan']->namaPrasarana;
+                $filename = "Prasarana - $namaPrasarana.pdf";
+                $dompdf->stream($filename);
+            } else {
+                return view('error/404');
+            }
+        } else {
             return view('error/404');
         }
-
-        $data['dataPrasaranaRuangan'] = $this->prasaranaRuanganModel->getAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-    
-        $includeFile($filePath, $data);
-    
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Sarana - Rincian Aset Report.pdf';
-        $dompdf->stream($filename);
     }
 
-
-    public function print($id = null) {
-        $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);
-        
-        if (!is_object($dataPrasaranaRuangan)) {
-            return view('error/404');
-        }
-
-        $spesifikasiMarkup = $dataPrasaranaRuangan->spesifikasi; 
-        $parsedown = new Parsedown();
-        $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-        $buktiUrl = $this->generateFileId($dataPrasaranaRuangan->bukti);
-
-        $data = [
-            'dataPrasaranaRuangan'           => $dataPrasaranaRuangan,
-            'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-            'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-            'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-            'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-            'buktiUrl'                  => $buktiUrl,
-            'spesifikasiHtml'           => $spesifikasiHtml,
-        ];
-
-        $filePath = APPPATH . 'Views/prasaranaView/ruangan/printInfo.php';
-
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-
-        $includeFile($filePath, $data);
-
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $filename = 'Sarana - Detail Rincian Aset.pdf';
-        $namaSarana = $data['dataPrasaranaRuangan']->namaSarana;
-        $filename = "Sarana - Detail Rincian Aset $namaSarana.pdf";
-        $dompdf->stream($filename);
-    }
 }

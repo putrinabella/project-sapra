@@ -13,9 +13,6 @@ class PrasaranaRuanganModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-
-    
-    
     function getRuangan() {
         $builder = $this->db->table($this->table);
         $builder->where('tblIdentitasPrasarana.tipe', 'Ruangan'); 
@@ -54,6 +51,13 @@ class PrasaranaRuanganModels extends Model
         $builder->where('tblRincianAset.deleted_at', null); 
         $query = $builder->get();
     
+        return $query->getResult();
+    }
+
+    function getAll() {
+        $builder = $this->db->table($this->table);
+        $builder->where('tblIdentitasPrasarana.tipe', 'Ruangan'); 
+        $query = $builder->get();
         return $query->getResult();
     }
 }

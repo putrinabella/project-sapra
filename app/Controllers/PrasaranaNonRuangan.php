@@ -134,49 +134,9 @@ class PrasaranaNonRuangan extends ResourceController
         $writer->save('php://output');
         exit();
     }
-    
 
 
-    // public function print($id = null) {
-    //     $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
-    
-    //     if (!$dataPrasaranaNonRuangan) {
-    //         return view('error/404');
-    //     }
-    
-    //     $dataInfoPrasarana = $this->prasaranaNonRuanganModel->getIdentitasGedung($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-    //     $dataInfoPrasarana->namaLantai = $this->prasaranaNonRuanganModel->getIdentitasLantai($dataPrasaranaNonRuangan->idIdentitasPrasarana)->namaLantai;
-    //     $dataSarana = $this->prasaranaNonRuanganModel->getSaranaByPrasaranaId($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-    
-    //     $data = [
-    //         'dataPrasaranaNonRuangan'  => $dataPrasaranaNonRuangan,
-    //         'dataInfoPrasarana'        => $dataInfoPrasarana,
-    //         'dataSarana'               => $dataSarana,
-    //     ];
-        
-    //     $filePath = APPPATH . 'Views/prasaranaView/nonRuangan/print.php';
-        
-    //     ob_start();
-        
-    //     $includeFile = function ($filePath, $data) {
-    //         include $filePath;
-    //     };
-        
-    //     $includeFile($filePath, $data);
-        
-    //     $html = ob_get_clean();
-        
-    //     $dompdf = new Dompdf();
-    //     $dompdf->loadHtml($html);
-    //     $dompdf->setPaper('A4', 'portrait');
-    //     $dompdf->render();
-    //     $filename = 'Sarana - Detail Rincian Aset.pdf';
-    //     $namaSarana = $data['dataPrasaranaNonRuangan']->namaSarana;
-    //     $filename = "Sarana - Detail Rincian Aset $namaSarana.pdf";
-    //     $dompdf->stream($filename);
-    // }
-
-    public function print($id = null) {
+    function print($id = null) {
         if ($id != null) {
             $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
     
