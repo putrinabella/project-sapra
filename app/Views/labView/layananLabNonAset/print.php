@@ -55,7 +55,7 @@
                 </tr>
             </thead>
             <tbody class="py-2">
-                <?php foreach ($data['dataSaranaLayananNonAset'] as $key => $value) : ?>
+                <?php foreach ($data['dataLayananLabNonAset'] as $key => $value) : ?>
                     <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                         <td>
                             <?= $key + 1 ?>
@@ -64,7 +64,7 @@
                             <?= $value->tanggal ?>
                         </td>
                         <td>
-                            <?= $value->namaPrasarana ?>
+                            <?= $value->namaLab ?>
                         </td>
                         <td>
                             <?= $value->namaStatusLayanan ?>
