@@ -288,3 +288,17 @@ $routes->get('layananLabAset/restore', 'LayananLabAset::restore');
 $routes->delete('layananLabAset/deletePermanent/(:any)', 'LayananLabAset::deletePermanent/$1');
 $routes->delete('layananLabAset/deletePermanent', 'LayananLabAset::deletePermanent');
 $routes->resource('layananLabAset', ['filter' => 'isLoggedIn']);
+
+// Layanan Non Aset Lab
+$routes->get('layananLabNonAset/createTemplate', 'LayananLabNonAset::createTemplate');
+$routes->get('layananLabNonAset/generatePDF', 'LayananLabNonAset::generatePDF');
+$routes->get('layananLabNonAset/export', 'LayananLabNonAset::export');
+$routes->post('layananLabNonAset/import', 'LayananLabNonAset::import');
+$routes->get('layananLabNonAset/edit', 'LayananLabNonAset::edit');
+$routes->get('layananLabNonAset/trash', 'LayananLabNonAset::trash');
+$routes->get('layananLabNonAset/restore/(:any)', 'LayananLabNonAset::restore/$1');
+$routes->get('layananLabNonAset/restore', 'LayananLabNonAset::restore');
+$routes->delete('layananLabNonAset/deletePermanent/(:any)', 'LayananLabNonAset::deletePermanent/$1');
+$routes->delete('layananLabNonAset/deletePermanent', 'LayananLabNonAset::deletePermanent');
+$routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
+

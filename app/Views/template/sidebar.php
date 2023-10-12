@@ -58,7 +58,7 @@
                     <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('layananNonLabAset') ?>" class="nav-link">Layanan Non Aset</a>
+                    <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">Layanan Non Aset</a>
                 </li>
             </ul>
         </div>
