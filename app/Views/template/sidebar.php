@@ -75,7 +75,7 @@
                     <a href="<?= site_url('manajemenStok') ?>" class="nav-link">Manajemen Stok </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('manajemenPeminjamanLab') ?>" class="nav-link">Manajemen Peminjaman</a>
+                    <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Manajemen Peminjaman</a>
                 </li>
             </ul>
         </div>

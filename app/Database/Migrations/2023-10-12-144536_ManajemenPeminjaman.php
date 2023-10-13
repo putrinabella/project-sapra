@@ -19,6 +19,10 @@ class ManajemenPeminjaman extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'asalPeminjam' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'idIdentitasSarana' => [
                 'type' => 'INT',
                 'constraint' => 3,
@@ -27,7 +31,7 @@ class ManajemenPeminjaman extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'saranaLayak' => [
+            'jumlah' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
