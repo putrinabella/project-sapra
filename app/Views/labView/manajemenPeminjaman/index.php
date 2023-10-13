@@ -66,8 +66,7 @@
                                 <td class="text-left"><?=$value->namaLab?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('manajemenPeminjaman/'.$value->idIdentitasLab) ?>"
-                                        class="btn btn-outline-success btn-icon-text"> <i class="btn-icon-prepend"
-                                            data-feather="info"></i> Show Detail</a>
+                                        class="btn btn-outline-success">  Show Detail</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

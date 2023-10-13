@@ -15,11 +15,19 @@ class ManajemenPeminjaman extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'tanggal' => [ 
+                'type' => 'DATE', 
+                'null' => true,
+            ],
             'namaPeminjam' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
             'asalPeminjam' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'status' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],

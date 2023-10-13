@@ -183,6 +183,15 @@ $(document).ready(function () {
       kurikulum: {
         required: true,
       }, 
+      namaPeminjam: {
+        required: true,
+      }, 
+      asalPeminjam: {
+        required: true,
+      }, 
+      jumlah: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -366,6 +375,15 @@ $(document).ready(function () {
       }, 
       kurikulum: {
         required: "Silahkan masukkan kurikulum",
+      }, 
+      namaPeminjam: {
+        required: "Silahkan masukkan nama peminjam",
+      }, 
+      asalPeminjam: {
+        required: "Silahkan masukkan asal peminjam",
+      }, 
+      jumlah: {
+        required: "Silahkan masukkan jumlah yang dingin dipinjam",
       }, 
     },
     errorPlacement: function (label, element) {

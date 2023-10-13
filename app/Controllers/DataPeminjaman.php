@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\ManajemenStokModels; 
+use App\Models\DataPeminjamanModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
@@ -14,11 +14,11 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class ManajemenStok extends ResourceController
+class DataPeminjaman extends ResourceController
 {
     
      function __construct() {
-        $this->manajemenStokModel = new ManajemenStokModels();
+        $this->dataPeminjamanModel = new DataPeminjamanModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
@@ -27,23 +27,23 @@ class ManajemenStok extends ResourceController
     }
 
     public function index() {
-        $data['dataManajemenStok'] = $this->manajemenStokModel->getAll();
-        return view('labView/manajemenStok/index', $data);
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getAll();
+        return view('labView/dataPeminjaman/index', $data);
     }
 
     public function show($id = null) {
         if ($id != null) {
-            $dataManajemenStok = $this->manajemenStokModel->find($id);
+            $dataDataPeminjaman = $this->dataPeminjamanModel->find($id);
         
-            if (is_object($dataManajemenStok)) {
-                $spesifikasiMarkup = $dataManajemenStok->spesifikasi;
+            if (is_object($dataDataPeminjaman)) {
+                $spesifikasiMarkup = $dataDataPeminjaman->spesifikasi;
                 $parsedown = new Parsedown();
                 $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
                 
-                $buktiUrl = $this->generateFileId($dataManajemenStok->bukti);
+                $buktiUrl = $this->generateFileId($dataDataPeminjaman->bukti);
                 $data = [
-                    'dataManajemenStok'        => $dataManajemenStok,
+                    'dataDataPeminjaman'        => $dataDataPeminjaman,
                     'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
@@ -51,7 +51,7 @@ class ManajemenStok extends ResourceController
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
-                return view('labView/manajemenStok/show', $data);
+                return view('labView/dataPeminjaman/show', $data);
             } else {
                 return view('error/404');
             }
@@ -64,10 +64,10 @@ class ManajemenStok extends ResourceController
         $data = [
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-            'dataManajemenStokModel' => $this->manajemenStokModel->findAll(),
+            'dataDataPeminjamanModel' => $this->dataPeminjamanModel->findAll(),
         ];
         
-        return view('labView/manajemenStok/loan', $data);  
+        return view('labView/dataPeminjaman/loan', $data);  
     }
 
     public function new() {
@@ -78,20 +78,20 @@ class ManajemenStok extends ResourceController
             'dataIdentitasLab' => $this->identitasLabModel->findAll(),
         ];
         
-        return view('labView/manajemenStok/new', $data);        
+        return view('labView/dataPeminjaman/new', $data);        
     }
 
     
     public function create() {
         $data = $this->request->getPost(); 
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodeLab'])) {
-            $totalSarana =  $this->manajemenStokModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+            $totalSarana =  $this->dataPeminjamanModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
             $data['totalSarana'] = $totalSarana;
-            $this->manajemenStokModel->insert($data);
-            $this->manajemenStokModel->setKodeLabAset();
-            return redirect()->to(site_url('manajemenStok'))->with('success', 'Data berhasil disimpan');
+            $this->dataPeminjamanModel->insert($data);
+            $this->dataPeminjamanModel->setKodeLabAset();
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('manajemenStok'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('dataPeminjaman'))->with('error', 'Semua field harus terisi');
         }
     }
 
@@ -131,15 +131,15 @@ class ManajemenStok extends ResourceController
                 //     $data['bukti'] = $uploadedFilePath;
                 // }
 
-                $totalSarana =  $this->manajemenStokModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+                $totalSarana =  $this->dataPeminjamanModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
                 $data['totalSarana'] = $totalSarana;
 
-                $this->manajemenStokModel->update($id, $data);
-                $this->manajemenStokModel->updateKodeLabAset($id);
-                return redirect()->to(site_url('manajemenStok'))->with('success', 'Data berhasil diupdate');
+                $this->dataPeminjamanModel->update($id, $data);
+                $this->dataPeminjamanModel->updateKodeLabAset($id);
+                return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to
-                (site_url('manajemenStok/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                (site_url('dataPeminjaman/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
             }
         } else {
             return view('error/404');
@@ -148,17 +148,17 @@ class ManajemenStok extends ResourceController
 
     public function edit($id = null) {
         if ($id != null) {
-            $dataManajemenStok = $this->manajemenStokModel->find($id);
+            $dataDataPeminjaman = $this->dataPeminjamanModel->find($id);
     
-            if (is_object($dataManajemenStok)) {
+            if (is_object($dataDataPeminjaman)) {
                 $data = [
-                    'dataManajemenStok' => $dataManajemenStok,
+                    'dataDataPeminjaman' => $dataDataPeminjaman,
                     'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana' => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                 ];
-                return view('labView/manajemenStok/edit', $data);
+                return view('labView/dataPeminjaman/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -168,46 +168,46 @@ class ManajemenStok extends ResourceController
     }
 
     public function delete($id = null) {
-        $this->manajemenStokModel->delete($id);
-        return redirect()->to(site_url('manajemenStok'));
+        $this->dataPeminjamanModel->delete($id);
+        return redirect()->to(site_url('dataPeminjaman'));
     }
 
     public function trash() {
-        $data['dataManajemenStok'] = $this->manajemenStokModel->onlyDeleted()->getRecycle();
-        return view('labView/manajemenStok/trash', $data);
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->onlyDeleted()->getRecycle();
+        return view('labView/dataPeminjaman/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblManajemenStok')
+            $this->db->table('tblDataPeminjaman')
                 ->set('deleted_at', null, true)
-                ->where(['idManajemenStok' => $id])
+                ->where(['idDataPeminjaman' => $id])
                 ->update();
         } else {
-            $this->db->table('tblManajemenStok')
+            $this->db->table('tblDataPeminjaman')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
             }
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('manajemenStok'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('manajemenStok/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('dataPeminjaman/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->manajemenStokModel->delete($id, true);
-        return redirect()->to(site_url('manajemenStok/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->dataPeminjamanModel->delete($id, true);
+        return redirect()->to(site_url('dataPeminjaman/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->manajemenStokModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->dataPeminjamanModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->manajemenStokModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('manajemenStok/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->dataPeminjamanModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('dataPeminjaman/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('manajemenStok/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('dataPeminjaman/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     } 
@@ -219,7 +219,7 @@ class ManajemenStok extends ResourceController
     }
     
     public function export() {
-        $data = $this->manajemenStokModel->getAll();
+        $data = $this->dataPeminjamanModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Rincian Aset Lab');
@@ -236,7 +236,7 @@ class ManajemenStok extends ResourceController
             $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
             
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeManajemenStok);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeDataPeminjaman);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaLab);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->tahunPengadaan);
@@ -285,7 +285,7 @@ class ManajemenStok extends ResourceController
     }
     
     public function createTemplate() {
-        $data = $this->manajemenStokModel->getAll();
+        $data = $this->dataPeminjamanModel->getAll();
         $keyLab = $this->identitasLabModel->findAll();
         $keySumberDana = $this->sumberDanaModel->findAll();
         $keyKategoriManajemen = $this->kategoriManajemenModel->findAll();
@@ -457,7 +457,7 @@ class ManajemenStok extends ResourceController
                 break;
             }
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeManajemenStok);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeDataPeminjaman);
             $exampleSheet->setCellValue('C'.($index + 2), $value->idIdentitasSarana);
             $exampleSheet->setCellValue('D'.($index + 2), $value->idIdentitasLab);
             $exampleSheet->setCellValue('E'.($index + 2), $value->idSumberDana);
@@ -511,7 +511,7 @@ class ManajemenStok extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $kodeManajemenStok        = $value[1] ?? null;
+                $kodeDataPeminjaman        = $value[1] ?? null;
                 $idIdentitasSarana      = $value[2] ?? null;
                 $idSumberDana           = $value[4] ?? null;
                 $idKategoriManajemen    = $value[5] ?? null;
@@ -522,9 +522,9 @@ class ManajemenStok extends ResourceController
                 $bukti                  = $value[10] ?? null;
                 $kodeLab          = $value[11] ?? null;
 
-                if ($kodeManajemenStok !== null) {
+                if ($kodeDataPeminjaman !== null) {
                     $data = [
-                        'kodeManajemenStok' => $kodeManajemenStok,
+                        'kodeDataPeminjaman' => $kodeDataPeminjaman,
                         'idIdentitasSarana' => $idIdentitasSarana,
                         'idSumberDana' => $idSumberDana,
                         'idKategoriManajemen' => $idKategoriManajemen,
@@ -536,24 +536,24 @@ class ManajemenStok extends ResourceController
                         'totalSarana' => $totalSarana,
                         'bukti' => $bukti,
                     ];
-                    $this->manajemenStokModel->insert($data);
+                    $this->dataPeminjamanModel->insert($data);
                 }
             }
-            return redirect()->to(site_url('manajemenStok'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diimport');
         } else {
-            return redirect()->to(site_url('manajemenStok'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+            return redirect()->to(site_url('dataPeminjaman'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
 
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/labView/manajemenStok/print.php';
+        $filePath = APPPATH . 'Views/labView/dataPeminjaman/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataManajemenStok'] = $this->manajemenStokModel->getAll();
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getAll();
 
         ob_start();
 
@@ -574,19 +574,19 @@ class ManajemenStok extends ResourceController
 
 
     public function print($id = null) {
-        $dataManajemenStok = $this->manajemenStokModel->find($id);
+        $dataDataPeminjaman = $this->dataPeminjamanModel->find($id);
         
-        if (!is_object($dataManajemenStok)) {
+        if (!is_object($dataDataPeminjaman)) {
             return view('error/404');
         }
 
-        $spesifikasiMarkup = $dataManajemenStok->spesifikasi; 
+        $spesifikasiMarkup = $dataDataPeminjaman->spesifikasi; 
         $parsedown = new Parsedown();
         $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-        $buktiUrl = $this->generateFileId($dataManajemenStok->bukti);
+        $buktiUrl = $this->generateFileId($dataDataPeminjaman->bukti);
 
         $data = [
-            'dataManajemenStok'           => $dataManajemenStok,
+            'dataDataPeminjaman'           => $dataDataPeminjaman,
             'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
             'dataSumberDana'            => $this->sumberDanaModel->findAll(),
             'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
@@ -595,7 +595,7 @@ class ManajemenStok extends ResourceController
             'spesifikasiHtml'           => $spesifikasiHtml,
         ];
 
-        $filePath = APPPATH . 'Views/labView/manajemenStok/printInfo.php';
+        $filePath = APPPATH . 'Views/labView/dataPeminjaman/printInfo.php';
 
         if (!file_exists($filePath)) {
             return view('error/404');
@@ -615,7 +615,7 @@ class ManajemenStok extends ResourceController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         // $filename = 'Laboratorium - Detail Rincian Aset Lab.pdf';
-        $namaSarana = $data['dataManajemenStok']->namaSarana;
+        $namaSarana = $data['dataDataPeminjaman']->namaSarana;
         $filename = "Laboratorium - Detail Rincian Aset Lab $namaSarana.pdf";
         $dompdf->stream($filename);
     }

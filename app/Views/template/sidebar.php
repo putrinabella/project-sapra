@@ -72,10 +72,10 @@
         <div class="collapse" id="manajemenPeminjaman">
             <ul class="nav sub-menu">
                 <li class="nav-item">
-                    <a href="<?= site_url('manajemenStok') ?>" class="nav-link">Manajemen Stok </a>
+                    <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Manajemen Peminjaman</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Manajemen Peminjaman</a>
+                    <a href="<?= site_url('dataPeminjaman') ?>" class="nav-link">Data Peminjaman </a>
                 </li>
             </ul>
         </div>

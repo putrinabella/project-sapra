@@ -80,21 +80,12 @@ class ManajemenPeminjaman extends ResourceController
         $data = $this->request->getPost(); 
         if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($data['jumlah'])) {
             $this->manajemenPeminjamanModel->insert($data);
-            return redirect()->to(site_url('manajemenPeminjaman'))->with('success', 'Data berhasil disimpan');
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
         }
     }
 
-    public function loan($id = null) {
-        $data = [
-            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-            'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-            'dataManajemenPeminjamanModel' => $this->manajemenPeminjamanModel->findAll(),
-        ];
-        
-        return view('labView/manajemenPeminjaman/loan', $data);  
-    }
     
     public function create() {
         $data = $this->request->getPost(); 
