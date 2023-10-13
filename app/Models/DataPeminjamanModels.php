@@ -22,6 +22,19 @@ class DataPeminjamanModels extends Model
         return $query->getResult();
     }
 
+    function find($id = null, $columns = '*') {
+        $builder = $this->db->table($this->table);
+        $builder->select($columns);
+        
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
+        
+        $builder->where($this->primaryKey, $id);
+
+        $query = $builder->get();
+        return $query->getRow();
+    }
+
     function getRecycle() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
@@ -33,20 +46,6 @@ class DataPeminjamanModels extends Model
         return $query->getResult();
     }
 
-    function find($id = null, $columns = '*') {
-        $builder = $this->db->table($this->table);
-        $builder->select($columns);
-        
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblRincianLabAset.kodeLab');
-        
-        $builder->where($this->primaryKey, $id);
-
-        $query = $builder->get();
-        return $query->getRow();
-    }
 
     function updateKodeLabAset($id) {
         $builder = $this->db->table($this->table);

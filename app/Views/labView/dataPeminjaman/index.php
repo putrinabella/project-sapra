@@ -103,14 +103,12 @@
                             <td class="text-center"><?=$value->jumlah?></td>
                             <td class="text-center">
                                 <?php if ($value->status == "Peminjaman"): ?>
-                                    <span class="label label-danger"> <?=$value->status?></span>
+                                    <span class="label label-warning"> <?=$value->status?></span>
                                 <?php else: ?>
                                     <span class="label label-success"> <?=$value->status?></span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
-                                <a href="<?=site_url('dataPeminjaman/'.$value->idManajemenPeminjaman) ?>"
-                                    class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                 <a href="<?=site_url('dataPeminjaman/'.$value->idManajemenPeminjaman.'/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <form action="<?=site_url('dataPeminjaman/'.$value->idManajemenPeminjaman)?>"

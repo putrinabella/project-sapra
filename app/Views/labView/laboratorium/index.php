@@ -65,7 +65,7 @@
                                 <td class="text-center"><?=$value->kodeLab?></td>
                                 <td class="text-left"><?=$value->namaLab?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('laboratorium/'.$value->idIdentitasLab) ?>" class="btn btn-success btn-icon-text"> <i  class="btn-icon-prepend" data-feather="info"></i> Show Detail</a>
+                                    <a href="<?=site_url('laboratorium/'.$value->idIdentitasLab) ?>" class="btn btn-outline-success "> Show Detail</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

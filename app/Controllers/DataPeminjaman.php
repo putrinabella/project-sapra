@@ -31,96 +31,7 @@ class DataPeminjaman extends ResourceController
         return view('labView/dataPeminjaman/index', $data);
     }
 
-    public function show($id = null) {
-        if ($id != null) {
-            $dataDataPeminjaman = $this->dataPeminjamanModel->find($id);
-        
-            if (is_object($dataDataPeminjaman)) {
-                $spesifikasiMarkup = $dataDataPeminjaman->spesifikasi;
-                $parsedown = new Parsedown();
-                $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-                $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-                
-                $buktiUrl = $this->generateFileId($dataDataPeminjaman->bukti);
-                $data = [
-                    'dataDataPeminjaman'        => $dataDataPeminjaman,
-                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasLab'          => $this->identitasLabModel->findAll(),
-                    'buktiUrl'                  => $buktiUrl,
-                    'spesifikasiHtml'           => $spesifikasiHtml,
-                ];
-                return view('labView/dataPeminjaman/show', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
-    }
-
-    public function loan($id = null) {
-        $data = [
-            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-            'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-            'dataDataPeminjamanModel' => $this->dataPeminjamanModel->findAll(),
-        ];
-        
-        return view('labView/dataPeminjaman/loan', $data);  
-    }
-
-    public function new() {
-        $data = [
-            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-            'dataSumberDana' => $this->sumberDanaModel->findAll(),
-            'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-            'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-        ];
-        
-        return view('labView/dataPeminjaman/new', $data);        
-    }
-
-    
-    public function create() {
-        $data = $this->request->getPost(); 
-        if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodeLab'])) {
-            $totalSarana =  $this->dataPeminjamanModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
-            $data['totalSarana'] = $totalSarana;
-            $this->dataPeminjamanModel->insert($data);
-            $this->dataPeminjamanModel->setKodeLabAset();
-            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
-        } else {
-            return redirect()->to(site_url('dataPeminjaman'))->with('error', 'Semua field harus terisi');
-        }
-    }
-
-    private function uploadFile($fieldName) {
-        $file = $this->request->getFile($fieldName);
-        if ($file !== null) {
-            if ($file->isValid() && !$file->hasMoved()) {
-                $newName = $file->getRandomName();
-                $file->move(ROOTPATH . 'public/uploads', $newName);
-                return 'uploads/' . $newName;
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    private function generateFileId($url) {
-        preg_match('/\/file\/d\/(.*?)\//', $url, $matches);
-        
-        if (isset($matches[1])) {
-            $fileId = $matches[1];
-            return "https://drive.google.com/uc?export=view&id=" . $fileId;
-        } else {
-            return "Invalid Google Drive URL";
-        }
-    }
-    
+   
     
     public function update($id = null) {
         if ($id != null) {
@@ -146,26 +57,7 @@ class DataPeminjaman extends ResourceController
         }
     }
 
-    public function edit($id = null) {
-        if ($id != null) {
-            $dataDataPeminjaman = $this->dataPeminjamanModel->find($id);
-    
-            if (is_object($dataDataPeminjaman)) {
-                $data = [
-                    'dataDataPeminjaman' => $dataDataPeminjaman,
-                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-                ];
-                return view('labView/dataPeminjaman/edit', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
-    }
+
 
     public function delete($id = null) {
         $this->dataPeminjamanModel->delete($id);

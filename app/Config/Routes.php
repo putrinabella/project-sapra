@@ -312,18 +312,10 @@ $routes->get('dataPeminjaman/export', 'DataPeminjaman::export');
 $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 // Manajemen Peminjaman
-$routes->get('manajemenPeminjaman/createTemplate', 'ManajemenPeminjaman::createTemplate');
-$routes->get('manajemenPeminjaman/generatePDF', 'ManajemenPeminjaman::generatePDF');
-$routes->get('manajemenPeminjaman/export', 'ManajemenPeminjaman::export');
-$routes->post('manajemenPeminjaman/import', 'ManajemenPeminjaman::import');
-$routes->get('manajemenPeminjaman/edit', 'ManajemenPeminjaman::edit');
-$routes->get('manajemenPeminjaman/trash', 'ManajemenPeminjaman::trash');
-$routes->get('manajemenPeminjaman/restore/(:any)', 'ManajemenPeminjaman::restore/$1');
-$routes->get('manajemenPeminjaman/restore', 'ManajemenPeminjaman::restore');
+
+$routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');
 $routes->get('manajemenPeminjaman/getKodeLab/(:num)', 'ManajemenPeminjaman::getKodeLab/$1');
-$routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
 $routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
-// $routes->post('manajemenPeminjaman/getKodeLabBySarana', 'ManajemenPeminjaman::getKodeLabBySarana');
 $routes->delete('manajemenPeminjaman/deletePermanent/(:any)', 'ManajemenPeminjaman::deletePermanent/$1');
 $routes->delete('manajemenPeminjaman/deletePermanent', 'ManajemenPeminjaman::deletePermanent');
 $routes->resource('manajemenPeminjaman', ['filter' => 'isLoggedIn']);

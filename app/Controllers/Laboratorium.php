@@ -74,8 +74,8 @@ class Laboratorium extends ResourceController
     
                 $data = [
                     'dataLaboratorium'  => $dataLaboratorium,
-                    'dataInfoLab'     => $dataInfoLab,
-                    'dataSarana'            => $dataSarana,
+                    'dataInfoLab'       => $dataInfoLab,
+                    'dataSarana'        => $dataSarana,
                 ];
     
                 $html = view('labView/laboratorium/print', $data); 
