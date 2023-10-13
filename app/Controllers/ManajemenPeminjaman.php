@@ -51,31 +51,7 @@ class ManajemenPeminjaman extends ResourceController
     
         echo json_encode($data);
     }
-
-    // public function show($id = null) {
-    //     if ($id != null) {
-    //         $dataLaboratorium = $this->laboratoriumModel->find($id);
-            
-    //         if (is_object($dataLaboratorium)) {
-    //             $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
-    //             $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
-    //             $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
-    //             // $dataManajemenPeminjaman = $this->manajemenPeminjamanModel->getJumlahPeminjaman();
-    //             $data = [
-    //                 'dataLaboratorium'  => $dataLaboratorium,
-    //                 'dataInfoLab'     => $dataInfoLab,
-    //                 'dataSarana'            => $dataSarana,
-                    
-    //             ];
-    //             return view('labView/manajemenPeminjaman/show', $data);
-    //         } else {
-    //             return view('error/404');
-    //         }
-    //     } else {
-    //         return view('error/404');
-    //     }
-    // }
-
+    
     public function show($id = null) {
         if ($id != null) {
             $dataLaboratorium = $this->laboratoriumModel->find($id);
@@ -84,11 +60,6 @@ class ManajemenPeminjaman extends ResourceController
                 $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
                 $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
                 $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
-    
-                // Fetch the additional data (jumlah) for each asset
-                // foreach ($dataSarana as &$sarana) {
-                //     $sarana->jumlahPeminjaman = $this->manajemenPeminjamanModel->getTotalJumlahBySaranaId($sarana->idIdentitasSarana);
-                // }
     
                 $data = [
                     'dataLaboratorium'  => $dataLaboratorium,

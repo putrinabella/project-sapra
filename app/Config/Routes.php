@@ -305,11 +305,11 @@ $routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
 // MANAJEMEN PEMINJAMAN
 
 // Manajemen Stok
-$routes->get('manajemenStok/loan/(:num)', 'ManajemenStok::loan/$1');
-$routes->get('manajemenStok/print/(:num)', 'ManajemenStok::print/$1');
-$routes->get('manajemenStok/createTemplate', 'ManajemenStok::createTemplate');
-$routes->get('manajemenStok/export', 'ManajemenStok::export');
-$routes->resource('manajemenStok', ['filter' => 'isLoggedIn']);
+$routes->get('dataPeminjaman/loan/(:num)', 'DataPeminjaman::loan/$1');
+$routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
+$routes->get('dataPeminjaman/createTemplate', 'DataPeminjaman::createTemplate');
+$routes->get('dataPeminjaman/export', 'DataPeminjaman::export');
+$routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 // Manajemen Peminjaman
 $routes->get('manajemenPeminjaman/createTemplate', 'ManajemenPeminjaman::createTemplate');
