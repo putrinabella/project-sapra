@@ -51,6 +51,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
+                                <th style="width: 30%;">Kode Laboratorium</th>
                                 <th>Nama</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -61,6 +62,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
+                                <td class="text-center"><?=$value->kodeLab?></td>
                                 <td class="text-left"><?=$value->namaLab?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('laboratorium/'.$value->idIdentitasLab) ?>" class="btn btn-success btn-icon-text"> <i  class="btn-icon-prepend" data-feather="info"></i> Show Detail</a>
@@ -71,28 +73,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-            </div>
-            <form action="<?=site_url("laboratorium/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
-                <div class="modal-body">
-                    <?= csrf_field() ?>
-                    <input class="form-control" type="file" id="formExcel" name="formExcel">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

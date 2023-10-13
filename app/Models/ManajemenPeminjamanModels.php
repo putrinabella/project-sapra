@@ -24,7 +24,6 @@ class ManajemenPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-    
 
     function getSaranaLab(){
         $builder = $this->db->table('tblIdentitasSarana');
@@ -35,7 +34,6 @@ class ManajemenPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-
 
     function getLabBySaranaId($idIdentitasSarana) {
         $builder = $this->db->table('tblRincianLabAset');
@@ -48,6 +46,14 @@ class ManajemenPeminjamanModels extends Model
         return $query->getResult();
     }
 
+    function getTotalJumlahBySaranaId($idIdentitasSarana) {
+        $builder = $this->db->table($this->table);
+        $builder->selectSum('jumlah');
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+        $query = $builder->get();
+        return $query->getRow()->jumlah;
+    }
+    
     function getPrasaranaLab() {
         $builder = $this->db->table('tblIdentitasLab');
         $builder->distinct();
@@ -59,18 +65,6 @@ class ManajemenPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-
- 
-
-    // function getPrasaranaLab(){
-    //     $builder = $this->db->table('tblIdentitasLab');
-    //     $builder->distinct();
-    //     $builder->select('tblIdentitasLab.kodeLab, tblIdentitasLab.namaLab');
-    //     $builder->join('tblRincianLabAset', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
-    //     $builder->where('tblRincianLabAset.deleted_at', null);
-    //     $query = $builder->get();
-    //     return $query->getResult();
-    // }
 
     function getAll() {
         $builder = $this->db->table($this->table);
@@ -97,8 +91,6 @@ class ManajemenPeminjamanModels extends Model
         $builder->select($columns);
         
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblManajemenPeminjaman.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblManajemenPeminjaman.idKategoriManajemen');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
         
         $builder->where($this->primaryKey, $id);
@@ -138,4 +130,16 @@ class ManajemenPeminjamanModels extends Model
         $totalSarana = $saranaLayak + $saranaRusak;
         return $totalSarana;
     }
+
+     
+
+    // function getPrasaranaLab(){
+    //     $builder = $this->db->table('tblIdentitasLab');
+    //     $builder->distinct();
+    //     $builder->select('tblIdentitasLab.kodeLab, tblIdentitasLab.namaLab');
+    //     $builder->join('tblRincianLabAset', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
+    //     $builder->where('tblRincianLabAset.deleted_at', null);
+    //     $query = $builder->get();
+    //     return $query->getResult();
+    // }
 }

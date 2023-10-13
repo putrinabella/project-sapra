@@ -7,6 +7,7 @@ use App\Models\ManajemenPeminjamanModels;
 use App\Models\IdentitasSaranaModels; 
 use App\Models\IdentitasLabModels; 
 use App\Models\RincianLabAsetModels; 
+use App\Models\LaboratoriumModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -21,11 +22,16 @@ class ManajemenPeminjaman extends ResourceController
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->identitasLabModel = new IdentitasLabModels();
         $this->rincianLabAsetModel = new RincianLabAsetModels();
+        $this->laboratoriumModel = new LaboratoriumModels();
         $this->db = \Config\Database::connect();
     }
 
     public function index() {
-        $data['dataManajemenPeminjaman'] = $this->manajemenPeminjamanModel->getAll();
+        $data = [
+            'dataManajemenPeminjaman' => $this->manajemenPeminjamanModel->getAll(),
+            'dataLaboratorium' => $this->laboratoriumModel->getRuangan(),
+        ];
+
         return view('labView/manajemenPeminjaman/index', $data);
     }
     
@@ -46,30 +52,66 @@ class ManajemenPeminjaman extends ResourceController
         echo json_encode($data);
     }
 
+    // public function show($id = null) {
+    //     if ($id != null) {
+    //         $dataLaboratorium = $this->laboratoriumModel->find($id);
+            
+    //         if (is_object($dataLaboratorium)) {
+    //             $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
+    //             $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
+    //             $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
+    //             // $dataManajemenPeminjaman = $this->manajemenPeminjamanModel->getJumlahPeminjaman();
+    //             $data = [
+    //                 'dataLaboratorium'  => $dataLaboratorium,
+    //                 'dataInfoLab'     => $dataInfoLab,
+    //                 'dataSarana'            => $dataSarana,
+                    
+    //             ];
+    //             return view('labView/manajemenPeminjaman/show', $data);
+    //         } else {
+    //             return view('error/404');
+    //         }
+    //     } else {
+    //         return view('error/404');
+    //     }
+    // }
+
     public function show($id = null) {
         if ($id != null) {
-            $dataManajemenPeminjaman = $this->manajemenPeminjamanModel->find($id);
-        
-            if (is_object($dataManajemenPeminjaman)) {
-                $spesifikasiMarkup = $dataManajemenPeminjaman->spesifikasi;
-                $parsedown = new Parsedown();
-                $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-                $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-                
-                $buktiUrl = $this->generateFileId($dataManajemenPeminjaman->bukti);
+            $dataLaboratorium = $this->laboratoriumModel->find($id);
+    
+            if (is_object($dataLaboratorium)) {
+                $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
+                $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
+                $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
+    
+                // Fetch the additional data (jumlah) for each asset
+                // foreach ($dataSarana as &$sarana) {
+                //     $sarana->jumlahPeminjaman = $this->manajemenPeminjamanModel->getTotalJumlahBySaranaId($sarana->idIdentitasSarana);
+                // }
+    
                 $data = [
-                    'dataManajemenPeminjaman'        => $dataManajemenPeminjaman,
-                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-                    'dataIdentitasLab'          => $this->identitasLabModel->findAll(),
-                    'buktiUrl'                  => $buktiUrl,
-                    'spesifikasiHtml'           => $spesifikasiHtml,
+                    'dataLaboratorium'  => $dataLaboratorium,
+                    'dataInfoLab'       => $dataInfoLab,
+                    'dataSarana'        => $dataSarana,
                 ];
+    
                 return view('labView/manajemenPeminjaman/show', $data);
             } else {
                 return view('error/404');
             }
         } else {
             return view('error/404');
+        }
+    }
+    
+    public function addLoan() {
+        $data = $this->request->getPost(); 
+        if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($data['jumlah'])) {
+            $this->manajemenPeminjamanModel->insert($data);
+            return redirect()->to(site_url('manajemenPeminjaman'))->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
         }
     }
 
@@ -82,8 +124,6 @@ class ManajemenPeminjaman extends ResourceController
         
         return view('labView/manajemenPeminjaman/loan', $data);  
     }
-
-
     
     public function create() {
         $data = $this->request->getPost(); 
