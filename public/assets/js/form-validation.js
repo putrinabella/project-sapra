@@ -192,6 +192,9 @@ $(document).ready(function () {
       jumlah: {
         required: true,
       }, 
+      tanggalPengembalian: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -292,6 +295,9 @@ $(document).ready(function () {
       },
       tanggal: {
         required: "Silahkan masukkan tanggal",
+      },
+      tanggalPengembalian: {
+        required: "Silahkan masukkan tanggal pengembalian",
       },
       namaWebsite: {
         required: "Silahkan masukkan nama website",

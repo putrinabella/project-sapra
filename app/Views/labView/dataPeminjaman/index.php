@@ -32,17 +32,10 @@
                 <a class="dropdown-item" href="<?= site_url('dataPeminjaman/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('dataPeminjaman/createTemplate') ?>">Download Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
-            </div>
-        </div>
+        <a href="<?= site_url('manajemenPeminjaman') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="edit"></i>
+            Ajukan Peminjaman
+        </a>
     </div>
 </div>
 
@@ -86,6 +79,7 @@
                             <th>Lokasi</th>
                             <th>Jumlah</th>
                             <th>Status</th>
+                            <th>Tanggal Pengembalian</th>
                             <th style="width: 20%;">Aksi</th>
                         </tr>
                     </thead>
@@ -108,6 +102,7 @@
                                     <span class="label label-success"> <?=$value->status?></span>
                                 <?php endif; ?>
                             </td>
+                            <td class="text-center"><?=$value->tanggalPengembalian?></td>
                             <td class="text-center">
                                 <a href="<?=site_url('dataPeminjaman/'.$value->idManajemenPeminjaman.'/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
