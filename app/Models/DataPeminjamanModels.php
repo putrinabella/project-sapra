@@ -35,6 +35,13 @@ class DataPeminjamanModels extends Model
         return $query->getRow();
     }
 
+    function getPerangkatIT() {
+        $builder = $this->db->table('tblIdentitasSarana');
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
     function getRecycle() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');

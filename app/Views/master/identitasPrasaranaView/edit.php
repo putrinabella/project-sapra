@@ -26,7 +26,7 @@
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
-                        <label for="namaPrasarana" class="col-sm-3 col-form-label">Identitas Prasarana</label>
+                        <label for="namaPrasarana" class="col-sm-3 col-form-label"></label>Identitas Prasarana</label>
                         <div class="col-sm-9">
                         <input type="text" class="form-control" id="namaPrasarana" name="namaPrasarana" value="<?=$dataIdentitasPrasarana->namaPrasarana?>" placeholder="Masukkan Nama Sarana" >
                         </div>
@@ -34,11 +34,11 @@
                     <div class="row mb-3">
                         <label for="tipe" class="col-sm-3 col-form-label">Tipe</label>
                         <div class="col-sm-9">
-                        <select class="form-select" id="tipe" name="tipe">
-                            <option value="" hidden>Pilih tipe</option>
-                            <option value="Ruangan" <?= $dataIdentitasPrasarana->tipe == 'Ruangan' ? 'selected' : '' ?>>Ruangan</option>
-                            <option value="Non Ruangan" <?= $dataIdentitasPrasarana->tipe == 'Non Ruangan' ? 'selected' : '' ?>>Non Ruangan</option>
-                        </select>
+                            <select class="form-select" id="tipe" name="tipe">
+                                <option value="" hidden>Pilih tipe</option>
+                                <option value="Ruangan" <?= $dataIdentitasPrasarana->tipe == 'Ruangan' ? 'selected' : '' ?>>Ruangan</option>
+                                <option value="Non Ruangan" <?= $dataIdentitasPrasarana->tipe == 'Non Ruangan' ? 'selected' : '' ?>>Non Ruangan</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">

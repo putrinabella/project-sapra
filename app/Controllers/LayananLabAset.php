@@ -113,10 +113,7 @@ class LayananLabAset extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            // $uploadedFilePath = $this->uploadFile('bukti');
-            // if ($uploadedFilePath !== null) {
-            //     $data['bukti'] = $uploadedFilePath;
-            // }
+   
             $this->layananLabAsetModel->update($id, $data);
             return redirect()->to(site_url('layananLabAset'))->with('success', 'Data berhasil diupdate');
         } else {

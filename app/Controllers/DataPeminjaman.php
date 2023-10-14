@@ -31,32 +31,35 @@ class DataPeminjaman extends ResourceController
         return view('labView/dataPeminjaman/index', $data);
     }
 
-   
-    
-    public function update($id = null) {
+    public function edit($id = null) {
         if ($id != null) {
-            $data = $this->request->getPost();
-            // $uploadedFilePath = $this->uploadFile('bukti');
-            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodeLab'])) {
-                // if ($uploadedFilePath !== null) {
-                //     $data['bukti'] = $uploadedFilePath;
-                // }
-
-                $totalSarana =  $this->dataPeminjamanModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
-                $data['totalSarana'] = $totalSarana;
-
-                $this->dataPeminjamanModel->update($id, $data);
-                $this->dataPeminjamanModel->updateKodeLabAset($id);
-                return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diupdate');
+            $dataDataPeminjaman = $this->dataPeminjamanModel->find($id);
+    
+            if (is_object($dataDataPeminjaman)) {                
+                $data = [
+                    'dataDataPeminjaman' => $dataDataPeminjaman,
+                    'dataIdentitasSarana' => $this->dataPeminjamanModel->getPerangkatIT(),
+                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+                ];
+                return view('labView/dataPeminjaman/edit', $data);
             } else {
-                return redirect()->to
-                (site_url('dataPeminjaman/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                return view('error/404');
             }
         } else {
             return view('error/404');
         }
     }
 
+    public function update($id = null) {
+        if ($id != null) {
+            $data = $this->request->getPost();
+   
+            $this->dataPeminjamanModel->update($id, $data);
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
+        }
+    }
 
 
     public function delete($id = null) {

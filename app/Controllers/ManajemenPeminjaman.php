@@ -122,36 +122,4 @@ class ManajemenPeminjaman extends ResourceController
             return view('error/404');
         }
     }
-    // public function print($id = null) {
-    //     $dataManajemenPeminjaman = $this->manajemenPeminjamanModel->find($id);
-        
-    //     if (!is_object($dataManajemenPeminjaman)) {
-    //         return view('error/404');
-    //     }
-
-    //     $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
-    //     $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
-    //     $dataSarana = $this->laboratoriumModel->getSaranaByLabId($dataLaboratorium->idIdentitasLab);
-
-    //     $data = [
-    //         'dataLaboratorium'  => $dataLaboratorium,
-    //         'dataInfoLab'       => $dataInfoLab,
-    //         'dataSarana'        => $dataSarana,
-    //     ];
-
-    //     $html = view('labView/manajemenPeminjaman/print', $data); 
-
-    //     $options = new Options();
-    //     $options->set('isHtml5ParserEnabled', true);
-    //     $options->set('isPhpEnabled', true);
-    
-    //     $dompdf = new Dompdf($options);
-    //     $dompdf->loadHtml($html);
-    //     $dompdf->setPaper('A4', 'portrait');
-    //     $dompdf->render();
-    //     $namaLab = $data['dataLaboratorium']->namaLab;
-    //     $filename = "Laboratorium - $namaLab.pdf";
-    //     $dompdf->stream($filename);
-    // }
-
 }
