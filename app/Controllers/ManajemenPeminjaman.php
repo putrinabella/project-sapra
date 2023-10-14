@@ -94,15 +94,15 @@ class ManajemenPeminjaman extends ResourceController
     
                 $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
                 $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
-                $dataSarana = $this->laboratoriumModel->getSaranaByLabId($dataLaboratorium->idIdentitasLab);
-    
+                $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
+
                 $data = [
                     'dataLaboratorium'  => $dataLaboratorium,
                     'dataInfoLab'       => $dataInfoLab,
                     'dataSarana'        => $dataSarana,
                 ];
     
-                $html = view('labView/laboratorium/print', $data); 
+                $html = view('labView/manajemenPeminjaman/print', $data); 
     
                 $options = new Options();
                 $options->set('isHtml5ParserEnabled', true);

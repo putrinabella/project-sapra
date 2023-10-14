@@ -139,19 +139,10 @@
                             <?= $value->totalSaranaLayak ?>
                         </td>
                         <td class="text-center">
-                            <?= $value->namaKategoriManajemen ?>
+                            <?= $value->jumlahPeminjaman ?>
                         </td>
                         <td class="text-center">
-                            <?= $value->namaSumberDana ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $value->saranaLayak ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $value->saranaRusak ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $value->totalSarana ?>
+                            <?= $value->asetTersedia ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
