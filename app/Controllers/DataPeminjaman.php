@@ -115,30 +115,23 @@ class DataPeminjaman extends ResourceController
         $activeWorksheet->setTitle('Data Peminjaman');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yangn dipinjam', 'Lokasi', 'Jumlah'];
+        $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yangn dipinjam', 'Lokasi', 'Jumlah', 'Status', 'Tanggal Pengembalian'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:Q1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
-        foreach ($data as $index => $value) {
-            $spesifikasiMarkup = $value->spesifikasi; 
-            $parsedown = new Parsedown();
-            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-            
+        foreach ($data as $index => $value) {           
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeDataPeminjaman);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaLab);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->tahunPengadaan);
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
-            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
-            $activeWorksheet->setCellValue('H'.($index + 2), $value->saranaLayak);
-            $activeWorksheet->setCellValue('I'.($index + 2), $value->saranaRusak);
-            $activeWorksheet->setCellValue('J'.($index + 2), $value->totalSarana);
-            $activeWorksheet->setCellValue('K'.($index + 2), $value->bukti);
-            $activeWorksheet->setCellValue('L'.($index + 2), $spesifikasiText);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggal);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPeminjam);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->asalPeminjam);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaSarana);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLab);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->jumlah);
+            $activeWorksheet->setCellValue('H'.($index + 2), $value->status);
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->tanggalPengembalian);
+
             
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -147,15 +140,12 @@ class DataPeminjaman extends ResourceController
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             }            
         }
-        $activeWorksheet->getStyle('L')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $activeWorksheet->getStyle('L')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-        
-        $activeWorksheet->getStyle('A1:Q1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:Q1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:L'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:L')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'L') as $column) {
+        foreach (range('A', 'I') as $column) {
             if ($column === 'K') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(20);
             } else if ($column === 'L') {
@@ -168,7 +158,7 @@ class DataPeminjaman extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Rincian Aset Laboratorium.xlsx');
+        header('Content-Disposition: attachment;filename=Laboratorium - Data Peminjaman.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -196,55 +186,7 @@ class DataPeminjaman extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Laboratorium - Rincian Aset Report.pdf';
-        $dompdf->stream($filename);
-    }
-
-
-    public function print($id = null) {
-        $dataDataPeminjaman = $this->dataPeminjamanModel->find($id);
-        
-        if (!is_object($dataDataPeminjaman)) {
-            return view('error/404');
-        }
-
-        $spesifikasiMarkup = $dataDataPeminjaman->spesifikasi; 
-        $parsedown = new Parsedown();
-        $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-        $buktiUrl = $this->generateFileId($dataDataPeminjaman->bukti);
-
-        $data = [
-            'dataDataPeminjaman'           => $dataDataPeminjaman,
-            'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-            'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-            'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-            'dataIdentitasLab'          => $this->identitasLabModel->findAll(),
-            'buktiUrl'                  => $buktiUrl,
-            'spesifikasiHtml'           => $spesifikasiHtml,
-        ];
-
-        $filePath = APPPATH . 'Views/labView/dataPeminjaman/printInfo.php';
-
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-
-        $includeFile($filePath, $data);
-
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        // $filename = 'Laboratorium - Detail Rincian Aset Lab.pdf';
-        $namaSarana = $data['dataDataPeminjaman']->namaSarana;
-        $filename = "Laboratorium - Detail Rincian Aset Lab $namaSarana.pdf";
+        $filename = "Laboratorium - Data Peminjaman.pdf";
         $dompdf->stream($filename);
     }
 }

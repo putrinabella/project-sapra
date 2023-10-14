@@ -102,7 +102,7 @@
                                     <span class="label label-success"> <?=$value->status?></span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center"><?=$value->tanggalPengembalian?></td>
+                            <td class="text-center"><?= $value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ?></td>
                             <td class="text-center">
                                 <a href="<?=site_url('dataPeminjaman/'.$value->idManajemenPeminjaman.'/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>

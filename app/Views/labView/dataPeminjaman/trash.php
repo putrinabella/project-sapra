@@ -98,7 +98,7 @@
                                     <span class="label label-success"> <?=$value->status?></span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center"><?=$value->tanggalPengembalian?></td>
+                            <td class="text-center"><?= $value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('dataPeminjaman/restore/'.$value->idManajemenPeminjaman) ?>"
                                         class="btn btn-primary"> Restore</a>
