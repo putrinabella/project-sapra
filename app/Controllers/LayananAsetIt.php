@@ -222,7 +222,7 @@ class LayananAsetIt extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Layanan Perangkat IT.xlsx');
+        header('Content-Disposition: attachment;filename=Perangkat IT - Layanan Perangkat IT.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -496,7 +496,16 @@ class LayananAsetIt extends ResourceController
                     'biaya' => $biaya,
                     'bukti' => $bukti,
                     ];
-                $this->layananAsetItModel->insert($data);
+
+                    if (!empty($data['tanggal']) && !empty($data['idIdentitasSarana']) && !empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen']) && !empty($data['bukti']) && !empty($data['biaya'])) {
+                        if ($status == 'ERROR') {
+                            return redirect()->to(site_url('layananAsetIt'))->with('error', 'Pastikan excel sudah benar');
+                        } else {
+                            $this->layananAsetItModel->insert($data);
+                        }
+                    } else {
+                        return redirect()->to(site_url('layananAsetIt'))->with('error', 'Pastikan semua data telah diisi!');
+                    }
             }
             return redirect()->to(site_url('layananAsetIt'))->with('success', 'Data berhasil diimport');
         } else {
@@ -527,7 +536,7 @@ class LayananAsetIt extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Sarana - Layanan Perangkat IT Report.pdf';
+        $filename = 'Perangkat IT - Layanan Perangkat IT Report.pdf';
         $dompdf->stream($filename);
     }
 }

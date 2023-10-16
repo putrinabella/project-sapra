@@ -515,7 +515,19 @@ class SaranaLayananAset extends ResourceController
                     'biaya' => $biaya,
                     'bukti' => $bukti,
                     ];
-                $this->saranaLayananAsetModel->insert($data);
+
+                    if (!empty($data['tanggal']) && !empty($data['idIdentitasSarana'])
+                    && !empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) 
+                    && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen'])
+                    && !empty($data['biaya']) && !empty($data['bukti'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('saranaLayananAset'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->saranaLayananAsetModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('saranaLayananAset'))->with('error', 'Pastikan semua data telah diisi!');
+                }
             }
             return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil diimport');
         } else {

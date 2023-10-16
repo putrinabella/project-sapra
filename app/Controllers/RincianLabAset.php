@@ -512,7 +512,6 @@ class RincianLabAset extends ResourceController
                 $bukti                  = $value[10] ?? null;
                 $kodeLab          = $value[11] ?? null;
 
-                if ($kodeRincianLabAset !== null) {
                     $data = [
                         'kodeRincianLabAset' => $kodeRincianLabAset,
                         'idIdentitasSarana' => $idIdentitasSarana,
@@ -526,8 +525,20 @@ class RincianLabAset extends ResourceController
                         'totalSarana' => $totalSarana,
                         'bukti' => $bukti,
                     ];
-                    $this->rincianLabAsetModel->insert($data);
-                }
+                    if (!empty($data['kodeRincianLabAset']) && !empty($data['idIdentitasSarana'])
+                        && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen']) 
+                        && !empty($data['kodeLab']) && !empty($data['tahunPengadaan'])
+                        && !empty($data['saranaLayak']) && !empty($data['saranaRusak']) 
+                        && !empty($data['spesifikasi']) && !empty($data['totalSarana']) 
+                        && !empty($data['bukti'])) {
+                        if ($status == 'ERROR') {
+                            return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan excel sudah benar');
+                        } else {
+                            $this->rincianLabAsetModel->insert($data);
+                        }
+                    } else {
+                        return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan semua data telah diisi!');
+                    }
             }
             return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil diimport');
         } else {

@@ -411,16 +411,23 @@ class IdentitasPrasarana extends ResourceController
                 $idIdentitasLantai  = $value[6] ?? null;
                 $kodePrasarana      = $value[1] ?? null;
 
-                if ($namaPrasarana !== null) {
-                    $data = [
-                        'namaPrasarana' => $namaPrasarana,
-                        'tipe' => $tipe,
-                        'luas' => $luas,
-                        'idIdentitasGedung' => $idIdentitasGedung,
-                        'idIdentitasLantai' => $idIdentitasLantai,
-                        'kodePrasarana' => $kodePrasarana,
-                    ];
-                    $this->identitasPrasaranaModel->insert($data);
+                $data = [
+                    'namaPrasarana' => $namaPrasarana,
+                    'tipe' => $tipe,
+                    'luas' => $luas,
+                    'idIdentitasGedung' => $idIdentitasGedung,
+                    'idIdentitasLantai' => $idIdentitasLantai,
+                    'kodePrasarana' => $kodePrasarana,
+                ];
+
+                if (!empty($data['namaPrasarana']) && !empty($data['tipe']) && !empty($data['luas']) && !empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai']) && !empty($data['kodePrasarana'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->identitasPrasaranaModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diimport');

@@ -154,7 +154,7 @@ class Website extends ResourceController
         $data = $this->websiteModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - Website');
+        $activeWorksheet->setTitle('Website');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Nama', 'Fungsi', 'Link','PIC'];
@@ -194,7 +194,7 @@ class Website extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - Website.xlsx');
+        header('Content-Disposition: attachment;filename=Profil - Website.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -204,7 +204,7 @@ class Website extends ResourceController
         $data = $this->websiteModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - Website');
+        $activeWorksheet->setTitle('Website');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Nama', 'Fungsi', 'Link','PIC'];
@@ -293,7 +293,7 @@ class Website extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - Website Example.xlsx');
+        header('Content-Disposition: attachment;filename=Profil - Website Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -320,15 +320,22 @@ class Website extends ResourceController
                 $linkWebsite            = $value[3] ?? null;
                 $picWebsite             = $value[4] ?? null;
 
-                if ($namaWebsite !== null) {
-                    $data = [
-                        'namaWebsite'   => $namaWebsite,
-                        'fungsiWebsite' => $fungsiWebsite,
-                        'linkWebsite'   => $linkWebsite,
-                        'picWebsite'    => $picWebsite,
+                $data = [
+                    'namaWebsite'   => $namaWebsite,
+                    'fungsiWebsite' => $fungsiWebsite,
+                    'linkWebsite'   => $linkWebsite,
+                    'picWebsite'    => $picWebsite,
+                ];
 
-                    ];
-                    $this->websiteModel->insert($data);
+                if (!empty($data['namaWebsite']) && !empty($data['fungsiWebsite'])
+                    && !empty($data['linkWebsite']) && !empty($data['picWebsite'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->websiteModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('website'))->with('success', 'Data berhasil diimport');
@@ -360,7 +367,7 @@ class Website extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'IT - Website Report.pdf';
+        $filename = 'Profil - Website Report.pdf';
         $dompdf->stream($filename);
     }
 }

@@ -129,7 +129,7 @@ class PrasaranaRuangan extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Rincian Aset.xlsx');
+        header('Content-Disposition: attachment;filename=Prasarana - Rincian Aset Ruangan.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();

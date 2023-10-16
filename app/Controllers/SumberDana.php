@@ -148,7 +148,7 @@ class SumberDana extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sumber Dana.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Sumber Dana.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -173,12 +173,19 @@ class SumberDana extends ResourcePresenter
             
                 $namaSumberDana = $value[1] ?? null;
             
-                if ($namaSumberDana !== null) {
-                    $data = [
-                        'namaSumberDana' => $namaSumberDana,
-                    ];
+
+                $data = [
+                    'namaSumberDana' => $namaSumberDana,
+                ];
                     
-                    $this->sumberDanaModel->insert($data);
+                if (!empty($data['namaSumberDana'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('sumberDana'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->sumberDanaModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('sumberDana'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil diimport');
@@ -210,7 +217,7 @@ class SumberDana extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Sumber Dana Report.pdf';
+        $filename = 'Data Master - Sumber Dana.pdf';
         $dompdf->stream($filename);
     }
 }

@@ -270,7 +270,7 @@ class RincianAset extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Rincian Aset.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Rincian Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -528,7 +528,15 @@ class RincianAset extends ResourceController
                         'totalSarana' => $totalSarana,
                         'bukti' => $bukti,
                     ];
-                    $this->rincianAsetModel->insert($data);
+                    if (!empty($data['kodeRincianAset']) && !empty($data['idIdentitasSarana']) && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen']) && !empty($data['kodePrasarana']) && !empty($data['tahunPengadaan']) && !empty($data['saranaLayak']) && !empty($data['saranaRusak'])  && !empty($data['spesifikasi'])  && !empty($data['totalSarana']) && !empty($data['bukti']))  {
+                        if ($status == 'ERROR') {
+                            return redirect()->to(site_url('rincianAset'))->with('error', 'Pastikan excel sudah benar');
+                        } else {
+                            $this->rincianAsetModel->insert($data);
+                        }
+                    } else {
+                        return redirect()->to(site_url('rincianAset'))->with('error', 'Pastikan semua data telah diisi!');
+                    }
                 }
             }
             return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diimport');

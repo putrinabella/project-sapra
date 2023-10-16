@@ -154,7 +154,7 @@ class SosialMedia extends ResourceController
         $data = $this->sosialMediaModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('IT - SosialMedia');
+        $activeWorksheet->setTitle('SosialMedia');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
@@ -193,7 +193,7 @@ class SosialMedia extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - SosialMedia.xlsx');
+        header('Content-Disposition: attachment;filename=Profil - SosialMedia.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -289,7 +289,7 @@ class SosialMedia extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=IT - SosialMedia Example.xlsx');
+        header('Content-Disposition: attachment;filename=Profil - SosialMedia Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -315,14 +315,22 @@ class SosialMedia extends ResourceController
                 $usernameSosialMedia        = $value[2] ?? null;
                 $linkSosialMedia            = $value[3] ?? null;
 
-                if ($namaSosialMedia !== null) {
-                    $data = [
-                        'namaSosialMedia'       => $namaSosialMedia,
-                        'usernameSosialMedia'   => $usernameSosialMedia,
-                        'linkSosialMedia'       => $linkSosialMedia,
+                $data = [
+                    'namaSosialMedia'       => $namaSosialMedia,
+                    'usernameSosialMedia'   => $usernameSosialMedia,
+                    'linkSosialMedia'       => $linkSosialMedia,
 
-                    ];
-                    $this->sosialMediaModel->insert($data);
+                ];
+
+                if (!empty($data['namaSosialMedia']) && !empty($data['usernameSosialMedia'])
+                    && !empty($data['linkSosialMedia'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('sosialMedia'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->sosialMediaModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('sosialMedia'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('sosialMedia'))->with('success', 'Data berhasil diimport');
@@ -354,7 +362,7 @@ class SosialMedia extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'IT - SosialMedia Report.pdf';
+        $filename = 'Profil - SosialMedia Report.pdf';
         $dompdf->stream($filename);
     }
 }

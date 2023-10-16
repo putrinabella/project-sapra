@@ -501,8 +501,20 @@ class SaranaLayananNonAset extends ResourceController
                     'biaya' => $biaya,
                     'bukti' => $bukti,
                     'spesifikasi' => $spesifikasi,
-                    ];
-                $this->saranaLayananNonAsetModel->insert($data);
+                ];
+
+                if (!empty($data['tanggal']) && !empty($data['idIdentitasPrasarana'])
+                    && !empty($data['idStatusLayanan']) && !empty($data['idKategoriManajemen']) 
+                    && !empty($data['idSumberDana']) && !empty($data['biaya'])
+                    && !empty($data['bukti']) && !empty($data['spesifikasi']) ) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('saranaLayananNonAset'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->saranaLayananNonAsetModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('saranaLayananNonAset'))->with('error', 'Pastikan semua data telah diisi!');
+                }
             }
             return redirect()->to(site_url('saranaLayananNonAset'))->with('success', 'Data berhasil diimport');
         } else {

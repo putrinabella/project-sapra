@@ -367,14 +367,20 @@ class ProfilSekolah extends ResourceController
                 $namaDokumenSekolah            = $value[1] ?? null;
                 $linkDokumenSekolah            = $value[2] ?? null;
 
-                if ($namaDokumenSekolah !== null) {
                     $data = [
                         'namaDokumenSekolah'       => $namaDokumenSekolah,
                         'linkDokumenSekolah'       => $linkDokumenSekolah,
 
                     ];
-                    $this->dokumenSekolahModel->insert($data);
-                }
+                    if (!empty($data['namaDokumenSekolah']) && !empty($data['linkDokumenSekolah'])) {
+                        if ($status == 'ERROR') {
+                            return redirect()->to(site_url('profilSekolah'))->with('error', 'Pastikan excel sudah benar');
+                        } else {
+                            $this->dokumenSekolahModel->insert($data);
+                        }
+                    } else {
+                        return redirect()->to(site_url('profilSekolah'))->with('error', 'Pastikan semua data telah diisi!');
+                    }
             }
             return redirect()->to(site_url('profilSekolah'))->with('success', 'Data berhasil diimport');
         } else {

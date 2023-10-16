@@ -120,7 +120,7 @@ class PerangkatIt extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Rincian Aset.xlsx');
+        header('Content-Disposition: attachment;filename=Perangkat IT - Rincian Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();

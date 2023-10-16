@@ -161,7 +161,7 @@ class IdentitasSarana extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Sarana.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Sarana.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -187,13 +187,19 @@ class IdentitasSarana extends ResourcePresenter
                 $namaSarana = $value[1] ?? null;
                 $perangkatIT = $value[2] ?? null;
             
-                if ($namaSarana !== null) {
-                    $data = [
-                        'namaSarana' => $namaSarana,
-                        'perangkatIT' => $perangkatIT,
-                    ];
-                    
-                    $this->identitasSaranaModel->insert($data);
+                $data = [
+                    'namaSarana' => $namaSarana,
+                    'perangkatIT' => $perangkatIT,
+                ];
+
+                if (!empty($data['namaSarana']) && !empty($data['perangkatIT'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('identitasSarana'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->identitasSaranaModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('identitasSarana'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil diimport');

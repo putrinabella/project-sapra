@@ -149,7 +149,7 @@ class StatusLayanan extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Status Layanan.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Status Layanan.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -174,12 +174,17 @@ class StatusLayanan extends ResourcePresenter
             
                 $namaStatusLayanan = $value[1] ?? null;
             
-                if ($namaStatusLayanan !== null) {
-                    $data = [
-                        'namaStatusLayanan' => $namaStatusLayanan,
-                    ];
-                    
-                    $this->statusLayananModel->insert($data);
+                $data = [
+                    'namaStatusLayanan' => $namaStatusLayanan,
+                ];
+                if (!empty($data['namaStatusLayanan'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('statusLayanan'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->statusLayananModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('statusLayanan'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('statusLayanan'))->with('success', 'Data berhasil diimport');
@@ -210,7 +215,7 @@ class StatusLayanan extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Status Layanan Report.pdf';
+        $filename = 'Data Master - Status Layanan.pdf';
         $dompdf->stream($filename);
     }
 }

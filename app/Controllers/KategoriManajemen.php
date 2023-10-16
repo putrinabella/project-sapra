@@ -149,7 +149,7 @@ class KategoriManajemen extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Kategori Manajemen.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Kategori Manajemen.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -174,12 +174,18 @@ class KategoriManajemen extends ResourcePresenter
             
                 $namaKategoriManajemen = $value[1] ?? null;
             
-                if ($namaKategoriManajemen !== null) {
-                    $data = [
-                        'namaKategoriManajemen' => $namaKategoriManajemen,
-                    ];
-                    
-                    $this->kategoriManajemenModel->insert($data);
+                $data = [
+                    'namaKategoriManajemen' => $namaKategoriManajemen,
+                ];
+
+                if (!empty($data['namaKategoriManajemen'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->kategoriManajemenModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil diimport');
