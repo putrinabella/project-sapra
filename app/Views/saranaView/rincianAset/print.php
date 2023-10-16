@@ -91,10 +91,6 @@
                             <?= $value->totalSarana ?>
                         </td>
                     </tr>
-                    <!-- <tr>
-                        <td colspan="8">            
-                        </td>
-                    </tr> -->
                 <?php endforeach; ?>
             </tbody>
         </table>

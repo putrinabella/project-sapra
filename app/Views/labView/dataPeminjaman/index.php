@@ -97,9 +97,9 @@
                             <td class="text-center"><?=$value->jumlah?></td>
                             <td class="text-center">
                                 <?php if ($value->status == "Peminjaman"): ?>
-                                    <span class="label label-warning"> <?=$value->status?></span>
+                                    <span class="badge bg-warning"> <?=$value->status?></span>
                                 <?php else: ?>
-                                    <span class="label label-success"> <?=$value->status?></span>
+                                    <span class="badge bg-success"><?=$value->status?></span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center"><?= $value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ?></td>

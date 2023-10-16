@@ -66,7 +66,6 @@
                         echo '(no image)';
                     }
                 ?>
-
             </div>
             <br>
             <table class="table" style="max-width: 90%; margin: 0 auto;">

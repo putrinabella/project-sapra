@@ -48,7 +48,6 @@ class IdentitasPrasarana extends ResourceController
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
     }
 
-
     public function edit($id = null) {
         if ($id != null) {
             $dataIdentitasPrasarana = $this->identitasPrasaranaModel->find($id);
@@ -169,7 +168,7 @@ class IdentitasPrasarana extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Prasarana.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Prasarana.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -452,7 +451,7 @@ class IdentitasPrasarana extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Identitas Prasarana Report.pdf';
+        $filename = 'Data Master - Identitas Prasarana.pdf';
         $dompdf->stream($filename);
     }
 }

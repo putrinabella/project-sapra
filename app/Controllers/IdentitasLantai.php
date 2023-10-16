@@ -149,7 +149,7 @@ class IdentitasLantai extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Lantai.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Lantai.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -173,13 +173,19 @@ class IdentitasLantai extends ResourcePresenter
                 }
             
                 $namaLantai = $value[1] ?? null;
-            
-                if ($namaLantai !== null) {
-                    $data = [
-                        'namaLantai' => $namaLantai,
-                    ];
-                    
-                    $this->identitasLantaiModel->insert($data);
+
+                $data = [
+                    'namaLantai' => $namaLantai,
+                ];
+
+                if (!empty($data['namaLantai'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('identitasLantai'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->identitasLantaiModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('identitasLantai'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('identitasLantai'))->with('success', 'Data berhasil diimport');

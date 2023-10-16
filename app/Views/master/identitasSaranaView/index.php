@@ -102,10 +102,8 @@
                                 <td class="text-left"><?=$value->namaSarana?></td>
                                 <td class="text-left">
                                     <?php if ($value->perangkatIT == 1): ?>
-                                        <span class="label label-success">Perangkat IT</span>
-                                        <!-- Perangkat IT -->
+                                        <span class="badge bg-success">Perangkat IT</span>
                                     <?php else: ?>
-                                        <!-- <span class="label label-danger">Bukan Perangkat IT</span> -->
                                         Bukan Perangkat IT
                                     <?php endif; ?>
                                 </td>

@@ -168,7 +168,7 @@ class IdentitasLab extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Lab.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Laboratorium.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -253,7 +253,6 @@ class IdentitasLab extends ResourceController
             }
         }
         
-
 
         foreach ($keyGedung as $index => $value) {
             $activeWorksheet->setCellValue('I'.($index + 2), $value->idIdentitasGedung);
@@ -367,7 +366,7 @@ class IdentitasLab extends ResourceController
         $writer->save('php://output');
         exit();
     }
-     
+    
     public function import() {
         $file = $this->request->getFile('formExcel');
         $extension = $file->getClientExtension();
@@ -384,21 +383,28 @@ class IdentitasLab extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $namaLab      = $value[2] ?? null;
+                $namaLab            = $value[2] ?? null;
                 $luas               = $value[3] ?? null;
                 $idIdentitasGedung  = $value[4] ?? null;
                 $idIdentitasLantai  = $value[5] ?? null;
-                $kodeLab      = $value[1] ?? null;
+                $kodeLab            = $value[1] ?? null;
 
-                if ($namaLab !== null) {
-                    $data = [
-                        'namaLab' => $namaLab,
-                        'luas' => $luas,
-                        'idIdentitasGedung' => $idIdentitasGedung,
-                        'idIdentitasLantai' => $idIdentitasLantai,
-                        'kodeLab' => $kodeLab,
-                    ];
-                    $this->identitasLabModel->insert($data);
+                $data = [
+                    'namaLab' => $namaLab,
+                    'luas'  => $luas,
+                    'idIdentitasGedung' => $idIdentitasGedung,
+                    'idIdentitasLantai' => $idIdentitasLantai,
+                    'kodeLab' => $kodeLab,
+                ];
+
+                if (!empty($data['namaLab']) && !empty($data['luas']) && !empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai']) && !empty($data['kodeLab'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('identitasLab'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->identitasLabModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('identitasLab'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diimport');
@@ -429,7 +435,7 @@ class IdentitasLab extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Identitas Lab Report.pdf';
+        $filename = 'Data Master - Identitas Laboratorium.pdf';
         $dompdf->stream($filename);
     }
 }

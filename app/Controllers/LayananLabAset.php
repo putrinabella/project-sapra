@@ -516,15 +516,15 @@ class LayananLabAset extends ResourceController
                     'bukti' => $bukti,
                     ];
 
-                    if (!empty($data['tanggal']) && !empty($data['idIdentitasLab']) && !empty($data['idStatusLayanan']) && !empty($data['idKategoriManajemen']) && !empty($data['idSumberDana']) && !empty($data['biaya']) && !empty($data['bukti']) && !empty($data['idIdentitasSarana'])) {
-                        if ($status == 'ERROR') {
-                            return redirect()->to(site_url('layananLabAset'))->with('error', 'Pastikan excel sudah benar');
-                        } else {
-                            $this->layananLabAsetModel->insert($data);
-                        }
+                if (!empty($data['tanggal']) && !empty($data['idIdentitasLab']) && !empty($data['idStatusLayanan']) && !empty($data['idKategoriManajemen']) && !empty($data['idSumberDana']) && !empty($data['biaya']) && !empty($data['bukti']) && !empty($data['idIdentitasSarana'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('layananLabAset'))->with('error', 'Pastikan excel sudah benar');
                     } else {
-                        return redirect()->to(site_url('layananLabAset'))->with('error', 'Pastikan semua data telah diisi!');
+                        $this->layananLabAsetModel->insert($data);
                     }
+                } else {
+                    return redirect()->to(site_url('layananLabAset'))->with('error', 'Pastikan semua data telah diisi!');
+                }
             }
             return redirect()->to(site_url('layananLabAset'))->with('success', 'Data berhasil diimport');
         } else {
@@ -559,4 +559,3 @@ class LayananLabAset extends ResourceController
         $dompdf->stream($filename);
     }
 }
-

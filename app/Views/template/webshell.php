@@ -63,40 +63,6 @@
                 <?= $this->include('template/sidebar') ?>
             </div>
         </nav>
-        <!-- Light and dark mode -->
-        <!-- <nav class="settings-sidebar">
-            <div class="sidebar-body">
-                <a href="#" class="settings-sidebar-toggler">
-                    <i data-feather="settings"></i>
-                </a>
-                <h6 class="text-muted mb-2">Sidebar:</h6>
-                <div class="mb-3 pb-3 border-bottom">
-                    <div class="form-check form-check-inline">
-                        <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarLight" value="sidebar-light" checked>
-                        <label class="form-check-label" for="sidebarLight">
-                            Light
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarDark" value="sidebar-dark">
-                        <label class="form-check-label" for="sidebarDark">
-                            Dark
-                        </label>
-                    </div>
-                </div>
-                <div class="theme-wrapper">
-                    <h6 class="text-muted mb-2">Light Theme:</h6>
-                    <a class="theme-item active" href="<?= base_url(); ?>/public/demo1/dashboard.html">
-                        <img src="<?= base_url(); ?>/assets/images/screenshots/light.jpg" alt="light theme">
-                    </a>
-                    <h6 class="text-muted mb-2">Dark Theme:</h6>
-                    <a class="theme-item" href="<?= base_url(); ?>/public/demo2/dashboard.html">
-                        <img src="wd-30 ht-30 alt=" light theme">
-                    </a>
-                </div>
-            </div>
-        </nav> -->
-        <!-- partial -->
 
         <div class="page-wrapper">
 
@@ -117,37 +83,14 @@
                                         src="<?= base_url(); ?>/assets/images/user.png" alt="profile">
                                 </div>
                             </a>
-
-
                             <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
-                                    <!-- <div class="mb-3">
-                                        <img class="wd-80 ht-80 rounded-circle" src="<?= base_url(); ?>/assets/images/user.png" alt="">
-                                    </div> -->
                                     <div class="text-center">
                                         <div class="tx-16 fw-bolder"> <?=userLogin()->nama?> </div>
                                         <div class="tx-12 text-muted"> <?=userLogin()->role?> </div>
                                     </div>
                                 </div>
                                 <ul class="list-unstyled p-1">
-                                    <li class="dropdown-item py-2">
-                                        <a href="pages/general/profile.html" class="text-body ms-0">
-                                            <i class="me-2 icon-md" data-feather="user"></i>
-                                            <span>Profile</span>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item py-2">
-                                        <a href="javascript:;" class="text-body ms-0">
-                                            <i class="me-2 icon-md" data-feather="edit"></i>
-                                            <span>Edit Profile</span>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown-item py-2">
-                                        <a href="javascript:;" class="text-body ms-0">
-                                            <i class="me-2 icon-md" data-feather="repeat"></i>
-                                            <span>Switch User</span>
-                                        </a>
-                                    </li>
                                     <li class="dropdown-item py-2">
                                         <a href="<?= site_url('logout') ?>" class="text-body ms-0">
                                             <i class="me-2 icon-md" data-feather="log-out"></i>
@@ -169,8 +112,8 @@
             <!-- partial:partials/_footer.html -->
             <footer
                 class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
-                <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://github.com/putrinabella/project-sapra"
-                        target="_blank">StellarCoder</a>.</p>
+                <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a
+                        href="https://github.com/putrinabella/project-sapra" target="_blank">StellarCoder</a>.</p>
                 <!-- <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm"
                         data-feather="heart"></i></p> -->
             </footer>
@@ -178,7 +121,7 @@
 
         </div>
     </div>
-    
+
 
     <!-- core:js -->
     <script src="<?= base_url(); ?>/assets/vendors/core/core.js"></script>
@@ -195,7 +138,7 @@
     <script src="<?= base_url(); ?>/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/prismjs/prism.js"></script>
-	<script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
     <!-- End plugin js for this page -->
 

@@ -149,7 +149,7 @@ class IdentitasGedung extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Gedung.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Gedung.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -248,13 +248,19 @@ class IdentitasGedung extends ResourcePresenter
                 }
             
                 $namaGedung = $value[1] ?? null;
-            
-                if ($namaGedung !== null) {
-                    $data = [
-                        'namaGedung' => $namaGedung,
-                    ];
-                    
-                    $this->identitasGedungModel->insert($data);
+
+                $data = [
+                    'namaGedung' => $namaGedung,
+                ];
+                
+                if (!empty($data['namaGedung'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('identitasGedung'))->with('error', 'Pastikan excel sudah benar');
+                    } else {
+                        $this->identitasGedungModel->insert($data);
+                    }
+                } else {
+                    return redirect()->to(site_url('identitasGedung'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil diimport');
@@ -285,7 +291,7 @@ class IdentitasGedung extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Identitas Gedung Report.pdf';
+        $filename = 'Data Master - Identitas Gedung.pdf';
         $dompdf->stream($filename);
     }
 

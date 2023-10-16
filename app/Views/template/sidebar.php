@@ -1,11 +1,11 @@
 <ul class="nav">
-    <li class="nav-item nav-category">Main</li>
+    <!-- <li class="nav-item nav-category">Main</li>
     <li class="nav-item">
-        <a href="<?= site_url() ?>" class="nav-link">
+        <a href="<?= site_url('home') ?>" class="nav-link">
             <i class="link-icon" data-feather="box"></i>
             <span class="link-title">Dashboard</span>
         </a>
-    </li>
+    </li> -->
     <li class="nav-item nav-category">Sarana dan Prasarana</li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#sarana" role="button" aria-expanded="false" aria-controls="sarana">
@@ -128,13 +128,13 @@
         </a>
     </li>
 
-    <li class="nav-item nav-category">Settings</li>
-    <li class="nav-item">
+    <li class="nav-item nav-category">Master</li>
+    <!-- <li class="nav-item">
         <a href="<?= site_url('manajemenUser') ?>" class="nav-link">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">Manajemen User</span>
         </a>
-    </li>
+    </li> -->
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#identitas" role="button" aria-expanded="false" aria-controls="identitas">
             <i class="link-icon" data-feather="database"></i>
@@ -169,11 +169,5 @@
                 </li>
             </ul>
         </div>
-    </li>
-    <li class="nav-item">
-        <a href="https://www.nobleui.com/html/documentation/docs.html" target="_blank" class="nav-link">
-            <i class="link-icon" data-feather="hash"></i>
-            <span class="link-title">Documentation</span>
-        </a>
     </li>
 </ul>
