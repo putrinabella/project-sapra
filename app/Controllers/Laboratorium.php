@@ -99,4 +99,50 @@ class Laboratorium extends ResourceController
         }
     }
 
+    private function htmlConverter($html) {
+        $plainText = strip_tags(str_replace('<br />', "\n", $html));
+        $plainText = preg_replace('/\n+/', "\n", $plainText);
+        return $plainText;  
+    }
+    
+    private function generateFileId($url) {
+        preg_match('/\/file\/d\/(.*?)\//', $url, $matches);
+        
+        if (isset($matches[1])) {
+            $fileId = $matches[1];
+            return "https://drive.google.com/uc?export=view&id=" . $fileId;
+        } else {
+            return "Invalid Google Drive URL";
+        }
+    }
+
+    public function showInfo($id = null) {
+        if ($id != null) {
+            $dataRincianAset = $this->rincianAsetModel->find($id);
+        
+            if (is_object($dataRincianAset)) {
+                $spesifikasiMarkup = $dataRincianAset->spesifikasi;
+                $parsedown = new Parsedown();
+                $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+                $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
+                
+                $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
+                $data = [
+                    'dataRincianAset'           => $dataRincianAset,
+                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasLab'    => $this->identitasLabModel->findAll(),
+                    'buktiUrl'                  => $buktiUrl,
+                    'spesifikasiHtml'           => $spesifikasiHtml,
+                ];
+                return view('labView/laboratorium/showInfo', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+    
 }

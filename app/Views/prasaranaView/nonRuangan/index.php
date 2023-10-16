@@ -39,7 +39,7 @@
                                 </td>
                                 <td class="text-left"><?=$value->namaPrasarana?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('prasaranaNonRuangan/'.$value->idIdentitasPrasarana) ?>" class="btn btn-success btn-icon-text"> <i  class="btn-icon-prepend" data-feather="info"></i> Show Detail</a>
+                                    <a href="<?=site_url('prasaranaNonRuangan/'.$value->idIdentitasPrasarana) ?>" class="btn btn-outline-success">Show Detail</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

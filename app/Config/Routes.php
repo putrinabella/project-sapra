@@ -174,14 +174,12 @@ $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 
 // Ruangan
 $routes->get('prasaranaRuangan/print/(:num)', 'PrasaranaRuangan::print/$1');
-$routes->get('prasaranaRuangan/createTemplate', 'PrasaranaRuangan::createTemplate');
-$routes->get('prasaranaRuangan/export', 'PrasaranaRuangan::export');
+$routes->get('prasaranaRuangan/showInfo/(:num)', 'PrasaranaRuangan::showInfo/$1');
 $routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
 
 // Non Ruangan
 $routes->get('prasaranaNonRuangan/print/(:num)', 'PrasaranaNonRuangan::print/$1');
-$routes->get('prasaranaNonRuangan/createTemplate', 'PrasaranaNonRuangan::createTemplate');
-$routes->get('prasaranaNonRuangan/export', 'PrasaranaNonRuangan::export');
+$routes->get('prasaranaNonRuangan/showInfo/(:num)', 'PrasaranaNonRuangan::showInfo/$1');
 $routes->resource('prasaranaNonRuangan', ['filter' => 'isLoggedIn']);
 
 
@@ -270,8 +268,7 @@ $routes->resource('rincianLabAset', ['filter' => 'isLoggedIn']);
 
 // Laboratorium
 $routes->get('laboratorium/print/(:num)', 'Laboratorium::print/$1');
-$routes->get('laboratorium/createTemplate', 'Laboratorium::createTemplate');
-$routes->get('laboratorium/export', 'Laboratorium::export');
+$routes->get('laboratorium/showInfo/(:num)', 'Laboratorium::showInfo/$1');
 $routes->resource('laboratorium', ['filter' => 'isLoggedIn']);
 
 // MANAJEMEN LAYANAN

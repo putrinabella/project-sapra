@@ -96,17 +96,7 @@
                                     <td class="text-center"><?=$value->saranaRusak?></td>
                                     <td class="text-center"><?=$value->totalSarana?></td>
                                     <td class="text-center">
-                                        <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                        <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>"
-                                            class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                        <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>"
-                                            method="post" class="d-inline" id="del-<?= $value->idRincianAset;?>">
-                                            <?= csrf_field() ?>
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
-                                                <i data-feather="trash"></i>
-                                            </button>
-                                        </form>
+                                        <a href="<?=site_url('prasaranaRuangan/showInfo/'.$value->idRincianAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
