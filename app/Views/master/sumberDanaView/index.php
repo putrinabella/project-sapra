@@ -100,7 +100,6 @@
                                 </td>
                                 <td class="text-left"><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
-                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('sumberDana/delete/'.$value->idSumberDana)?>"

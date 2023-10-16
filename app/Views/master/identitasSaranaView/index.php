@@ -108,7 +108,6 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('identitasSarana/edit/'.$value->idIdentitasSarana) ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('identitasSarana/delete/'.$value->idIdentitasSarana)?>"

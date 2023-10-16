@@ -103,7 +103,6 @@
                                 <td class="text-center"><?=$value->namaLantai?></td>
                                 <td class="text-center"><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
-                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('identitasLab/'.$value->idIdentitasLab.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('identitasLab/'.$value->idIdentitasLab)?>"
