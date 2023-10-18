@@ -179,11 +179,7 @@ class SumberDana extends ResourcePresenter
                 ];
                     
                 if (!empty($data['namaSumberDana'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('sumberDana'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
-                        $this->sumberDanaModel->insert($data);
-                    }
+                    $this->sumberDanaModel->insert($data);
                 } else {
                     return redirect()->to(site_url('sumberDana'))->with('error', 'Pastikan semua data telah diisi!');
                 }

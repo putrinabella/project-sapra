@@ -179,11 +179,7 @@ class IdentitasLantai extends ResourcePresenter
                 ];
 
                 if (!empty($data['namaLantai'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('identitasLantai'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
-                        $this->identitasLantaiModel->insert($data);
-                    }
+                    $this->identitasLantaiModel->insert($data);
                 } else {
                     return redirect()->to(site_url('identitasLantai'))->with('error', 'Pastikan semua data telah diisi!');
                 }

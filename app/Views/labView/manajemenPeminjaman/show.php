@@ -86,7 +86,7 @@
                                         <?=$key + 1?>
                                     </td>
                                     <td class="text-center"><?=$value->namaSarana?></td>
-                                    <td class="text-center"><?=$value->totalSaranaLayak?></td>  
+                                    <td class="text-center"><?=$value->totalSaranaLayak?></td>
                                     <td class="text-center">
                                         <?= ($value->jumlahPeminjaman === null) ? 0 : $value->jumlahPeminjaman ?>
                                     </td>
@@ -102,13 +102,13 @@
                                     </td>
                                     <td class="text-center">
                                         <?php if ($value->asetTersedia > 0) : ?>
-                                            <a href="#" class="btn btn-outline-primary upload-excel-btn"
-                                                data-bs-toggle="modal" data-bs-target="#modalImport"
-                                                data-id-identitas-sarana="<?= $value->idIdentitasSarana ?>"
-                                                data-kode-lab="<?= $dataLaboratorium->kodeLab ?>" 
-                                                data-id-aset-tersedia="<?= $value->asetTersedia ?>">Ajukan Peminjaman</a>
+                                        <a href="#" class="btn btn-outline-primary upload-excel-btn"
+                                            data-bs-toggle="modal" data-bs-target="#modalImport"
+                                            data-id-identitas-sarana="<?= $value->idIdentitasSarana ?>"
+                                            data-kode-lab="<?= $dataLaboratorium->kodeLab ?>"
+                                            data-id-aset-tersedia="<?= $value->asetTersedia ?>">Ajukan Peminjaman</a>
                                         <?php else : ?>
-                                            <button class="btn btn-outline-primary" disabled>Ajukan Peminjaman</button>
+                                        <button class="btn btn-outline-primary" disabled>Ajukan Peminjaman</button>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -130,7 +130,8 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Data Peminjaman</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url('manajemenPeminjaman/addLoan') ?>" method="POST" enctype="multipart/form-data" id="custom-validation">
+            <form action="<?=site_url('manajemenPeminjaman/addLoan') ?>" method="POST" enctype="multipart/form-data"
+                id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <div class="mb-3">
@@ -143,11 +144,11 @@
                         <input type="text" class="form-control" id="status" name="status" value="Peminjaman" hidden>
                     </div>
                     <div class="mb-3">
-                    <label for="asetTersedia" class="form-label">Aset Tersedia</label>
-                        <input type="text" class="form-control" id="asetTersedia" name="asetTersedia" readonly >
+                        <label for="asetTersedia" class="form-label">Aset Tersedia</label>
+                        <input type="text" class="form-control" id="asetTersedia" name="asetTersedia" readonly>
                     </div>
                     <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
+                        <label for="tanggal" class="form-label">Tanggal</label>
                         <div class="input-group date datepicker" id="tanggal">
                             <input type="text" class="form-control" name="tanggal">
                             <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
@@ -158,8 +159,28 @@
                         <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam">
                     </div>
                     <div class="mb-3">
-                        <label for="asalPeminjam" class="form-label">Asal Peminjam</label>
-                        <input type="text" class="form-control" id="asalPeminjam" name="asalPeminjam">
+                        <label for="jenisPeminjam" class="form-label">Jenis Peminjam</label>
+                        <select class="form-control" id="jenisPeminjam" name="jenisPeminjam"
+                            onchange="showHideOptions()">
+                            <option value="karyawan">Karyawan</option>
+                            <option value="siswa">Siswa</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="karyawanOptions" style="display:none;">
+                        <label for="karyawanRole" class="form-label">Karyawan Role</label>
+                        <select class="form-control" id="karyawanRole" name="asalPeminjam">
+                            <option value="guru">Guru</option>
+                            <option value="Karyawan">Karyawan</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="siswaOptions" style="display:none;">
+                        <label for="siswaClass" class="form-label">Siswa Class</label>
+                        <select class="form-control" id="siswaClass" name="asalPeminjam">
+                            <option value="kelasX">Kelas X</option>
+                            <option value="kelasXI">Kelas XI</option>
+                            <option value="kelasXII">Kelas XII</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="jumlah" class="form-label">Jumlah</label>
@@ -194,17 +215,31 @@
     });
 
     document.getElementById('jumlah').addEventListener('input', function () {
-    var jumlahValue = parseInt(this.value, 10);
-    var asetTersediaValue = parseInt(document.getElementById('asetTersedia').value, 10);
-    document.getElementById('error-message').textContent = jumlahValue > asetTersediaValue ? 'Jumlah tidak valid. Jumlah tidak boleh lebih besar dari aset yang tersedia.' : '';
-});
+        var jumlahValue = parseInt(this.value, 10);
+        var asetTersediaValue = parseInt(document.getElementById('asetTersedia').value, 10);
+        document.getElementById('error-message').textContent = jumlahValue > asetTersediaValue ? 'Jumlah tidak valid. Jumlah tidak boleh lebih besar dari aset yang tersedia.' : '';
+    });
 
-document.getElementById('custom-validation').addEventListener('submit', function (event) {
-    if (document.getElementById('error-message').textContent !== '') {
-        event.preventDefault();
+    document.getElementById('custom-validation').addEventListener('submit', function (event) {
+        if (document.getElementById('error-message').textContent !== '') {
+            event.preventDefault();
+        }
+    });
+
+    function showHideOptions() {
+        var jenisPeminjam = document.getElementById("jenisPeminjam");
+        var karyawanOptions = document.getElementById("karyawanOptions");
+        var siswaOptions = document.getElementById("siswaOptions");
+
+        karyawanOptions.style.display = "none";
+        siswaOptions.style.display = "none";
+
+        if (jenisPeminjam.value === "karyawan") {
+            karyawanOptions.style.display = "block";
+        } else if (jenisPeminjam.value === "siswa") {
+            siswaOptions.style.display = "block";
+        }
     }
-});
-
 </script>
 
 <?= $this->endSection(); ?>

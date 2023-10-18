@@ -179,11 +179,7 @@ class KategoriManajemen extends ResourcePresenter
                 ];
 
                 if (!empty($data['namaKategoriManajemen'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
-                        $this->kategoriManajemenModel->insert($data);
-                    }
+                    $this->kategoriManajemenModel->insert($data);
                 } else {
                     return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Pastikan semua data telah diisi!');
                 }

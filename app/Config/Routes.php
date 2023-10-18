@@ -127,6 +127,18 @@ $routes->delete('kategoriManajemen/deletePermanent/(:any)', 'KategoriManajemen::
 $routes->delete('kategoriManajemen/deletePermanent', 'KategoriManajemen::deletePermanent');
 $routes->presenter('kategoriManajemen', ['filter' => 'isLoggedIn']);
 
+// Kelas Siswa
+$routes->get('identitasKelas/createTemplate', 'IdentitasKelas::createTemplate');
+$routes->get('identitasKelas/generatePDF', 'IdentitasKelas::generatePDF');
+$routes->get('identitasKelas/export', 'IdentitasKelas::export');
+$routes->post('identitasKelas/import', 'IdentitasKelas::import');
+$routes->get('identitasKelas/edit', 'IdentitasKelas::edit');
+$routes->get('identitasKelas/trash', 'IdentitasKelas::trash');
+$routes->get('identitasKelas/restore/(:any)', 'IdentitasKelas::restore/$1');
+$routes->get('identitasKelas/restore', 'IdentitasKelas::restore');
+$routes->delete('identitasKelas/deletePermanent/(:any)', 'IdentitasKelas::deletePermanent/$1');
+$routes->delete('identitasKelas/deletePermanent', 'IdentitasKelas::deletePermanent');
+$routes->presenter('identitasKelas', ['filter' => 'isLoggedIn']);
 
 // SARANA
 

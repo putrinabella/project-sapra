@@ -81,6 +81,7 @@
                             <th>Jumlah</th>
                             <th>Status</th>
                             <th>Tanggal Pengembalian</th>
+                            <th>Nama Penerima</th>
                             <th style="width: 20%;">Aksi</th>
                         </tr>
                     </thead>
@@ -90,6 +91,7 @@
                             <td class="text-center">
                                 <?=$key + 1?>
                             </td>
+                            <td class="text-center"><?=$value->kodePeminjaman?></td>
                             <td class="text-center"><?=$value->tanggal?></td>
                             <td class="text-center"><?=$value->namaPeminjam?></td>
                             <td class="text-center"><?=$value->asalPeminjam?></td>
@@ -104,6 +106,7 @@
                                 <?php endif; ?>
                             </td>
                             <td class="text-center"><?= $value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ?></td>
+                            <td class="text-center"><?= $value->namaPenerima !== '' ? $value->namaPenerima : '-' ?></td>
                             <td class="text-center">
                                 <a href="<?=site_url('dataPeminjaman/'.$value->idManajemenPeminjaman.'/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>

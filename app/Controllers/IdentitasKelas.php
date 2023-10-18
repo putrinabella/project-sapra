@@ -3,22 +3,22 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
-use App\Models\IdentitasGedungModels;
+use App\Models\IdentitasKelasModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-class IdentitasGedung extends ResourcePresenter
+class IdentitasKelas extends ResourcePresenter
 {
     function __construct() {
-        $this->identitasGedungModel = new IdentitasGedungModels();
+        $this->identitasKelasModel = new IdentitasKelasModels();
     }
 
     public function index()
     {
-        $data['dataIdentitasGedung'] = $this->identitasGedungModel->findAll();
-        return view('master/identitasGedungView/index', $data);
+        $data['dataIdentitasKelas'] = $this->identitasKelasModel->findAll();
+        return view('master/identitasKelasView/index', $data);
     }
 
     public function show($id = null)
@@ -28,24 +28,24 @@ class IdentitasGedung extends ResourcePresenter
 
     public function new()
     {
-        return view('master/identitasGedungView/new');
+        return view('master/identitasKelasView/new');
     }
 
     public function create()
     {
         $data = $this->request->getPost();
-        $this->identitasGedungModel->insert($data);
-        return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil disimpan');
+        $this->identitasKelasModel->insert($data);
+        return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil disimpan');
     }
 
     public function edit($id = null)
     {
         if ($id != null) {
-            $dataIdentitasGedung = $this->identitasGedungModel->where('idIdentitasGedung', $id)->first();
+            $dataIdentitasKelas = $this->identitasKelasModel->where('idIdentitasKelas', $id)->first();
     
-            if (is_object($dataIdentitasGedung)) {
-                $data['dataIdentitasGedung'] = $dataIdentitasGedung;
-                return view('master/identitasGedungView/edit', $data);
+            if (is_object($dataIdentitasKelas)) {
+                $data['dataIdentitasKelas'] = $dataIdentitasKelas;
+                return view('master/identitasKelasView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -57,8 +57,8 @@ class IdentitasGedung extends ResourcePresenter
     public function update($id = null)
     {
         $data = $this->request->getPost();
-        $this->identitasGedungModel->update($id, $data);
-        return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil update');
+        $this->identitasKelasModel->update($id, $data);
+        return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil update');
     }
 
     public function remove($id = null)
@@ -68,65 +68,65 @@ class IdentitasGedung extends ResourcePresenter
 
     public function delete($id = null)
     {
-        $this->identitasGedungModel->where('idIdentitasGedung', $id)->delete();
-        return redirect()->to(site_url('identitasGedung'));
+        $this->identitasKelasModel->where('idIdentitasKelas', $id)->delete();
+        return redirect()->to(site_url('identitasKelas'));
     }
 
     public function trash() {
-        $data['dataIdentitasGedung'] = $this->identitasGedungModel->onlyDeleted()->findAll();
-        return view('master/identitasGedungView/trash', $data);
+        $data['dataIdentitasKelas'] = $this->identitasKelasModel->onlyDeleted()->findAll();
+        return view('master/identitasKelasView/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblIdentitasGedung')
+            $this->db->table('tblIdentitasKelas')
                 ->set('deleted_at', null, true)
-                ->where(['idIdentitasGedung' => $id])
+                ->where(['idIdentitasKelas' => $id])
                 ->update();
         } else {
-            $this->db->table('tblIdentitasGedung')
+            $this->db->table('tblIdentitasKelas')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
         }
 
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('identitasGedung/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('identitasKelas/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->identitasGedungModel->delete($id, true);
-        return redirect()->to(site_url('identitasGedung/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->identitasKelasModel->delete($id, true);
+        return redirect()->to(site_url('identitasKelas/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->identitasGedungModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->identitasKelasModel->onlyDeleted()->countAllResults();
             
             if ($countInTrash > 0) {
-                $this->identitasGedungModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('identitasGedung/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->identitasKelasModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('identitasKelas/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('identitasGedung/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('identitasKelas/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     }  
 
     public function export() {
-        $data = $this->identitasGedungModel->findAll();
+        $data = $this->identitasKelasModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
     
-        $headers = ['No.', 'ID Identitas Gedung', 'Nama Gedung'];
+        $headers = ['No.', 'ID Identitas Kelas', 'Nama Kelas'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
-            $idIdentitasGedung = str_pad($value->idIdentitasGedung, 3, '0', STR_PAD_LEFT);
+            $idIdentitasKelas = str_pad($value->idIdentitasKelas, 3, '0', STR_PAD_LEFT);
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), 'G'.$idIdentitasGedung);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaGedung);
+            $activeWorksheet->setCellValue('B'.($index + 2), 'G'.$idIdentitasKelas);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaKelas);
     
             $columns = ['A', 'B'];
 
@@ -149,20 +149,20 @@ class IdentitasGedung extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Data Master - Identitas Gedung.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Kelas.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
 
     public function createTemplate() {
-        $data = $this->identitasGedungModel->findAll();
+        $data = $this->identitasKelasModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
 
-        $headers = ['No.', 'Nama Gedung'];
+        $headers = ['No.', 'Nama Kelas'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
@@ -195,13 +195,13 @@ class IdentitasGedung extends ResourcePresenter
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Nama Gedung'];
+        $headers = ['No.', 'Nama Kelas'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->namaGedung);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->namaKelas);
     
             $columns = ['A', 'B'];
 
@@ -224,7 +224,7 @@ class IdentitasGedung extends ResourcePresenter
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Gedung Example.xlsx');
+        header('Content-Disposition: attachment;filename=Identitas Kelas Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -247,32 +247,32 @@ class IdentitasGedung extends ResourcePresenter
                     continue;
                 }
             
-                $namaGedung = $value[1] ?? null;
+                $namaKelas = $value[1] ?? null;
 
                 $data = [
-                    'namaGedung' => $namaGedung,
+                    'namaKelas' => $namaKelas,
                 ];
                 
-                if (!empty($data['namaGedung'])) {
-                    $this->identitasGedungModel->insert($data);
+                if (!empty($data['namaKelas'])) {
+                    $this->identitasKelasModel->insert($data);
                 } else {
-                    return redirect()->to(site_url('identitasGedung'))->with('error', 'Pastikan semua data telah diisi!');
+                    return redirect()->to(site_url('identitasKelas'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
-            return redirect()->to(site_url('identitasGedung'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil diimport');
         } else {
-            return redirect()->to(site_url('identitasGedung'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+            return redirect()->to(site_url('identitasKelas'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/identitasGedungView/print.php';
+        $filePath = APPPATH . 'Views/master/identitasKelasView/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataIdentitasGedung'] = $this->identitasGedungModel->findAll();
+        $data['dataIdentitasKelas'] = $this->identitasKelasModel->findAll();
 
         ob_start();
 
@@ -287,7 +287,7 @@ class IdentitasGedung extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Data Master - Identitas Gedung.pdf';
+        $filename = 'Data Master - Identitas Kelas.pdf';
         $dompdf->stream($filename);
     }
 

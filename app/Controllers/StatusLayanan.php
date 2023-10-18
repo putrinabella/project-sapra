@@ -177,12 +177,9 @@ class StatusLayanan extends ResourcePresenter
                 $data = [
                     'namaStatusLayanan' => $namaStatusLayanan,
                 ];
+
                 if (!empty($data['namaStatusLayanan'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('statusLayanan'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
                         $this->statusLayananModel->insert($data);
-                    }
                 } else {
                     return redirect()->to(site_url('statusLayanan'))->with('error', 'Pastikan semua data telah diisi!');
                 }
