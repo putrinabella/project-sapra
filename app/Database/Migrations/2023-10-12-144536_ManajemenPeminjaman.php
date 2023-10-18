@@ -15,6 +15,10 @@ class ManajemenPeminjaman extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'kodePeminjaman' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'tanggal' => [ 
                 'type' => 'DATE', 
                 'null' => true,
@@ -46,6 +50,22 @@ class ManajemenPeminjaman extends Migration
             'jumlah' => [
                 'type' => 'INT',
                 'constraint' => 4,
+            ],
+            'jumlahBarangDikembalikan' => [
+                'type' => 'INT',
+                'constraint' => 4,
+            ],
+            'jumlahBarangRusak' => [
+                'type' => 'INT',
+                'constraint' => 4,
+            ],
+            'jumlahBarangHilang' => [
+                'type' => 'INT',
+                'constraint' => 4,
+            ],
+            'namaPenerima' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

@@ -88,7 +88,7 @@
         </div>
         <div class="theme-wrapper">
           <h6 class="text-muted mb-2">Light Theme:</h6>
-          <a class="theme-item active" href="../demo1/dashboard.html">
+          <a class="theme-item active" href="../light/dashboard.html">
             <img src="../assets/images/screenshots/light.jpg" alt="light theme">
           </a>
           <h6 class="text-muted mb-2">Dark Theme:</h6>

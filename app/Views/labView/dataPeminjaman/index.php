@@ -72,6 +72,7 @@
                     <thead>
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
+                            <th>Kode Peminjaman</th>
                             <th>Tanggal</th>
                             <th>Nama Peminjam</th>
                             <th>Asal Peminjam</th>
