@@ -81,6 +81,9 @@
                             <th>Status</th>
                             <th>Tanggal Pengembalian</th>
                             <th>Nama Penerima</th>
+                            <th>Jumlah Barang Dikembalikan</th>
+                            <th>Jumlah Barang Rusak</th>
+                            <th>Jumlah Barang Hilang</th>
                             <th style="width: 20%;">Aksi</th>
                         </tr>
                     </thead>
@@ -105,6 +108,9 @@
                             </td>
                             <td class="text-center"><?= $value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ?></td>
                             <td class="text-center"><?= $value->namaPenerima !== '' ? $value->namaPenerima : '-' ?></td>
+                            <td class="text-center"><?= $value->jumlahBarangDikembalikan !== '' ? $value->jumlahBarangDikembalikan : '-' ?></td>
+                            <td class="text-center"><?= $value->jumlahBarangRusak !== '' ? $value->jumlahBarangRusak : '-' ?></td>
+                            <td class="text-center"><?= $value->jumlahBarangHilang !== '' ? $value->jumlahBarangHilang : '-' ?></td>
                             <td class="text-center">
                                 <a href="<?=site_url('dataPeminjaman/'.$value->idManajemenPeminjaman.'/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>

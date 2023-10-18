@@ -73,6 +73,7 @@
                                     <th style="width: 5%;">No.</th>
                                     <th>Nama Aset</th>
                                     <th>Jumlah Aset</th>
+                                    <th>Aset Hilang atau Rusak</th>
                                     <th>Aset Dipinjam</th>
                                     <th>Aset Tersedia</th>
                                     <th style="width: 20%;">Aksi</th>
@@ -86,18 +87,21 @@
                                     </td>
                                     <td class="text-center"><?=$value->namaSarana?></td>
                                     <td class="text-center"><?=$value->totalSaranaLayak?></td>
+                                    <td class="text-center"><?=$value->asetTidakTersedia?></td>
                                     <td class="text-center">
                                         <?= ($value->jumlahPeminjaman === null) ? 0 : $value->jumlahPeminjaman ?>
                                     </td>
                                     <td class="text-center">
                                         <?php
                                             if ($value->jumlahPeminjaman == 0) {
-                                                echo $value->totalSaranaLayak;
-                                                $value->asetTersedia = $value->totalSaranaLayak; 
+                                                $value->asetTersedia = max(0, $value->totalSaranaLayak - $value->asetTidakTersedia);
+                                                echo $value->asetTersedia;
                                             } else {
+                                                $value->asetTersedia = max(0, $value->totalSaranaLayak - $value->asetTidakTersedia - $value->jumlahPeminjaman);
                                                 echo $value->asetTersedia;
                                             }
                                         ?>
+                                        
                                     </td>
                                     <td class="text-center">
                                         <?php if ($value->asetTersedia > 0) : ?>
@@ -161,8 +165,8 @@
                         <label for="jenisPeminjam" class="form-label">Karyawan/Siswa</label>
                         <select class="form-control myselect2" id="jenisPeminjam" name="jenisPeminjam"
                             onchange="showHideOptions()">
-                            <option value="siswa">Siswa</option>
                             <option value="karyawan">Karyawan</option>
+                            <option value="siswa">Siswa</option>
                         </select>
                     </div>
                     <div class="mb-3" id="karyawanOptions" style="display:none;">

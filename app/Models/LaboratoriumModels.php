@@ -71,14 +71,18 @@ class LaboratoriumModels extends Model
         $builder->select('tblRincianLabAset.idRincianLabAset');
         $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
         $builder->select('SUM(tblRincianLabAset.saranaLayak) - (SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "peminjaman") as asetTersedia', false);
+        $builder->select('(SELECT SUM(jumlahBarangRusak + jumlahBarangHilang) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "pengembalian") as asetTidakTersedia', false);
         $builder->join('tblIdentitasLab', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
         $builder->where('tblRincianLabAset.deleted_at', null);
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana');
+        
         $query = $builder->get();
 
         return $query->getResult();
+
+        
     }
 
     
