@@ -86,22 +86,26 @@
                                         <?=$key + 1?>
                                     </td>
                                     <td class="text-center"><?=$value->namaSarana?></td>
-                                    <td class="text-center"><?=$value->totalSaranaLayak?></td>
-                                    <td class="text-center"><?=$value->asetTidakTersedia?></td>
+                                    <td class="text-center"><?=$value->totalSarana?></td>
+                                    <!-- <td class="text-center"><?=$value->asetTidakTersedia?></td>
+                                    <td class="text-center"><?=$value->saranaRusak?></td> -->
+                                    <td class="text-center">
+                                        <?php echo $value->asetTidakTersedia + $value->saranaRusak; ?>
+                                    </td>
+
                                     <td class="text-center">
                                         <?= ($value->jumlahPeminjaman === null) ? 0 : $value->jumlahPeminjaman ?>
                                     </td>
                                     <td class="text-center">
                                         <?php
                                             if ($value->jumlahPeminjaman == 0) {
-                                                $value->asetTersedia = max(0, $value->totalSaranaLayak - $value->asetTidakTersedia);
+                                                $value->asetTersedia = $value->totalSarana - ($value->asetTidakTersedia + $value->saranaRusak);
                                                 echo $value->asetTersedia;
                                             } else {
-                                                $value->asetTersedia = max(0, $value->totalSaranaLayak - $value->asetTidakTersedia - $value->jumlahPeminjaman);
+                                                $value->asetTersedia = $value->totalSarana - ($value->asetTidakTersedia + $value->saranaRusak) - $value->jumlahPeminjaman;
                                                 echo $value->asetTersedia;
                                             }
                                         ?>
-                                        
                                     </td>
                                     <td class="text-center">
                                         <?php if ($value->asetTersedia > 0) : ?>

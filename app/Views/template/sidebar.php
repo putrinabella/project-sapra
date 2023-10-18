@@ -136,6 +136,12 @@
         </a>
     </li>
     <li class="nav-item">
+        <a href="<?= site_url('backup') ?>" class="nav-link">
+            <i class="link-icon" data-feather="download"></i>
+            <span class="link-title">Back Up</span>
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#identitas" role="button" aria-expanded="false" aria-controls="identitas">
             <i class="link-icon" data-feather="database"></i>
             <span class="link-title">Data Master</span>

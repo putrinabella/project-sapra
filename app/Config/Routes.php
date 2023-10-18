@@ -331,3 +331,8 @@ $routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
 $routes->delete('manajemenPeminjaman/deletePermanent/(:any)', 'ManajemenPeminjaman::deletePermanent/$1');
 $routes->delete('manajemenPeminjaman/deletePermanent', 'ManajemenPeminjaman::deletePermanent');
 $routes->resource('manajemenPeminjaman', ['filter' => 'isLoggedIn']);
+
+
+// Backup
+$routes->get('backup', 'Backup::index');
+$routes->get('backup/backupDatabase', 'Backup::backupDatabase');
