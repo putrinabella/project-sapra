@@ -6,15 +6,12 @@
 
 // Theme style for demo1 (Vertical Layout - Light, Light-RTL, Dark-sidebar)
 
-
-
-
 // Custom variables
-@import '../theme-light/variables';
-@import './variables';
-
+@import "../theme-light/variables";
+@import "./variables";
 
 // Bootstrap stylesheets
+@import "vendor/twbs/bootstrap/scss/bootstrap";
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
@@ -55,30 +52,29 @@
 @import "bootstrap/scss/helpers";
 
 // Bootstrap utilities
-@import '../common/utilities';
+@import "../common/utilities";
 @import "bootstrap/scss/utilities/api";
 
-
 // Custom mixins
-@import '../common/mixins/animation';
-@import '../common/mixins/buttons';
-@import '../common/mixins/misc';
-@import '../common/mixins/width';
+@import "../common/mixins/animation";
+@import "../common/mixins/buttons";
+@import "../common/mixins/misc";
+@import "../common/mixins/width";
 
 // Core styles
-@import '../common/background';
-@import '../common/reset';
-@import '../common/functions';
-@import '../common/misc';
-@import '../common/helpers';
-@import '../common/typography';
-@import '../common/demo';
+@import "../common/background";
+@import "../common/reset";
+@import "../common/functions";
+@import "../common/misc";
+@import "../common/helpers";
+@import "../common/typography";
+@import "../common/demo";
 
 // Layout
-@import './vertical-wrapper';
-@import './navbar';
-@import './sidebar';
-@import './layouts';
+@import "./vertical-wrapper";
+@import "./navbar";
+@import "./sidebar";
+@import "./layouts";
 
 // Custom components
 @import "../common/components/badges";
@@ -99,7 +95,7 @@
 @import "../common/components/auth";
 
 // Email app
-@import '../common/components/email/inbox';
+@import "../common/components/email/inbox";
 
 // 3rd-Party plugin overrides
 @import "../theme-light/components/plugin-overrides/ace";

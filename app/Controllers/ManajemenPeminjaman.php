@@ -112,4 +112,14 @@ class ManajemenPeminjaman extends ResourceController
             return view('error/404');
         }
     }
+
+    public function addLoan() {
+        $data = $this->request->getPost(); 
+        if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($data['jumlah'])) {
+            $this->manajemenPeminjamanModel->insert($data);
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
+        }
+    }
 }

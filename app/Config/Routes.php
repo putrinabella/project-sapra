@@ -315,6 +315,7 @@ $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');
 $routes->get('manajemenPeminjaman/getKodeLab/(:num)', 'ManajemenPeminjaman::getKodeLab/$1');
+$routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
 $routes->delete('manajemenPeminjaman/deletePermanent/(:any)', 'ManajemenPeminjaman::deletePermanent/$1');
 $routes->delete('manajemenPeminjaman/deletePermanent', 'ManajemenPeminjaman::deletePermanent');
 $routes->resource('manajemenPeminjaman', ['filter' => 'isLoggedIn']);

@@ -107,14 +107,6 @@
             <span class="link-title">Layanan Perangkat IT</span>
         </a>
     </li>
-
-    <li class="nav-item nav-category">Profil</li>
-    <li class="nav-item">
-        <a href="<?= site_url('profilSekolah') ?>" class="nav-link">
-            <i class="link-icon" data-feather="home"></i>
-            <span class="link-title">Profil Sekolah</span>
-        </a>
-    </li>
     <li class="nav-item">
         <a href="<?= site_url('website') ?>" class="nav-link">
             <i class="link-icon" data-feather="link"></i>
@@ -128,13 +120,21 @@
         </a>
     </li>
 
+    <li class="nav-item nav-category">Profil</li>
+    <li class="nav-item">
+        <a href="<?= site_url('profilSekolah') ?>" class="nav-link">
+            <i class="link-icon" data-feather="home"></i>
+            <span class="link-title">Profil Sekolah</span>
+        </a>
+    </li>
+
     <li class="nav-item nav-category">Master</li>
-    <!-- <li class="nav-item">
+    <li class="nav-item">
         <a href="<?= site_url('manajemenUser') ?>" class="nav-link">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">Manajemen User</span>
         </a>
-    </li> -->
+    </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#identitas" role="button" aria-expanded="false" aria-controls="identitas">
             <i class="link-icon" data-feather="database"></i>

@@ -9,7 +9,7 @@ class RincianAsetModels extends Model
     protected $table            = 'tblRincianAset';
     protected $primaryKey       = 'idRincianAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'kodePrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'bukti', 'kodeRincianAset'];
+    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'kodePrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'bukti', 'kodeRincianAset', 'hargaBeli'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -54,9 +54,9 @@ class RincianAsetModels extends Model
         $builder = $this->db->table($this->table);
         $builder->set('kodeRincianAset', 
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
-                        "/", tahunPengadaan, 
-                        "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", kodePrasarana)',
+                        " ", tahunPengadaan, 
+                        " ", "SD", LPAD(idSumberDana, 2, "0"), 
+                        " ", kodePrasarana)',
                         false
                         );
         $builder->where('idRincianAset', $id);
@@ -67,9 +67,9 @@ class RincianAsetModels extends Model
         $builder = $this->db->table($this->table);
         $builder->set('kodeRincianAset', 
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
-                        "/", tahunPengadaan, 
-                        "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", kodePrasarana)',
+                        " ", tahunPengadaan, 
+                        " ", "SD", LPAD(idSumberDana, 2, "0"), 
+                        " ", kodePrasarana)',
                         false
                         );
         $builder->update();

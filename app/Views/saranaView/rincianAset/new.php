@@ -70,6 +70,13 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="hargaBeli" class="col-sm-3 col-form-label">Harga Beli</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="hargaBeli" name="hargaBeli"
+                                placeholder="Masukkan harga beli">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="tahunPengadaan" class="col-sm-3 col-form-label">Tahun Pengadaan</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="tahunPengadaan" name="tahunPengadaan"

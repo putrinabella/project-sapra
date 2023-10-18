@@ -31,7 +31,7 @@
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/demo1/style.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/light/style.css">
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="<?= base_url(); ?>/assets/images/favicon.png" />

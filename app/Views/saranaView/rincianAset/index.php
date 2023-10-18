@@ -5,6 +5,7 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
+
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sarana</a></li>
@@ -86,6 +87,7 @@
                                 <th style="width: 12%;">Kode Aset</th>
                                 <th>Nama Aset</th>
                                 <th>Lokasi</th>
+                                <th>Harga Beli</th>
                                 <th>Tahun Pengadaan</th>
                                 <th>Kategori Manajemen</th>
                                 <th>Sumber Dana</th>
@@ -104,6 +106,7 @@
                                 <td class="text-center"><?=$value->kodeRincianAset?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->hargaBeli?></td>
                                 <td class="text-center"><?=$value->tahunPengadaan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>

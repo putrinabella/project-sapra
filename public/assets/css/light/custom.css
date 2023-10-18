@@ -1,0 +1,13 @@
+.my-table {
+  max-width: 90vw;
+  border-collapse: collapse;
+}
+
+.my-table td,
+.my-table th {
+  border-bottom: 1px solid #e6dfdf;
+  padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+}

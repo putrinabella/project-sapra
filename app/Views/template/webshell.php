@@ -34,11 +34,12 @@
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/demo1/style.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/light/style.css">
+    <!-- <link rel="stylesheet" href="<?= base_url(); ?>/assets/scss/light/style.scss"> -->
     <!-- End layout styles -->
 
     <!-- Custom css for this page -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/demo1/custom.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/light/custom.css">
     <!-- End custom css for this page -->
 
     <link rel="shortcut icon" href="<?= base_url(); ?>/assets/images/favicon.png" />
@@ -63,7 +64,40 @@
                 <?= $this->include('template/sidebar') ?>
             </div>
         </nav>
-
+        <nav class="settings-sidebar">
+      <div class="sidebar-body">
+        <a href="#" class="settings-sidebar-toggler">
+          <i data-feather="settings"></i>
+        </a>
+        <h6 class="text-muted mb-2">Sidebar:</h6>
+        <div class="mb-3 pb-3 border-bottom">
+          <div class="form-check form-check-inline">
+            <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarLight"
+              value="sidebar-light" checked>
+            <label class="form-check-label" for="sidebarLight">
+              Light
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarDark"
+              value="sidebar-dark">
+            <label class="form-check-label" for="sidebarDark">
+              Dark
+            </label>
+          </div>
+        </div>
+        <div class="theme-wrapper">
+          <h6 class="text-muted mb-2">Light Theme:</h6>
+          <a class="theme-item active" href="../demo1/dashboard.html">
+            <img src="../assets/images/screenshots/light.jpg" alt="light theme">
+          </a>
+          <h6 class="text-muted mb-2">Dark Theme:</h6>
+          <a class="theme-item" href="../demo2/dashboard.html">
+            <img src="../assets/images/screenshots/dark.jpg" alt="light theme">
+          </a>
+        </div>
+      </div>
+    </nav>
         <div class="page-wrapper">
 
             <!-- partial:partials/_navbar.html -->
