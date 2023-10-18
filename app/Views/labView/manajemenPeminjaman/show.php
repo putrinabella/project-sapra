@@ -8,7 +8,6 @@
 
 <?= $this->section("content"); ?>
 
-
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
@@ -150,41 +149,41 @@
                     <div class="mb-3">
                         <label for="tanggal" class="form-label">Tanggal</label>
                         <div class="input-group date datepicker" id="tanggal">
-                            <input type="text" class="form-control" name="tanggal">
+                            <input type="text" class="form-control" name="tanggal" placeholder="Masukkan tanggal" readonly>
                             <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="namaPeminjam" class="form-label">Nama Peminjam</label>
-                        <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam">
+                        <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam" placeholder="Masukkan nama">
                     </div>
                     <div class="mb-3">
-                        <label for="jenisPeminjam" class="form-label">Jenis Peminjam</label>
-                        <select class="form-control" id="jenisPeminjam" name="jenisPeminjam"
+                        <label for="jenisPeminjam" class="form-label">Karyawan/Siswa</label>
+                        <select class="form-control myselect2" id="jenisPeminjam" name="jenisPeminjam"
                             onchange="showHideOptions()">
-                            <option value="karyawan">Karyawan</option>
                             <option value="siswa">Siswa</option>
+                            <option value="karyawan">Karyawan</option>
                         </select>
                     </div>
                     <div class="mb-3" id="karyawanOptions" style="display:none;">
-                        <label for="karyawanRole" class="form-label">Karyawan Role</label>
-                        <select class="form-control" id="karyawanRole" name="asalPeminjam">
+                        <label for="karyawanRole" class="form-label">Role</label>
+                        <select class="form-control myselect2" id="karyawanRole" name="asalPeminjam">
                             <option value="guru">Guru</option>
                             <option value="Karyawan">Karyawan</option>
                             <option value="lainnya">Lainnya</option>
                         </select>
                     </div>
                     <div class="mb-3" id="siswaOptions" style="display:none;">
-                        <label for="siswaClass" class="form-label">Siswa Class</label>
-                        <select class="form-control" id="siswaClass" name="asalPeminjam">
-                            <option value="kelasX">Kelas X</option>
-                            <option value="kelasXI">Kelas XI</option>
-                            <option value="kelasXII">Kelas XII</option>
+                        <label for="siswaClass" class="form-label">Kelas</label>
+                        <select class="form-control myselect2" id="siswaClass" name="asalPeminjam">
+                            <?php foreach($dataIdentitasKelas as $key =>$value): ?>
+                            <option value="<?=$value->namaKelas?>"><?=$value->namaKelas?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="jumlah" class="form-label">Jumlah</label>
-                        <input type="number" class="form-control" id="jumlah" name="jumlah">
+                        <input type="number" class="form-control" id="jumlah" name="jumlah" placeholder="Masukkan nama">
                         <div id="error-message" style="color: red;"></div>
                     </div>
                 </div>

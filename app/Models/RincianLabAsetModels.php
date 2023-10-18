@@ -23,7 +23,8 @@ class RincianLabAsetModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-
+    
+    
     function getRecycle() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');

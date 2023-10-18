@@ -72,7 +72,6 @@
                     <thead>
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
-                            <th>Kode Peminjaman</th>
                             <th>Tanggal</th>
                             <th>Nama Peminjam</th>
                             <th>Asal Peminjam</th>
@@ -91,7 +90,6 @@
                             <td class="text-center">
                                 <?=$key + 1?>
                             </td>
-                            <td class="text-center"><?=$value->kodePeminjaman?></td>
                             <td class="text-center"><?=$value->tanggal?></td>
                             <td class="text-center"><?=$value->namaPeminjam?></td>
                             <td class="text-center"><?=$value->asalPeminjam?></td>

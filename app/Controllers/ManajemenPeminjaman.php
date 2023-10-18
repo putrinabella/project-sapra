@@ -6,6 +6,7 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Models\ManajemenPeminjamanModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\IdentitasLabModels; 
+use App\Models\IdentitasKelasModels; 
 use App\Models\RincianLabAsetModels; 
 use App\Models\LaboratoriumModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -23,6 +24,7 @@ class ManajemenPeminjaman extends ResourceController
         $this->identitasLabModel = new IdentitasLabModels();
         $this->rincianLabAsetModel = new RincianLabAsetModels();
         $this->laboratoriumModel = new LaboratoriumModels();
+        $this->identitasKelasModel = new IdentitasKelasModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -37,6 +39,7 @@ class ManajemenPeminjaman extends ResourceController
     
     public function new() {
         $data = [
+            'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
             'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
             'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
@@ -60,8 +63,9 @@ class ManajemenPeminjaman extends ResourceController
                 $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
                 $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
                 $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
-    
+                
                 $data = [
+                    'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
                     'dataLaboratorium'  => $dataLaboratorium,
                     'dataInfoLab'       => $dataInfoLab,
                     'dataSarana'        => $dataSarana,

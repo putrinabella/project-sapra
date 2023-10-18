@@ -11,3 +11,7 @@
   text-overflow: ellipsis;
   text-align: justify;
 }
+
+.select2-container--default .select2-selection__clear {
+  display: none !important;
+}
