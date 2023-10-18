@@ -136,14 +136,26 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('backup') ?>" class="nav-link">
-            <i class="link-icon" data-feather="download"></i>
-            <span class="link-title">Back Up</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#database" role="button" aria-expanded="false" aria-controls="database">
+            <i class="link-icon" data-feather="database"></i>
+            <span class="link-title">Database</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
+        <div class="collapse" id="database">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('backup') ?>" class="nav-link">Backup</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('restore') ?>" class="nav-link">Restore</a>
+                </li>
+            </ul>
+        </div>
     </li>
+
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#identitas" role="button" aria-expanded="false" aria-controls="identitas">
-            <i class="link-icon" data-feather="database"></i>
+            <i class="link-icon" data-feather="list"></i>
             <span class="link-title">Data Master</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
         </a>

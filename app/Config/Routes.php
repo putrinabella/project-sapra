@@ -333,6 +333,11 @@ $routes->delete('manajemenPeminjaman/deletePermanent', 'ManajemenPeminjaman::del
 $routes->resource('manajemenPeminjaman', ['filter' => 'isLoggedIn']);
 
 
-// Backup
-$routes->get('backup', 'Backup::index');
-$routes->get('backup/backupDatabase', 'Backup::backupDatabase');
+// Backup and Restore
+$routes->get('backup', 'DatabaseManagement::backup');
+$routes->get('restore', 'DatabaseManagement::restoreView');
+$routes->post('restoreDatabase', 'DatabaseManagement::restore');
+
+// Restore
+
+
