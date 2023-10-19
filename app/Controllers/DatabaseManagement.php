@@ -169,25 +169,21 @@ class DatabaseManagement extends BaseController
     public function restore() {
         $file = $this->request->getFile('database');
     
-        // Check if the file is valid
         if (!$file->isValid()) {
             return redirect()->to(site_url('restore'))->with('error', 'Invalid File');
         }
     
-        // Check if the file has a valid extension
         $extension = $file->getClientExtension();
         if ($extension !== 'sql') {
             return redirect()->to(site_url('restore'))->with('error', 'Invalid File Type. Please upload an SQL file.');
         }
     
-        // Use database configuration from CodeIgniter instead of mysqli_connect
         $db = \Config\Database::connect();
         $output = '';
         $count = 0;
         $file_data = file($file->getTempName());
     
         foreach ($file_data as $row) {
-            // Use a regular expression to remove comments from the SQL file
             $row = preg_replace('/\s*--.*$/', '', $row);
     
             $start_character = substr(trim($row), 0, 2);
@@ -197,10 +193,8 @@ class DatabaseManagement extends BaseController
                 $end_character = substr(trim($row), -1, 1);
     
                 if ($end_character == ';') {
-                    // Use prepared statements to prevent SQL injection
                     $query = trim($output);
     
-                    // Check if the table already exists
                     $table = $this->extractTableName($query);
     
                     if ($this->tableExists($table, $db)) {
@@ -212,7 +206,6 @@ class DatabaseManagement extends BaseController
                     if (!$statement) {
                         $count++;
     
-                        // Add detailed error information for debugging
                         $error = $db->error();
                         echo "Error executing query: $query<br>";
                         echo "MySQL Error: " . $error['message'] . "<br>";
@@ -230,13 +223,11 @@ class DatabaseManagement extends BaseController
         }
     }
     
-    // Helper function to extract table name from a SQL query
     private function extractTableName($query) {
         $parts = explode(' ', $query);
-        return $parts[2]; // Assuming the table name is in the third position of the query
+        return $parts[2]; 
     }
     
-    // Helper function to check if a table exists
     private function tableExists($table, $db) {
         return $db->tableExists($table);
     }

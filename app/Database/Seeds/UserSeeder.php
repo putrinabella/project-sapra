@@ -23,13 +23,13 @@ class UserSeeder extends Seeder
                 'username' => 'putri',
                 'password' => password_hash('putri', PASSWORD_BCRYPT),
                 'nama' => 'Putri',
-                'role' => 'super user',
+                'role' => 'Super Admin',
             ],
             [
                 'username' => 'nabella',
                 'password' => password_hash('nabella', PASSWORD_BCRYPT),
                 'nama' => 'Nabella',
-                'role' => 'user',
+                'role' => 'Laboran',
             ]
         ];
         $this->db->table('tblUser')->insertBatch($data);

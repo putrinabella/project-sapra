@@ -6,6 +6,7 @@
             <span class="link-title">Dashboard</span>
         </a>
     </li> -->
+    <?php if (session()->get('role') == 'Super Admin') { ?>
     <li class="nav-item nav-category">Sarana dan Prasarana</li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#sarana" role="button" aria-expanded="false" aria-controls="sarana">
@@ -92,7 +93,6 @@
             <span class="link-title">Laboratorium</span>
         </a>
     </li>
-
 
     <li class="nav-item nav-category">IT</li>
     <li class="nav-item">
@@ -191,4 +191,55 @@
             </ul>
         </div>
     </li>
+<?php } ?>
+
+<?php if (session()->get('role') == 'Laboran') { ?>
+    <li class="nav-item nav-category">Laboratorium</li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLayanan" role="button" aria-expanded="false" aria-controls="manajemenLayanan">
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Layanan</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="manajemenLayanan">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
+            <i class="link-icon" data-feather="user-check"></i>
+            <span class="link-title">Peminjaman</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="manajemenPeminjaman">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('dataPeminjaman') ?>" class="nav-link">Data Peminjaman </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Manajemen Peminjaman</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
+            <i class="link-icon" data-feather="bookmark"></i>
+            <span class="link-title">Manajemen Aset</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('laboratorium') ?>" class="nav-link">
+            <i class="link-icon" data-feather="message-square"></i>
+            <span class="link-title">Laboratorium</span>
+        </a>
+    </li>
+<?php } ?>
 </ul>

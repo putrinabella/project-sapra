@@ -23,7 +23,10 @@ $routes->get('logout', 'Auth::logout');
 // HOME
 $routes->get('/', 'ProfilSekolah::index');
 $routes->get('home', 'ProfilSekolah::index');
-$routes->get('home/generate', 'Home::generate');
+// $routes->get('home/generate', 'Home::generate');
+// $routes->get('/', 'Home::index');
+// $routes->get('home', 'Home::index');
+// $routes->get('home/generate', 'Home::generate');
 
 
 // DATA MASTER
