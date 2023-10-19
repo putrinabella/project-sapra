@@ -130,6 +130,12 @@
 
     <li class="nav-item nav-category">Master</li>
     <li class="nav-item">
+        <a href="<?= site_url('viewLogs') ?>" class="nav-link">
+            <i class="link-icon" data-feather="activity"></i>
+            <span class="link-title">User Log</span>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="<?= site_url('manajemenUser') ?>" class="nav-link">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">Manajemen User</span>
@@ -243,7 +249,4 @@
     </li>
 <?php } ?>
 
-<?php if (session()->get('role') == 'Admin IT') { ?>
-
-<?php } ?>
 </ul>

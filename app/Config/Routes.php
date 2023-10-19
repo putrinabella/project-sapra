@@ -18,7 +18,7 @@ $routes->get('login', 'Auth::login');
 $routes->get('auth', 'Auth::index');
 $routes->post('loginProcess', 'Auth::loginProcess');
 $routes->get('logout', 'Auth::logout');
-
+$routes->get('viewLogs', 'Auth::viewLogs');
 
 // HOME
 $routes->get('/', 'ProfilSekolah::index');
