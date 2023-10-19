@@ -30,7 +30,26 @@ class UserSeeder extends Seeder
                 'password' => password_hash('nabella', PASSWORD_BCRYPT),
                 'nama' => 'Nabella',
                 'role' => 'Laboran',
-            ]
+            ],
+            [
+                'username' => 'hana',
+                'password' => password_hash('nabella', PASSWORD_BCRYPT),
+                'nama' => 'Nabella',
+                'role' => 'Admin IT',
+            ],
+            [
+                'username' => 'budi',
+                'password' => password_hash('nabella', PASSWORD_BCRYPT),
+                'nama' => 'Nabella',
+                'role' => 'Admin Sarpra',
+            ],
+            [
+                'username' => 'aida',
+                'password' => password_hash('nabella', PASSWORD_BCRYPT),
+                'nama' => 'Nabella',
+                'role' => 'User',
+            ],
+
         ];
         $this->db->table('tblUser')->insertBatch($data);
     }

@@ -1,14 +1,9 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\UserModels; 
 
 class Auth extends BaseController
 {
-    function __construct() {
-        $this->userModel = new UserModels();
-    }
-
     public function index() {
         return redirect()->to(site_url('login'));
     }
@@ -22,34 +17,32 @@ class Auth extends BaseController
 
 
     public function loginProcess() {
-        $username = $this->request->getPost('username');
-        $password = $this->request->getPost('password');
-
-        $dataUser = $this->userModel->find($username);
+        $post = $this->request->getPost();
+        $query = $this->db->table('tblUser')->getWhere(['username' => $post['username']]);
+        $user = $query->getRow();
         
-        if ($dataUser == NULL) {
-            return redirect()->back()->with('error', 'Username tidak ditemukan');
-        } else {
-            if (password_verify($password == $dataUser->password)) {
-                // Password benar
+        if ($user) {
+            if (password_verify($post['password'], $user->password)) {
+                $params = ['id_user' => $user->idUser];
                 $session = session();
-                $session_data =  [
-                    "username" => $dataUser->username,
-                    "role" => $dataUser->role
+                $session_data = [
+                    'id_user' => $user->idUser,
+                    'username' => $user->username,
+                    'role' => $user->role,
                 ];
                 $session->set($session_data);
                 return redirect()->to(site_url('home'));
             } else {
                 return redirect()->back()->with('error', 'Password salah');
             }
+        } else {
+            return redirect()->back()->with('error', 'Username tidak ditemukan');
         }
     }
 
 
     public function logout() {
-        $session = session();
-        $session->destroy();
+        session()->remove('id_user');
         return redirect()->to(site_url('login'));
     }
-
 }

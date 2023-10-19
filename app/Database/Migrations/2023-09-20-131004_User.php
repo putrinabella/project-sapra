@@ -19,10 +19,12 @@ class User extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
                 'unique' => true,
+                'collate' => 'utf8mb4_bin',
             ],
             'password' => [
                 'type' => 'VARCHAR',
                 'constraint' => 70,
+                'collate' => 'utf8mb4_bin',
             ],
             'nama' => [
                 'type' => 'VARCHAR',
@@ -35,7 +37,7 @@ class User extends Migration
         ]);
 
         $this->forge->addKey('idUser', true);
-        $this->forge->createTable('tbluser');
+        $this->forge->createTable('tbluser', true);
     }
 
     public function down()

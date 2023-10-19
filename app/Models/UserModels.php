@@ -22,13 +22,19 @@ class UserModels extends Model
         return $query->getResult();
     }
 
+    function findUserByUsername($username, $columns = '*') {
+        $builder = $this->db->table($this->table);
+        $builder->select($columns);        
+        $builder->where('username', $username);
+    
+        $query = $builder->get();
+        return $query->getRow();
+    }
+
+    
     function find($id = null, $columns = '*') {
         $builder = $this->db->table($this->table);
-        $builder->select($columns);
-        
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
-        
+        $builder->select($columns);        
         $builder->where($this->primaryKey, $id);
 
         $query = $builder->get();
