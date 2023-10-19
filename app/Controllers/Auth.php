@@ -27,8 +27,7 @@ class Auth extends BaseController
         
         if ($user) {
             if (password_verify($post['password'], $user->password)) {
-                $this->logLogin($user->idUser, $_SERVER['REMOTE_ADDR']);
-
+                $this->logEvent($user->idUser, 'Login', $_SERVER['REMOTE_ADDR']);
                 $session = session();
                 $session_data = [
                     'id_user'  => $user->idUser,
@@ -60,10 +59,23 @@ class Auth extends BaseController
     
     public function logout() {
         $userId = session('id_user');
-        $this->logLogout($userId);
-
+        $this->logEvent($userId, 'Logout', $this->request->getIPAddress());
+    
         session()->remove('id_user');
         return redirect()->to(site_url('login'));
+    }
+
+    protected function logEvent($userId, $actionType, $ipAddress) {
+        $userLoginLogModel = new UserLoginLogModel();
+
+        $data = [
+            'user_id'     => $userId,
+            'login_time'  => date('Y-m-d H:i:s'),
+            'ip_address'  => $ipAddress,
+            'action_type' => $actionType,
+        ];
+
+        $userLoginLogModel->insert($data);
     }
 
     protected function logLogout($userId) {

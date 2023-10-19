@@ -85,8 +85,8 @@
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
                                 <th>Username</th>
-                                <th>Login Time</th>
-                                <th>IP Address</th>
+                                <th>Timestamp</th>
+                                <th>Action Type</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
@@ -95,7 +95,7 @@
                                 <td class="text-center"><?=$key + 1?></td>
                                 <td class="text-center"><?=$value->username?></td>
                                 <td class="text-center"><?=$value->login_time?></td>
-                                <td class="text-center"><?=$value->ip_address?></td>
+                                <td class="text-center"><?= $value->action_type ?></td>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

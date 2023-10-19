@@ -22,6 +22,10 @@ class UserLoginLogs extends Migration
             'login_time'  => [
                 'type' => 'DATETIME'
             ],
+            'action_type' => [
+                'type' => 'VARCHAR', 
+                'constraint' => 10
+            ],
             'ip_address'  => [
                 'type' => 'VARCHAR', 
                 'constraint' => 45
@@ -29,11 +33,11 @@ class UserLoginLogs extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('user_login_logs');
+        $this->forge->createTable('tblUserLogs');
     }
 
     public function down()
     {
-        $this->forge->dropTable('user_login_logs');
+        $this->forge->dropTable('tblUserLogs');
     }
 }
