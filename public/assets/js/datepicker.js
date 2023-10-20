@@ -16,6 +16,12 @@ $(function() {
   if ($('#tanggal').length) {
     initializeDatepicker('#tanggal');
   }
+  if ($('#startDate').length) {
+    initializeDatepicker('#startDate');
+  }
+  if ($('#endDate').length) {
+    initializeDatepicker('#endDate');
+  }
 
   if ($('#tanggalSkPendirian').length) {
     initializeDatepicker('#tanggalSkPendirian');

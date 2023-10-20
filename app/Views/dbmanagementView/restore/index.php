@@ -12,45 +12,6 @@
     </ol>
 </nav>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Restore Database</h4>
-    </div>
-    <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('identitasGedung/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="trash"></i>
-            Recycle Bin
-        </a>
-        <div class="dropdown">
-            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="download"></i>
-                Export File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('identitasGedung/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('identitasGedung/generatePDF') ?>">Download as PDF</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('identitasGedung/createTemplate') ?>">Download Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
-            </div>
-        </div>
-        <a href="<?= site_url('identitasGedung/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="edit"></i>
-            Tambah Data
-        </a>
-    </div>
-</div>
-
-
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">

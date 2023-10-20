@@ -192,6 +192,7 @@
     <script src="<?= base_url(); ?>/assets/js/sweet-alert.js"></script>
     <script src="<?= base_url(); ?>/assets/js/select2.js"></script>
     <script src="<?= base_url(); ?>/assets/js/dropify.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/custom.js"></script>
     <!-- End custom js for this page -->
 
 </body>

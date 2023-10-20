@@ -21,6 +21,23 @@ class DataPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+    
+    function getData($startDate = null, $endDate = null) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
+        $builder->where('tblManajemenPeminjaman.deleted_at', null);
+    
+        if ($startDate !== null && $endDate !== null) {
+            // Add a where clause to filter by the date range
+            $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
+            $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
+        }
+    
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
 
     function find($id = null, $columns = '*') {
         $builder = $this->db->table($this->table);

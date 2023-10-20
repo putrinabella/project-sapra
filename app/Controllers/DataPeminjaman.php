@@ -27,7 +27,19 @@ class DataPeminjaman extends ResourceController
     }
 
     public function index() {
-        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getAll();
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+        
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+        
+        $tableHeading = "";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = " $formattedStartDate - $formattedEndDate";
+        }
+
+        $data['tableHeading'] = $tableHeading;
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
         return view('labView/dataPeminjaman/index', $data);
     }
 
@@ -109,7 +121,11 @@ class DataPeminjaman extends ResourceController
 
     
     public function export() {
-        $data = $this->dataPeminjamanModel->getAll();
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        // $data = $this->dataPeminjamanModel->getAll();
+        $data = $this->dataPeminjamanModel->getData($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Peminjaman');
@@ -165,13 +181,15 @@ class DataPeminjaman extends ResourceController
     }
 
     public function generatePDF() {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
         $filePath = APPPATH . 'Views/labView/dataPeminjaman/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getAll();
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
 
         ob_start();
 
