@@ -65,7 +65,7 @@
             </div>
         </nav>
         <nav class="settings-sidebar">
-      <div class="sidebar-body">
+      <!-- <div class="sidebar-body">
         <a href="#" class="settings-sidebar-toggler">
           <i data-feather="settings"></i>
         </a>
@@ -96,7 +96,7 @@
             <img src="../assets/images/screenshots/dark.jpg" alt="light theme">
           </a>
         </div>
-      </div>
+      </div> -->
     </nav>
         <div class="page-wrapper">
 

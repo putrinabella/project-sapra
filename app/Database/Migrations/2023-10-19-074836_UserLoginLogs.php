@@ -19,14 +19,14 @@ class UserLoginLogs extends Migration
                 'type' => 'INT', 
                 'constraint' => 11
             ],
-            'login_time'  => [
+            'loginTime'  => [
                 'type' => 'DATETIME'
             ],
-            'action_type' => [
+            'actionType' => [
                 'type' => 'VARCHAR', 
                 'constraint' => 10
             ],
-            'ip_address'  => [
+            'ipAddress'  => [
                 'type' => 'VARCHAR', 
                 'constraint' => 45
             ],

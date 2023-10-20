@@ -115,7 +115,7 @@ class DataPeminjaman extends ResourceController
         $activeWorksheet->setTitle('Data Peminjaman');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yangn dipinjam', 'Lokasi', 'Jumlah', 'Status', 'Tanggal Pengembalian'];
+        $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yang dipinjam', 'Lokasi', 'Jumlah', 'Status', 'Tanggal Pengembalian'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         

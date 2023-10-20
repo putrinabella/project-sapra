@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\UserLoginLogModel;
+use App\Models\userLogModels;
 
 class Auth extends BaseController
 {
     function __construct() {
-        $this->userLoginModel = new UserLoginLogModel();
+        $this->userLogModel = new userLogModels();
     }
 
     public function index() {
@@ -46,15 +46,15 @@ class Auth extends BaseController
 
     protected function logLogin($userId, $ipAddress)
     {
-        $loginLogModel = new UserLoginLogModel();
+        // $loginLogModel = new UserLoginLogModel();
 
         $data = [
             'user_id'    => $userId,
-            'login_time' => date('Y-m-d H:i:s'),
-            'ip_address' => $ipAddress,
+            'loginTime' => date('Y-m-d H:i:s'),
+            'ipAddress' => $ipAddress,
         ];
 
-        $loginLogModel->insert($data);
+        $this->userLogModel->insert($data);
     }
     
     public function logout() {
@@ -66,33 +66,15 @@ class Auth extends BaseController
     }
 
     protected function logEvent($userId, $actionType, $ipAddress) {
-        $userLoginLogModel = new UserLoginLogModel();
+        // $userLoginLogModel = new UserLoginLogModel();
 
         $data = [
             'user_id'     => $userId,
-            'login_time'  => date('Y-m-d H:i:s'),
-            'ip_address'  => $ipAddress,
-            'action_type' => $actionType,
+            'loginTime'  => date('Y-m-d H:i:s'),
+            'ipAddress'  => $ipAddress,
+            'actionType' => $actionType,
         ];
 
-        $userLoginLogModel->insert($data);
-    }
-
-    protected function logLogout($userId) {
-        $logoutLogModel = new UserLoginLogModel();
-
-        $data = [
-            'user_id'    => $userId,
-            'login_time' => date('Y-m-d H:i:s'), 
-            'ip_address' => $ipAddress,
-        ];
-
-        $logoutLogModel->insert($data);
-    }
-
-    public function viewLogs()
-    {
-        $data['dataUserLog'] = $this->userLoginModel->getAll();
-        return view('auth/viewLogs', $data);
+        $this->userLogModel->insert($data);
     }
 }

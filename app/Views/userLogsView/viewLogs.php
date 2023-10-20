@@ -17,35 +17,13 @@
         <h4 class="mb-3 mb-md-0">User Log</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('identitasSarana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="trash"></i>
-            Recycle Bin
+        <a href="<?= site_url('viewLogs/generatePDF') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="download"></i>
+            Download PDF
         </a>
-        <div class="dropdown">
-            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="download"></i>
-                Export File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('identitasSarana/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('identitasSarana/generatePDF') ?>">Download as PDF</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/IdentitasSarana_Example_Import.xlsx') ?> ">Download Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
-            </div>
-        </div>
-        <a href="<?= site_url('identitasSarana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="edit"></i>
-            Tambah Data
+        <a href="<?= site_url('viewLogs/export') ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="download"></i>
+            Download Excel
         </a>
     </div>
 </div>
@@ -85,7 +63,9 @@
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
                                 <th>Username</th>
-                                <th>Timestamp</th>
+                                <th>Role</th>
+                                <th>Time</th>
+                                <th>Date</th>
                                 <th>Action Type</th>
                             </tr>
                         </thead>
@@ -94,8 +74,10 @@
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center"><?=$key + 1?></td>
                                 <td class="text-center"><?=$value->username?></td>
-                                <td class="text-center"><?=$value->login_time?></td>
-                                <td class="text-center"><?= $value->action_type ?></td>
+                                <td class="text-center"><?=$value->role?></td>
+                                <td class="text-center"><?= date('H:i:s', strtotime($value->loginTime)) ?></td>
+                                <td class="text-center"><?= date('d F Y', strtotime($value->loginTime)) ?></td>
+                                <td class="text-center"><?= $value->actionType ?></td>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

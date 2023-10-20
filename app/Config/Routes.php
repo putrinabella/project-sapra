@@ -18,7 +18,12 @@ $routes->get('login', 'Auth::login');
 $routes->get('auth', 'Auth::index');
 $routes->post('loginProcess', 'Auth::loginProcess');
 $routes->get('logout', 'Auth::logout');
-$routes->get('viewLogs', 'Auth::viewLogs');
+
+// User Logs
+$routes->get('viewLogs', 'UserLogs::viewLogs');
+$routes->get('viewLogs/generatePDF', 'UserLogs::generatePDF');
+$routes->get('viewLogs/export', 'UserLogs::export');
+
 
 // HOME
 $routes->get('/', 'ProfilSekolah::index');
