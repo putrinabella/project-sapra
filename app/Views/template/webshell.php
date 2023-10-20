@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/prismjs/themes/prism.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/dropify/dist/dropify.min.css">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -174,6 +175,7 @@
     <script src="<?= base_url(); ?>/assets/vendors/prismjs/prism.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
     <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/vendors/dropify/dist/dropify.min.js"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
@@ -189,6 +191,7 @@
     <script src="<?= base_url(); ?>/assets/js/data-table.js"></script>
     <script src="<?= base_url(); ?>/assets/js/sweet-alert.js"></script>
     <script src="<?= base_url(); ?>/assets/js/select2.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/dropify.js"></script>
     <!-- End custom js for this page -->
 
 </body>

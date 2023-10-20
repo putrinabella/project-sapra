@@ -82,7 +82,8 @@
                 <div>
                     <form action="<?= site_url('restoreDatabase') ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
-                        <input type="file" name="database" id="database" accept=".sql" required>
+                        <input type="file" name="database" id="myDropify" accept=".sql" required />
+                        <!-- <input type="file" name="database" id="database" accept=".sql" required> -->
                         <br>
                         <button type="submit" class="btn btn-primary">Restore Database</button>
                     </form>
