@@ -44,6 +44,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="picSosialMedia" class="col-sm-3 col-form-label">PIC</label>
+                        <div class="col-sm-9">
+                        <input type="text" class="form-control" id="picSosialMedia" name="picSosialMedia" value="<?=$dataSosialMedia->picSosialMedia?>" placeholder="Masukkan Nama Sarana" >
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('sosialMedia') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>

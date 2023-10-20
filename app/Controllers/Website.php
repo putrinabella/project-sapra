@@ -329,11 +329,7 @@ class Website extends ResourceController
 
                 if (!empty($data['namaWebsite']) && !empty($data['fungsiWebsite'])
                     && !empty($data['linkWebsite']) && !empty($data['picWebsite'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
                         $this->websiteModel->insert($data);
-                    }
                 } else {
                     return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan semua data telah diisi!');
                 }

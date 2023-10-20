@@ -44,6 +44,7 @@
                     <th>Aplikasi Sosial Media</th>
                     <th>Username</th>
                     <th>Link</th>
+                    <th>PIC</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +61,9 @@
                     </td>
                     <td>
                         <?= $value->linkSosialMedia ?>
+                    </td>
+                    <td>
+                        <?= $value->picSosialMedia ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -27,6 +27,10 @@ class SosialMedia extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'picSosialMedia' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

@@ -157,22 +157,23 @@ class SosialMedia extends ResourceController
         $activeWorksheet->setTitle('SosialMedia');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
+        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link', 'PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->namaSosialMedia);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->usernameSosialMedia);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->linkSosialMedia);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->picSosialMedia);
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C', 'D'];
+            $columns = ['B', 'C', 'D', 'E'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -182,12 +183,12 @@ class SosialMedia extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'D') as $column) {
+        foreach (range('A', 'E') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -206,9 +207,9 @@ class SosialMedia extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
+        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link', 'PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             if ($index >= 3) {
@@ -218,13 +219,14 @@ class SosialMedia extends ResourceController
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
+            $activeWorksheet->setCellValue('E'.($index + 2), '');
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             
-            $columns = ['B', 'C', 'D'];
+            $columns = ['B', 'C', 'D', 'E'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -234,12 +236,12 @@ class SosialMedia extends ResourceController
             }           
         }
         
-        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'D') as $column) {
+        foreach (range('A', 'E') as $column) {
             if ($column === 'A') {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
             }
@@ -250,7 +252,7 @@ class SosialMedia extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link'];
+        $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link', 'PIC'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -262,12 +264,13 @@ class SosialMedia extends ResourceController
             $exampleSheet->setCellValue('B'.($index + 2), $value->namaSosialMedia);
             $exampleSheet->setCellValue('C'.($index + 2), $value->usernameSosialMedia);
             $exampleSheet->setCellValue('D'.($index + 2), $value->linkSosialMedia);
+            $exampleSheet->setCellValue('E'.($index + 2), $value->picSosialMedia);
 
             $exampleSheet->getStyle('A'.($index + 2))
                             ->getAlignment()
                             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            $columns = ['B', 'C', 'D'];
+            $columns = ['B', 'C', 'D', 'E'];
             
             foreach ($columns as $column) {
                 $exampleSheet->getStyle($column . ($index + 2))
@@ -277,12 +280,12 @@ class SosialMedia extends ResourceController
             }            
         }
         
-        $exampleSheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:D'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:D')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:E1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:E'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:E')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'D') as $column) {
+        foreach (range('A', 'E') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
@@ -314,21 +317,19 @@ class SosialMedia extends ResourceController
                 $namaSosialMedia            = $value[1] ?? null;
                 $usernameSosialMedia        = $value[2] ?? null;
                 $linkSosialMedia            = $value[3] ?? null;
+                $picSosialMedia             = $value[4] ?? null;
 
                 $data = [
                     'namaSosialMedia'       => $namaSosialMedia,
                     'usernameSosialMedia'   => $usernameSosialMedia,
                     'linkSosialMedia'       => $linkSosialMedia,
+                    'picSosialMedia'        => $picSosialMedia,
 
                 ];
 
                 if (!empty($data['namaSosialMedia']) && !empty($data['usernameSosialMedia'])
-                    && !empty($data['linkSosialMedia'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('sosialMedia'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
+                    && !empty($data['linkSosialMedia']) && !empty($data['picSosialMedia'])) {
                         $this->sosialMediaModel->insert($data);
-                    }
                 } else {
                     return redirect()->to(site_url('sosialMedia'))->with('error', 'Pastikan semua data telah diisi!');
                 }

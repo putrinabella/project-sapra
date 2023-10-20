@@ -9,7 +9,7 @@ class SosialMediaModels extends Model
     protected $table            = 'tblSosialMedia';
     protected $primaryKey       = 'idSosialMedia';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idSosialMedia', 'namaSosialMedia', 'usernameSosialMedia', 'linkSosialMedia'];
+    protected $allowedFields    = ['idSosialMedia', 'namaSosialMedia', 'usernameSosialMedia', 'linkSosialMedia', 'picSosialMedia'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 

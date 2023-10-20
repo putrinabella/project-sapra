@@ -83,9 +83,10 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th>Aplikasi Sosial Media</th>
+                                <th>Aplikasi</th>
                                 <th>Username</th>
                                 <th>Link</th>
+                                <th>PIC</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -98,7 +99,9 @@
                                 <td> <?= $value->namaSosialMedia; ?> </td>
                                 <td> <?= $value->usernameSosialMedia; ?> </td>
                                 <td>
-                                <a href="<?= $value->linkSosialMedia; ?>" target="_blank"><?= $value->linkSosialMedia; ?></a>
+                                    <a href="<?= $value->linkSosialMedia; ?>" target="_blank"><?= $value->linkSosialMedia; ?></a>
+                                </td>
+                                <td> <?= $value->picSosialMedia; ?> </td>
                                 <td class="text-center">
                                     <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('sosialMedia/'.$value->idSosialMedia.'/edit') ?>"

@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="usernameSosialMedia" class="col-sm-3 col-form-label">Fungsi</label>
+                        <label for="usernameSosialMedia" class="col-sm-3 col-form-label">Username</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="usernameSosialMedia" name="usernameSosialMedia"
                                 placeholder="Masukkan username sosial media">
@@ -43,6 +43,13 @@
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="linkSosialMedia" name="linkSosialMedia"
                                 placeholder="Masukkan link sosial media">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="picSosialMedia" class="col-sm-3 col-form-label">PIC</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="picSosialMedia" name="picSosialMedia"
+                                placeholder="Masukkan nama PIC">
                         </div>
                     </div>
                     <div class="row mb-3">

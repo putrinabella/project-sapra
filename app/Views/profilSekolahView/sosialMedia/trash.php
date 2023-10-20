@@ -71,6 +71,7 @@
                                 <th>Aplikasi Sosial Media</th>
                                 <th>Username</th>
                                 <th>Link</th>
+                                <th>PIC</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -84,6 +85,8 @@
                                 <td class="text-center"> <?= $value->usernameSosialMedia; ?> </td>
                                 <td class="text-center">
                                 <a href="<?= $value->linkSosialMedia; ?>" target="_blank"><?= $value->linkSosialMedia; ?></a>
+                                </td>
+                                <td class="text-center"> <?= $value->picSosialMedia; ?> </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('sosialMedia/restore/'.$value->idSosialMedia) ?>"
                                         class="btn btn-primary"> Restore</a>
