@@ -103,7 +103,6 @@
                                 </td>
                                 <td> <?= $value->picSosialMedia; ?> </td>
                                 <td class="text-center">
-                                    <a href="" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('sosialMedia/'.$value->idSosialMedia.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('sosialMedia/'.$value->idSosialMedia)?>"

@@ -119,6 +119,12 @@
             <span class="link-title">Sosial Media</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="<?= site_url('aplikasi') ?>" class="nav-link">
+            <i class="link-icon" data-feather="smartphone"></i>
+            <span class="link-title">Aplikasi</span>
+        </a>
+    </li>
 
     <li class="nav-item nav-category">Profil</li>
     <li class="nav-item">

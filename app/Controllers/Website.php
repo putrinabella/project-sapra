@@ -98,7 +98,7 @@ class Website extends ResourceController
                 return redirect()->to(site_url('website'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to
-                (site_url('website/edit/'.$id))->with('error', 'Semua data harus diisi');
+                (site_url('website'))->with('error', 'Semua data harus diisi');
             }
         } else {
             return view('error/404');

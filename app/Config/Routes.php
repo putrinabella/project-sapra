@@ -251,6 +251,19 @@ $routes->delete('sosialMedia/deletePermanent/(:any)', 'SosialMedia::deletePerman
 $routes->delete('sosialMedia/deletePermanent', 'SosialMedia::deletePermanent');
 $routes->resource('sosialMedia', ['filter' => 'isLoggedIn']);
 
+// Aplikasi 
+$routes->get('aplikasi/createTemplate', 'Aplikasi::createTemplate');
+$routes->get('aplikasi/generatePDF', 'Aplikasi::generatePDF');
+$routes->get('aplikasi/export', 'Aplikasi::export');
+$routes->post('aplikasi/import', 'Aplikasi::import');
+$routes->get('aplikasi/edit', 'Aplikasi::edit');
+$routes->get('aplikasi/trash', 'Aplikasi::trash');
+$routes->get('aplikasi/restore/(:any)', 'Aplikasi::restore/$1');
+$routes->get('aplikasi/restore', 'Aplikasi::restore');
+$routes->delete('aplikasi/deletePermanent/(:any)', 'Aplikasi::deletePermanent/$1');
+$routes->delete('aplikasi/deletePermanent', 'Aplikasi::deletePermanent');
+$routes->resource('aplikasi', ['filter' => 'isLoggedIn']);
+
 // Profil Sekolah
 $routes->get('profilSekolah/createTemplateDokumen', 'ProfilSekolah::createTemplateDokumen');
 $routes->get('profilSekolah/generatePDFDokumen', 'ProfilSekolah::generatePDFDokumen');
