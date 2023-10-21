@@ -87,4 +87,22 @@ class ManajemenPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getRow();
     }
+
+    public function updateAsetTersedia($idIdentitasSarana, $saranaLayak) {
+        $builder = $this->db->table('tblRincianLabAset');
+        
+        // Check if the value is different before attempting the update
+        $existingAsetTersedia = $builder->select('saranaLayak')
+            ->where('idIdentitasSarana', $idIdentitasSarana)
+            ->get()
+            ->getRow();
+    
+        if ($existingAsetTersedia && $existingAsetTersedia->saranaLayak !== $saranaLayak) {
+            $builder->set('saranaLayak', $saranaLayak)
+                ->where('idIdentitasSarana', $idIdentitasSarana)
+                ->update();
+        }
+    }
+    
+
 }

@@ -140,7 +140,16 @@
                                     <span class="badge bg-success"><?=$value->status?></span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-left"><?= date('d F Y', strtotime($value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ))?></td>
+                            <td class="text-left">
+                                <?php
+                                    if ($value->tanggalPengembalian !== '' && $value->tanggalPengembalian !== null) {
+                                        echo date('d F Y', strtotime($value->tanggalPengembalian));
+                                    } else {
+                                        echo 'Belum Dikembalikan';
+                                    }
+                                ?>
+                            </td>
+
                             <td class="text-left"><?= $value->namaPenerima !== '' ? $value->namaPenerima : '-' ?></td>
                             <td class="text-center"><?= $value->jumlahBarangDikembalikan !== '' ? $value->jumlahBarangDikembalikan : '-' ?></td>
                             <td class="text-center"><?= $value->jumlahBarangRusak !== '' ? $value->jumlahBarangRusak : '-' ?></td>

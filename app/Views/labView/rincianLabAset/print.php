@@ -52,6 +52,7 @@
                     <th>Tahun Pengadaan</th>
                     <th>Sarana Layak</th>
                     <th>Sarana Rusak</th>
+                    <th>Sarana Hilang</th>
                     <th>Total Sarana</th>
                 </tr>
             </thead>
@@ -88,7 +89,10 @@
                             <?= $value->saranaRusak ?>
                         </td>
                         <td>
-                            <?=$totalSarana = $value->saranaLayak + $value->saranaRusak ?>
+                            <?= $value->saranaHilang ?>
+                        </td>
+                        <td>
+                            <?=$totalSarana = $value->saranaLayak + $value->saranaRusak + $value->saranaHilang ?>
                         </td>
                     </tr>
                     <!-- <tr>

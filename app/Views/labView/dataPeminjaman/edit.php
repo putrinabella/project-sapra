@@ -31,6 +31,8 @@
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam"
                                 value="<?=$dataDataPeminjaman->namaPeminjam?>">
+                                <input type="text" class="form-control" id="idRincianLabAset" name="idRincianLabAset" 
+                                value="<?=$dataDataPeminjaman->idRincianLabAset?>" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">

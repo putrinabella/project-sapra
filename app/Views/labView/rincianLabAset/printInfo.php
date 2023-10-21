@@ -127,10 +127,17 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Sarana Hilang</td>
+                    <td>:</td>
+                    <td>
+                        <?= $data['dataRincianLabAset']->saranaHilang?>
+                    </td>
+                </tr>
+                <tr>
                     <td>Total Sarana</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianLabAset']->saranaLayak + $data['dataRincianLabAset']->saranaRusak?>
+                        <?= $data['dataRincianLabAset']->saranaLayak + $data['dataRincianLabAset']->saranaRusak + $data['dataRincianLabAset']->saranaHilang?>
                     </td>
                 </tr>
                 <tr>

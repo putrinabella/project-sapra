@@ -126,4 +126,28 @@ class ManajemenPeminjaman extends ResourceController
             return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
         }
     }
+
+    // public function addLoan() {
+    //     $data = $this->request->getPost(); 
+    
+    //     if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($data['jumlah'])) {
+    //         $idIdentitasSarana = $data['idIdentitasSarana']; // Get the idIdentitasSarana from your form data
+    //         $asetTersedia = $data['asetTersedia']; // Get the asetTersedia from your form data
+    //         $jumlah = $data['jumlah']; // Get the jumlah from your form data
+    
+    //         // Calculate the new asetTersedia value (deduct jumlah)
+    //         $newAsetTersedia = $asetTersedia - $jumlah;
+    
+    //         // Update asetTersedia in the database
+    //         $this->manajemenPeminjamanModel->updateAsetTersedia($idIdentitasSarana, $newAsetTersedia);
+    
+    //         // Insert the loan record
+    //         $this->manajemenPeminjamanModel->insert($data);
+    
+    //         return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
+    //     } else {
+    //         return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
+    //     }
+    // }
+    
 }

@@ -94,10 +94,17 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Sarana Hilang</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianLabAset->saranaHilang?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Total Sarana</td>
                             <td>:</td>
                             <td>
-                                <?= $totalSarana = $dataRincianLabAset->saranaLayak + $dataRincianLabAset->saranaRusak?>
+                                <?= $totalSarana = $dataRincianLabAset->saranaLayak + $dataRincianLabAset->saranaRusak + $dataRincianLabAset->saranaHilang ?>
                             </td>
                         </tr>
                         <tr>

@@ -62,16 +62,35 @@ class DataPeminjaman extends ResourceController
         }
     }
 
+    // public function update($id = null) {
+    //     if ($id != null) {
+    //         $data = $this->request->getPost();
+   
+    //         $this->dataPeminjamanModel->update($id, $data);
+    //         return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diupdate');
+    //     } else {
+    //         return view('error/404');
+    //     }
+    // }
+
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-   
+            
+            // Extract the relevant data from $data
+            $jumlahBarangRusak = $data['jumlahBarangRusak'];
+            $jumlahBarangHilang = $data['jumlahBarangHilang'];
+            $idRincianLabAset = $data['idRincianLabAset'];
+    
+            $this->dataPeminjamanModel->updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang);
             $this->dataPeminjamanModel->update($id, $data);
+            
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
     }
+    
 
 
     public function delete($id = null) {

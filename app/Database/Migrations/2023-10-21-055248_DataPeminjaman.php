@@ -47,11 +47,11 @@ class DataPeminjaman extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'jumlahPeminjaman' => [
+            'jumlah' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'jumlahPengembalian' => [
+            'jumlahBarangDikembalikan' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],

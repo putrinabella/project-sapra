@@ -85,10 +85,9 @@
                                     <td class="text-center">
                                         <?=$key + 1?>
                                     </td>
+                                    <td class="text-center" hidden><?=$value->idRincianLabAset?></td>
                                     <td class="text-center"><?=$value->namaSarana?></td>
                                     <td class="text-center"><?=$value->totalSarana?></td>
-                                    <!-- <td class="text-center"><?=$value->asetTidakTersedia?></td>
-                                    <td class="text-center"><?=$value->saranaRusak?></td> -->
                                     <td class="text-center">
                                         <?php echo $value->asetTidakTersedia + $value->saranaRusak; ?>
                                     </td>
@@ -112,8 +111,9 @@
                                         <a href="#" class="btn btn-outline-primary upload-excel-btn"
                                             data-bs-toggle="modal" data-bs-target="#modalImport"
                                             data-id-identitas-sarana="<?= $value->idIdentitasSarana ?>"
-                                            data-kode-lab="<?= $dataLaboratorium->kodeLab ?>"
-                                            data-id-aset-tersedia="<?= $value->asetTersedia ?>">Ajukan Peminjaman</a>
+                                            data-kode-lab="<?= $dataLaboratorium->idIdentitasLab ?>"
+                                            data-id-aset-tersedia="<?= $value->asetTersedia ?>"
+                                            data-id-rincian-lab-aset="<?= $value->idRincianLabAset ?>">Ajukan Peminjaman</a>
                                         <?php else : ?>
                                         <button class="btn btn-outline-primary" disabled>Ajukan Peminjaman</button>
                                         <?php endif; ?>
@@ -142,7 +142,7 @@
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="kodeLab" name="kodeLab" hidden>
+                        <input type="text" class="form-control" id="idIdentitasLab" name="idIdentitasLab" hidden>
                     </div>
                     <div class="mb-3">
                         <input type="text" class="form-control" id="idIdentitasSarana" name="idIdentitasSarana" hidden>
@@ -150,6 +150,10 @@
                     <div class="mb-3">
                         <input type="text" class="form-control" id="status" name="status" value="Peminjaman" hidden>
                     </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="idRincianLabAset" name="idRincianLabAset" hidden>
+                    </div>
+
                     <div class="mb-3">
                         <label for="asetTersedia" class="form-label">Aset Tersedia</label>
                         <input type="text" class="form-control" id="asetTersedia" name="asetTersedia" readonly>
@@ -169,6 +173,7 @@
                         <label for="jenisPeminjam" class="form-label">Karyawan/Siswa</label>
                         <select class="form-control myselect2" id="jenisPeminjam" name="jenisPeminjam"
                             onchange="showHideOptions()">
+                            <option value="" readonly>Select here</option>
                             <option value="karyawan">Karyawan</option>
                             <option value="siswa">Siswa</option>
                         </select>
@@ -191,7 +196,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="jumlah" class="form-label">Jumlah</label>
-                        <input type="number" class="form-control" id="jumlah" name="jumlah" placeholder="Masukkan nama">
+                        <input type="number" class="form-control" id="jumlah" name="jumlah" placeholder="Masukkan jumlah">
                         <div id="error-message" style="color: red;"></div>
                     </div>
                 </div>
@@ -211,12 +216,15 @@
             button.addEventListener('click', function (event) {
                 event.preventDefault();
                 var idIdentitasSarana = button.getAttribute('data-id-identitas-sarana');
-                var kodeLab = button.getAttribute('data-kode-lab');
-                var asetTersedia = button.getAttribute('data-id-aset-tersedia')
+                var idIdentitasLab = button.getAttribute('data-kode-lab');
+                var asetTersedia = button.getAttribute('data-id-aset-tersedia');
+                var idRincianLabAset = button.getAttribute('data-id-rincian-lab-aset');
 
                 document.getElementById('idIdentitasSarana').value = idIdentitasSarana;
-                document.getElementById('kodeLab').value = kodeLab;
+                document.getElementById('idIdentitasLab').value = idIdentitasLab;
                 document.getElementById('asetTersedia').value = asetTersedia;
+                // Pass the idRincianLabAset to the modal form
+                document.getElementById('idRincianLabAset').value = idRincianLabAset;
             });
         });
     });

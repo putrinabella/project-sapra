@@ -9,14 +9,14 @@ class DataPeminjamanModels extends Model
     protected $table            = 'tblManajemenPeminjaman';
     protected $primaryKey       = 'idManajemenPeminjaman';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'kodeLab', 'jumlah', 'tanggal', 'status', 'tanggalPengembalian', 'kodePeminjaman', 'namaPenerima', 'jumlahBarangDikembalikan', 'jumlahBarangRusak', 'jumlahBarangHilang'];
+    protected $allowedFields    = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'status', 'tanggalPengembalian', 'kodePeminjaman', 'namaPenerima', 'jumlahBarangDikembalikan', 'jumlahBarangRusak', 'jumlahBarangHilang'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
         $query = $builder->get();
         return $query->getResult();
@@ -25,7 +25,7 @@ class DataPeminjamanModels extends Model
     function getData($startDate = null, $endDate = null) {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
     
         if ($startDate !== null && $endDate !== null) {
@@ -44,7 +44,8 @@ class DataPeminjamanModels extends Model
         $builder->select($columns);
         
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
+        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
         
         $builder->where($this->primaryKey, $id);
 
@@ -62,7 +63,7 @@ class DataPeminjamanModels extends Model
     function getRecycle() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
         $builder->where('tblManajemenPeminjaman.deleted_at IS NOT NULL');
         $query = $builder->get();
         return $query->getResult();
@@ -75,7 +76,7 @@ class DataPeminjamanModels extends Model
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         "/", tahunPengadaan, 
                         "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", kodeLab)',
+                        "/", idIdentitasLab)',
                         false
                         );
         $builder->where('idRincianLabAset', $id);
@@ -88,7 +89,7 @@ class DataPeminjamanModels extends Model
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         "/", tahunPengadaan, 
                         "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", kodeLab)',
+                        "/", idIdentitasLab)',
                         false
                         );
         $builder->update();
@@ -100,4 +101,78 @@ class DataPeminjamanModels extends Model
         $totalSarana = $saranaLayak + $saranaRusak;
         return $totalSarana;
     }
+
+    public function updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang) {
+        $builder = $this->db->table('tblRincianLabAset');
+        $existingAsetTersedia = $builder->select('saranaLayak, saranaRusak, saranaHilang')
+            ->where('idRincianLabAset', $idRincianLabAset)
+            ->get()
+            ->getRow();
+    
+        if ($existingAsetTersedia) {
+            $currentSaranaLayak = $existingAsetTersedia->saranaLayak;
+            $currentSaranaRusak = $existingAsetTersedia->saranaRusak;
+            $currentSaranaHilang = $existingAsetTersedia->saranaHilang;
+    
+            if ($jumlahBarangRusak != 0) {
+                $newSaranaRusak = $currentSaranaRusak + $jumlahBarangRusak;
+                $builder->set('saranaRusak', $newSaranaRusak);
+            }
+    
+            if ($jumlahBarangHilang != 0) {
+                $newSaranaHilang = $currentSaranaHilang + $jumlahBarangHilang;
+                $builder->set('saranaHilang', $newSaranaHilang);
+            }
+    
+            if ($jumlahBarangRusak != 0 || $jumlahBarangHilang != 0) {
+                $newSaranaLayak = $currentSaranaLayak - ($jumlahBarangRusak + $jumlahBarangHilang);
+    
+                // Make sure the new value is not negative
+                if ($newSaranaLayak < 0) {
+                    $newSaranaLayak = 0;
+                }
+    
+                // Check if the value is different before attempting the update
+                if ($currentSaranaLayak !== $newSaranaLayak) {
+                    $builder->set('saranaLayak', $newSaranaLayak);
+                }
+            }
+    
+            $builder->where('idRincianLabAset', $idRincianLabAset)->update();
+        }
+    }
+    
+    
+    
+
+    // public function updateSaranaLayak($idIdentitasSarana, $jumlahBarangRusak, $jumlahBarangHilang) {
+    //     $builder = $this->db->table('tblRincianLabAset');
+    //     $builder->join('tblRincianLabAset', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+    //     $existingAsetTersedia = $builder->select('saranaLayak')
+    //         ->where('idIdentitasSarana', $idIdentitasSarana)
+    //         ->where('idIdentitasLab', $idIdentitasLab) 
+    //         ->get()
+    //         ->getRow();
+    
+    //     if ($existingAsetTersedia) {
+    //         $currentSaranaLayak = $existingAsetTersedia->saranaLayak;
+    //         if ($jumlahBarangRusak != 0 || $jumlahBarangHilang != 0) {
+    //             $newSaranaLayak = $currentSaranaLayak - ($jumlahBarangRusak + $jumlahBarangHilang);
+    
+    //             // Make sure the new value is not negative
+    //             if ($newSaranaLayak < 0) {
+    //                 $newSaranaLayak = 0;
+    //             }
+    
+    //             // Check if the value is different before attempting the update
+    //             if ($currentSaranaLayak !== $newSaranaLayak) {
+    //                 $builder->set('saranaLayak', $newSaranaLayak)
+    //                     ->where('idIdentitasSarana', $idIdentitasSarana)
+    //                     ->where('idIdentitasLab', $idIdentitasLab)
+    //                     ->update();
+    //             }
+    //         }
+    //     }
+    // }
+    
 }

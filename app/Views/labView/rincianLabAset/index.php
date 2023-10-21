@@ -91,6 +91,7 @@
                                 <th>Sumber Dana</th>
                                 <th>Aset Layak</th>
                                 <th>Aset Rusak</th>
+                                <th>Aset Hilang</th>
                                 <th>Total Aset</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -109,7 +110,8 @@
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=$value->saranaLayak?></td>
                                 <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?= $totalSarana = $value->saranaLayak + $value->saranaRusak ?></td>
+                                <td class="text-center"><?=$value->saranaHilang?></td>
+                                <td class="text-center"><?= $totalSarana = $value->saranaLayak + $value->saranaRusak + $value->saranaHilang ?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset.'/edit') ?>"
