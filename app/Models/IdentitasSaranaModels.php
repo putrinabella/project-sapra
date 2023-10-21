@@ -9,7 +9,7 @@ class IdentitasSaranaModels extends Model
     protected $table            = 'tblIdentitasSarana';
     protected $primaryKey       = 'idIdentitasSarana';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['namaSarana', 'perangkatIT'];
+    protected $allowedFields    = ['kodeSarana', 'namaSarana', 'perangkatIT', 'dipinjam', 'dimusnahkan'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 }

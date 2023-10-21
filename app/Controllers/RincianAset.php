@@ -74,9 +74,7 @@ class RincianAset extends ResourceController
     
     public function create() {
         $data = $this->request->getPost();
-        // $buktiPath = $this->uploadFile('bukti'); 
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodePrasarana'])) {
-            // $data['bukti'] = $buktiPath;
             $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
             $data['totalSarana'] = $totalSarana;
             $this->rincianAsetModel->insert($data);

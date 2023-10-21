@@ -15,6 +15,10 @@ class IdentitasSarana extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'kodeSarana' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'namaSarana' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
