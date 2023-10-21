@@ -94,7 +94,7 @@
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=$value->saranaLayak?></td>
                                 <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?=$value->totalSarana?></td>
+                                <td class="text-center"><?=$totalSarana = $value->saranaLayak + $value->saranaRusak?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianLabAset/restore/'.$value->idRincianLabAset) ?>"
                                         class="btn btn-primary"> Restore</a>

@@ -3,82 +3,55 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\RincianAsetModels; 
+use App\Models\RincianLabAsetModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
-use App\Models\IdentitasPrasaranaModels; 
+use App\Models\IdentitasLabModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class RincianAset extends ResourceController
+class RincianLabAset extends ResourceController
 {
     
      function __construct() {
-        $this->rincianAsetModel = new RincianAsetModels();
+        $this->rincianLabAsetModel = new RincianLabAsetModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
-        $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
+        $this->identitasLabModel = new IdentitasLabModels();
         $this->db = \Config\Database::connect();
     }
 
     public function index() {
-        $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
-        return view('saranaView/rincianAset/index', $data);
+        $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getAll();
+        return view('labView/rincianLabAset/index', $data);
     }
-
-    // public function index() {
-    //     $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
-    
-    //     $groupedData = [];
-    //     foreach ($data['dataRincianAset'] as $row) {
-    //         $kodeAset = $row->kodeRincianAset;
-    //         $status = $row->statusAset;
-    
-    //         if (!isset($groupedData[$kodeAset])) {
-    //             $groupedData[$kodeAset] = [
-    //                 'saranaLayak' => 0,
-    //                 'saranaRusak' => 0,
-    //             ];
-    //         }
-    
-    //         if ($status === 'layak') {
-    //             $groupedData[$kodeAset]['saranaLayak']++;
-    //         } elseif ($status === 'rusak') {
-    //             $groupedData[$kodeAset]['saranaRusak']++;
-    //         }
-    //     }
-    
-    //     $data['groupedData'] = $groupedData;
-    //     return view('saranaView/rincianAset/index', $data);
-    // }
-    
 
     public function show($id = null) {
         if ($id != null) {
-            $dataRincianAset = $this->rincianAsetModel->find($id);
+            $dataRincianLabAset = $this->rincianLabAsetModel->find($id);
         
-            if (is_object($dataRincianAset)) {
-                $spesifikasiMarkup = $dataRincianAset->spesifikasi;
+            if (is_object($dataRincianLabAset)) {
+                $spesifikasiMarkup = $dataRincianLabAset->spesifikasi;
                 $parsedown = new Parsedown();
                 $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
                 
-                $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
+                $buktiUrl = $this->generateFileId($dataRincianLabAset->bukti);
                 $data = [
-                    'dataRincianAset'           => $dataRincianAset,
+                    'dataRincianLabAset'        => $dataRincianLabAset,
                     'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+                    'dataIdentitasLab'          => $this->identitasLabModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
-                return view('saranaView/rincianAset/show', $data);
+                return view('labView/rincianLabAset/show', $data);
             } else {
                 return view('error/404');
             }
@@ -92,60 +65,25 @@ class RincianAset extends ResourceController
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataSumberDana' => $this->sumberDanaModel->findAll(),
             'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-            'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+            'dataIdentitasLab' => $this->identitasLabModel->findAll(),
         ];
         
-        return view('saranaView/rincianAset/new', $data);        
+        return view('labView/rincianLabAset/new', $data);        
     }
 
     
     public function create() {
-        $data = $this->request->getPost();
-        if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
-            $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+        $data = $this->request->getPost(); 
+        if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasLab'])) {
+            $totalSarana =  $this->rincianLabAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
             $data['totalSarana'] = $totalSarana;
-            $this->rincianAsetModel->insert($data);
-            $this->rincianAsetModel->setKodeAset();
-            return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
+            $this->rincianLabAsetModel->insert($data);
+            $this->rincianLabAsetModel->setKodeLabAset();
+            return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('rincianLabAset'))->with('error', 'Semua field harus terisi');
         }
     }
-
-    // public function create() {
-    //     $data = $this->request->getPost();
-
-    //     $feasibleQuantity = (int) $data['saranaLayak'];
-    //     $damagedQuantity = (int) $data['saranaRusak'];
-    //     // $lostQuantity = (int) $data['saranaHilang'];
-
-    //     unset($data['saranaLayak']);
-    //     unset($data['saranaRusak']);
-    //     unset($data['saranaHilang']);
-
-    //     if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
-    //         $insertedIds = [];
-
-    //         for ($i = 0; $i < $feasibleQuantity; $i++) {
-    //             $data['statusAset'] = 'layak'; 
-    //             $this->rincianAsetModel->insert($data);
-    //             $insertedIds[] = $this->db->insertID();
-    //         }
-
-    //         for ($i = 0; $i < $damagedQuantity; $i++) {
-    //             $data['statusAset'] = 'rusak';
-    //             $this->rincianAsetModel->insert($data);
-    //             $insertedIds[] = $this->db->insertID();
-    //         }
-
-    //         $this->rincianAsetModel->setKodeAset();
-    //         return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
-    //         // return redirect()->to(site_url('rincianAset/show/' . end($insertedIds)))->with('success', 'Data berhasil disimpan');
-    //     } else {
-    //         return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
-    //     }
-    // }
-
 
     private function uploadFile($fieldName) {
         $file = $this->request->getFile($fieldName);
@@ -178,20 +116,20 @@ class RincianAset extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
             // $uploadedFilePath = $this->uploadFile('bukti');
-            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
+            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasLab'])) {
                 // if ($uploadedFilePath !== null) {
                 //     $data['bukti'] = $uploadedFilePath;
                 // }
 
-                $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+                $totalSarana =  $this->rincianLabAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
                 $data['totalSarana'] = $totalSarana;
 
-                $this->rincianAsetModel->update($id, $data);
-                $this->rincianAsetModel->updateKodeAset($id);
-                return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
+                $this->rincianLabAsetModel->update($id, $data);
+                $this->rincianLabAsetModel->updateKodeLabAset($id);
+                return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to
-                (site_url('rincianAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                (site_url('rincianLabAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
             }
         } else {
             return view('error/404');
@@ -200,17 +138,17 @@ class RincianAset extends ResourceController
 
     public function edit($id = null) {
         if ($id != null) {
-            $dataRincianAset = $this->rincianAsetModel->find($id);
+            $dataRincianLabAset = $this->rincianLabAsetModel->find($id);
     
-            if (is_object($dataRincianAset)) {
+            if (is_object($dataRincianLabAset)) {
                 $data = [
-                    'dataRincianAset' => $dataRincianAset,
+                    'dataRincianLabAset' => $dataRincianLabAset,
                     'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana' => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                 ];
-                return view('saranaView/rincianAset/edit', $data);
+                return view('labView/rincianLabAset/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -220,46 +158,46 @@ class RincianAset extends ResourceController
     }
 
     public function delete($id = null) {
-        $this->rincianAsetModel->delete($id);
-        return redirect()->to(site_url('rincianAset'));
+        $this->rincianLabAsetModel->delete($id);
+        return redirect()->to(site_url('rincianLabAset'));
     }
 
     public function trash() {
-        $data['dataRincianAset'] = $this->rincianAsetModel->onlyDeleted()->getRecycle();
-        return view('saranaView/rincianAset/trash', $data);
+        $data['dataRincianLabAset'] = $this->rincianLabAsetModel->onlyDeleted()->getRecycle();
+        return view('labView/rincianLabAset/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblRincianAset')
+            $this->db->table('tblRincianLabAset')
                 ->set('deleted_at', null, true)
-                ->where(['idRincianAset' => $id])
+                ->where(['idRincianLabAset' => $id])
                 ->update();
         } else {
-            $this->db->table('tblRincianAset')
+            $this->db->table('tblRincianLabAset')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
             }
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('rincianAset/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('rincianLabAset/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->rincianAsetModel->delete($id, true);
-        return redirect()->to(site_url('rincianAset/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->rincianLabAsetModel->delete($id, true);
+        return redirect()->to(site_url('rincianLabAset/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->rincianAsetModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->rincianLabAsetModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->rincianAsetModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('rincianAset/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->rincianLabAsetModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('rincianLabAset/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('rincianAset/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('rincianLabAset/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     } 
@@ -271,10 +209,10 @@ class RincianAset extends ResourceController
     }
     
     public function export() {
-        $data = $this->rincianAsetModel->getAll();
+        $data = $this->rincianLabAsetModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->setTitle('Rincian Aset Lab');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
         $headers = ['No.', 'Kode Aset', 'Nama Aset', 'Lokasi','Tahun Pengadaan', 'Kategori Manajemen', 'Sumber Dana', 'Aset Layak', 'Aset Rusak', 'Total Aset' , 'Link Dokumentasi', 'Spesifikasi'];
@@ -288,9 +226,9 @@ class RincianAset extends ResourceController
             $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
             
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeRincianLabAset);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaLab);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->tahunPengadaan);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
@@ -330,15 +268,15 @@ class RincianAset extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Rincian Aset.xlsx');
+        header('Content-Disposition: attachment;filename=Rincian Aset Laboratorium.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
     
     public function createTemplate() {
-        $data = $this->rincianAsetModel->getAll();
-        $keyPrasarana = $this->identitasPrasaranaModel->findAll();
+        $data = $this->rincianLabAsetModel->getAll();
+        $keyLab = $this->identitasLabModel->findAll();
         $keySumberDana = $this->sumberDanaModel->findAll();
         $keyKategoriManajemen = $this->kategoriManajemenModel->findAll();
         $keySarana = $this->identitasSaranaModel->findAll();
@@ -348,7 +286,7 @@ class RincianAset extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Kode Aset', 'ID Aset', 'ID Prasarana', 'ID Sumber Dana', 'ID Kategori Manajemen', 'Tahun Pengadaan', 'Sarana Layak', 'Sarana Rusak', 'Total Sarana', 'Link Dokumentasi', 'Kode Prasarana'];
+        $headerInputTable = ['No.', 'Kode Aset', 'ID Aset', 'ID Lab', 'ID Sumber Dana', 'ID Kategori Manajemen', 'Tahun Pengadaan', 'Sarana Layak', 'Sarana Rusak', 'Total Sarana', 'Link Dokumentasi', 'Kode Lab'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:L1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -360,8 +298,8 @@ class RincianAset extends ResourceController
         $activeWorksheet->fromArray([$headerKategoriManajemenID], NULL, 'Q1');
         $activeWorksheet->getStyle('Q1:R1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
-        $headerPrasaranaID = ['ID Prasarana', 'Nama Prasarana', 'Kode Prasarana'];
-        $activeWorksheet->fromArray([$headerPrasaranaID], NULL, 'T1');
+        $headerLabID = ['ID Lab', 'Nama Lab', 'Kode Lab'];
+        $activeWorksheet->fromArray([$headerLabID], NULL, 'T1');
         $activeWorksheet->getStyle('T1:V1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         $headerSaranaID = ['ID Aset', 'Nama Aset'];
@@ -374,7 +312,7 @@ class RincianAset extends ResourceController
             }
 
             $generateID = '=CONCAT("A", TEXT(C'.($index + 2).', "000"), "/", G'.($index + 2).', "/SD", TEXT(E'.($index + 2).', "00"), "/", L'.($index + 2).')';
-            $getKodePrasarana = '=INDEX($V$2:$V$'.(count($keyPrasarana) + 1).', MATCH(D'.($index + 2).', $T$2:$T$'.(count($keyPrasarana) + 1).', 0))';
+            $getKodeLab = '=INDEX($V$2:$V$'.(count($keyLab) + 1).', MATCH(D'.($index + 2).', $T$2:$T$'.(count($keyLab) + 1).', 0))';
             $getTotalSarana = '=SUM(H'.($index + 2).', I'.($index + 2).')';
 
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
@@ -388,7 +326,7 @@ class RincianAset extends ResourceController
             $activeWorksheet->setCellValue('I'.($index + 2), '');
             $activeWorksheet->setCellValue('J'.($index + 2), $getTotalSarana);
             $activeWorksheet->setCellValue('K'.($index + 2), '');
-            $activeWorksheet->setCellValue('L'.($index + 2), $getKodePrasarana);
+            $activeWorksheet->setCellValue('L'.($index + 2), $getKodeLab);
             
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
             foreach ($columns as $column) {
@@ -453,10 +391,10 @@ class RincianAset extends ResourceController
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
 
-        foreach ($keyPrasarana as $index => $value) {
-            $activeWorksheet->setCellValue('T'.($index + 2), $value->idIdentitasPrasarana);
-            $activeWorksheet->setCellValue('U'.($index + 2), $value->namaPrasarana);
-            $activeWorksheet->setCellValue('V'.($index + 2), $value->idIdentitasPrasarana);
+        foreach ($keyLab as $index => $value) {
+            $activeWorksheet->setCellValue('T'.($index + 2), $value->idIdentitasLab);
+            $activeWorksheet->setCellValue('U'.($index + 2), $value->namaLab);
+            $activeWorksheet->setCellValue('V'.($index + 2), $value->idIdentitasLab);
     
             $columns = ['T', 'U', 'V'];
             foreach ($columns as $column) {
@@ -468,7 +406,7 @@ class RincianAset extends ResourceController
 
         $activeWorksheet->getStyle('T1:V1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('T1:V1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('T1:V'.(count($keyPrasarana) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('T1:V'.(count($keyLab) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('T:V')->getAlignment()->setWrapText(true);
     
         foreach (range('T', 'V') as $column) {
@@ -500,7 +438,7 @@ class RincianAset extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headerExampleTable = ['No.', 'Kode Aset', 'ID Aset', 'ID Prasarana', 'ID Sumber Dana', 'ID Kategori Manajemen', 'Tahun Pengadaan', 'Sarana Layak', 'Sarana Rusak', 'Total Sarana', 'Link Dokumentasi', 'Kode Prasarana'];
+        $headerExampleTable = ['No.', 'Kode Aset', 'ID Aset', 'ID Lab', 'ID Sumber Dana', 'ID Kategori Manajemen', 'Tahun Pengadaan', 'Sarana Layak', 'Sarana Rusak', 'Total Sarana', 'Link Dokumentasi', 'Kode Lab'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:L1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -509,9 +447,9 @@ class RincianAset extends ResourceController
                 break;
             }
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeRincianLabAset);
             $exampleSheet->setCellValue('C'.($index + 2), $value->idIdentitasSarana);
-            $exampleSheet->setCellValue('D'.($index + 2), $value->idIdentitasPrasarana);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->idIdentitasLab);
             $exampleSheet->setCellValue('E'.($index + 2), $value->idSumberDana);
             $exampleSheet->setCellValue('F'.($index + 2), $value->idKategoriManajemen);
             $exampleSheet->setCellValue('G'.($index + 2), $value->tahunPengadaan);
@@ -519,7 +457,7 @@ class RincianAset extends ResourceController
             $exampleSheet->setCellValue('I'.($index + 2), $value->saranaRusak);
             $exampleSheet->setCellValue('J'.($index + 2), $value->totalSarana);
             $exampleSheet->setCellValue('K'.($index + 2), $value->bukti);
-            $exampleSheet->setCellValue('L'.($index + 2), $value->idIdentitasPrasarana);
+            $exampleSheet->setCellValue('L'.($index + 2), $value->idIdentitasLab);
             
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
             foreach ($columns as $column) {
@@ -541,7 +479,7 @@ class RincianAset extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Rincian Aset Example.xlsx');
+        header('Content-Disposition: attachment;filename=Laboratorium - Rincian Aset Lab Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -563,7 +501,7 @@ class RincianAset extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $kodeRincianAset        = $value[1] ?? null;
+                $kodeRincianLabAset        = $value[1] ?? null;
                 $idIdentitasSarana      = $value[2] ?? null;
                 $idSumberDana           = $value[4] ?? null;
                 $idKategoriManajemen    = $value[5] ?? null;
@@ -572,15 +510,14 @@ class RincianAset extends ResourceController
                 $saranaRusak            = $value[8] ?? null;
                 $totalSarana            = $value[9] ?? null;
                 $bukti                  = $value[10] ?? null;
-                $idIdentitasPrasarana          = $value[11] ?? null;
+                $idIdentitasLab          = $value[11] ?? null;
 
-                if ($kodeRincianAset !== null) {
                     $data = [
-                        'kodeRincianAset' => $kodeRincianAset,
+                        'kodeRincianLabAset' => $kodeRincianLabAset,
                         'idIdentitasSarana' => $idIdentitasSarana,
                         'idSumberDana' => $idSumberDana,
                         'idKategoriManajemen' => $idKategoriManajemen,
-                        'idIdentitasPrasarana' => $idIdentitasPrasarana,
+                        'idIdentitasLab' => $idIdentitasLab,
                         'tahunPengadaan' => $tahunPengadaan,
                         'saranaLayak' => $saranaLayak,
                         'saranaRusak' => $saranaRusak,
@@ -588,32 +525,36 @@ class RincianAset extends ResourceController
                         'totalSarana' => $totalSarana,
                         'bukti' => $bukti,
                     ];
-                    if (!empty($data['kodeRincianAset']) && !empty($data['idIdentitasSarana']) && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen']) && !empty($data['idIdentitasPrasarana']) && !empty($data['tahunPengadaan']) && !empty($data['saranaLayak']) && !empty($data['saranaRusak'])  && !empty($data['spesifikasi'])  && !empty($data['totalSarana']) && !empty($data['bukti']))  {
+                    if (!empty($data['kodeRincianLabAset']) && !empty($data['idIdentitasSarana'])
+                        && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen']) 
+                        && !empty($data['idIdentitasLab']) && !empty($data['tahunPengadaan'])
+                        && !empty($data['saranaLayak']) && !empty($data['saranaRusak']) 
+                        && !empty($data['spesifikasi']) && !empty($data['totalSarana']) 
+                        && !empty($data['bukti'])) {
                         if ($status == 'ERROR') {
-                            return redirect()->to(site_url('rincianAset'))->with('error', 'Pastikan excel sudah benar');
+                            return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan excel sudah benar');
                         } else {
-                            $this->rincianAsetModel->insert($data);
+                            $this->rincianLabAsetModel->insert($data);
                         }
                     } else {
-                        return redirect()->to(site_url('rincianAset'))->with('error', 'Pastikan semua data telah diisi!');
+                        return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan semua data telah diisi!');
                     }
-                }
             }
-            return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil diimport');
         } else {
-            return redirect()->to(site_url('rincianAset'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+            return redirect()->to(site_url('rincianLabAset'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
 
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/saranaView/rincianAset/print.php';
+        $filePath = APPPATH . 'Views/labView/rincianLabAset/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
+        $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getAll();
 
         ob_start();
 
@@ -628,34 +569,34 @@ class RincianAset extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Sarana - Rincian Aset Report.pdf';
+        $filename = 'Laboratorium - Rincian Aset Report.pdf';
         $dompdf->stream($filename);
     }
 
 
     public function print($id = null) {
-        $dataRincianAset = $this->rincianAsetModel->find($id);
+        $dataRincianLabAset = $this->rincianLabAsetModel->find($id);
         
-        if (!is_object($dataRincianAset)) {
+        if (!is_object($dataRincianLabAset)) {
             return view('error/404');
         }
 
-        $spesifikasiMarkup = $dataRincianAset->spesifikasi; 
+        $spesifikasiMarkup = $dataRincianLabAset->spesifikasi; 
         $parsedown = new Parsedown();
         $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-        $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
+        $buktiUrl = $this->generateFileId($dataRincianLabAset->bukti);
 
         $data = [
-            'dataRincianAset'           => $dataRincianAset,
+            'dataRincianLabAset'           => $dataRincianLabAset,
             'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
             'dataSumberDana'            => $this->sumberDanaModel->findAll(),
             'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-            'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
+            'dataIdentitasLab'          => $this->identitasLabModel->findAll(),
             'buktiUrl'                  => $buktiUrl,
             'spesifikasiHtml'           => $spesifikasiHtml,
         ];
 
-        $filePath = APPPATH . 'Views/saranaView/rincianAset/printInfo.php';
+        $filePath = APPPATH . 'Views/labView/rincianLabAset/printInfo.php';
 
         if (!file_exists($filePath)) {
             return view('error/404');
@@ -674,9 +615,9 @@ class RincianAset extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $filename = 'Sarana - Detail Rincian Aset.pdf';
-        $namaSarana = $data['dataRincianAset']->namaSarana;
-        $filename = "Sarana - Detail Rincian Aset $namaSarana.pdf";
+        // $filename = 'Laboratorium - Detail Rincian Aset Lab.pdf';
+        $namaSarana = $data['dataRincianLabAset']->namaSarana;
+        $filename = "Laboratorium - Detail Rincian Aset Lab $namaSarana.pdf";
         $dompdf->stream($filename);
     }
 }

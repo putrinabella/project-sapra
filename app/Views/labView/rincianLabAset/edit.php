@@ -41,13 +41,13 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kodeLab" class="col-sm-3 col-form-label">Lokasi</label>
+                        <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="kodeLab" name="kodeLab">
+                            <select class="form-select" id="idIdentitasLab" name="idIdentitasLab">
                                 <option value="" hidden>Pilih aset</option>
                                 <?php foreach($dataIdentitasLab as $key =>$value): ?>
-                                <option value="<?=$value->kodeLab?>" <?=$dataRincianLabAset->kodeLab ==
-                                    $value->kodeLab ? 'selected' : null ?>>
+                                <option value="<?=$value->idIdentitasLab?>" <?=$dataRincianLabAset->idIdentitasLab ==
+                                    $value->idIdentitasLab ? 'selected' : null ?>>
                                     <?=$value->namaLab?>
                                 </option>
                                 <?php endforeach; ?>

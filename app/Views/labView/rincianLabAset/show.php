@@ -97,7 +97,7 @@
                             <td>Total Sarana</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianLabAset->totalSarana?>
+                                <?= $totalSarana = $dataRincianLabAset->saranaLayak + $dataRincianLabAset->saranaRusak?>
                             </td>
                         </tr>
                         <tr>

@@ -154,7 +154,7 @@
                             <?= $value->saranaRusak ?>
                         </td>
                         <td class="text-center">
-                            <?= $value->totalSarana ?>
+                            <?= $totalSarana = $value->saranaLayak + $value->saranaRusak ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>

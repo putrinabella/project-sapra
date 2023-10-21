@@ -9,7 +9,7 @@ class RincianLabAsetModels extends Model
     protected $table            = 'tblRincianLabAset';
     protected $primaryKey       = 'idRincianLabAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianLabAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasLab', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'bukti', 'kodeRincianLabAset'];
+    protected $allowedFields    = ['idRincianLabAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'kodeLab', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'bukti', 'kodeRincianLabAset'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -18,7 +18,7 @@ class RincianLabAsetModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblRincianLabAset.kodeLab');
         $builder->where('tblRincianLabAset.deleted_at', null);
         $query = $builder->get();
         return $query->getResult();
@@ -30,7 +30,7 @@ class RincianLabAsetModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblRincianLabAset.kodeLab');
         $builder->where('tblRincianLabAset.deleted_at IS NOT NULL');
         $query = $builder->get();
         return $query->getResult();
@@ -43,7 +43,7 @@ class RincianLabAsetModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblRincianLabAset.kodeLab');
         
         $builder->where($this->primaryKey, $id);
 
@@ -57,7 +57,7 @@ class RincianLabAsetModels extends Model
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         "/", tahunPengadaan, 
                         "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", idIdentitasLab)',
+                        "/", kodeLab)',
                         false
                         );
         $builder->where('idRincianLabAset', $id);
@@ -70,7 +70,7 @@ class RincianLabAsetModels extends Model
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         "/", tahunPengadaan, 
                         "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", idIdentitasLab)',
+                        "/", kodeLab)',
                         false
                         );
         $builder->update();

@@ -43,9 +43,9 @@ class ManajemenPeminjaman extends Migration
                 'type' => 'INT',
                 'constraint' => 3,
             ],
-            'kodeLab' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+            'idIdentitasLab' => [
+                'type' => 'INT',
+                'constraint' => 3,
             ],
             'jumlah' => [
                 'type' => 'INT',

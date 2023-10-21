@@ -19,12 +19,12 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('laboratorium/'.$dataRincianAset->idIdentitasPrasarana)?>"
+                        <a href="<?= site_url('laboratorium/'.$dataRincianAset->idIdentitasLab)?>"
                             class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                        <a href="<?= site_url('rincianAset/print/'.$dataRincianAset->idRincianAset)?>"
+                        <a href="<?= site_url('rincianAset/print/'.$dataRincianAset->idRincianLabAset)?>"
                             class="btn btn-outline-success btn-icon-text mb-2 mb-md-0" target="_blank">
                             <i class="btn-icon-prepend" data-feather="printer"></i>
                             Print
@@ -41,7 +41,7 @@
                             <td style="width: 15%;">Kode Aset</td>
                             <td style="width: 2%;">:</td>
                             <td>
-                                <?= $dataRincianAset->kodeRincianAset?>
+                                <?= $dataRincianAset->kodeRincianLabAset?>
                             </td>
                         </tr>
                         <tr>
@@ -55,7 +55,7 @@
                             <td>Lokasi</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->namaPrasarana?>
+                                <?= $dataRincianAset->namaLab?>
                             </td>
                         </tr>
                         <tr>
@@ -97,7 +97,7 @@
                             <td>Total Sarana</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->totalSarana?>
+                                <?= $dataRincianAset->saranaRusak +  $dataRincianAset->saranaLayak ?>
                             </td>
                         </tr>
                         <tr>

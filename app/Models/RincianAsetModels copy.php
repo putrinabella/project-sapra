@@ -9,7 +9,7 @@ class RincianAsetModels extends Model
     protected $table            = 'tblRincianAset';
     protected $primaryKey       = 'idRincianAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli'];
+    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'kodePrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'bukti', 'kodeRincianAset', 'hargaBeli'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -18,7 +18,7 @@ class RincianAsetModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.kodePrasarana = tblRincianAset.kodePrasarana');
         $builder->where('tblRincianAset.deleted_at', null);
         $query = $builder->get();
         return $query->getResult();
@@ -29,7 +29,7 @@ class RincianAsetModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.kodePrasarana = tblRincianAset.kodePrasarana');
         $builder->where('tblRincianAset.deleted_at IS NOT NULL');
         $query = $builder->get();
         return $query->getResult();
@@ -42,7 +42,7 @@ class RincianAsetModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.kodePrasarana = tblRincianAset.kodePrasarana');
         
         $builder->where($this->primaryKey, $id);
 
@@ -50,15 +50,13 @@ class RincianAsetModels extends Model
         return $query->getRow();
     }
 
-    
-
     function updateKodeAset($id) {
         $builder = $this->db->table($this->table);
         $builder->set('kodeRincianAset', 
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         " ", tahunPengadaan, 
                         " ", "SD", LPAD(idSumberDana, 2, "0"), 
-                        " ", idIdentitasPrasarana)',
+                        " ", kodePrasarana)',
                         false
                         );
         $builder->where('idRincianAset', $id);
@@ -71,7 +69,7 @@ class RincianAsetModels extends Model
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         " ", tahunPengadaan, 
                         " ", "SD", LPAD(idSumberDana, 2, "0"), 
-                        " ", idIdentitasPrasarana)',
+                        " ", kodePrasarana)',
                         false
                         );
         $builder->update();

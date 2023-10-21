@@ -74,9 +74,9 @@ class RincianLabAset extends ResourceController
     
     public function create() {
         $data = $this->request->getPost(); 
-        if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodeLab'])) {
-            $totalSarana =  $this->rincianLabAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
-            $data['totalSarana'] = $totalSarana;
+        if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasLab'])) {
+            // $totalSarana =  $this->rincianLabAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+            // $data['totalSarana'] = $totalSarana;
             $this->rincianLabAsetModel->insert($data);
             $this->rincianLabAsetModel->setKodeLabAset();
             return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil disimpan');
@@ -116,13 +116,13 @@ class RincianLabAset extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
             // $uploadedFilePath = $this->uploadFile('bukti');
-            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['kodeLab'])) {
+            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasLab'])) {
                 // if ($uploadedFilePath !== null) {
                 //     $data['bukti'] = $uploadedFilePath;
                 // }
 
-                $totalSarana =  $this->rincianLabAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
-                $data['totalSarana'] = $totalSarana;
+                // $totalSarana =  $this->rincianLabAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+                // $data['totalSarana'] = $totalSarana;
 
                 $this->rincianLabAsetModel->update($id, $data);
                 $this->rincianLabAsetModel->updateKodeLabAset($id);
@@ -234,7 +234,7 @@ class RincianLabAset extends ResourceController
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('H'.($index + 2), $value->saranaLayak);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->saranaRusak);
-            $activeWorksheet->setCellValue('J'.($index + 2), $value->totalSarana);
+            $activeWorksheet->setCellValue('J'.($index + 2), $totalSarana = $value->saranaLayak + $value->saranaRusak);
             $activeWorksheet->setCellValue('K'.($index + 2), $value->bukti);
             $activeWorksheet->setCellValue('L'.($index + 2), $spesifikasiText);
             
@@ -250,8 +250,8 @@ class RincianLabAset extends ResourceController
         $activeWorksheet->getStyle('L')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
         $activeWorksheet->getStyle('L')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         
-        $activeWorksheet->getStyle('A1:Q1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:Q1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:L1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:L1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('A1:L'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:L')->getAlignment()->setWrapText(true);
     
@@ -394,7 +394,7 @@ class RincianLabAset extends ResourceController
         foreach ($keyLab as $index => $value) {
             $activeWorksheet->setCellValue('T'.($index + 2), $value->idIdentitasLab);
             $activeWorksheet->setCellValue('U'.($index + 2), $value->namaLab);
-            $activeWorksheet->setCellValue('V'.($index + 2), $value->kodeLab);
+            $activeWorksheet->setCellValue('V'.($index + 2), $value->idIdentitasLab);
     
             $columns = ['T', 'U', 'V'];
             foreach ($columns as $column) {
@@ -457,7 +457,7 @@ class RincianLabAset extends ResourceController
             $exampleSheet->setCellValue('I'.($index + 2), $value->saranaRusak);
             $exampleSheet->setCellValue('J'.($index + 2), $value->totalSarana);
             $exampleSheet->setCellValue('K'.($index + 2), $value->bukti);
-            $exampleSheet->setCellValue('L'.($index + 2), $value->kodeLab);
+            $exampleSheet->setCellValue('L'.($index + 2), $value->idIdentitasLab);
             
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
             foreach ($columns as $column) {
@@ -510,14 +510,14 @@ class RincianLabAset extends ResourceController
                 $saranaRusak            = $value[8] ?? null;
                 $totalSarana            = $value[9] ?? null;
                 $bukti                  = $value[10] ?? null;
-                $kodeLab          = $value[11] ?? null;
+                $idIdentitasLab          = $value[11] ?? null;
 
                     $data = [
                         'kodeRincianLabAset' => $kodeRincianLabAset,
                         'idIdentitasSarana' => $idIdentitasSarana,
                         'idSumberDana' => $idSumberDana,
                         'idKategoriManajemen' => $idKategoriManajemen,
-                        'kodeLab' => $kodeLab,
+                        'idIdentitasLab' => $idIdentitasLab,
                         'tahunPengadaan' => $tahunPengadaan,
                         'saranaLayak' => $saranaLayak,
                         'saranaRusak' => $saranaRusak,
@@ -527,7 +527,7 @@ class RincianLabAset extends ResourceController
                     ];
                     if (!empty($data['kodeRincianLabAset']) && !empty($data['idIdentitasSarana'])
                         && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen']) 
-                        && !empty($data['kodeLab']) && !empty($data['tahunPengadaan'])
+                        && !empty($data['idIdentitasLab']) && !empty($data['tahunPengadaan'])
                         && !empty($data['saranaLayak']) && !empty($data['saranaRusak']) 
                         && !empty($data['spesifikasi']) && !empty($data['totalSarana']) 
                         && !empty($data['bukti'])) {

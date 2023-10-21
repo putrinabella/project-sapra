@@ -40,7 +40,7 @@
 
 <body>
     <div class="table-responsive">
-    <h2 class="mt-3 mb-4">Rincian Aset LaboratoriumLaboratoriumReport</h2>
+    <h2 class="mt-3 mb-4">Rincian Aset Laboratorium Report</h2>
         <table class="table table-hover" id="dataTable">
             <thead>
                 <tr class="text-center">
@@ -88,7 +88,7 @@
                             <?= $value->saranaRusak ?>
                         </td>
                         <td>
-                            <?= $value->totalSarana ?>
+                            <?=$totalSarana = $value->saranaLayak + $value->saranaRusak ?>
                         </td>
                     </tr>
                     <!-- <tr>

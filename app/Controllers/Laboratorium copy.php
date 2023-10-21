@@ -10,7 +10,7 @@ use App\Models\KategoriManajemenModels;
 use App\Models\IdentitasLabModels; 
 use App\Models\IdentitasGedungModels; 
 use App\Models\IdentitasLantaiModels; 
-use App\Models\RincianLabAsetModels; 
+use App\Models\RincianAsetModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -28,7 +28,7 @@ class Laboratorium extends ResourceController
         $this->identitasLabModel = new IdentitasLabModels();
         $this->identitasGedungModel = new IdentitasGedungModels();
         $this->identitasLantaiModel = new IdentitasLantaiModels();
-        $this->rincianLabAsetModel = new RincianLabAsetModels();
+        $this->rincianAsetModel = new RincianAsetModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -118,7 +118,7 @@ class Laboratorium extends ResourceController
 
     public function showInfo($id = null) {
         if ($id != null) {
-            $dataRincianAset = $this->rincianLabAsetModel->find($id);
+            $dataRincianAset = $this->rincianAsetModel->find($id);
         
             if (is_object($dataRincianAset)) {
                 $spesifikasiMarkup = $dataRincianAset->spesifikasi;
@@ -132,7 +132,7 @@ class Laboratorium extends ResourceController
                     'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasLab'          => $this->identitasLabModel->findAll(),
+                    'dataIdentitasLab'    => $this->identitasLabModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];

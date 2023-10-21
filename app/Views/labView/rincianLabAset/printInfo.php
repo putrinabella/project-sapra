@@ -130,7 +130,7 @@
                     <td>Total Sarana</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianLabAset']->totalSarana?>
+                        <?= $data['dataRincianLabAset']->saranaLayak + $data['dataRincianLabAset']->saranaRusak?>
                     </td>
                 </tr>
                 <tr>

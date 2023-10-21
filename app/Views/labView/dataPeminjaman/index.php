@@ -60,8 +60,6 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
                 <a class="dropdown-item" href="<?= $generatePDFLink ?>">Download as PDF</a>
-                <!-- <a class="dropdown-item" href="<?= site_url('dataPeminjaman/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('dataPeminjaman/generatePDF') ?>">Download as PDF</a> -->
             </div>
         </div>
         <a href="<?= site_url('manajemenPeminjaman') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">

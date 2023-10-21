@@ -4,18 +4,38 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class RincianLabAsetLab extends Migration
+class DataPeminjaman extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'idRincianLabAset' => [
+            'idPeminjaman' => [
                 'type' => 'INT',
                 'constraint' => 3,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'kodeRincianLabAset' => [
+            'kodePeminjaman' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'tanggal' => [ 
+                'type' => 'DATE', 
+                'null' => true,
+            ],
+            'namaPeminjam' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'asalPeminjam' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'status' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'tanggalPengembalian' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
@@ -23,42 +43,29 @@ class RincianLabAsetLab extends Migration
                 'type' => 'INT',
                 'constraint' => 3,
             ],
-            'idSumberDana' => [
-                'type' => 'INT',
-                'constraint' => 2,
-            ],
-            'idKategoriManajemen' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'idIdentitasLab' => [
+            'idIdentitasPrasarana' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'tahunPengadaan' => [
+            'jumlahPeminjaman' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'saranaLayak' => [
+            'jumlahPengembalian' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'saranaRusak' => [
+            'jumlahBarangRusak' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'saranaHilang' => [
+            'jumlahBarangHilang' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'spesifikasi' => [
-                'type' => 'MEDIUMTEXT',
-            ],
-            'bukti' => [
-                'type' => 'TEXT',
-            ],
-            'hargaBeli' => [
-                'type' => 'INT',
+            'namaPenerima' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -74,12 +81,12 @@ class RincianLabAsetLab extends Migration
             ],
         ]);
 
-        $this->forge->addKey('idRincianLabAset', true);
-        $this->forge->createTable('tblRincianLabAset');
+        $this->forge->addKey('idPeminjaman', true);
+        $this->forge->createTable('tblPeminjaman');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tblRincianLabAset');
+        $this->forge->dropTable('tblPeminjaman');
     }
 }

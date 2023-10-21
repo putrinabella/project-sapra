@@ -9,7 +9,7 @@ class LaboratoriumModels extends Model
     protected $table            = 'tblIdentitasLab';
     protected $primaryKey       = 'idIdentitasLab';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['namaLab', 'luas', 'idIdentitasGedung', 'idIdentitasLantai', 'idIdentitasLab'];
+    protected $allowedFields    = ['namaLab', 'luas', 'idIdentitasGedung', 'idIdentitasLantai', 'kodeLab'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -42,7 +42,7 @@ class LaboratoriumModels extends Model
 
     function getSaranaByLabId($idIdentitasLab) {
         $builder = $this->db->table('tblRincianLabAset');
-        $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
@@ -56,9 +56,9 @@ class LaboratoriumModels extends Model
     public function getSaranaByPrasarana($idIdentitasPrasarana)
     {
         $builder = $this->db->table('tblRincianLabAset');
-        $builder->select('tblRincianLabAset.idIdentitasLab');
-        $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
-        $builder->where('tblRincianLabAset.idIdentitasLab', $idIdentitasLab);
+        $builder->select('tblRincianLabAset.kodeLab');
+        $builder->join('tblIdentitasLab', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
+        $builder->where('tblRincianLabAset.idIdentitasPrasarana', $idIdentitasPrasarana);
         $builder->where('tblRincianLabAset.deleted_at', null);
         $query = $builder->get();
 
@@ -70,10 +70,10 @@ class LaboratoriumModels extends Model
         $builder = $this->db->table('tblRincianLabAset');
         $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(tblRincianLabAset.saranaLayak) as totalSaranaLayak');
         $builder->select('tblRincianLabAset.idRincianLabAset');
-        $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
-        $builder->select('SUM(tblRincianLabAset.saranaLayak) - (SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "peminjaman") as asetTersedia', false);
-        $builder->select('(SELECT SUM(jumlahBarangRusak + jumlahBarangHilang) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "pengembalian") as asetTidakTersedia', false);
-        $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+        $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
+        $builder->select('SUM(tblRincianLabAset.saranaLayak) - (SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "peminjaman") as asetTersedia', false);
+        $builder->select('(SELECT SUM(jumlahBarangRusak + jumlahBarangHilang) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "pengembalian") as asetTidakTersedia', false);
+        $builder->join('tblIdentitasLab', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
         $builder->where('tblRincianLabAset.deleted_at', null);
@@ -87,14 +87,14 @@ class LaboratoriumModels extends Model
     // using total sarana (percobaan)
     public function getSaranaByLab($idIdentitasLab) {
         $builder = $this->db->table('tblRincianLabAset');
-        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(tblRincianLabAset.saranaLayak + tblRincianLabAset.saranaRusak) as totalSarana');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(tblRincianLabAset.totalSarana) as totalSarana');
         $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(tblRincianLabAset.saranaRusak) as saranaRusak');
         $builder->select('tblRincianLabAset.idRincianLabAset');
-        $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
-        // $builder->select('SUM(tblRincianLabAset.saranaLayak) - (SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "peminjaman") as asetTersedia', false);
-        $builder->select('(SELECT SUM(jumlahBarangRusak + jumlahBarangHilang) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "pengembalian") as asetTidakTersedia', false);
+        $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
+        // $builder->select('SUM(tblRincianLabAset.saranaLayak) - (SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "peminjaman") as asetTersedia', false);
+        $builder->select('(SELECT SUM(jumlahBarangRusak + jumlahBarangHilang) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "pengembalian") as asetTidakTersedia', false);
         $builder->select('SUM(tblRincianLabAset.saranaRusak) as saranaRusak', false);
-        $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
         $builder->where('tblRincianLabAset.deleted_at', null);
@@ -120,12 +120,12 @@ class LaboratoriumModels extends Model
 //     $builder = $this->db->table('tblRincianLabAset');
 //     $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(tblRincianLabAset.saranaLayak) as totalSaranaLayak');
 //     $builder->select('tblRincianLabAset.idRincianLabAset');
-//     $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
+//     $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
 //     $builder->select('(SUM(tblRincianLabAset.saranaLayak) - COALESCE(SUM(tblManajemenPeminjaman.jumlahBarangRusak), 0) - COALESCE(SUM(tblManajemenPeminjaman.jumlahBarangDikembalikan), 0)) as asetTersedia', false);
 
-//     $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+//     $builder->join('tblIdentitasLab', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
 //     $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-//     $builder->join('tblManajemenPeminjaman', 'tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab', 'left');
+//     $builder->join('tblManajemenPeminjaman', 'tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.kodeLab = tblRincianLabAset.kodeLab', 'left');
 
 //     $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
 //     $builder->where('tblRincianLabAset.deleted_at', null);

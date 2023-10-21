@@ -36,12 +36,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="kodePrasarana" name="kodePrasarana">
+                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
                                 <option value="" hidden>Pilih lokasi</option>
                                 <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
-                                <option value="<?=$value->kodePrasarana?>"><?=$value->namaPrasarana?></option>
+                                <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

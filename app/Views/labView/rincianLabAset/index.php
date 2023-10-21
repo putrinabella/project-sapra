@@ -109,7 +109,7 @@
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=$value->saranaLayak?></td>
                                 <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?=$value->totalSarana?></td>
+                                <td class="text-center"><?= $totalSarana = $value->saranaLayak + $value->saranaRusak ?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset.'/edit') ?>"

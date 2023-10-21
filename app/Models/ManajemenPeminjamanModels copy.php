@@ -9,7 +9,7 @@ class ManajemenPeminjamanModels extends Model
     protected $table            = 'tblManajemenPeminjaman';
     protected $primaryKey       = 'idManajemenPeminjaman';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'status', 'tanggalPengembalian'];
+    protected $allowedFields    = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'kodeLab', 'jumlah', 'tanggal', 'status', 'tanggalPengembalian'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -18,8 +18,8 @@ class ManajemenPeminjamanModels extends Model
 
     function getKodeLabData($idIdentitasSarana){
         $builder = $this->db->table($this->tableRincianLabAset);
-        $builder->select('tblRincianLabAset.idIdentitasLab, tblIdentitasLab.namaLab');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->select('tblRincianLabAset.kodeLab, tblIdentitasLab.namaLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblRincianLabAset.kodeLab');
         $builder->where('tblRincianLabAset.idIdentitasSarana', $idIdentitasSarana);
         $query = $builder->get();
         return $query->getResult();
@@ -37,7 +37,7 @@ class ManajemenPeminjamanModels extends Model
 
     function getLabBySaranaId($idIdentitasSarana) {
         $builder = $this->db->table('tblRincianLabAset');
-        $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->where('tblRincianLabAset.idIdentitasSarana', $idIdentitasSarana);
         $builder->where('tblRincianLabAset.deleted_at', null); 
@@ -57,11 +57,11 @@ class ManajemenPeminjamanModels extends Model
     function getPrasaranaLab() {
         $builder = $this->db->table('tblIdentitasLab');
         $builder->distinct();
-        $builder->select('tblIdentitasLab.idIdentitasLab, tblIdentitasLab.namaLab');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+        $builder->select('tblIdentitasLab.kodeLab, tblIdentitasLab.namaLab');
+        $builder->join('tblRincianLabAset', 'tblRincianLabAset.kodeLab = tblIdentitasLab.kodeLab');
         $builder->join('tblIdentitasSarana', 'tblRincianLabAset.idIdentitasSarana = tblIdentitasSarana.idIdentitasSarana');
         $builder->where('tblRincianLabAset.deleted_at', null);
-        $builder->groupBy('tblIdentitasLab.idIdentitasLab'); 
+        $builder->groupBy('tblIdentitasLab.kodeLab'); 
         $query = $builder->get();
         return $query->getResult();
     }
@@ -69,7 +69,7 @@ class ManajemenPeminjamanModels extends Model
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
         $query = $builder->get();
         return $query->getResult();
@@ -80,7 +80,7 @@ class ManajemenPeminjamanModels extends Model
         $builder->select($columns);
         
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.kodeLab = tblManajemenPeminjaman.kodeLab');
         
         $builder->where($this->primaryKey, $id);
 
