@@ -215,7 +215,7 @@ class RincianLabAset extends ResourceController
         $activeWorksheet->setTitle('Rincian Aset Lab');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Kode Aset', 'Nama Aset', 'Lokasi','Tahun Pengadaan', 'Kategori Manajemen', 'Sumber Dana', 'Aset Layak', 'Aset Rusak', 'Total Aset' , 'Link Dokumentasi', 'Spesifikasi'];
+        $headers = ['No.', 'Kode Aset', 'Nama Aset', 'Lokasi','Tahun Pengadaan', 'Kategori Manajemen', 'Sumber Dana', 'Aset Layak', 'Aset Rusak', 'Aset Hilang', 'Total Aset' , 'Link Dokumentasi', 'Spesifikasi'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:Q1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -234,11 +234,12 @@ class RincianLabAset extends ResourceController
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('H'.($index + 2), $value->saranaLayak);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->saranaRusak);
-            $activeWorksheet->setCellValue('J'.($index + 2), $totalSarana = $value->saranaLayak + $value->saranaRusak);
-            $activeWorksheet->setCellValue('K'.($index + 2), $value->bukti);
-            $activeWorksheet->setCellValue('L'.($index + 2), $spesifikasiText);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->saranaHilang);
+            $activeWorksheet->setCellValue('K'.($index + 2), $totalSarana = $value->saranaLayak + $value->saranaRusak + $value->saranaHilang);
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->bukti);
+            $activeWorksheet->setCellValue('M'.($index + 2), $spesifikasiText);
             
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -247,18 +248,18 @@ class RincianLabAset extends ResourceController
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             }            
         }
-        $activeWorksheet->getStyle('L')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $activeWorksheet->getStyle('L')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $activeWorksheet->getStyle('M')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        $activeWorksheet->getStyle('M')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         
-        $activeWorksheet->getStyle('A1:L1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:L1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:L'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:L')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:M'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:M')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'L') as $column) {
+        foreach (range('A', 'M') as $column) {
             if ($column === 'K') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(20);
-            } else if ($column === 'L') {
+            } else if ($column === 'M') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(40); 
             } else {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);

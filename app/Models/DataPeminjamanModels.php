@@ -142,37 +142,4 @@ class DataPeminjamanModels extends Model
         }
     }
     
-    
-    
-
-    // public function updateSaranaLayak($idIdentitasSarana, $jumlahBarangRusak, $jumlahBarangHilang) {
-    //     $builder = $this->db->table('tblRincianLabAset');
-    //     $builder->join('tblRincianLabAset', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
-    //     $existingAsetTersedia = $builder->select('saranaLayak')
-    //         ->where('idIdentitasSarana', $idIdentitasSarana)
-    //         ->where('idIdentitasLab', $idIdentitasLab) 
-    //         ->get()
-    //         ->getRow();
-    
-    //     if ($existingAsetTersedia) {
-    //         $currentSaranaLayak = $existingAsetTersedia->saranaLayak;
-    //         if ($jumlahBarangRusak != 0 || $jumlahBarangHilang != 0) {
-    //             $newSaranaLayak = $currentSaranaLayak - ($jumlahBarangRusak + $jumlahBarangHilang);
-    
-    //             // Make sure the new value is not negative
-    //             if ($newSaranaLayak < 0) {
-    //                 $newSaranaLayak = 0;
-    //             }
-    
-    //             // Check if the value is different before attempting the update
-    //             if ($currentSaranaLayak !== $newSaranaLayak) {
-    //                 $builder->set('saranaLayak', $newSaranaLayak)
-    //                     ->where('idIdentitasSarana', $idIdentitasSarana)
-    //                     ->where('idIdentitasLab', $idIdentitasLab)
-    //                     ->update();
-    //             }
-    //         }
-    //     }
-    // }
-    
 }
