@@ -46,8 +46,7 @@ class IdentitasPrasarana extends ResourceController
         $namaPrasarana = $data['namaPrasarana'];
     
         if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
-            session()->setFlashdata('input_data', $data);
-            return redirect()->to(site_url('identitasPrasarana/new'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+            return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
         } else {
             unset($data['idIdentitasPrasarana']);
             $this->identitasPrasaranaModel->insert($data);
@@ -55,15 +54,6 @@ class IdentitasPrasarana extends ResourceController
         }
     }
     
-
-    
-    // public function create() {
-    //     $data = $this->request->getPost();
-    //         unset($data['idIdentitasPrasarana']);
-    //         $this->identitasPrasaranaModel->insert($data);
-    //         // $this->identitasPrasaranaModel->setKodePrasarana();
-    //         return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
-    // }
 
     public function edit($id = null) {
         if ($id != null) {
@@ -162,11 +152,11 @@ class IdentitasPrasarana extends ResourceController
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaGedung);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaLantai);
             
-            $activeWorksheet->getStyle('B'.($index + 2))
-                ->getAlignment()
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            // $activeWorksheet->getStyle('B'.($index + 2))
+            //     ->getAlignment()
+            //     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
                 
-            $columns = ['A', 'C', 'D', 'E', 'F' ,'G'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F' ,'G'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -203,7 +193,7 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
+        $headerInputTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'Status'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -226,33 +216,23 @@ class IdentitasPrasarana extends ResourceController
         $latestID = null;
 
         foreach ($data as $index => $value) {
-            if ($index >= 3) {
+            if ($index >= 1) {
                 break;
             }
 
-            $latestData = end($data); 
-
-            if ($latestID === null) {
-                $latestID = $latestData->idIdentitasPrasarana +2;
-            } else {
-                $latestID = "=H".($index + 1)." + 1";
-            }
-
-            $formula = '=CONCAT("P", TEXT(H'.($index + 2).', "000"), "/G", TEXT(F'.($index + 2).', "00"), "/L", TEXT(G'.($index + 2).', "00"))';
+            $getFormula = '=IF(OR(ISNUMBER(MATCH(B2, $R$2:$R$'.(count($keyPrasarana) + 1).', 0)), ISNUMBER(MATCH(C2, $S$2:$S$'.(count($keyPrasarana) + 1).', 0)), B2<>"", C2<>""), IF(AND(B2<>"", C2<>"", D2<>"", E2<>"", F2<>"", G2<>""), "DUPLICATE DATA", "ERROR empty data"), "CORRECT")';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $formula);
+            $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
             $activeWorksheet->setCellValue('F'.($index + 2), '');
             $activeWorksheet->setCellValue('G'.($index + 2), '');
-            $activeWorksheet->setCellValue('H'.($index + 2), $latestID);
+            $activeWorksheet->setCellValue('H'.($index + 2), $getFormula);
             
-            $activeWorksheet->getStyle('B'.($index + 2))
-                ->getAlignment()
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-                
-            $columns = ['A', 'C', 'D', 'E', 'F', 'G' ,'H'];
+            
+
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -266,7 +246,7 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->getStyle('A:H')->getAlignment()->setWrapText(true);
         
         foreach (range('A', 'H') as $column) {
-            if ($column === 'D') {
+            if ($column === 'D' && $column === 'E') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(20);
             } else {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
@@ -358,7 +338,7 @@ class IdentitasPrasarana extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headerExampleTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Prasarana'];
+        $headerExampleTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -373,13 +353,12 @@ class IdentitasPrasarana extends ResourceController
             $exampleSheet->setCellValue('E'.($index + 2), $value->luas);
             $exampleSheet->setCellValue('F'.($index + 2), $value->idIdentitasGedung);
             $exampleSheet->setCellValue('G'.($index + 2), $value->idIdentitasLantai);
-            $exampleSheet->setCellValue('H'.($index + 2), $value->idIdentitasPrasarana);
             
             $exampleSheet->getStyle('B'.($index + 2))
                 ->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
                 
-            $columns = ['A', 'C', 'D', 'E', 'F', 'G', 'H'];
+            $columns = ['A', 'C', 'D', 'E', 'F', 'G'];
             foreach ($columns as $column) {
                 $exampleSheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -387,12 +366,12 @@ class IdentitasPrasarana extends ResourceController
             }    
         }
 
-        $exampleSheet->getStyle('A1:H1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
-        $exampleSheet->getStyle('A1:H'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $exampleSheet->getStyle('A1:G'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:G')->getAlignment()->setWrapText(true);
         
-        foreach (range('A', 'H') as $column) {
+        foreach (range('A', 'G') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
