@@ -199,6 +199,9 @@ $(document).ready(function () {
       tanggalPengembalian: {
         required: true,
       }, 
+      tipe: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -283,7 +286,7 @@ $(document).ready(function () {
         required: "Silahkan pilih sebuah opsi",
       },
       kodePrasarana: {
-        required: "Silahkan pilih sebuah opsi",
+        required: "Silahkan masukkan kode prasarana",
       },
       kodeLab: {
         required: "Silahkan pilih sebuah opsi",
@@ -398,6 +401,9 @@ $(document).ready(function () {
       }, 
       jumlah: {
         required: "Silahkan masukkan jumlah yang dingin dipinjam",
+      }, 
+      tipe: {
+        required: "Silahkan pilih tipe prasarana",
       }, 
     },
     errorPlacement: function (label, element) {

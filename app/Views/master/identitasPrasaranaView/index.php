@@ -64,7 +64,6 @@
                             <?=session()->getFlashdata('success')?>
                         </div>
                     </div>
-                    <br>
                     <?php endif; ?>
                     <?php if(session()->getFlashdata('error')) :?>
                     <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
@@ -75,7 +74,6 @@
                             <?=session()->getFlashdata('error')?>
                         </div>
                     </div>
-                    <br>
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
@@ -89,7 +87,7 @@
                                 <th>Lokasi Gedung</th>
                                 <th>Lokasi Lantai</th>
                                 <th>Luas</th>
-                                <th style="width: 20%;">Aksi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">

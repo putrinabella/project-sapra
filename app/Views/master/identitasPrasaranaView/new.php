@@ -19,22 +19,36 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h4>Tambah Data</h4>
-                    <!-- <div class="secion-header-back">
-                        <a href="<?= site_url('identitasPrasarana')?>" class="btn btn-outline-primary btn-icon-text">
-                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
-                            Back
-                        </a>
-                    </div> -->
                 </div>
             </div>
             <div class="card-body">
+                <div>
+                    <?php if(session()->getFlashdata('error')) :?>
+                    <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
+                        <div class="alert-body">
+                            <b>Error!</b>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
+                            <?=session()->getFlashdata('error')?>
+                        </div>
+                    </div>
+                    <br>
+                    <?php endif; ?>
+                </div>
                 <form action="<?= site_url('identitasPrasarana')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
+                    <div class="row mb-3">
+                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Kode Prasarana</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kodePrasarana" name="kodePrasarana"
+                                placeholder="Masukkan kode prasarana">
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="namaPrasarana" class="col-sm-3 col-form-label">Identitas Prasarana</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaPrasarana" name="namaPrasarana"
-                                placeholder="Masukkan Identitas Prasarana">
+                                placeholder="Masukkan identitas prasarana">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -73,7 +87,7 @@
                         <label for="luas" class="col-sm-3 col-form-label">Luas</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="luas" name="luas"
-                                placeholder="Masukkan Luas">
+                                placeholder="Masukkan luas (satuan meter)">
                         </div>
                     </div>
                     <div class="row mb-3">

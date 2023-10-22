@@ -39,14 +39,31 @@ class IdentitasPrasarana extends ResourceController
         return view('master/identitasPrasaranaView/new', $data);        
     }
 
-    
     public function create() {
         $data = $this->request->getPost();
+    
+        $kodePrasarana = $data['kodePrasarana'];
+        $namaPrasarana = $data['namaPrasarana'];
+    
+        if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
+            session()->setFlashdata('input_data', $data);
+            return redirect()->to(site_url('identitasPrasarana/new'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
             unset($data['idIdentitasPrasarana']);
             $this->identitasPrasaranaModel->insert($data);
-            $this->identitasPrasaranaModel->setKodePrasarana();
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
+        }
     }
+    
+
+    
+    // public function create() {
+    //     $data = $this->request->getPost();
+    //         unset($data['idIdentitasPrasarana']);
+    //         $this->identitasPrasaranaModel->insert($data);
+    //         // $this->identitasPrasaranaModel->setKodePrasarana();
+    //         return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
+    // }
 
     public function edit($id = null) {
         if ($id != null) {
@@ -71,7 +88,7 @@ class IdentitasPrasarana extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
                 $this->identitasPrasaranaModel->update($id, $data);
-                $this->identitasPrasaranaModel->updateKodePrasarana($id);
+                // $this->identitasPrasaranaModel->updateKodePrasarana($id);
                 return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');

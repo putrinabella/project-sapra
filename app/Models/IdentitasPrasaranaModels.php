@@ -31,6 +31,14 @@ class IdentitasPrasaranaModels extends Model
         return $query->getResult();
     }
 
+    public function isDuplicate($kodePrasarana, $namaPrasarana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodePrasarana', $kodePrasarana)
+            ->orWhere('namaPrasarana', $namaPrasarana)
+            ->countAllResults() > 0;
+    }
+    
+
     // function getPaginated($num, $keyword = null) {
     //     $builder = $this->builder();
     //     $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
@@ -43,20 +51,20 @@ class IdentitasPrasaranaModels extends Model
     //     return $data;
     // }
 
-    function updateKodePrasarana($id) {
-        $builder = $this->db->table($this->table);
-        $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
-                        " G", LPAD(idIdentitasGedung, 2, "0"), 
-                        " L", LPAD(idIdentitasLantai, 2, "0"))', false);
-        $builder->where('idIdentitasPrasarana', $id);
-        $builder->update();
-    }
+    // function updateKodePrasarana($id) {
+    //     $builder = $this->db->table($this->table);
+    //     $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
+    //                     " G", LPAD(idIdentitasGedung, 2, "0"), 
+    //                     " L", LPAD(idIdentitasLantai, 2, "0"))', false);
+    //     $builder->where('idIdentitasPrasarana', $id);
+    //     $builder->update();
+    // }
 
-    function setKodePrasarana() {
-        $builder = $this->db->table($this->table);
-        $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
-                        " G", LPAD(idIdentitasGedung, 2, "0"), 
-                        " L", LPAD(idIdentitasLantai, 2, "0"))', false);
-        $builder->update();
-    }
+    // function setKodePrasarana() {
+    //     $builder = $this->db->table($this->table);
+    //     $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
+    //                     " G", LPAD(idIdentitasGedung, 2, "0"), 
+    //                     " L", LPAD(idIdentitasLantai, 2, "0"))', false);
+    //     $builder->update();
+    // }
 }
