@@ -1,12 +1,12 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Kategori Manajemen &verbar; SARPRA </title>
+<title>Recycle Bin Kategori Barang &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Kategori Manajemen</h4>
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Kategori Barang</h4>
 <br>
 
 <div class="row">
@@ -68,8 +68,8 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID</th>
-                                <th>Nama KategoriManajemen</th>
+                                <th>Kode</th>
+                                <th>Nama Kategori Barang</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -79,9 +79,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center">
-                                    <?= sprintf('%03d', $value->idKategoriManajemen) ?>
-                                </td>
+                                <td class="text-center"><?=$value->kodeKategoriManajemen?></td>
                                 <td class="text-left"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('kategoriManajemen/restore/'.$value->idKategoriManajemen) ?>"

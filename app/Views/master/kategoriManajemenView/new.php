@@ -25,9 +25,15 @@
                 <form action="<?= site_url('kategoriManajemen')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
-                        <label for="namaKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
+                        <label for="kodeKategoriManajemen" class="col-sm-3 col-form-label">Kode Kategori Barang</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaKategoriManajemen" name="namaKategoriManajemen" placeholder="Masukkan Kategori Manajemen">
+                        <input type="text" class="form-control" id="kodeKategoriManajemen" name="kodeKategoriManajemen" placeholder="Masukkan kode kategori barang">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="namaKategoriManajemen" class="col-sm-3 col-form-label">Nama Kategori Barang</label>
+                        <div class="col-sm-9">
+                        <input type="text" class="form-control" id="namaKategoriManajemen" name="namaKategoriManajemen" placeholder="Masukkan nama kategori barang">
                         </div>
                     </div>
                     

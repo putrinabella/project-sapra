@@ -45,6 +45,10 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      kodeKategoriManajemen: {
+        required: true,
+        maxlength: 255,
+      },
       namaKategoriManajemen: {
         required: true,
         maxlength: 255,
@@ -241,9 +245,13 @@ $(document).ready(function () {
         required: "Silahkan masukkan nama status layanan",
         maxlength: "Nama status layanan tidak boleh melebihi 255 karakter",
       },
+      kodeKategoriManajemen: {
+        required: "Silahkan masukkan kode kategori barang",
+        maxlength: "Nama kategori barang tidak boleh melebihi 255 karakter",
+      },
       namaKategoriManajemen: {
-        required: "Silahkan masukkan nama kategori manajemen",
-        maxlength: "Nama kategori manajemen tidak boleh melebihi 255 karakter",
+        required: "Silahkan masukkan nama kategori barang",
+        maxlength: "Nama kategori barang tidak boleh melebihi 255 karakter",
       },
       saranaLayak: {
         required: "Silahkan masukkan jumlah sarana layak",

@@ -118,14 +118,14 @@ class KategoriManajemen extends ResourcePresenter
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
     
-        $headers = ['No.', 'ID Kategori Manajemen', 'Nama KategoriManajemen'];
+        $headers = ['No.', 'Kode', 'Nama Kategori Barang'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
-            $idKategoriManajemen = str_pad($value->idKategoriManajemen, 3, '0', STR_PAD_LEFT);
+            // $idKategoriManajemen = str_pad($value->idKategoriManajemen, 3, '0', STR_PAD_LEFT);
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), 'KM'.$idKategoriManajemen);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeKategoriManajemen);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaKategoriManajemen);
     
             $columns = ['A', 'B'];
@@ -149,7 +149,7 @@ class KategoriManajemen extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Data Master - Kategori Manajemen.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Kategori Barang.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -172,13 +172,14 @@ class KategoriManajemen extends ResourcePresenter
                     continue;
                 }
             
-                $namaKategoriManajemen = $value[1] ?? null;
+                $kodeKategoriManajemen = $value[1] ?? null;
+                $namaKategoriManajemen = $value[2] ?? null;
             
                 $data = [
+                    'kodeKategoriManajemen' => $kodeKategoriManajemen,
                     'namaKategoriManajemen' => $namaKategoriManajemen,
                 ];
-
-                if (!empty($data['namaKategoriManajemen'])) {
+                if (!empty($data['kodeKategoriManajemen']) && !empty($data['namaKategoriManajemen'])) {
                     $this->kategoriManajemenModel->insert($data);
                 } else {
                     return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Pastikan semua data telah diisi!');
@@ -188,6 +189,86 @@ class KategoriManajemen extends ResourcePresenter
         } else {
             return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
+    }
+
+    public function createTemplate() {
+        $data = $this->kategoriManajemenModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+
+        $headers = ['No.', 'Kode' , 'Nama Kategori Barang'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), '');
+            $activeWorksheet->setCellValue('C'.($index + 2), '');
+    
+            $columns = ['A', 'B', 'C'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headers = ['No.', 'Kode' , 'Nama Kategori Barang'];
+        $exampleSheet->fromArray([$headers], NULL, 'A1');
+        $exampleSheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 5) {
+                break;
+            }
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeKategoriManajemen);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->namaKategoriManajemen);
+    
+            $columns = ['A', 'B', 'C'];
+
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $exampleSheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $exampleSheet->getStyle('A1:C'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Kategori Manajemen Example.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
     }
 
     public function generatePDF() {
@@ -212,7 +293,7 @@ class KategoriManajemen extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Kategori Manajemen Report.pdf';
+        $filename = 'Kategori Barang Report.pdf';
         $dompdf->stream($filename);
     }
 }

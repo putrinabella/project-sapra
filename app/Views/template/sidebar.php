@@ -198,7 +198,7 @@
                     <a href="<?= site_url('statusLayanan') ?>" class="nav-link">Status Layanan</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Manajemen </a>
+                    <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Barang </a>
                 </li>
             </ul>
         </div>

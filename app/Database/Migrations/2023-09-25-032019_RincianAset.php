@@ -31,10 +31,6 @@ class RincianAset extends Migration
                 'type' => 'INT',
                 'constraint' => 3,
             ],
-            // 'kodePrasarana' => [
-            //     'type' => 'VARCHAR',
-            //     'constraint' => 255,
-            // ],
             'idIdentitasPrasarana' => [
                 'type' => 'INT',
                 'constraint' => 3,
@@ -51,7 +47,7 @@ class RincianAset extends Migration
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'saranaHilang' => [
+            'saranaDimusnahkan' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
@@ -63,14 +59,6 @@ class RincianAset extends Migration
             ],
             'hargaBeli' => [
                 'type' => 'INT',
-            ],
-            'dipinjam' => [
-                'type' => 'BOOLEAN',
-                'default' => false, 
-            ],
-            'dimusnahkan' => [
-                'type' => 'BOOLEAN',
-                'default' => false, 
             ],
             'created_at' => [
                 'type' => 'DATETIME',

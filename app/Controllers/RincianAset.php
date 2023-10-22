@@ -112,40 +112,6 @@ class RincianAset extends ResourceController
         }
     }
 
-    // public function create() {
-    //     $data = $this->request->getPost();
-
-    //     $feasibleQuantity = (int) $data['saranaLayak'];
-    //     $damagedQuantity = (int) $data['saranaRusak'];
-    //     // $lostQuantity = (int) $data['saranaHilang'];
-
-    //     unset($data['saranaLayak']);
-    //     unset($data['saranaRusak']);
-    //     unset($data['saranaHilang']);
-
-    //     if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
-    //         $insertedIds = [];
-
-    //         for ($i = 0; $i < $feasibleQuantity; $i++) {
-    //             $data['statusAset'] = 'layak'; 
-    //             $this->rincianAsetModel->insert($data);
-    //             $insertedIds[] = $this->db->insertID();
-    //         }
-
-    //         for ($i = 0; $i < $damagedQuantity; $i++) {
-    //             $data['statusAset'] = 'rusak';
-    //             $this->rincianAsetModel->insert($data);
-    //             $insertedIds[] = $this->db->insertID();
-    //         }
-
-    //         $this->rincianAsetModel->setKodeAset();
-    //         return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
-    //         // return redirect()->to(site_url('rincianAset/show/' . end($insertedIds)))->with('success', 'Data berhasil disimpan');
-    //     } else {
-    //         return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
-    //     }
-    // }
-
 
     private function uploadFile($fieldName) {
         $file = $this->request->getFile($fieldName);

@@ -9,7 +9,7 @@ class KategoriManajemenModels extends Model
     protected $table            = 'tblKategoriManajemen';
     protected $primaryKey       = 'idKategoriManajemen';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['namaKategoriManajemen'];
+    protected $allowedFields    = ['kodeKategoriManajemen', 'namaKategoriManajemen'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 }

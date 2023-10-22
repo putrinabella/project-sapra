@@ -1,20 +1,20 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Kategori Manajemen &verbar; SARPRA </title>
+<title>Kategori Barang &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Data Master</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Kategori Manajemen</li>
+        <li class="breadcrumb-item active" aria-current="page">Kategori Barang</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Kategori Manajemen</h4>
+        <h4 class="mb-3 mb-md-0">Kategori Barang</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('kategoriManajemen/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
@@ -39,7 +39,7 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/KategoriManajemen_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="<?=site_url('kategoriManajemen/createTemplate') ?> ">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
@@ -84,8 +84,8 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID</th>
-                                <th>Nama Kategori Manajemen</th>
+                                <th>Kode</th>
+                                <th>Nama Kategori Barang</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -95,9 +95,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center">
-                                    KM<?= sprintf('%02d', $value->idKategoriManajemen) ?>
-                                </td>
+                                <td class="text-center"><?=$value->kodeKategoriManajemen?></td>
                                 <td class="text-left"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('kategoriManajemen/edit/'.$value->idKategoriManajemen) ?>"

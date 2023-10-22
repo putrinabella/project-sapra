@@ -124,6 +124,7 @@ $routes->delete('statusLayanan/deletePermanent', 'StatusLayanan::deletePermanent
 $routes->presenter('statusLayanan', ['filter' => 'isLoggedIn']);
 
 // Kategori Manajemen
+$routes->get('kategoriManajemen/createTemplate', 'KategoriManajemen::createTemplate');
 $routes->get('kategoriManajemen/generatePDF', 'KategoriManajemen::generatePDF');
 $routes->get('kategoriManajemen/export', 'KategoriManajemen::export');
 $routes->post('kategoriManajemen/import', 'KategoriManajemen::import');
