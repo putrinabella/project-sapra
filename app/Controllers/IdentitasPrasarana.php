@@ -219,8 +219,13 @@ class IdentitasPrasarana extends ResourceController
             if ($index >= 1) {
                 break;
             }
+            // $getFormula = '=IF(OR(B2="", C2="", D2="", E2="", F2="", G2=""), "ERROR empty data", IF(AND(B2<>"", C2<>"", D2<>"", E2<>"", F2<>"", G2<>""), IF(OR(ISNUMBER(MATCH(B2, $R$2:$R$'.(count($keyPrasarana) + 1).', 0)), ISNUMBER(MATCH(C2, $S$2:$S$'.(count($keyPrasarana) + 1).', 0))), "DUPLICATE DATA", "CORRECT"), "CORRECT"))';
+            // $getFormula = '=IF(OR(B2="", C2="", D2="", E2="", F2="", G2=""), "ERROR empty data", IF(AND(B2<>"", C2<>"", D2<>"", E2<>"", F2<>"", G2<>""), IF(OR(ISNUMBER(MATCH(B2, $R$2:$R$'.(count($keyPrasarana) + 1).', 0)), ISNUMBER(MATCH(C2, $S$2:$S$'.(count($keyPrasarana) + 1).', 0))), "DUPLICATE DATA", "CORRECT"), "CORRECT"))';
 
-            $getFormula = '=IF(OR(ISNUMBER(MATCH(B2, $R$2:$R$'.(count($keyPrasarana) + 1).', 0)), ISNUMBER(MATCH(C2, $S$2:$S$'.(count($keyPrasarana) + 1).', 0)), B2<>"", C2<>""), IF(AND(B2<>"", C2<>"", D2<>"", E2<>"", F2<>"", G2<>""), "DUPLICATE DATA", "ERROR empty data"), "CORRECT")';
+            // $getFormula = '=IF(OR(B2="", C2="", D2="", E2="", F2="", G2=""), "ERROR empty data", IF(AND(B2<>"", C2<>"", D2<>"", E2<>"", F2<>"", G2<>""), IF(OR(ISNUMBER(MATCH(B2, $R$2:$R$'.(count($keyPrasarana) + 1).', 0)), ISNUMBER(MATCH(C2, $S$2:$S$'.(count($keyPrasarana) + 1).', 0))), "DUPLICATE DATA", IF(OR(ISNUMBER(MATCH(D2, $J$2:$J$3, 0)), ISNUMBER(MATCH(F2, $L$2:$L$'.(count($keyLantai) + 1).', 0)), ISNUMBER(MATCH(G2, $O$2:$O$'.(count($keyGedung) + 1).', 0))), "Tipe, ID Identitas Gedung, atau ID Identitas lantai tidak sesuai", "CORRECT")), "CORRECT"))';
+            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyPrasarana)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyPrasarana)+1).',0))),"DUPLICATE DATA",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyLantai)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyGedung)+1).',0))),"CORRECT","Tipe, ID Identitas Gedung, atau ID Identitas lantai tidak sesuai")),"ERROR empty data")';
+
+            
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
@@ -246,7 +251,7 @@ class IdentitasPrasarana extends ResourceController
         $activeWorksheet->getStyle('A:H')->getAlignment()->setWrapText(true);
         
         foreach (range('A', 'H') as $column) {
-            if ($column === 'D' && $column === 'E') {
+            if ($column === 'D' || $column === 'E') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(20);
             } else {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
@@ -383,7 +388,7 @@ class IdentitasPrasarana extends ResourceController
         $writer->save('php://output');
         exit();
     }
-     
+    
     public function import() {
         $file = $this->request->getFile('formExcel');
         $extension = $file->getClientExtension();
@@ -406,6 +411,7 @@ class IdentitasPrasarana extends ResourceController
                 $idIdentitasGedung  = $value[5] ?? null;
                 $idIdentitasLantai  = $value[6] ?? null;
                 $kodePrasarana      = $value[1] ?? null;
+                $status             = $value[7] ?? null;
 
                 $data = [
                     'namaPrasarana' => $namaPrasarana,
@@ -414,17 +420,24 @@ class IdentitasPrasarana extends ResourceController
                     'idIdentitasGedung' => $idIdentitasGedung,
                     'idIdentitasLantai' => $idIdentitasLantai,
                     'kodePrasarana' => $kodePrasarana,
+                    'status' => $status,
                 ];
 
-                if (!empty($data['namaPrasarana']) && !empty($data['tipe']) && !empty($data['luas']) && !empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai']) && !empty($data['kodePrasarana'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Pastikan excel sudah benar');
+                if ($status == 'CORRECT') {
+                    if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
+                        return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
                     } else {
                         $this->identitasPrasaranaModel->insert($data);
+                        return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan.');
                     }
+                } else if ($status == 'ERROR empty data') {
+                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Pastikan semua data telah terisi.');
+                } else if ($status == 'DUPLICATE DATA') {
+                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
                 } else {
-                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Pastikan semua data telah diisi!');
+                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Tipe, ID Lantai atau ID Gedung tidak sesuai!');
                 }
+                
             }
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diimport');
         } else {
