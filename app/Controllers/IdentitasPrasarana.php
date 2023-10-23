@@ -225,7 +225,7 @@ class IdentitasPrasarana extends ResourceController
             if ($index >= 1) {
                 break;
             }
-            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyPrasarana)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyPrasarana)+1).',0))),"DUPLICATE DATA",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyGedung)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyLantai)+1).',0))),"CORRECT","Tipe, ID Identitas Gedung, atau ID Identitas lantai tidak sesuai")),"ERROR empty data")';
+            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyPrasarana)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyPrasarana)+1).',0))),"ERROR: Duplicate Data",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyGedung)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyLantai)+1).',0))),"CORRECT","ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai!")),"ERROR: Empty data")';
 
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
@@ -389,31 +389,35 @@ class IdentitasPrasarana extends ResourceController
         $writer->save('php://output');
         exit();
     }
+
     
     public function import() {
         $file = $this->request->getFile('formExcel');
         $extension = $file->getClientExtension();
-        if($extension == 'xlsx' || $extension == 'xls') {
-            if($extension == 'xls') {
+        $hasErrors = false;
+        $errorMessage = '';
+    
+        if ($extension == 'xlsx' || $extension == 'xls') {
+            if ($extension == 'xls') {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
             }
             $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-            
+    
             $spreadsheet = $reader->load($file);
             $theFile = $spreadsheet->getActiveSheet()->toArray();
-
+    
             foreach ($theFile as $key => $value) {
                 if ($key == 0) {
                     continue;
                 }
-                $namaPrasarana      = $value[2] ?? null;
-                $tipe               = $value[3] ?? null;
-                $luas               = $value[4] ?? null;
-                $idIdentitasGedung  = $value[5] ?? null;
-                $idIdentitasLantai  = $value[6] ?? null;
-                $kodePrasarana      = $value[1] ?? null;
-                $status             = $value[7] ?? null;
-
+                $namaPrasarana = $value[2] ?? null;
+                $tipe = $value[3] ?? null;
+                $luas = $value[4] ?? null;
+                $idIdentitasGedung = $value[5] ?? null;
+                $idIdentitasLantai = $value[6] ?? null;
+                $kodePrasarana = $value[1] ?? null;
+                $status = $value[7] ?? null;
+    
                 $data = [
                     'namaPrasarana' => $namaPrasarana,
                     'tipe' => $tipe,
@@ -423,28 +427,41 @@ class IdentitasPrasarana extends ResourceController
                     'kodePrasarana' => $kodePrasarana,
                     'status' => $status,
                 ];
-
+    
                 if ($status == 'CORRECT') {
                     if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
-                        return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+                        $hasErrors = true;
+                        $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
+                        break;
                     } else {
                         $this->identitasPrasaranaModel->insert($data);
-                        return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan.');
                     }
-                } else if ($status == 'ERROR empty data') {
-                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Pastikan semua data telah terisi.');
-                } else if ($status == 'DUPLICATE DATA') {
-                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+                } else if ($status == 'ERROR: Empty data') {
+                    $hasErrors = true;
+                    $errorMessage = 'Pastikan semua data telah terisi.';
+                    break;
+                } else if ($status == 'ERROR: Duplicate Data') {
+                    $hasErrors = true;
+                    $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
+                    break;
                 } else {
-                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Tipe, ID Lantai atau ID Gedung tidak sesuai!');
+                    $hasErrors = true;
+                    $errorMessage = 'ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai!';
+                    break;
                 }
-                
             }
-            return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diimport');
+    
+            if ($hasErrors) {
+                return redirect()->to(site_url('identitasPrasarana'))->with('error', $errorMessage);
+            } else {
+                return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diimport');
+            }
         } else {
             return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
+    
+
 
     public function generatePDF() {
         $filePath = APPPATH . 'Views/master/identitasPrasaranaView/print.php';
