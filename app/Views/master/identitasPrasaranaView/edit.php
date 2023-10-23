@@ -26,6 +26,13 @@
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
+                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Identitas Prasarana</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kodePrasarana" name="kodePrasarana"
+                            value="<?=$dataIdentitasPrasarana->kodePrasarana?>"  placeholder="Masukkan kode prasarana" >
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="namaPrasarana" class="col-sm-3 col-form-label">Identitas Prasarana</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaPrasarana" name="namaPrasarana"

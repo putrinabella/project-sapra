@@ -77,9 +77,15 @@ class IdentitasPrasarana extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
+            $kodePrasarana = $data['kodePrasarana'];
+            $namaPrasarana = $data['namaPrasarana'];
+             
+            if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
+                return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+            } else {
                 $this->identitasPrasaranaModel->update($id, $data);
-                // $this->identitasPrasaranaModel->updateKodePrasarana($id);
                 return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
+            }
         } else {
             return view('error/404');
         }
