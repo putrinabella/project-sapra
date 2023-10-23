@@ -12,4 +12,11 @@ class SumberDanaModels extends Model
     protected $allowedFields    = ['kodeSumberDana', 'namaSumberDana'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
+
+    public function isDuplicate($kodeSumberDana, $namaSumberDana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodeSumberDana', $kodeSumberDana)
+            ->orWhere('namaSumberDana', $namaSumberDana)
+            ->countAllResults() > 0;
+    }
 }

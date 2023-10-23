@@ -31,11 +31,18 @@ class KategoriManajemen extends ResourcePresenter
         return view('master/kategoriManajemenView/new');
     }
 
-    public function create()
-    {
+    public function create() {
         $data = $this->request->getPost();
-        $this->kategoriManajemenModel->insert($data);
-        return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil disimpan');
+    
+        $kodeKategoriManajemen = $data['kodeKategoriManajemen'];
+        $namaKategoriManajemen = $data['namaKategoriManajemen'];
+    
+        if ($this->kategoriManajemenModel->isDuplicate($kodeKategoriManajemen, $namaKategoriManajemen)) {
+            return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
+            $this->kategoriManajemenModel->insert($data);
+            return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil disimpan');
+        }
     }
 
     public function edit($id = null)
@@ -57,8 +64,16 @@ class KategoriManajemen extends ResourcePresenter
     public function update($id = null)
     {
         $data = $this->request->getPost();
-        $this->kategoriManajemenModel->update($id, $data);
-        return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil update');
+    
+        $kodeKategoriManajemen = $data['kodeKategoriManajemen'];
+        $namaKategoriManajemen = $data['namaKategoriManajemen'];
+    
+        if ($this->kategoriManajemenModel->isDuplicate($kodeKategoriManajemen, $namaKategoriManajemen)) {
+            return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
+            $this->kategoriManajemenModel->update($id, $data);
+            return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil update');
+        }
     }
 
     public function remove($id = null)

@@ -20,25 +20,29 @@ class SumberDana extends ResourcePresenter
         return view('master/sumberDanaView/index', $data);
     }
 
-        public function show($id = null)
-    {
+    public function show($id = null) {
         //
     }
 
-        public function new()
-    {
+    public function new() {
         return view('master/sumberDanaView/new');
     }
 
-        public function create()
-    {
+    public function create() {
         $data = $this->request->getPost();
-        $this->sumberDanaModel->insert($data);
-        return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil disimpan');
+    
+        $kodeSumberDana = $data['kodeSumberDana'];
+        $namaSumberDana = $data['namaSumberDana'];
+    
+        if ($this->sumberDanaModel->isDuplicate($kodeSumberDana, $namaSumberDana)) {
+            return redirect()->to(site_url('sumberDana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
+            $this->sumberDanaModel->insert($data);
+            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil disimpan');
+        }
     }
 
-        public function edit($id = null)
-    {
+    public function edit($id = null) {
         if ($id != null) {
             $dataSumberDana = $this->sumberDanaModel->where('idSumberDana', $id)->first();
     
@@ -54,11 +58,18 @@ class SumberDana extends ResourcePresenter
     }
     
 
-        public function update($id = null)
-    {
+    public function update($id = null) {
         $data = $this->request->getPost();
-        $this->sumberDanaModel->update($id, $data);
-        return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil update');
+    
+        $kodeSumberDana = $data['kodeSumberDana'];
+        $namaSumberDana = $data['namaSumberDana'];
+    
+        if ($this->sumberDanaModel->isDuplicate($kodeSumberDana, $namaSumberDana)) {
+            return redirect()->to(site_url('sumberDana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
+            $this->sumberDanaModel->update($id, $data);
+            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil update');
+        }
     }
 
         public function remove($id = null)
