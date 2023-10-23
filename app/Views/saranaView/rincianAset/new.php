@@ -152,50 +152,9 @@
     });
 
     function containsGoogleDriveLink(text) {
-        // Regular expression to check if the text contains a Google Drive link
         const driveLinkPattern = /https:\/\/drive\.google\.com\/file\/d\//;
         return driveLinkPattern.test(text);
     }
 </script>
-
-                    <!-- <div class="row mb-3">
-                        <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan link dokumentasi">
-                            <p id="bukti-error" class="text-danger"></p>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('rincianAset') ?>" class="btn btn-secondary me-2">Cancel</a>
-                            <button type="reset" class="btn btn-danger me-2">Reset</button>
-                            <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    const buktiInput = document.getElementById('bukti');
-    const buktiError = document.getElementById('bukti-error');
-    const submitButton = document.getElementById('submit-button');
-
-    submitButton.addEventListener('click', (event) => {
-        const inputText = buktiInput.value;
-        if (!isValidGoogleDriveURL(inputText)) {
-            buktiError.textContent = 'Your input is not a valid Google Drive link';
-            event.preventDefault(); // Prevent form submission
-        }
-    });
-
-    function isValidGoogleDriveURL(text) {
-        // Regular expression to match Google Drive links
-        const driveLinkPattern = /^https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+\/view\?usp=sharing$/;
-        return driveLinkPattern.test(text);
-    }
-</script> -->
 
 <?= $this->endSection(); ?>
