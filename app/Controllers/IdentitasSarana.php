@@ -184,82 +184,6 @@ class IdentitasSarana extends ResourcePresenter
         exit();
     }
 
-    public function import() {
-        $file = $this->request->getFile('formExcel');
-        $extension = $file->getClientExtension();
-        $hasErrors = false;
-        $errorMessage = '';
-        
-        if($extension == 'xlsx' || $extension == 'xls') {
-            if($extension == 'xls') {
-                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-            }
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-            
-            $spreadsheet = $reader->load($file);
-            $theFile = $spreadsheet->getActiveSheet()->toArray();
-
-            foreach ($theFile as $key => $value) {
-                if ($key == 0) {
-                    continue;
-                }
-
-                $kodeSarana = $value[1] ?? null;
-                $namaSarana = $value[2] ?? null;
-                $perangkatIT = $value[3] ?? null;
-                $status = $value[4] ?? null;
-            
-                $data = [
-                    'kodeSarana' => $kodeSarana,
-                    'namaSarana' => $namaSarana,
-                    'perangkatIT' => $perangkatIT,
-                    'status' => $status,
-                ];
-
-                if ($status == 'CORRECT') {
-                    if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana)) {
-                        $hasErrors = true;
-                        $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
-                        break;
-                    } else {
-                        $this->identitasSaranaModel->insert($data);
-                    }
-                } else if ($status == 'ERROR: Empty data') {
-                    $hasErrors = true;
-                    $errorMessage = 'Pastikan semua data telah terisi.';
-                    break;
-                } else if ($status == 'ERROR: Duplicate Data') {
-                    $hasErrors = true;
-                    $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
-                    break;
-                } else {
-                    $hasErrors = true;
-                    $errorMessage = 'ERROR: Tipe tidak sesuai!';
-                    break;
-                }
-
-                //  if ($status == 'ERROR: Empty data') {
-                //     return redirect()->to(site_url('identitasSarana'))->with('error', 'Pastikan semua data telah terisi.');
-                // } else if ($status == 'ERROR: Tipe tidak sesuai!') {
-                //     return redirect()->to(site_url('identitasSarana'))->with('error', 'Tipe tidak sesuai! Isi dengan angka 0 untuk bukan perangkat IT dan 1 untuk perangkat IT.');
-                // }  else if ($status == 'CORRECT') {
-                //     if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana)) {
-                //         return redirect()->to(site_url('identitasSarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
-                //     } else {
-                //         $this->identitasSaranaModel->insert($data);
-                //     }
-                // }
-            }
-            if ($hasErrors) {
-                return redirect()->to(site_url('identitasSarana'))->with('error', $errorMessage);
-            } else {
-                return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil diimport');
-            }
-        } else {
-            return redirect()->to(site_url('identitasSarana'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
-        }
-    }
-
     public function createTemplate() {
         $data = $this->identitasSaranaModel->findAll();
         $spreadsheet = new Spreadsheet();
@@ -284,9 +208,7 @@ class IdentitasSarana extends ResourcePresenter
                 break;
             }
 
-            // $getFormula = '=IF(OR(B2="", C2="", D2=""), "ERROR: Empty data", IF(ISNUMBER(MATCH(D2, $G$2:$G$3, 0)), "CORRECT", "ERROR: Tipe tidak sesuai!"))';
-            
-            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>""),IF(OR(ISNUMBER(MATCH(B2,$K$2:$K$'.(count($data)+1).',0)),ISNUMBER(MATCH(C2,$L$2:$L$'.(count($data)+1).',0))),"ERROR: Duplicate Data",IF(AND(ISNUMBER(MATCH(D2,$G$2:$G$3,0))),"CORRECT","ERROR: Tipe tidak sesuai!")),"ERROR: Empty data")';
+            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>""),IF(OR(ISNUMBER(MATCH(B2,$K$2:$K$'.(count($data)+1).',0)),ISNUMBER(MATCH(C2,$L$2:$L$'.(count($data)+1).',0))),"ERROR: Duplicate Data",IF(AND(ISNUMBER(MATCH(D2,$G$2:$G$3,0))),"CORRECT","ERROR: Tipe tidak sesuai")),"ERROR: Empty data")';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
@@ -416,6 +338,71 @@ class IdentitasSarana extends ResourcePresenter
         $writer->save('php://output');
         exit();
     }
+
+    public function import() {
+        $file = $this->request->getFile('formExcel');
+        $extension = $file->getClientExtension();
+        $hasErrors = false;
+        $errorMessage = '';
+        
+        if($extension == 'xlsx' || $extension == 'xls') {
+            if($extension == 'xls') {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            }
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            
+            $spreadsheet = $reader->load($file);
+            $theFile = $spreadsheet->getActiveSheet()->toArray();
+
+            foreach ($theFile as $key => $value) {
+                if ($key == 0) {
+                    continue;
+                }
+
+                $kodeSarana = $value[1] ?? null;
+                $namaSarana = $value[2] ?? null;
+                $perangkatIT = $value[3] ?? null;
+                $status = $value[4] ?? null;
+            
+                $data = [
+                    'kodeSarana' => $kodeSarana,
+                    'namaSarana' => $namaSarana,
+                    'perangkatIT' => $perangkatIT,
+                    'status' => $status,
+                ];
+
+                if ($status == 'CORRECT') {
+                    if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana)) {
+                        $hasErrors = true;
+                        $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
+                        break;
+                    } else {
+                        $this->identitasSaranaModel->insert($data);
+                    }
+                } else if ($status == 'ERROR: Empty data') {
+                    $hasErrors = true;
+                    $errorMessage = 'Pastikan semua data telah terisi.';
+                    break;
+                } else if ($status == 'ERROR: Duplicate Data') {
+                    $hasErrors = true;
+                    $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
+                    break;
+                } else if ($status == 'ERROR: Tipe tidak sesuai') {
+                    $hasErrors = true;
+                    $errorMessage = 'ERROR: Tipe tidak sesuai!';
+                    break;
+                }
+            }
+            if ($hasErrors) {
+                return redirect()->to(site_url('identitasSarana'))->with('error', $errorMessage);
+            } else {
+                return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil diimport');
+            }
+        } else {
+            return redirect()->to(site_url('identitasSarana'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+        }
+    }
+    
     public function generatePDF() {
         $filePath = APPPATH . 'Views/master/identitasSaranaView/print.php';
     

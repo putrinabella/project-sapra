@@ -225,7 +225,7 @@ class IdentitasPrasarana extends ResourceController
             if ($index >= 1) {
                 break;
             }
-            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyPrasarana)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyPrasarana)+1).',0))),"ERROR: Duplicate Data",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyGedung)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyLantai)+1).',0))),"CORRECT","ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai!")),"ERROR: Empty data")';
+            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyPrasarana)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyPrasarana)+1).',0))),"ERROR: Duplicate Data",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyGedung)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyLantai)+1).',0))),"CORRECT","ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai")),"ERROR: Empty data")';
 
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
@@ -410,12 +410,12 @@ class IdentitasPrasarana extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
+                $kodePrasarana = $value[1] ?? null;
                 $namaPrasarana = $value[2] ?? null;
                 $tipe = $value[3] ?? null;
                 $luas = $value[4] ?? null;
                 $idIdentitasGedung = $value[5] ?? null;
                 $idIdentitasLantai = $value[6] ?? null;
-                $kodePrasarana = $value[1] ?? null;
                 $status = $value[7] ?? null;
     
                 $data = [
@@ -444,8 +444,7 @@ class IdentitasPrasarana extends ResourceController
                     $hasErrors = true;
                     $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
                     break;
-                } else {
-                    $hasErrors = true;
+                } else if ($status == 'ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai') {
                     $errorMessage = 'ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai!';
                     break;
                 }
