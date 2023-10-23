@@ -20,7 +20,7 @@
         td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: left;
+            text-align: center;
         }
 
         th {
@@ -37,7 +37,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>ID Identitas Sarana</th>
+                    <th>Kode</th>
                     <th>Nama Sarana</th>
                     <th>Tipe</th>
                 </tr>
@@ -49,7 +49,7 @@
                         <?= $key + 1 ?>
                     </td>
                     <td>
-                        S<?= sprintf('%02d', $value->idIdentitasSarana) ?>
+                        <?= $value->kodeSarana ?>
                     </td>
                     <td>
                         <?= $value->namaSarana ?>

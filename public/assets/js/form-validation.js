@@ -25,6 +25,10 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      kodeSarana: {
+        required: true,
+        maxlength: 255,
+      },
       namaLantai: {
         required: true,
         maxlength: 255,
@@ -231,6 +235,10 @@ $(document).ready(function () {
       namaSarana: {
         required: "Silahkan masukkan nama sarana",
         maxlength: "Nama sarana tidak boleh melebihi 255 karakter",
+      },
+      kodeSarana: {
+        required: "Silahkan masukkan kode sarana",
+        maxlength: "Kode sarana tidak boleh melebihi 255 karakter",
       },
       namaLantai: {
         required: "Silahkan masukkan nama lantai",

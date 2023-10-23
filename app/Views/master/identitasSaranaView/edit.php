@@ -25,6 +25,12 @@
                 <form action="<?= site_url('identitasSarana/update/'.$dataIdentitasSarana->idIdentitasSarana)?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
+                        <label for="kodeSarana" class="col-sm-3 col-form-label">Nama Identitas Sarana</label>
+                        <div class="col-sm-9">
+                        <input type="text" class="form-control" id="kodeSarana" name="kodeSarana" value="<?=$dataIdentitasSarana->kodeSarana?>" placeholder="Masukkan Nama Sarana" >
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="namaSarana" class="col-sm-3 col-form-label">Nama Identitas Sarana</label>
                         <div class="col-sm-9">
                         <input type="text" class="form-control" id="namaSarana" name="namaSarana" value="<?=$dataIdentitasSarana->namaSarana?>" placeholder="Masukkan Nama Sarana" >

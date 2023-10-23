@@ -39,7 +39,7 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/IdentitasSarana_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('identitasSarana/createTemplate') ?> ">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
@@ -84,8 +84,8 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID</th>
-                                <th>Nama Sarana</th>
+                                <th>Kode</th>
+                                <th>Nama Spesifikasi</th>
                                 <th>Tipe</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -96,9 +96,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center">
-                                    S<?= sprintf('%03d', $value->idIdentitasSarana) ?>
-                                </td>
+                                <td class="text-center"><?=$value->kodeSarana?></td>
                                 <td class="text-left"><?=$value->namaSarana?></td>
                                 <td class="text-left">
                                     <?php if ($value->perangkatIT == 1): ?>

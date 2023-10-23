@@ -68,7 +68,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID Identitas Sarana</th>
+                                <th>Kode</th>
                                 <th>Nama Sarana</th>
                                 <th>Tipe</th>
                                 <th style="width: 20%;">Aksi</th>
@@ -80,9 +80,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center">
-                                    <?= sprintf('%03d', $value->idIdentitasSarana) ?>
-                                </td>
+                                <td class="text-center"><?=$value->kodeSarana?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center">
                                     <?php if ($value->perangkatIT == 1): ?>

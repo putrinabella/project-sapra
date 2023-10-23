@@ -24,9 +24,15 @@
                 <form action="<?= site_url('identitasSarana')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
+                        <label for="kodeSarana" class="col-sm-3 col-form-label">Kode</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kodeSarana" name="kodeSarana" placeholder="Masukkan kode sarana">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="namaSarana" class="col-sm-3 col-form-label">Identitas Sarana</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="namaSarana" name="namaSarana" placeholder="Masukkan Identitas Sarana">
+                            <input type="text" class="form-control" id="namaSarana" name="namaSarana" placeholder="Masukkan identitas sarana">
                         </div>
                     </div>
                     <div class="row mb-3">

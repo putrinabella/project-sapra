@@ -26,23 +26,33 @@ class IdentitasSarana extends ResourcePresenter
         //
     }
 
-    public function new()
-    {
+    public function new() {
         return view('master/identitasSaranaView/new');
     }
 
     public function create() {
-        $data = [
-        'namaSarana' => $this->request->getPost('namaSarana'),
-        'perangkatIT' => $this->request->getPost('perangkatIT') ? 1 : 0,
-        ];
+        $data = $this->request->getPost();
 
-        $this->identitasSaranaModel->insert($data);
-        return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil disimpan');
+        $kodeSarana = $data['kodeSarana'];
+        $namaSarana = $data['namaSarana'];
+        $perangkatIT = isset($data['perangkatIT']) ? 1 : 0;
+        
+        if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana)) {
+            return redirect()->to(site_url('identitasSarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
+            $dataToInsert = [
+                'kodeSarana' => $kodeSarana,
+                'namaSarana' => $namaSarana,
+                'perangkatIT' => $perangkatIT,
+            ];
+        
+            $this->identitasSaranaModel->insert($dataToInsert);
+            return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil disimpan');
+        }
+        
     }
 
-    public function edit($id = null)
-    {
+    public function edit($id = null) {
         if ($id != null) {
             $dataIdentitasSarana = $this->identitasSaranaModel->where('idIdentitasSarana', $id)->first();
     
@@ -57,24 +67,32 @@ class IdentitasSarana extends ResourcePresenter
         }
     }
 
-    public function update($id = null)
-    {
-        $data = [
-            'namaSarana' => $this->request->getPost('namaSarana'),
-            'perangkatIT' => $this->request->getPost('perangkatIT') ? 1 : 0,
+    public function update($id = null) {
+        $data = $this->request->getPost();
+        
+        $kodeSarana = $data['kodeSarana'];
+        $namaSarana = $data['namaSarana'];
+        $perangkatIT = isset($data['perangkatIT']) ? 1 : 0;
+    
+        if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana, $id)) {
+            return redirect()->to(site_url('identitasSarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
+            $dataToUpdate = [
+                'kodeSarana' => $kodeSarana,
+                'namaSarana' => $namaSarana,
+                'perangkatIT' => $perangkatIT,
             ];
     
-        $this->identitasSaranaModel->update($id, $data);
-        return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil update');
+            $this->identitasSaranaModel->update($id, $dataToUpdate);
+            return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil update');
+        }
     }
-
-    public function remove($id = null)
-    {
+    
+    public function remove($id = null) {
         //
     }
 
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->identitasSaranaModel->where('idIdentitasSarana', $id)->delete();
         return redirect()->to(site_url('identitasSarana'));
     }
@@ -125,14 +143,13 @@ class IdentitasSarana extends ResourcePresenter
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
     
-        $headers = ['No.', 'ID Identitas Sarana', 'Nama Sarana', 'Tipe'];
+        $headers = ['No.', 'Kode', 'Nama Spesifikasi', 'Tipe'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
-            $idIdentitasSarana = str_pad($value->idIdentitasSarana, 3, '0', STR_PAD_LEFT);
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), 'S'.$idIdentitasSarana);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeSarana);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
             if ($value->perangkatIT == 1) {
                 $activeWorksheet->setCellValue('D'.($index + 2), 'Perangkat IT');
@@ -161,7 +178,7 @@ class IdentitasSarana extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Data Master - Identitas Sarana.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Spesifikasi.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -183,24 +200,31 @@ class IdentitasSarana extends ResourcePresenter
                 if ($key == 0) {
                     continue;
                 }
-            
-                $namaSarana = $value[1] ?? null;
-                $perangkatIT = $value[2] ?? null;
+
+                $kodeSarana = $value[1] ?? null;
+                $namaSarana = $value[2] ?? null;
+                $perangkatIT = $value[3] ?? null;
+                $status = $value[4] ?? null;
             
                 $data = [
+                    'kodeSarana' => $kodeSarana,
                     'namaSarana' => $namaSarana,
                     'perangkatIT' => $perangkatIT,
+                    'status' => $status,
                 ];
 
-                if (!empty($data['namaSarana']) && !empty($data['perangkatIT'])) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('identitasSarana'))->with('error', 'Pastikan excel sudah benar');
+                if ($status == 'CORRECT') {
+                    if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana)) {
+                        return redirect()->to(site_url('identitasSarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
                     } else {
                         $this->identitasSaranaModel->insert($data);
+                        return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil disimpan.');
                     }
-                } else {
-                    return redirect()->to(site_url('identitasSarana'))->with('error', 'Pastikan semua data telah diisi!');
-                }
+                } else if ($status == 'ERROR empty data') {
+                    return redirect()->to(site_url('identitasSarana'))->with('error', 'Pastikan semua data telah terisi.');
+                } else if ($status == 'Tipe tidak sesuai') {
+                    return redirect()->to(site_url('identitasSarana'))->with('error', 'Tipe tidak sesuai! Isi dengan angka 0 untuk bukan perangkat IT dan 1 untuk perangkat IT.');
+                } 
             }
             return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil diimport');
         } else {
@@ -208,6 +232,130 @@ class IdentitasSarana extends ResourcePresenter
         }
     }
 
+    public function createTemplate() {
+        $data = $this->identitasSaranaModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+
+        $headers = ['No.', 'Kode' , 'Nama Spesifikasi', 'Perangkat IT', 'Status'];
+        $headersType = ['Kode', 'Tipe'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        $activeWorksheet->fromArray([$headersType], NULL, 'G1');
+        $activeWorksheet->getStyle('G1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 1) {
+                break;
+            }
+
+            $getFormula = '=IF(OR(B2="", C2="", D2=""), "ERROR empty data", IF(ISNUMBER(MATCH(D2, $G$2:$G$3, 0)), "CORRECT", "Tipe tidak sesuai"))';
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), '');
+            $activeWorksheet->setCellValue('C'.($index + 2), '');
+            $activeWorksheet->setCellValue('D'.($index + 2), '');
+            $activeWorksheet->setCellValue('E'.($index + 2), $getFormula);
+    
+            $columns = ['A', 'B', 'C', 'D', 'E'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'E') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $activeWorksheet->setCellValue('G2', '0');
+        $activeWorksheet->setCellValue('G3', '1');
+
+        $activeWorksheet->getStyle('G1')
+            ->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('G1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        $activeWorksheet->getStyle('G2:G3')
+            ->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('G2:G3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        $activeWorksheet->getStyle('G')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getColumnDimension('G')->setAutoSize(true);
+
+        $activeWorksheet->setCellValue('H2', 'Perangkat IT');
+        $activeWorksheet->setCellValue('H3', 'Bukan Perangkat IT');
+
+        $activeWorksheet->getStyle('H1')
+            ->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('H1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('C7E8CA');
+        $activeWorksheet->getStyle('H1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        $activeWorksheet->getStyle('H2:H3')
+            ->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('H2:H3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        $activeWorksheet->getStyle('H')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getColumnDimension('H')->setAutoSize(true);
+
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headerExample = ['No.', 'Kode' , 'Nama Spesifikasi', 'Perangkat IT'];
+        $exampleSheet->fromArray([$headerExample], NULL, 'A1');
+        $exampleSheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 5) {
+                break;
+            }
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeSarana);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->namaSarana);
+            $exampleSheet->setCellValue('D'.($index + 2), 0);
+    
+            $columns = ['A', 'B', 'C', 'D'];
+
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $exampleSheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $exampleSheet->getStyle('A1:D'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:D')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'D') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Identitas Spesifikasi Example.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
     public function generatePDF() {
         $filePath = APPPATH . 'Views/master/identitasSaranaView/print.php';
     
@@ -230,7 +378,7 @@ class IdentitasSarana extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Identitas Sarana Report.pdf';
+        $filename = 'Identitas Spesifikasi Report.pdf';
         $dompdf->stream($filename);
     }
 }

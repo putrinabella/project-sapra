@@ -37,6 +37,7 @@ $routes->get('home', 'ProfilSekolah::index');
 // DATA MASTER
 
 // Identitas Sarana
+$routes->get('identitasSarana/createTemplate', 'IdentitasSarana::createTemplate');
 $routes->get('identitasSarana/generatePDF', 'IdentitasSarana::generatePDF');
 $routes->get('identitasSarana/export', 'IdentitasSarana::export');
 $routes->post('identitasSarana/import', 'IdentitasSarana::import');
