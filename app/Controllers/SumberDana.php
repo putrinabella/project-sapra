@@ -122,9 +122,8 @@ class SumberDana extends ResourcePresenter
         $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
-            $idSumberDana = str_pad($value->idSumberDana, 3, '0', STR_PAD_LEFT);
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), 'SD'.$idSumberDana);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeSumberDana);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSumberDana);
     
             $columns = ['A', 'B'];
@@ -171,14 +170,16 @@ class SumberDana extends ResourcePresenter
                     continue;
                 }
             
-                $namaSumberDana = $value[1] ?? null;
+                $kodeSumberDana = $value[1] ?? null;
+                $namaSumberDana = $value[2] ?? null;
             
 
                 $data = [
+                    'kodeSumberDana' => $kodeSumberDana,
                     'namaSumberDana' => $namaSumberDana,
                 ];
                     
-                if (!empty($data['namaSumberDana'])) {
+                if (!empty($data['kodeSumberDana']) && !empty($data['namaSumberDana'])) {
                     $this->sumberDanaModel->insert($data);
                 } else {
                     return redirect()->to(site_url('sumberDana'))->with('error', 'Pastikan semua data telah diisi!');
@@ -188,6 +189,86 @@ class SumberDana extends ResourcePresenter
         } else {
             return redirect()->to(site_url('sumberDana'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
+    }
+
+    public function createTemplate() {
+        $data = $this->sumberDanaModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+
+        $headers = ['No.', 'Kode' , 'Nama Sumber Dana'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), '');
+            $activeWorksheet->setCellValue('C'.($index + 2), '');
+    
+            $columns = ['A', 'B', 'C'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headers = ['No.', 'Kode' , 'Nama Sumber Dana'];
+        $exampleSheet->fromArray([$headers], NULL, 'A1');
+        $exampleSheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 5) {
+                break;
+            }
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeSumberDana);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->namaSumberDana);
+    
+            $columns = ['A', 'B', 'C'];
+
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $exampleSheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $exampleSheet->getStyle('A1:C'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Sumber Dana Example.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
     }
 
     public function generatePDF()

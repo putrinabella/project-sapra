@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\userLogModels;
+use App\Models\UserLogModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,7 +13,7 @@ class UserLogs extends BaseController
 {
     
      function __construct() {
-        $this->userLoginModel = new userLogModels();
+        $this->userLoginModel = new UserLogModels();
         $this->db = \Config\Database::connect();
     }
     

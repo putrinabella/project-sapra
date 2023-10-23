@@ -15,6 +15,10 @@ class SumberDana extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'kodeSumberDana' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'namaSumberDana' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,

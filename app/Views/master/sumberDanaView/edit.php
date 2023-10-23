@@ -19,21 +19,21 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h4>Edit Data</h4>
-                    <!-- <div class="secion-header-back">
-                        <a href="<?= site_url('sumberDana')?>" class="btn btn-outline-primary btn-icon-text">
-                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
-                            Back
-                        </a>
-                    </div> -->
                 </div>
             </div>
             <div class="card-body">
                 <form action="<?= site_url('sumberDana/update/'.$dataSumberDana->idSumberDana)?>" method="post" autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
+                        <label for="kodeSumberDana" class="col-sm-3 col-form-label">Kode</label>
+                        <div class="col-sm-9">
+                        <input type="text" class="form-control" id="kodeSumberDana" name="kodeSumberDana" value="<?=$dataSumberDana->kodeSumberDana?>" placeholder="Masukan Kode Sarana" >
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="namaSumberDana" class="col-sm-3 col-form-label">Nama Sumber Dana</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaSumberDana" name="namaSumberDana" value="<?=$dataSumberDana->namaSumberDana?>" placeholder="Masukkan Nama Sarana" >
+                        <input type="text" class="form-control" id="namaSumberDana" name="namaSumberDana" value="<?=$dataSumberDana->namaSumberDana?>" placeholder="Masukan Nama Sarana" >
                         </div>
                     </div>
                     <div class="row mb-3">

@@ -19,22 +19,23 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h4>Tambah Data</h4>
-                    <!-- <div class="secion-header-back">
-                        <a href="<?= site_url('sumberDana')?>" class="btn btn-outline-primary btn-icon-text">
-                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
-                            Back
-                        </a>
-                    </div> -->
                 </div>
             </div>
             <div class="card-body">
                 <form action="<?= site_url('sumberDana')?>" method="post" autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
+                        <label for="kodeSumberDana" class="col-sm-3 col-form-label">Kode</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kodeSumberDana" name="kodeSumberDana"
+                                placeholder="Masukkan kode sumber dana">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="namaSumberDana" class="col-sm-3 col-form-label">Nama Sumber Dana</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaSumberDana" name="namaSumberDana"
-                                placeholder="Masukkan Nama Sumber Dana">
+                                placeholder="Masukkan nama sumber dana">
                         </div>
                     </div>
                     <div class="row mb-3">

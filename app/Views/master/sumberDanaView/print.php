@@ -36,7 +36,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>ID Sumber Dana</th>
+                    <th>Kode</th>
                     <th>Nama Sumber Dana</th>
                 </tr>
             </thead>
@@ -47,7 +47,7 @@
                         <?= $key + 1 ?>
                     </td>
                     <td>
-                        SD<?= sprintf('%02d', $value->idSumberDana) ?>
+                    <?= $value->kodeSumberDana ?>
                     </td>
                     <td>
                         <?= $value->namaSumberDana ?>

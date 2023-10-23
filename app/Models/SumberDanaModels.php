@@ -9,7 +9,7 @@ class SumberDanaModels extends Model
     protected $table            = 'tblSumberDana';
     protected $primaryKey       = 'idSumberDana';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['namaSumberDana'];
+    protected $allowedFields    = ['kodeSumberDana', 'namaSumberDana'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 }

@@ -68,7 +68,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID Sumber Dana</th>
+                                <th style="width: 15%;">Kode</th>
                                 <th>Nama Sumber Dana</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -80,7 +80,7 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center">
-                                    <?= sprintf('%03d', $value->idSumberDana) ?>
+                                    <?=$value->kodeSumberDana?>
                                 </td>
                                 <td class="text-left"><?=$value->namaSumberDana?></td>
                                 <td class="text-center">

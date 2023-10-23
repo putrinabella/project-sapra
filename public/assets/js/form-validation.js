@@ -17,6 +17,10 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      kodeSumberDana: {
+        required: true,
+        maxlength: 255,
+      },
       namaSarana: {
         required: true,
         maxlength: 255,
@@ -219,6 +223,10 @@ $(document).ready(function () {
       namaSumberDana: {
         required: "Silahkan masukkan nama sumber dana",
         maxlength: "Nama sumber dana tidak boleh melebihi 255 karakter",
+      },
+      kodeSumberDana: {
+        required: "Silahkan masukkan kode sumber dana",
+        maxlength: "Kode sumber dana tidak boleh melebihi 255 karakter",
       },
       namaSarana: {
         required: "Silahkan masukkan nama sarana",

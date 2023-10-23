@@ -3,7 +3,7 @@
 
     use CodeIgniter\Model;
 
-    class userLogModels extends Model
+    class UserLogModels extends Model
     {
         protected $table            = 'tblUserLogs';
         protected $primaryKey       = 'id';

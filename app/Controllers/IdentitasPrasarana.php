@@ -223,9 +223,8 @@ class IdentitasPrasarana extends ResourceController
             // $getFormula = '=IF(OR(B2="", C2="", D2="", E2="", F2="", G2=""), "ERROR empty data", IF(AND(B2<>"", C2<>"", D2<>"", E2<>"", F2<>"", G2<>""), IF(OR(ISNUMBER(MATCH(B2, $R$2:$R$'.(count($keyPrasarana) + 1).', 0)), ISNUMBER(MATCH(C2, $S$2:$S$'.(count($keyPrasarana) + 1).', 0))), "DUPLICATE DATA", "CORRECT"), "CORRECT"))';
 
             // $getFormula = '=IF(OR(B2="", C2="", D2="", E2="", F2="", G2=""), "ERROR empty data", IF(AND(B2<>"", C2<>"", D2<>"", E2<>"", F2<>"", G2<>""), IF(OR(ISNUMBER(MATCH(B2, $R$2:$R$'.(count($keyPrasarana) + 1).', 0)), ISNUMBER(MATCH(C2, $S$2:$S$'.(count($keyPrasarana) + 1).', 0))), "DUPLICATE DATA", IF(OR(ISNUMBER(MATCH(D2, $J$2:$J$3, 0)), ISNUMBER(MATCH(F2, $L$2:$L$'.(count($keyLantai) + 1).', 0)), ISNUMBER(MATCH(G2, $O$2:$O$'.(count($keyGedung) + 1).', 0))), "Tipe, ID Identitas Gedung, atau ID Identitas lantai tidak sesuai", "CORRECT")), "CORRECT"))';
-            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyPrasarana)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyPrasarana)+1).',0))),"DUPLICATE DATA",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyLantai)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyGedung)+1).',0))),"CORRECT","Tipe, ID Identitas Gedung, atau ID Identitas lantai tidak sesuai")),"ERROR empty data")';
+            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyPrasarana)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyPrasarana)+1).',0))),"DUPLICATE DATA",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyGedung)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyLantai)+1).',0))),"CORRECT","Tipe, ID Identitas Gedung, atau ID Identitas lantai tidak sesuai")),"ERROR empty data")';
 
-            
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');

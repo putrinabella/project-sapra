@@ -75,6 +75,7 @@ $routes->delete('identitasLab/deletePermanent', 'IdentitasLab::deletePermanent')
 $routes->resource('identitasLab', ['filter' => 'isLoggedIn']);
 
 // Sumber Dana
+$routes->get('sumberDana/createTemplate', 'SumberDana::createTemplate');
 $routes->get('sumberDana/generatePDF', 'SumberDana::generatePDF');
 $routes->get('sumberDana/export', 'SumberDana::export');
 $routes->post('sumberDana/import', 'SumberDana::import');

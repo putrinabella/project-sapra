@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\userLogModels;
+use App\Models\UserLogModels;
 
 class Auth extends BaseController
 {
     function __construct() {
-        $this->userLogModel = new userLogModels();
+        $this->userLogModel = new UserLogModels();
     }
 
     public function index() {

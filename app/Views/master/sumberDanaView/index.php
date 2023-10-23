@@ -39,7 +39,7 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?=base_url('excel/SumberDana_Example_Import.xlsx') ?> ">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('sumberDana/createTemplate') ?> ">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
@@ -84,7 +84,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID Sumber Dana</th>
+                                <th style="width: 15%;">Kode</th>
                                 <th>Nama Sumber Dana</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -95,9 +95,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center">
-                                    SD<?= sprintf('%02d', $value->idSumberDana) ?>
-                                </td>
+                                <td class="text-center"><?=$value->kodeSumberDana?></td>
                                 <td class="text-left"><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>"
