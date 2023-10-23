@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="light-theme">
+<!-- <html lang="en" class="light-theme"> -->
+<html lang="en">
 
 
 <head>
@@ -68,26 +69,6 @@
         <?= $this->include('template/sidebar') ?>
       </div>
     </nav>
-    <nav class="settings-sidebar">
-      <div class="sidebar-body">
-        <a href="#" class="settings-sidebar-toggler">
-          <i data-feather="settings"></i>
-        </a>
-        <h6 class="text-muted mb-2">Sidebar:</h6>
-        <div class="mb-3 pb-3 border-bottom">
-
-          <div class="theme-wrapper">
-            <h6 class="text-muted mb-2">Light Theme:</h6>
-            <a class="theme-item active" href="../light/dashboard.html">
-              <img src="../assets/images/screenshots/light.jpg" alt="light theme">
-            </a>
-            <h6 class="text-muted mb-2">Dark Theme:</h6>
-            <a class="theme-item" href="../demo2/dashboard.html">
-              <img src="../assets/images/screenshots/dark.jpg" alt="light theme">
-            </a>
-          </div>
-        </div>
-    </nav>
 
     <div class="page-wrapper">
 
@@ -116,6 +97,19 @@
                   </div>
                 </div>
                 <ul class="list-unstyled p-1">
+                  <h6 class="text-center text-muted py-2">
+                    Theme:
+                  </h6>
+                  <li class="dropdown-item py-2">
+                    <a href="javascript:void(0);" onclick="enableLightMode()">
+                      <h6 class="text-muted mb-2 theme-item">Light</h6>
+                    </a>
+                  </li>
+                  <li class="dropdown-item py-2">
+                    <a href="javascript:void(0);" onclick="enableDarkMode()">
+                      <h6 class="text-muted mb-2 theme-item">Dark</h6>
+                    </a>
+                  </li>
                   <li class="dropdown-item py-2">
                     <a href="<?= site_url('logout') ?>" class="text-body ms-0">
                       <i class="me-2 icon-md" data-feather="log-out"></i>
@@ -128,40 +122,7 @@
           </ul>
         </div>
       </nav>
-      <nav class="settings-sidebar">
-        <div class="sidebar-body">
-          <a href="#" class="settings-sidebar-toggler">
-            <i data-feather="settings"></i>
-          </a>
-          <h6 class="text-muted mb-2">Sidebar Theme:</h6>
-          <div class="mb-3 pb-3 border-bottom">
-            <div class="form-check form-check-inline">
-              <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarLight"
-                value="sidebar-light" checked>
-              <label class="form-check-label" for="sidebarLight">
-                Light
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarDark"
-                value="sidebar-dark">
-              <label class="form-check-label" for="sidebarDark">
-                Dark
-              </label>
-            </div>
-          </div>
-          <div class="theme-wrapper">
-            <h6 class="text-muted mb-2">Light Theme:</h6>
-            <a class="theme-item active" href="javascript:void(0);" onclick="enableLightMode()">
-              <img src="<?= base_url(); ?>/assets/images/screenshots/light.jpg" alt="light theme">
-            </a>
-            <h6 class="text-muted mb-2">Dark Theme:</h6>
-            <a class="theme-item" href="javascript:void(0);" onclick="enableDarkMode()">
-              <img src="<?= base_url(); ?>/assets/images/screenshots/dark.jpg" alt="dark theme">
-            </a>
-          </div>
-        </div>
-      </nav>
+
       <!-- partial -->
 
       <div class="page-content">
@@ -232,23 +193,42 @@
   </script> -->
 
 
-  <!-- WORK BUT WHEN REFRESH BACK TO LIGHT AGAIN -->
   <!-- <script>
-        // Function to enable light mode
-        function enableLightMode() {
-            document.getElementById('light-mode').disabled = false;
-            document.getElementById('dark-mode').disabled = true;
-        }
+    function setThemePreference(theme) {
+      localStorage.setItem('theme', theme);
+    }
+    // Function to enable light mode
+    function enableLightMode() {
+      document.getElementById('light-mode').disabled = false;
+      document.getElementById('dark-mode').disabled = true;
+      setThemePreference('light');
+    }
 
-        // Function to enable dark mode
-        function enableDarkMode() {
-            document.getElementById('light-mode').disabled = true;
-            document.getElementById('dark-mode').disabled = false;
-        }
-    </script> -->
+    function enableDarkMode() {
+      document.getElementById('light-mode').disabled = true;
+      document.getElementById('dark-mode').disabled = false;
+      setThemePreference('dark');
+    }
+
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        enableDarkMode();
+      }
+    }
+
+    applySavedTheme();
+    const html = document.querySelector('html');
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (html.classList.contains('dark-theme')) {
+        enableDarkMode();
+      }
+    });
+  </script> -->
+
 
   <script>
-    // Function to set and save user's theme preference
     function setThemePreference(theme) {
       localStorage.setItem('theme', theme);
     }
@@ -260,36 +240,23 @@
       setThemePreference('light');
     }
 
-    // Function to enable dark mode
     function enableDarkMode() {
       document.getElementById('light-mode').disabled = true;
       document.getElementById('dark-mode').disabled = false;
       setThemePreference('dark');
     }
 
-    // Function to check localStorage and apply saved theme
     function applySavedTheme() {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         enableDarkMode();
+      } else {
+        enableLightMode(); // Default to light mode if the preference is not found.
       }
     }
 
-    // Apply the saved theme when the page loads
     applySavedTheme();
-
-    // Select the HTML element
-    const html = document.querySelector('html');
-
-    // Add an event listener to ensure that the theme class is applied before rendering the page
-    document.addEventListener('DOMContentLoaded', function () {
-      if (html.classList.contains('dark-theme')) {
-        enableDarkMode();
-      }
-    });
   </script>
-
-
 </body>
 
 </html>
