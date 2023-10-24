@@ -27,6 +27,34 @@
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
+                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
+                                <option value="" hidden>Pilih Lokasi</option>
+                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasPrasarana?>" <?=$dataRincianAset->idIdentitasPrasarana ==
+                                    $value->idIdentitasPrasarana ? 'selected' : null ?>>
+                                    <?=$value->namaPrasarana?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Barang</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
+                                <option value="" hidden>Pilih Kategori Barang</option>
+                                <?php foreach($dataKategoriManajemen as $key =>$value): ?>
+                                <option value="<?=$value->idKategoriManajemen?>" <?=$dataRincianAset->
+                                    idKategoriManajemen == $value->idKategoriManajemen ? 'selected' : null ?>>
+                                    <?=$value->namaKategoriManajemen?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
@@ -41,24 +69,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kodePrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <label for="nomorBarang" class="col-sm-3 col-form-label">Nomor Barang</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="kodePrasarana" name="kodePrasarana">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
-                                <option value="<?=$value->kodePrasarana?>" <?=$dataRincianAset->kodePrasarana ==
-                                    $value->kodePrasarana ? 'selected' : null ?>>
-                                    <?=$value->namaPrasarana?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="text" class="form-control" id="nomorBarang" name="nomorBarang"
+                            value="<?=$dataRincianAset->nomorBarang?>"placeholder="Masukkan nomor barang">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="idSumberDana" name="idSumberDana">
-                                <option value="" hidden>Pilih aset</option>
+                                <option value="" hidden>Pilih sumber dana</option>
                                 <?php foreach($dataSumberDana as $key =>$value): ?>
                                 <option value="<?=$value->idSumberDana?>" <?=$dataRincianAset->idSumberDana ==
                                     $value->idSumberDana ? 'selected' : null ?>>
@@ -69,24 +90,18 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataKategoriManajemen as $key =>$value): ?>
-                                <option value="<?=$value->idKategoriManajemen?>" <?=$dataRincianAset->
-                                    idKategoriManajemen == $value->idKategoriManajemen ? 'selected' : null ?>>
-                                    <?=$value->namaKategoriManajemen?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
                         <label for="tahunPengadaan" class="col-sm-3 col-form-label">Tahun Pengadaan</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="tahunPengadaan" name="tahunPengadaan"
                                 value="<?=$dataRincianAset->tahunPengadaan?>" placeholder="Masukkan tahun pengadaan">
+                                <p class="text-primary" style="font-size: 12px;">Jika tahun pengadaan tidak diketahui, tulis dengan <b>0000</b></p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="hargaBeli" class="col-sm-3 col-form-label">Harga Beli</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="hargaBeli" name="hargaBeli"
+                                value="<?=$dataRincianAset->hargaBeli?>"placeholder="Masukkan harga beli">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -101,6 +116,34 @@
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="saranaRusak" name="saranaRusak"
                                 value="<?=$dataRincianAset->saranaRusak?>" placeholder="Masukkan jumlah aset rusak">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="noSeri" class="col-sm-3 col-form-label">No Seri</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="noSeri" name="noSeri"
+                            value="<?=$dataRincianAset->noSeri?>"placeholder="Masukkan nomor seri">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="merk" class="col-sm-3 col-form-label">Merek</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="merk" name="merk"
+                            value="<?=$dataRincianAset->merk?>"placeholder="Masukkan merek">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="type" class="col-sm-3 col-form-label">Tipe</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="type" name="type"
+                            value="<?=$dataRincianAset->type?>"placeholder="Masukkan tipe">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="warna" class="col-sm-3 col-form-label">Warna</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="warna" name="warna"
+                            value="<?=$dataRincianAset->warna?>"placeholder="Masukkan warna">
                         </div>
                     </div>
                     <div class="row mb-3">

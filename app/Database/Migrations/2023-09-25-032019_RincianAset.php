@@ -36,18 +36,26 @@ class RincianAset extends Migration
                 'constraint' => 3,
             ],
             'tahunPengadaan' => [
-                'type' => 'INT',
-                'constraint' => 4,
+                'type' => 'VARCHAR',
+                'constraint' => 10,
             ],
-            'saranaLayak' => [
-                'type' => 'INT',
-                'constraint' => 4,
+            'noSeri' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
-            'saranaRusak' => [
-                'type' => 'INT',
-                'constraint' => 4,
+            'merk' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
-            'saranaDimusnahkan' => [
+            'type' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'warna' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'nomorBarang' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
@@ -59,6 +67,14 @@ class RincianAset extends Migration
             ],
             'hargaBeli' => [
                 'type' => 'INT',
+            ],
+            'status' => [
+                'type' => 'ENUM("layak", "tidak layak")',
+                'default' => 'layak',
+            ],
+            'section' => [
+                'type' => 'ENUM("dipinjam", "dimusnahkan", "none")',
+                'default' => 'none',
             ],
             'created_at' => [
                 'type' => 'DATETIME',

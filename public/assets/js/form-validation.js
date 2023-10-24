@@ -1,4 +1,10 @@
 $(document).ready(function () {
+  $.validator.addMethod("googleDriveLink", function(value, element) {
+    var pattern = /^https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+\/view/;
+
+    return this.optional(element) || pattern.test(value);
+  }, "Input harus berupa Google Drive Link");
+
   $("#custom-validation").validate({
     rules: {
       username: {
@@ -210,6 +216,25 @@ $(document).ready(function () {
       tipe: {
         required: true,
       }, 
+      hargaBeli: {
+        required: true,
+      }, 
+      warna: {
+        required: true,
+      }, 
+      merk: {
+        required: true,
+      }, 
+      noSeri: {
+        required: true,
+      }, 
+      type: {
+        required: true,
+      }, 
+      bukti: {
+        required: true,
+        googleDriveLink: true, 
+    },
     },
     messages: {
       username: {
@@ -421,6 +446,25 @@ $(document).ready(function () {
       tipe: {
         required: "Silahkan pilih tipe prasarana",
       }, 
+      hargaBeli: {
+        required: "Silahkan masukkan harga beli",
+      }, 
+      warna: {
+        required: "Silahkan masukkan warna",
+      }, 
+      merk: {
+        required: "Silahkan masukkan merek",
+      }, 
+      noSeri: {
+        required: "Silahkan masukkan nomor seri",
+      }, 
+      type: {
+        required: "Silahkan masukkan tipe",
+      }, 
+      bukti: {
+        required: "Silahkan masukkan Google Drive Link",
+        googleDriveLink: "Input harus berupa Google Drive Link",
+      },
     },
     errorPlacement: function (label, element) {
       label.addClass("mt-1 tx-13 text-danger");

@@ -97,21 +97,38 @@ class RincianAset extends ResourceController
         
         return view('saranaView/rincianAset/new', $data);        
     }
-
     
+    // public function create() {
+    //     $data = $this->request->getPost();
+    //     if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
+    //         $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
+    //         $data['totalSarana'] = $totalSarana;
+    //         $this->rincianAsetModel->insert($data);
+    //         $this->rincianAsetModel->setKodeAset();
+    //         return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
+    //     } else {
+    //         return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
+    //     }
+    // }
+
     public function create() {
         $data = $this->request->getPost();
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
             $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
             $data['totalSarana'] = $totalSarana;
-            $this->rincianAsetModel->insert($data);
-            $this->rincianAsetModel->setKodeAset();
+            
+            // Insert the data and get the ID of the inserted record
+            $insertedID = $this->rincianAsetModel->insert($data);
+    
+            // Pass the inserted ID to setKodeAset
+            $this->rincianAsetModel->setKodeAset($insertedID);
+            
             return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
         }
     }
-
+    
 
     private function uploadFile($fieldName) {
         $file = $this->request->getFile($fieldName);
@@ -140,29 +157,24 @@ class RincianAset extends ResourceController
     }
     
     
+ 
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            // $uploadedFilePath = $this->uploadFile('bukti');
-            if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
-                // if ($uploadedFilePath !== null) {
-                //     $data['bukti'] = $uploadedFilePath;
-                // }
 
                 $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
                 $data['totalSarana'] = $totalSarana;
-
+    
                 $this->rincianAsetModel->update($id, $data);
+                
                 $this->rincianAsetModel->updateKodeAset($id);
+                
                 return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
-            } else {
-                return redirect()->to
-                (site_url('rincianAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
-            }
         } else {
             return view('error/404');
         }
     }
+    
 
     public function edit($id = null) {
         if ($id != null) {

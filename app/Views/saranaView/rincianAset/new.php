@@ -25,6 +25,29 @@
                 <form action="<?= site_url('rincianAset')?>" method="post" enctype="multipart/form-data" autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
+                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
+                                <option value="" hidden>Pilih Lokasi</option>
+                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Barang</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
+                                <option value="" hidden>Pilih Kategori Barang</option>
+                                <?php foreach($dataKategoriManajemen as $key =>$value): ?>
+                                <option value="<?=$value->idKategoriManajemen?>"><?=$value->namaKategoriManajemen?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
@@ -36,14 +59,10 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <label for="nomorBarang" class="col-sm-3 col-form-label">Nomor Barang</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
-                                <option value="" hidden>Pilih lokasi</option>
-                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="number" class="form-control" id="nomorBarang" name="nomorBarang"
+                                placeholder="Masukkan nomor barang">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -58,15 +77,11 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
+                        <label for="tahunPengadaan" class="col-sm-3 col-form-label">Tahun Pengadaan</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
-                                <option value="" hidden>Pilih Kategori MEP</option>
-                                <?php foreach($dataKategoriManajemen as $key =>$value): ?>
-                                <option value="<?=$value->idKategoriManajemen?>"><?=$value->namaKategoriManajemen?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="number" class="form-control" id="tahunPengadaan" name="tahunPengadaan"
+                                placeholder="Masukkan tahun pengadaan">
+                                <p class="text-primary" style="font-size: 12px;">Jika tahun pengadaan tidak diketahui, tulis dengan <b>0000</b></p>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -74,13 +89,6 @@
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="hargaBeli" name="hargaBeli"
                                 placeholder="Masukkan harga beli">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="tahunPengadaan" class="col-sm-3 col-form-label">Tahun Pengadaan</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="tahunPengadaan" name="tahunPengadaan"
-                                placeholder="Masukkan tahun pengadaan">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -98,6 +106,34 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="noSeri" class="col-sm-3 col-form-label">No Seri</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="noSeri" name="noSeri"
+                                placeholder="Masukkan nomor seri">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="merk" class="col-sm-3 col-form-label">Merek</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="merk" name="merk"
+                                placeholder="Masukkan merek">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="type" class="col-sm-3 col-form-label">Tipe</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="type" name="type"
+                                placeholder="Masukkan tipe">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="warna" class="col-sm-3 col-form-label">Warna</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="warna" name="warna"
+                                placeholder="Masukkan warna">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="spesifikasi" class="col-sm-3 col-form-label">Spesifikasi</label>
                         <div class="col-sm-9">
                             <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="5" placeholder="Masukkan spesifikasi aset" rows="10"></textarea>
@@ -107,7 +143,6 @@
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan link dokumentasi">
-                            <p id="bukti-error" class="text-danger"></p>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -122,39 +157,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    const buktiInput = document.getElementById('bukti');
-    const buktiError = document.getElementById('bukti-error');
-    const submitButton = document.getElementById('submit-button');
-    let buktiErrorShown = false;
-
-    buktiInput.addEventListener('input', () => {
-        const inputText = buktiInput.value;
-        if (inputText.trim() === '') {
-            buktiError.textContent = '';
-            buktiErrorShown = false;
-            return;
-        }
-        if (!containsGoogleDriveLink(inputText)) {
-            buktiError.textContent = 'Your input does not contain a Google Drive link';
-            buktiErrorShown = true;
-        } else {
-            buktiError.textContent = '';
-            buktiErrorShown = false;
-        }
-    });
-
-    submitButton.addEventListener('click', (event) => {
-        if (buktiErrorShown) {
-            event.preventDefault();
-        }
-    });
-
-    function containsGoogleDriveLink(text) {
-        const driveLinkPattern = /https:\/\/drive\.google\.com\/file\/d\//;
-        return driveLinkPattern.test(text);
-    }
-</script>
 
 <?= $this->endSection(); ?>

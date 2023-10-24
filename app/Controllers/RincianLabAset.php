@@ -128,8 +128,7 @@ class RincianLabAset extends ResourceController
                 $this->rincianLabAsetModel->updateKodeLabAset($id);
                 return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil diupdate');
             } else {
-                return redirect()->to
-                (site_url('rincianLabAset/edit/'.$id))->with('error', 'Id Sarana dan Lantai harus diisi.');
+                return redirect()->to(site_url('rincianLabAset/'.$id.'/edit'))->with('error', 'Id Sarana dan Lantai harus diisi.');
             }
         } else {
             return view('error/404');

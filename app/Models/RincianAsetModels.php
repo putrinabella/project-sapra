@@ -9,7 +9,7 @@ class RincianAsetModels extends Model
     protected $table            = 'tblRincianAset';
     protected $primaryKey       = 'idRincianAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli'];
+    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -50,33 +50,56 @@ class RincianAsetModels extends Model
         return $query->getRow();
     }
 
+    public function setKodeAset($idRincianAset) {
+        $relatedData = $this->find($idRincianAset);
+    
+        if ($relatedData) {
+            $kodeKategoriManajemen = $relatedData->kodeKategoriManajemen;
+            $kodeSarana = $relatedData->kodeSarana;
+            $kodePrasarana = $relatedData->kodePrasarana;
+            $kodeSumberDana = $relatedData->kodeSumberDana;
+            $tahunPengadaan = $relatedData->tahunPengadaan;
+            $nomorBarang = $relatedData->nomorBarang;
+        
+            if ($tahunPengadaan === '0000') {
+                $tahunPengadaan = 'xx';
+            } else {
+                $tahunPengadaan = substr($tahunPengadaan, -2);
+            }
+            $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
+
+            $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
+    
+            $this->update($idRincianAset, ['kodeRincianAset' => $kodeRincianAset]);
+        }
+    }
     
 
-    function updateKodeAset($id) {
-        $builder = $this->db->table($this->table);
-        $builder->set('kodeRincianAset', 
-                        'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
-                        " ", tahunPengadaan, 
-                        " ", "SD", LPAD(idSumberDana, 2, "0"), 
-                        " ", idIdentitasPrasarana)',
-                        false
-                        );
-        $builder->where('idRincianAset', $id);
-        $builder->update();
-    }
+    public function updateKodeAset($idRincianAset) {
+        $relatedData = $this->find($idRincianAset);
+    
+        if ($relatedData) {
+            $kodeKategoriManajemen = $relatedData->kodeKategoriManajemen;
+            $kodeSarana = $relatedData->kodeSarana;
+            $kodePrasarana = $relatedData->kodePrasarana;
+            $kodeSumberDana = $relatedData->kodeSumberDana;
+            $tahunPengadaan = $relatedData->tahunPengadaan;
+            $nomorBarang = $relatedData->nomorBarang;
+        
+            if ($tahunPengadaan === '0000') {
+                $tahunPengadaan = 'xx';
+            } else {
+                $tahunPengadaan = substr($tahunPengadaan, -2);
+            }
 
-    function setKodeAset() {
-        $builder = $this->db->table($this->table);
-        $builder->set('kodeRincianAset', 
-                        'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
-                        " ", tahunPengadaan, 
-                        " ", "SD", LPAD(idSumberDana, 2, "0"), 
-                        " ", idIdentitasPrasarana)',
-                        false
-                        );
-        $builder->update();
-    }
+            $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
 
+            $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
+    
+            $this->update($idRincianAset, ['kodeRincianAset' => $kodeRincianAset]);
+        }
+    }
+    
     function calculateTotalSarana($saranaLayak, $saranaRusak) {
         $saranaLayak = intval($saranaLayak);
         $saranaRusak = intval($saranaRusak);

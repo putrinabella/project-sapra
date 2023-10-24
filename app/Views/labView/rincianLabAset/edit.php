@@ -22,6 +22,30 @@
                 </div>
             </div>
             <div class="card-body">
+                <div>
+                    <?php if(session()->getFlashdata('success')) :?>
+                    <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
+                        <div class="alert-body">
+                            <b>Success!</b>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
+                            <?=session()->getFlashdata('success')?>
+                        </div>
+                    </div>
+                    <br>
+                    <?php endif; ?>
+                    <?php if(session()->getFlashdata('error')) :?>
+                    <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
+                        <div class="alert-body">
+                            <b>Error!</b>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
+                            <?=session()->getFlashdata('error')?>
+                        </div>
+                    </div>
+                    <br>
+                    <?php endif; ?>
+                </div>
                 <form action="<?= site_url('rincianLabAset/'.$dataRincianLabAset->idRincianLabAset)?>" method="post"
                     autocomplete="off" id="custom-validation"  enctype="multipart/form-data">
                     <?= csrf_field() ?>
