@@ -9,7 +9,7 @@ class RincianAsetModels extends Model
     protected $table            = 'tblRincianAset';
     protected $primaryKey       = 'idRincianAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang'];
+    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang', 'status', 'section'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -99,6 +99,35 @@ class RincianAsetModels extends Model
             $this->update($idRincianAset, ['kodeRincianAset' => $kodeRincianAset]);
         }
     }
+
+    function getDataBySarana() {
+        $builder = $this->db->table($this->table);
+        $builder->select('tblIdentitasSarana.*');
+        $builder->select('COUNT(*) AS jumlahTotal', false);
+        $builder->select('SUM(1) AS jumlahAset', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Bagus" THEN 1 ELSE 0 END) AS jumlahBagus', false);
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Rusak" THEN 1 ELSE 0 END) AS jumlahRusak', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Hilang" THEN 1 ELSE 0 END) AS jumlahHilang', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.section = "Dipinjam" THEN 1 ELSE 0 END) AS jumlahDipinjam', false); 
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataBySaranaDetail($id = null) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblIdentitasSarana.idIdentitasSarana', $id);
+        $builder->where('tblRincianAset.deleted_at', null);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
     
     function calculateTotalSarana($saranaLayak, $saranaRusak) {
         $saranaLayak = intval($saranaLayak);

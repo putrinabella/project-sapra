@@ -78,11 +78,11 @@
                     <div class="row mb-3">
                         <label for="status" class="col-sm-3 col-form-label">Status</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="status" name="status">
-                                <option value="Bagus" <?= $dataRincianAset->tipe == 'Bagus' ? 'selected' : '' ?>>Bagus</option>
-                                <option value="Rusak" <?= $dataRincianAset->tipe == 'Rusak' ? 'selected' : '' ?>>Rusak</option>
-                                <option value="Hilang" <?= $dataRincianAset->tipe == 'Hilang' ? 'selected' : '' ?>>Hilang</option>
-                            </select>
+                        <select class="form-select" id="status" name="status">
+                            <option value="Bagus" <?= $dataRincianAset->status == 'Bagus' ? 'selected' : '' ?>>Bagus</option>
+                            <option value="Rusak" <?= $dataRincianAset->status == 'Rusak' ? 'selected' : '' ?>>Rusak</option>
+                            <option value="Hilang" <?= $dataRincianAset->status == 'Hilang' ? 'selected' : '' ?>>Hilang</option>
+                        </select>
                         </div>
                     </div>
                     <div class="row mb-3">

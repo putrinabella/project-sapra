@@ -35,32 +35,105 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/index', $data);
     }
 
-    // public function index() {
-    //     $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
-    
-    //     $groupedData = [];
-    //     foreach ($data['dataRincianAset'] as $row) {
-    //         $kodeAset = $row->kodeRincianAset;
-    //         $status = $row->statusAset;
-    
-    //         if (!isset($groupedData[$kodeAset])) {
-    //             $groupedData[$kodeAset] = [
-    //                 'saranaLayak' => 0,
-    //                 'saranaRusak' => 0,
-    //             ];
-    //         }
-    
-    //         if ($status === 'layak') {
-    //             $groupedData[$kodeAset]['saranaLayak']++;
-    //         } elseif ($status === 'rusak') {
-    //             $groupedData[$kodeAset]['saranaRusak']++;
-    //         }
-    //     }
-    
-    //     $data['groupedData'] = $groupedData;
-    //     return view('saranaView/rincianAset/index', $data);
+    // public function dataSarana(){
+    //     $data['dataGeneral'] = $this->rincianAsetModel->getDataBySarana();
+        
+    //     return view('saranaView/rincianAset/dataSarana', $data);
     // }
+
+    public function dataSarana(){
+        $dataGeneral = $this->rincianAsetModel->getDataBySarana();
+        
+        // Calculate the total number of assets
+        $jumlahTotal = 0;
+        foreach ($dataGeneral as $value) {
+            $jumlahTotal += $value->jumlahAset;
+        }
     
+        $data['dataGeneral'] = $dataGeneral;
+        $data['jumlahTotal'] = $jumlahTotal;
+        
+        return view('saranaView/rincianAset/dataSarana', $data);
+    }
+    
+    public function dataSaranaDetail($id = null){
+        $data['dataSarana'] = $this->rincianAsetModel->getDataBySaranaDetail($id);
+        return view('saranaView/rincianAset/dataSaranaDetail', $data);
+    }
+
+    public function dataSaranaGeneratePDF(){
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/printGeneral.php';
+    
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        $data['dataSarana'] = $this->rincianAsetModel->getDataBySarana();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $filename = 'Sarana - Rincian Aset General Report.pdf';
+        $dompdf->stream($filename);
+    }
+
+    public function dataSaranaExport(){
+        $data = $this->rincianAsetModel->getDataBySarana();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+    
+        $headers = ['No.', 'Nama Aset', 'Total', 'Aset Bagus','Aset Rusak', 'Aset Hilang', 'Aset Dipinjam'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($data as $index => $value) {
+        
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaSarana);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->jumlahAset);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->jumlahBagus);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->jumlahRusak);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->jumlahHilang);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->jumlahDipinjam);
+
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+            
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                ->getAlignment()
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }            
+        }
+        
+        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'G') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Sarana - Rincian Aset General.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
 
     public function show($id = null) {
         if ($id != null) {
@@ -102,27 +175,11 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/new', $data);        
     }
     
-    // public function create() {
-    //     $data = $this->request->getPost();
-    //     if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
-    //         $totalSarana =  $this->rincianAsetModel->calculateTotalSarana($data['saranaLayak'], $data['saranaRusak']);
-    //         $data['totalSarana'] = $totalSarana;
-    //         $this->rincianAsetModel->insert($data);
-    //         $this->rincianAsetModel->setKodeAset();
-    //         return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
-    //     } else {
-    //         return redirect()->to(site_url('rincianAset'))->with('error', 'Semua field harus terisi');
-    //     }
-    // }
-
     public function create() {
         $data = $this->request->getPost();
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
             
-            // Insert the data and get the ID of the inserted record
             $insertedID = $this->rincianAsetModel->insert($data);
-    
-            // Pass the inserted ID to setKodeAset
             $this->rincianAsetModel->setKodeAset($insertedID);
             
             return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
@@ -333,7 +390,7 @@ class RincianAset extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Kode Rincian Aset', 'ID Identitas Prasarana', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
+        $headerInputTable = ['No.', 'Kode Rincian Aset', 'ID Identitas Prasarana', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status (Bagus, Rusak, Hilang)', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -368,16 +425,16 @@ class RincianAset extends ResourceController
             $dataValidation->setError('Value is not in list.');
             $dataValidation->setFormula1('"Bagus,Rusak,Hilang"'); 
             // work
-            // $generateID = '=CONCAT("TS-BJB ", IF(D' . ($index + 2) . ' = U' . ($index + 2) . ', W' . ($index + 2) . ', D' . ($index + 2) . '), " ", IF(C' . ($index + 2) . ' = Q' . ($index + 2) . ', S' . ($index + 2) . ', C' . ($index + 2) . '), " ", IF(H' . ($index + 2) . ' = AC' . ($index + 2) . ', AE' . ($index + 2) . ', H' . ($index + 2) . '), " ",  IF(I' . ($index + 2) . ' = 0, "xx", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", IF(E' . ($index + 2) . ' = Y' . ($index + 2) . ', AA' . ($index + 2) . ', E' . ($index + 2) . '), " ", TEXT(F' . ($index + 2) . ', "000"))';
+            // $generateID = '=CONCAT("TS-BJB ", IF(D' . ($index + 2) . ' = U' . ($index + 2) . ', W' . ($index + 2) . ', D' . ($index + 2) . '), " ", IF(C' . ($index + 2) . ' = Q' . ($index + 2) . ', S' . ($index + 2) . ', C' . ($index + 2) . '), " ", IF(H' . ($index + 2) . ' = AC' . ($index + 2) . ', AE' . ($index + 2) . ', H' . ($index + 2) . '), " ",  IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", IF(E' . ($index + 2) . ' = Y' . ($index + 2) . ', AA' . ($index + 2) . ', E' . ($index + 2) . '), " ", TEXT(F' . ($index + 2) . ', "000"))';
             
             $kategoriBarangKode = '=IFERROR(INDEX($W$2:$W$' . (count($keyKategoriManajemen) + 1) . ', MATCH(D' . ($index + 2) . ', $U$2:$U$' . (count($keyKategoriManajemen) + 1) . ', 0)), D' . ($index + 2) . ')';
             $ruanganKode        = '=IFERROR(INDEX($S$2:$S$' . (count($keyPrasarana) + 1) . ', MATCH(C' . ($index + 2) . ', $Q$2:$Q$' . (count($keyPrasarana) + 1) . ', 0)), C' . ($index + 2) . ')';
             $sumberDanaKode     = '=IFERROR(INDEX($AE$2:$AE$' . (count($keySumberDana) + 1) . ', MATCH(H' . ($index + 2) . ', $AC$2:$AC$' . (count($keySumberDana) + 1) . ', 0)), H' . ($index + 2) . ')';
-            $tahunKode          = '=IF(I' . ($index + 2) . ' = 0, "xx", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2))';
+            $tahunKode          = '=IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2))';
             $spesifikasiKode    = '=IFERROR(INDEX($AA$2:$AA$' . (count($keySarana) + 1) . ', MATCH(E' . ($index + 2) . ', $Y$2:$Y$' . (count($keySarana) + 1) . ', 0)), E' . ($index + 2) . ')';
             $nomorBarangKode    = '=TEXT(F' . ($index + 2) . ', "000")';
 
-            $generateID = '=CONCAT("TS-BJB ", IFERROR(INDEX($W$2:$W$' . (count($keyKategoriManajemen) + 1) . ', MATCH(D' . ($index + 2) . ', $U$2:$U$' . (count($keyKategoriManajemen) + 1) . ', 0)), D' . ($index + 2) . '), " ", IFERROR(INDEX($S$2:$S$' . (count($keyPrasarana) + 1) . ', MATCH(C' . ($index + 2) . ', $Q$2:$Q$' . (count($keyPrasarana) + 1) . ', 0)), C' . ($index + 2) . '), " ", IFERROR(INDEX($AE$2:$AE$' . (count($keySumberDana) + 1) . ', MATCH(H' . ($index + 2) . ', $AC$2:$AC$' . (count($keySumberDana) + 1) . ', 0)), H' . ($index + 2) . '), " ", IF(I' . ($index + 2) . ' = 0, "xx", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", IFERROR(INDEX($AA$2:$AA$' . (count($keySarana) + 1) . ', MATCH(E' . ($index + 2) . ', $Y$2:$Y$' . (count($keySarana) + 1) . ', 0)), E' . ($index + 2) . '), " ", TEXT(F' . ($index + 2) . ', "000"))';
+            $generateID = '=CONCAT("TS-BJB ", IFERROR(INDEX($W$2:$W$' . (count($keyKategoriManajemen) + 1) . ', MATCH(D' . ($index + 2) . ', $U$2:$U$' . (count($keyKategoriManajemen) + 1) . ', 0)), D' . ($index + 2) . '), " ", IFERROR(INDEX($S$2:$S$' . (count($keyPrasarana) + 1) . ', MATCH(C' . ($index + 2) . ', $Q$2:$Q$' . (count($keyPrasarana) + 1) . ', 0)), C' . ($index + 2) . '), " ", IFERROR(INDEX($AE$2:$AE$' . (count($keySumberDana) + 1) . ', MATCH(H' . ($index + 2) . ', $AC$2:$AC$' . (count($keySumberDana) + 1) . ', 0)), H' . ($index + 2) . '), " ", IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", IFERROR(INDEX($AA$2:$AA$' . (count($keySarana) + 1) . ', MATCH(E' . ($index + 2) . ', $Y$2:$Y$' . (count($keySarana) + 1) . ', 0)), E' . ($index + 2) . '), " ", TEXT(F' . ($index + 2) . ', "000"))';
             $generateStatus = '=IF(OR(ISBLANK(C' . ($index + 2) . '), ISBLANK(D' . ($index + 2) . '), ISBLANK(E' . ($index + 2) . '), ISBLANK(F' . ($index + 2) . '), ISBLANK(H' . ($index + 2) . '), ISBLANK(I' . ($index + 2) . '), ISBLANK(J' . ($index + 2) . '), ISBLANK(K' . ($index + 2) . '), ISBLANK(L' . ($index + 2) . '), ISBLANK(M' . ($index + 2) . '), ISBLANK(N' . ($index + 2) . '), ISBLANK(O' . ($index + 2) . ')), "ERROR: empty data", "CORRECT: fill up")';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $generateID);
@@ -615,7 +672,7 @@ class RincianAset extends ResourceController
                 $warna                  = $value[12] ?? null;
                 $spesifikasi            = $value[13] ?? null;
                 $bukti                  = $value[14] ?? null;
-                $status                 = $value[15] ?? null;
+                $statusData                 = $value[15] ?? null;
 
                 $data = [
                     'kodeRincianAset' => $kodeRincianAset,
@@ -632,12 +689,12 @@ class RincianAset extends ResourceController
                     'warna' => $warna,
                     'spesifikasi' => $spesifikasi,
                     'bukti' => $bukti,
-                    'status' => $status,
+                    'statusData' => $statusData,
                 ];
                 
-                if ($status == "ERROR: empty data") {
+                if ($statusData == "ERROR: empty data") {
                     return redirect()->to(site_url('rincianAset'))->with('error', 'Pastika semua data sudah terisi');
-                } else if ($status == "CORRECT: fill up") {
+                } else if ($statusData == "CORRECT: fill up") {
                     $this->rincianAsetModel->insert($data);
                 }
 
@@ -724,6 +781,6 @@ class RincianAset extends ResourceController
     }
 }
             // $generateID = '=CONCAT("TS-BJB ", TEXT(D'.($index + 2).', "000"), " ", TEXT(C'.($index + 2).', "00"), " ", H'. ($index + 2).', " ", I' .($index + 2) .', " ", TEXT(E'.($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
-            // $generateID = '=CONCAT("TS-BJB ", TEXT(D' . ($index + 2) . ', "000"), " ", TEXT(C' . ($index + 2) . ', "00"), " ", H' . ($index + 2) . ', " ", IF(I' . ($index + 2) . ' = 0, "xx", TEXT(I' . ($index + 2) . ', "00")), " ", TEXT(E' . ($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
-            // $generateID = '=CONCAT("TS-BJB ", TEXT(D' . ($index + 2) . ', "000"), " ", TEXT(C' . ($index + 2) . ', "00"), " ", H' . ($index + 2) . ', " ", IF(I' . ($index + 2) . ' = 0, "xx", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", TEXT(E' . ($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
+            // $generateID = '=CONCAT("TS-BJB ", TEXT(D' . ($index + 2) . ', "000"), " ", TEXT(C' . ($index + 2) . ', "00"), " ", H' . ($index + 2) . ', " ", IF(I' . ($index + 2) . ' = 0, "XX", TEXT(I' . ($index + 2) . ', "00")), " ", TEXT(E' . ($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
+            // $generateID = '=CONCAT("TS-BJB ", TEXT(D' . ($index + 2) . ', "000"), " ", TEXT(C' . ($index + 2) . ', "00"), " ", H' . ($index + 2) . ', " ", IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", TEXT(E' . ($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
             

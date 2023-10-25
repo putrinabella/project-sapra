@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Rincian Aset &verbar; SARPRA </title>
+<title>Data Aset Detail &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -9,13 +9,16 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Rincian Aset</li>
+        <li class="breadcrumb-item active" aria-current="page">Data Aset Detail</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
+    <a href="<?= site_url('dataSarana') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="arrow-left"></i>
+            Back
+        </a>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
@@ -98,7 +101,7 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataRincianAset as $key => $value) : ?>
+                            <?php foreach ($dataSarana as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>

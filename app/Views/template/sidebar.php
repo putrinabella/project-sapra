@@ -23,6 +23,9 @@
                     <a href="<?= site_url('saranaLayananNonAset') ?>" class="nav-link">Layanan Non Aset</a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= site_url('dataSarana') ?>" class="nav-link">Data Aset</a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= site_url('rincianAset') ?>" class="nav-link">Rincian Aset</a>
                 </li>
             </ul>
