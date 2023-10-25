@@ -45,6 +45,20 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Lokasi</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->namaPrasarana?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kategori Barang</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->namaKategoriManajemen?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Nama Aset</td>
                             <td>:</td>
                             <td>
@@ -52,10 +66,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Lokasi</td>
+                            <td>Status Aset</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->namaPrasarana?>
+                                <?= $dataRincianAset->status?>
                             </td>
                         </tr>
                         <tr>
@@ -66,13 +80,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Kategori Manajemen</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataRincianAset->namaKategoriManajemen?>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>Tahun Pengadaan</td>
                             <td>:</td>
                             <td>
@@ -80,24 +87,31 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Sarana Layak</td>
+                            <td>Harga Beli</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->saranaLayak?>
+                                <?= $dataRincianAset->hargaBeli?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Sarana Rusak</td>
+                            <td>Nomor Seri</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->saranaRusak?>
+                                <?= $dataRincianAset->noSeri?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Total Sarana</td>
+                            <td>Merek</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->totalSarana?>
+                                <?= $dataRincianAset->merk?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Warna</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->warna?>
                             </td>
                         </tr>
                         <tr>

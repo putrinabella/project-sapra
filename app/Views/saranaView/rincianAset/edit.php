@@ -76,6 +76,16 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="status" class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="status" name="status">
+                                <option value="Bagus" <?= $dataRincianAset->tipe == 'Bagus' ? 'selected' : '' ?>>Bagus</option>
+                                <option value="Rusak" <?= $dataRincianAset->tipe == 'Rusak' ? 'selected' : '' ?>>Rusak</option>
+                                <option value="Hilang" <?= $dataRincianAset->tipe == 'Hilang' ? 'selected' : '' ?>>Hilang</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="idSumberDana" name="idSumberDana">
@@ -105,20 +115,6 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="saranaLayak" class="col-sm-3 col-form-label">Jumlah Aset Layak</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="saranaLayak" name="saranaLayak"
-                                value="<?=$dataRincianAset->saranaLayak?>" placeholder="Masukkan jumlah aset layak">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="saranaRusak" class="col-sm-3 col-form-label">Jumlah Aset Rusak</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="saranaRusak" name="saranaRusak"
-                                value="<?=$dataRincianAset->saranaRusak?>" placeholder="Masukkan jumlah aset rusak">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
                         <label for="noSeri" class="col-sm-3 col-form-label">No Seri</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="noSeri" name="noSeri"
@@ -130,13 +126,6 @@
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="merk" name="merk"
                             value="<?=$dataRincianAset->merk?>"placeholder="Masukkan merek">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="type" class="col-sm-3 col-form-label">Tipe</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="type" name="type"
-                            value="<?=$dataRincianAset->type?>"placeholder="Masukkan tipe">
                         </div>
                     </div>
                     <div class="row mb-3">

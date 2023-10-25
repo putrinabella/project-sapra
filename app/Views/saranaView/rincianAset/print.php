@@ -45,15 +45,16 @@
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
-                    <th>Nama Aset</th>
                     <th>Lokasi</th>
+                    <th>Kategori Barang</th>
+                    <th>Spesifikasi Barang</th>
+                    <th>Status</th>
                     <th>Sumber Dana</th>
-                    <th>Kategori Manajemen</th>
                     <th>Tahun Pengadaan</th>
-                    <th>Sarana Layak</th>
-                    <th>Sarana Rusak</th>
-                    <th>Total Sarana</th>
-                </tr>
+                    <th>Harga Beli</th>
+                    <th>Merek</th>
+                    <th>Warna</th>
+            </tr>
             </thead>
             <tbody class="py-2">
                 <?php foreach ($data['dataRincianAset'] as $key => $value) : ?>
@@ -61,35 +62,20 @@
                         <td rowspan="2" >
                             <?= $key + 1 ?>
                         </td>
-                        <td colspan="8">  
+                        <td colspan="9">  
                             <?= $value->kodeRincianAset ?>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <?= $value->namaSarana ?>
-                        </td>
-                        <td>
-                            <?= $value->namaPrasarana ?>
-                        </td>
-                        <td>
-                            <?= $value->namaSumberDana ?>
-                        </td>
-                        <td>
-                            <?= $value->namaKategoriManajemen ?>
-                        </td>
-                        <td>
-                            <?= $value->tahunPengadaan ?>
-                        </td>
-                        <td>
-                            <?= $value->saranaLayak ?>
-                        </td>
-                        <td>
-                            <?= $value->saranaRusak ?>
-                        </td>
-                        <td>
-                            <?= $value->totalSarana ?>
-                        </td>
+                        <td><?=$value->namaPrasarana?></td>
+                        <td><?=$value->namaKategoriManajemen?></td>
+                        <td><?=$value->namaSarana?></td>
+                        <td><?=$value->status?></td>
+                        <td><?=$value->namaSumberDana?></td>
+                        <td><?=$value->tahunPengadaan?></td>
+                        <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                        <td><?=$value->merk?></td>
+                        <td><?=$value->warna?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

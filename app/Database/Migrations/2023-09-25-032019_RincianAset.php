@@ -69,12 +69,12 @@ class RincianAset extends Migration
                 'type' => 'INT',
             ],
             'status' => [
-                'type' => 'ENUM("layak", "tidak layak")',
-                'default' => 'layak',
+                'type' => 'ENUM("Bagus", "Rusak", "Hilang")',
+                'default' => 'Bagus',
             ],
             'section' => [
-                'type' => 'ENUM("dipinjam", "dimusnahkan", "none")',
-                'default' => 'none',
+                'type' => 'ENUM("Dipinjam", "Dimusnahkan", "None")',
+                'default' => 'None',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
