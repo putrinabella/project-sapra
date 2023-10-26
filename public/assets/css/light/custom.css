@@ -15,3 +15,15 @@
 .select2-container--default .select2-selection__clear {
   display: none !important;
 }
+
+.btn-warning-custom {
+  color: white;
+  background-color: #ffa500;
+
+  transition: background-color 0.3s;
+}
+
+.btn-warning-custom:hover {
+  background-color: #d98100;
+  color: white;
+}

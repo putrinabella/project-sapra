@@ -47,10 +47,6 @@ class RincianAset extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'type' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
             'warna' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
@@ -72,7 +68,7 @@ class RincianAset extends Migration
                 'type' => 'ENUM("Bagus", "Rusak", "Hilang")',
                 'default' => 'Bagus',
             ],
-            'section' => [
+            'sectionAset' => [
                 'type' => 'ENUM("Dipinjam", "Dimusnahkan", "None")',
                 'default' => 'None',
             ],

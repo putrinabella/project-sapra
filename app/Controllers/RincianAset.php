@@ -35,16 +35,9 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/index', $data);
     }
 
-    // public function dataSarana(){
-    //     $data['dataGeneral'] = $this->rincianAsetModel->getDataBySarana();
-        
-    //     return view('saranaView/rincianAset/dataSarana', $data);
-    // }
-
-    public function dataSarana(){
+    public function dataSarana() {
         $dataGeneral = $this->rincianAsetModel->getDataBySarana();
-        
-        // Calculate the total number of assets
+
         $jumlahTotal = 0;
         foreach ($dataGeneral as $value) {
             $jumlahTotal += $value->jumlahAset;
@@ -55,13 +48,25 @@ class RincianAset extends ResourceController
         
         return view('saranaView/rincianAset/dataSarana', $data);
     }
+
+    public function pemusnahanAsetDelete($idRincianAset) {
+        if ($this->request->getMethod(true) === 'POST') {
+            $newSectionAset = $this->request->getPost('sectionAset');
+            
+            if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset)) {
+                return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
+            } else {
+                return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
+            }
+        }
+    }
     
-    public function dataSaranaDetail($id = null){
+    public function dataSaranaDetail($id = null) {
         $data['dataSarana'] = $this->rincianAsetModel->getDataBySaranaDetail($id);
         return view('saranaView/rincianAset/dataSaranaDetail', $data);
     }
 
-    public function dataSaranaGeneratePDF(){
+    public function dataSaranaGeneratePDF() {
         $filePath = APPPATH . 'Views/saranaView/rincianAset/printGeneral.php';
     
         if (!file_exists($filePath)) {
@@ -87,7 +92,7 @@ class RincianAset extends ResourceController
         $dompdf->stream($filename);
     }
 
-    public function dataSaranaExport(){
+    public function dataSaranaExport() {
         $data = $this->rincianAsetModel->getDataBySarana();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();

@@ -28,6 +28,9 @@
                 <li class="nav-item">
                     <a href="<?= site_url('rincianAset') ?>" class="nav-link">Rincian Aset</a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('pemusnahanAset') ?>" class="nav-link">Pemusnahan Aset</a>
+                </li>
             </ul>
         </div>
     </li>

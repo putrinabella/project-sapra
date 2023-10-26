@@ -9,7 +9,7 @@ class RincianAsetModels extends Model
     protected $table            = 'tblRincianAset';
     protected $primaryKey       = 'idRincianAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang', 'status', 'section'];
+    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang', 'status', 'sectionAset'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -20,6 +20,7 @@ class RincianAsetModels extends Model
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $query = $builder->get();
         return $query->getResult();
     }
@@ -91,11 +92,8 @@ class RincianAsetModels extends Model
             } else {
                 $tahunPengadaan = substr($tahunPengadaan, -2);
             }
-
             $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
-
             $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
-    
             $this->update($idRincianAset, ['kodeRincianAset' => $kodeRincianAset]);
         }
     }
@@ -108,7 +106,7 @@ class RincianAsetModels extends Model
         $builder->select('SUM(CASE WHEN tblRincianAset.status = "Bagus" THEN 1 ELSE 0 END) AS jumlahBagus', false);
         $builder->select('SUM(CASE WHEN tblRincianAset.status = "Rusak" THEN 1 ELSE 0 END) AS jumlahRusak', false); 
         $builder->select('SUM(CASE WHEN tblRincianAset.status = "Hilang" THEN 1 ELSE 0 END) AS jumlahHilang', false); 
-        $builder->select('SUM(CASE WHEN tblRincianAset.section = "Dipinjam" THEN 1 ELSE 0 END) AS jumlahDipinjam', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.sectionAset = "Dipinjam" THEN 1 ELSE 0 END) AS jumlahDipinjam', false); 
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
@@ -128,11 +126,20 @@ class RincianAsetModels extends Model
         return $query->getResult();
     }
     
-    
     function calculateTotalSarana($saranaLayak, $saranaRusak) {
         $saranaLayak = intval($saranaLayak);
         $saranaRusak = intval($saranaRusak);
         $totalSarana = $saranaLayak + $saranaRusak;
         return $totalSarana;
+    }
+
+    public function updateSectionAset($idRincianAset, $newSectionAset)
+    {
+        if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {
+            $data = ['sectionAset' => $newSectionAset];
+            $this->update($idRincianAset, $data);
+            return true; 
+        }
+        return false; 
     }
 }

@@ -154,12 +154,14 @@ $routes->presenter('identitasKelas', ['filter' => 'isLoggedIn']);
 // SARANA
 
 // Rincian Aset
+$routes->get('pemusnahanAsetDetail/(:num)', 'RincianAset::pemusnahanAsetDetail/$1');
+$routes->get('pemusnahanAset', 'RincianAset::pemusnahanAset');
+$routes->get('dataSaranaDetail/(:num)', 'RincianAset::dataSaranaDetail/$1');
+$routes->get('dataSarana', 'RincianAset::dataSarana');
 $routes->get('dataSarana/generatePDF', 'RincianAset::dataSaranaGeneratePDF');
 $routes->get('dataSarana/export', 'RincianAset::dataSaranaExport');
 $routes->get('rincianAset/createTemplate', 'RincianAset::createTemplate');
 $routes->get('rincianAset/print/(:num)', 'RincianAset::print/$1');
-$routes->get('dataSaranaDetail/(:num)', 'RincianAset::dataSaranaDetail/$1');
-$routes->get('dataSarana', 'RincianAset::dataSarana');
 $routes->get('rincianAset/generatePDF', 'RincianAset::generatePDF');
 $routes->get('rincianAset/export', 'RincianAset::export');
 $routes->post('rincianAset/import', 'RincianAset::import');
@@ -167,6 +169,7 @@ $routes->get('rincianAset/edit', 'RincianAset::edit');
 $routes->get('rincianAset/trash', 'RincianAset::trash');
 $routes->get('rincianAset/restore/(:any)', 'RincianAset::restore/$1');
 $routes->get('rincianAset/restore', 'RincianAset::restore');
+$routes->post('pemusnahanAset/delete/(:any)', 'RincianAset::pemusnahanAsetDelete/$1');
 $routes->delete('rincianAset/deletePermanent/(:any)', 'RincianAset::deletePermanent/$1');
 $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);

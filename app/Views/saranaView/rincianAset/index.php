@@ -95,6 +95,7 @@
                                 <th>Merek</th>
                                 <th>Warna</th>
                                 <th style="width: 20%;">Aksi</th>
+                                <th style="width: 20%;">Pemusnahan</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
@@ -109,7 +110,15 @@
                                 <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->status?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->tahunPengadaan?></td>
+                                <td class="text-center">
+                                    <?php 
+                                        if($value->tahunPengadaan == 0 || 0000) {
+                                            echo "Tidak diketahui"; 
+                                        } else {
+                                            echo $value->tahunPengadaan;
+                                        };
+                                    ?>
+                                </td>
                                 <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                                 <td class="text-center"><?=$value->merk?></td>
                                 <td class="text-center"><?=$value->warna?></td>
@@ -123,11 +132,44 @@
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
-                                            data-confirm="Apakah anda yakin menghapus data ini?">
+                                            data-confirm="Apakah anda yakin menghapus data ini?"
+                                            data-title="Hapus Aset">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
                                 </td>
+                                <td class="text-center">
+                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center">
+                                                <select name="sectionAset" id="sectionAsetSelect" class="form-control me-2" style="width: 130px;">
+                                                    <option value="None">None</option>
+                                                    <option value="Dimusnahkan">Dimusnahkan</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-success btn-icon ml-2">
+                                                    <i data-feather="check"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <!-- <td class="text-center">
+                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <div class="form-group">
+                                            <select name="sectionAset" id="sectionAsetSelect" class="form-control">
+                                                <option value="None">None</option>
+                                                <option value="Dipinjam">Dipinjam</option>
+                                                <option value="Dimusnahkan">Dimusnahkan</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-icon">
+                                            <i data-feather="edit"></i> 
+                                        </button>
+                                    </form>
+                                </td> -->
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
