@@ -57,96 +57,27 @@ class RincianAset extends ResourceController
     public function pemusnahanAsetDelete($idRincianAset) {
         if ($this->request->getMethod(true) === 'POST') {
             $newSectionAset = $this->request->getPost('sectionAset');
-            $namaAkun = $this->request->getPost('namaAkun'); // Get the namaAkun value
-            $kodeAkun = $this->request->getPost('kodeAkun'); // Get the kodeAkun value
-        
-            
+            $namaAkun = $this->request->getPost('namaAkun'); 
+            $kodeAkun = $this->request->getPost('kodeAkun'); 
+    
             if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
-                return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
+                if ($newSectionAset === 'Dimusnahkan') {
+                    return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Aset berhasil dimusnahkan');
+                } elseif ($newSectionAset === 'None') {
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Sarana berhasil dikembalikan');
+                }
             } else {
                 return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
             }
         }
     }
     
+    
     public function dataSaranaDetail($id = null) {
         $data['dataSarana'] = $this->rincianAsetModel->getDataBySaranaDetail($id);
         return view('saranaView/rincianAset/dataSaranaDetail', $data);
     }
 
-    public function dataSaranaGeneratePDF() {
-        $filePath = APPPATH . 'Views/saranaView/rincianAset/printGeneral.php';
-    
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        $data['dataSarana'] = $this->rincianAsetModel->getDataBySarana();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-    
-        $includeFile($filePath, $data);
-    
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Sarana - Rincian Aset General Report.pdf';
-        $dompdf->stream($filename);
-    }
-
-    public function dataSaranaExport() {
-        $data = $this->rincianAsetModel->getDataBySarana();
-        $spreadsheet = new Spreadsheet();
-        $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Rincian Aset');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
-    
-        $headers = ['No.', 'Nama Aset', 'Total', 'Aset Bagus','Aset Rusak', 'Aset Hilang', 'Aset Dipinjam'];
-        $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
-        foreach ($data as $index => $value) {
-        
-            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaSarana);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->jumlahAset);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->jumlahBagus);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->jumlahRusak);
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->jumlahHilang);
-            $activeWorksheet->setCellValue('G'.($index + 2), $value->jumlahDipinjam);
-
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-            
-            foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
-        }
-        
-        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
-    
-        foreach (range('A', 'G') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
-        }
-    
-        $writer = new Xlsx($spreadsheet);
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Rincian Aset General.xlsx');
-        header('Cache-Control: max-age=0');
-        $writer->save('php://output');
-        exit();
-    }
 
     public function show($id = null) {
         if ($id != null) {
@@ -228,8 +159,6 @@ class RincianAset extends ResourceController
         }
     }
     
-    
- 
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
@@ -265,6 +194,38 @@ class RincianAset extends ResourceController
             return view('error/404');
         }
     }
+
+    public function editPemusnahan($id = null) {
+        if ($id != null) {
+            $dataRincianAset = $this->rincianAsetModel->find($id);
+    
+            if (is_object($dataRincianAset)) {
+                $data = [
+                    'dataRincianAset' => $dataRincianAset,
+                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                ];
+                return view('saranaView/rincianAset/editPemusnahan', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+
+    public function updatePemusnahan($id = null) {
+        if ($id != null) {
+            $data = $this->request->getPost();
+            $this->rincianAsetModel->update($id, $data);
+            return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
+        }
+    }
+    
 
     public function delete($id = null) {
         $this->rincianAsetModel->delete($id);
@@ -791,6 +752,80 @@ class RincianAset extends ResourceController
         $namaSarana = $data['dataRincianAset']->namaSarana;
         $filename = "Sarana - Detail Rincian Aset $namaSarana.pdf";
         $dompdf->stream($filename);
+    }
+
+    public function dataSaranaGeneratePDF() {
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/printGeneral.php';
+    
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        $data['dataSarana'] = $this->rincianAsetModel->getDataBySarana();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $filename = 'Sarana - Rincian Aset General Report.pdf';
+        $dompdf->stream($filename);
+    }
+
+    public function dataSaranaExport() {
+        $data = $this->rincianAsetModel->getDataBySarana();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+    
+        $headers = ['No.', 'Nama Aset', 'Total', 'Aset Bagus','Aset Rusak', 'Aset Hilang', 'Aset Dipinjam'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($data as $index => $value) {
+        
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaSarana);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->jumlahAset);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->jumlahBagus);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->jumlahRusak);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->jumlahHilang);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->jumlahDipinjam);
+
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+            
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                ->getAlignment()
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }            
+        }
+        
+        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'G') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Sarana - Rincian Aset General.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
     }
 }
             // $generateID = '=CONCAT("TS-BJB ", TEXT(D'.($index + 2).', "000"), " ", TEXT(C'.($index + 2).', "00"), " ", H'. ($index + 2).', " ", I' .($index + 2) .', " ", TEXT(E'.($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';

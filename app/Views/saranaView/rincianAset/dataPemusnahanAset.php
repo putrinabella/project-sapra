@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Rincian Aset &verbar; SARPRA </title>
+<title>Data Pemusnahan Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -9,19 +9,15 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Rincian Aset</li>
+        <li class="breadcrumb-item active" aria-current="page">Data Pemusnahan Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
+        <h4 class="mb-3 mb-md-0">Data Pemusnahan Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="trash"></i>
-            Recycle Bin
-        </a>
         <div class="dropdown">
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,21 +29,6 @@
                 <a class="dropdown-item" href="<?= site_url('rincianAset/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('rincianAset/createTemplate') ?>">Download Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
-            </div>
-        </div>
-        <a href="<?= site_url('rincianAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="edit"></i>
-            Tambah Data
-        </a>
     </div>
 </div>
 
@@ -95,6 +76,8 @@
                                 <th>Merek</th>
                                 <th>Nama Akun</th>
                                 <th>Kode Akun</th>
+                                <th>Aksi</th>
+                                <th>Pemusnahan</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
@@ -125,51 +108,27 @@
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>"
+                                    <a href="<?=site_url('rincianAset/editPemusnahan/'.$value->idRincianAset) ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>" method="post"
-                                        class="d-inline" id="del-<?= $value->idRincianAset;?>">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon"
-                                            data-confirm="Apakah anda yakin menghapus data ini?"
-                                            data-title="Hapus Aset">
-                                            <i data-feather="trash"></i>
-                                        </button>
-                                    </form>
                                 </td>
                                 <td class="text-center">
                                     <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
                                         <?= csrf_field() ?>
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
-                                                <select name="sectionAset" id="sectionAsetSelect" class="form-control me-2" style="width: 130px;">
-                                                    <option value="None">None</option>
+                                                <select name="sectionAset" class="form-control me-2 sectionAsetSelect" style="width: 130px">
                                                     <option value="Dimusnahkan">Dimusnahkan</option>
+                                                    <option value="None">None</option>
                                                 </select>
-                                                <button type="submit" class="btn btn-success btn-icon ml-2">
+                                                <input class="form-control" type="text" name="namaAkun" value="<?=userLogin()->nama?>" hidden>
+                                                <input class="form-control" type="text" name="kodeAkun" value="<?=userLogin()->role?>" hidden>
+                                                <button type="submit" class="btn btn-success btn-icon ml-2 submitButton">
                                                     <i data-feather="check"></i>
                                                 </button>
                                             </div>
                                         </div>
                                     </form>
                                 </td>
-
-                                <!-- <td class="text-center">
-                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
-                                        <?= csrf_field() ?>
-                                        <div class="form-group">
-                                            <select name="sectionAset" id="sectionAsetSelect" class="form-control">
-                                                <option value="None">None</option>
-                                                <option value="Dipinjam">Dipinjam</option>
-                                                <option value="Dimusnahkan">Dimusnahkan</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-icon">
-                                            <i data-feather="edit"></i> 
-                                        </button>
-                                    </form>
-                                </td> -->
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -180,26 +139,24 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-            </div>
-            <form action="<?=site_url(" rincianAset/import")?>" method="POST" enctype="multipart/form-data"
-                id="custom-validation">
-                <div class="modal-body">
-                    <?= csrf_field() ?>
-                    <input class="form-control" type="file" id="formExcel" name="formExcel">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sectionAsetSelects = document.querySelectorAll('.sectionAsetSelect');
+        const submitButtons = document.querySelectorAll('.submitButton');
 
+        sectionAsetSelects.forEach((select, index) => {
+            select.addEventListener('change', function () {
+                if (select.value === 'Dimusnahkan') {
+                    submitButtons[index].disabled = true;
+                } else {
+                    submitButtons[index].disabled = false;
+                }
+            });
+
+            if (select.value === 'Dimusnahkan') {
+                submitButtons[index].disabled = true;
+            }
+        });
+    });
+</script>
 <?= $this->endSection(); ?>

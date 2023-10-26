@@ -139,25 +139,22 @@
                                     </form>
                                 </td>
                                 <td class="text-center">
-                                <!-- <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalPemusnahan">Musnahkan Aset</a> -->
-                                <!-- <button type="button" class="btn btn-warning-custom btn-icon" data-bs-toggle="modal" data-bs-target="#modalPemusnahan"><i data-feather="alert-triangle"></i></button> -->
-
-                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
-                                        <?= csrf_field() ?>
-                                        <div class="form-group">
-                                            <div class="d-flex align-items-center">
-                                                <select name="sectionAset" id="sectionAsetSelect" class="form-control me-2" style="width: 130px;">
-                                                    <option value="None">None</option>
-                                                    <option value="Dimusnahkan">Dimusnahkan</option>
-                                                </select>
-                                                <input  class="form-control"  type="text" name="namaAkun" id="namaAkun" value="<?=userLogin()->nama?>" hidden>
-                                                <input  class="form-control"  type="text" name="kodeAkun" id="kodeAkun" value="<?=userLogin()->role?>" hidden>
-                                                <button type="submit" class="btn btn-success btn-icon ml-2">
-                                                    <i data-feather="check"></i>
-                                                </button>
-                                            </div>
+                                <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                    <?= csrf_field() ?>
+                                    <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                            <select name="sectionAset" class="form-control me-2 sectionAsetSelect" style="width: 130px">
+                                                <option value="None">None</option>
+                                                <option value="Dimusnahkan">Dimusnahkan</option>
+                                            </select>
+                                            <input class="form-control" type="text" name="namaAkun" value="<?=userLogin()->nama?>" hidden>
+                                            <input class="form-control" type="text" name="kodeAkun" value="<?=userLogin()->role?>" hidden>
+                                            <button type="submit" class="btn btn-success btn-icon ml-2 submitButton">
+                                                <i data-feather="check"></i>
+                                            </button>
                                         </div>
-                                    </form>
+                                    </div>
+                                </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -190,6 +187,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sectionAsetSelects = document.querySelectorAll('.sectionAsetSelect');
+        const submitButtons = document.querySelectorAll('.submitButton');
+
+        sectionAsetSelects.forEach((select, index) => {
+            select.addEventListener('change', function () {
+                if (select.value === 'None') {
+                    submitButtons[index].disabled = true;
+                } else {
+                    submitButtons[index].disabled = false;
+                }
+            });
+
+            if (select.value === 'None') {
+                submitButtons[index].disabled = true;
+            }
+        });
+    });
+</script>
 
 
 <?= $this->endSection(); ?>

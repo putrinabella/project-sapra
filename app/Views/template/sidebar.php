@@ -7,8 +7,58 @@
         </a>
     </li> -->
     <?php if (session()->get('role') == 'Super Admin') { ?>
-    <li class="nav-item nav-category">Sarana dan Prasarana</li>
+    <li class="nav-item nav-category">Sarana</li>
     <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#layananSaranaUmum" role="button" aria-expanded="false" aria-controls="layananSaranaUmum">
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Layanan</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="layananSaranaUmum">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('saranaLayananAset') ?>" class="nav-link">Layanan Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('saranaLayananNonAset') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#dataAsetUmum" role="button" aria-expanded="false" aria-controls="dataAsetUmum">
+            <i class="link-icon" data-feather="folder"></i>
+            <span class="link-title">Data Aset</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="dataAsetUmum">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('dataSarana') ?>" class="nav-link">Data General</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#pemusnahanAsetUmum" role="button" aria-expanded="false" aria-controls="pemusnahanAsetUmum">
+            <i class="link-icon" data-feather="trash"></i>
+            <span class="link-title">Pemusnahan Aset</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="pemusnahanAsetUmum">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('pemusnahanAset') ?>" class="nav-link">Pemusnahan Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
+    <li class="nav-item nav-category">Sarana dan Prasarana</li>
+    <!-- <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#sarana" role="button" aria-expanded="false" aria-controls="sarana">
             <i class="link-icon" data-feather="monitor"></i>
             <span class="link-title">Sarana</span>
@@ -33,7 +83,7 @@
                 </li>
             </ul>
         </div>
-    </li>
+    </li> -->
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#prasarana" role="button" aria-expanded="false" aria-controls="prasarana">
             <i class="link-icon" data-feather="check-circle"></i>

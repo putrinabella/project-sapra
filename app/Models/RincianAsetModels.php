@@ -121,6 +121,7 @@ class RincianAsetModels extends Model
         $builder->select('SUM(CASE WHEN tblRincianAset.sectionAset = "Dipinjam" THEN 1 ELSE 0 END) AS jumlahDipinjam', false); 
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
         $query = $builder->get();
         return $query->getResult();
@@ -133,6 +134,7 @@ class RincianAsetModels extends Model
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblIdentitasSarana.idIdentitasSarana', $id);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->where('tblRincianAset.deleted_at', null);
         $query = $builder->get();
         return $query->getResult();
@@ -151,10 +153,13 @@ class RincianAsetModels extends Model
 
             if ($newSectionAset === 'Dimusnahkan') {
                 $data['tanggalPemusnahan'] = date('Y-m-d H:i:s');
-                $data['namaAkun'] = $namaAkun; // Use the passed value
-                $data['kodeAkun'] = $kodeAkun; // Use the passed value
+                $data['namaAkun'] = $namaAkun;
+                $data['kodeAkun'] = $kodeAkun; 
+            } else if ($newSectionAset === 'None') {
+                $data['tanggalPemusnahan'] = NULL;
+                $data['namaAkun'] = NULL;
+                $data['kodeAkun'] = NULL;
             }
-
             $this->update($idRincianAset, $data);
             return true;
         }
