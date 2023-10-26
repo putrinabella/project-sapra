@@ -49,11 +49,19 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/dataSarana', $data);
     }
 
+    public function pemusnahanAset() {
+        $data['dataRincianAset'] = $this->rincianAsetModel->getDestroy();
+        return view('saranaView/rincianAset/dataPemusnahanAset', $data);
+    }
+
     public function pemusnahanAsetDelete($idRincianAset) {
         if ($this->request->getMethod(true) === 'POST') {
             $newSectionAset = $this->request->getPost('sectionAset');
+            $namaAkun = $this->request->getPost('namaAkun'); // Get the namaAkun value
+            $kodeAkun = $this->request->getPost('kodeAkun'); // Get the kodeAkun value
+        
             
-            if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset)) {
+            if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
                 return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
             } else {
                 return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');

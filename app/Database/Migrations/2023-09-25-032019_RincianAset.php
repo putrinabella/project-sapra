@@ -72,6 +72,20 @@ class RincianAset extends Migration
                 'type' => 'ENUM("Dipinjam", "Dimusnahkan", "None")',
                 'default' => 'None',
             ],
+            'tanggalPemusnahan' => [
+                'type' => 'DATE',
+                'default' => 'None'
+            ],
+            'namaAkun' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
+            'kodeAkun' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

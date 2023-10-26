@@ -85,31 +85,31 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->tanggal?></td>
-                            <td class="text-center"><?=$value->namaPeminjam?></td>
-                            <td class="text-center"><?=$value->asalPeminjam?></td>
-                            <td class="text-center"><?=$value->namaSarana?></td>
-                            <td class="text-center"><?=$value->namaLab?></td>
-                            <td class="text-center"><?=$value->jumlah?></td>
-                            <td class="text-center">
-                                <?php if ($value->status == "Peminjaman"): ?>
-                                    <span class="label label-warning"> <?=$value->status?></span>
-                                <?php else: ?>
-                                    <span class="label label-success"> <?=$value->status?></span>
-                                <?php endif; ?>
-                            </td>
-                            <td class="text-center"><?= $value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ?></td>
+                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
+                                <td class="text-center"><?=$value->namaPeminjam?></td>
+                                <td class="text-center"><?=$value->asalPeminjam?></td>
+                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td class="text-center"><?=$value->namaLab?></td>
+                                <td class="text-center"><?=$value->jumlah?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('dataPeminjaman/restore/'.$value->idManajemenPeminjaman) ?>"
-                                        class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('dataPeminjaman/deletePermanent/'.$value->idManajemenPeminjaman) ?>"
-                                        method="POST" class="d-inline">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger" type="submit"> Delete Permanent </button>
-                                    </form>
+                                    <?php if ($value->status == "Peminjaman"): ?>
+                                        <span class="label label-warning"> <?=$value->status?></span>
+                                    <?php else: ?>
+                                        <span class="label label-success"> <?=$value->status?></span>
+                                    <?php endif; ?>
                                 </td>
-                            </tr>
+                                <td class="text-center"><?= $value->tanggalPengembalian !== '' ? $value->tanggalPengembalian : 'Belum dikembalikan' ?></td>
+                                    <td class="text-center">
+                                        <a href="<?=site_url('dataPeminjaman/restore/'.$value->idManajemenPeminjaman) ?>"
+                                            class="btn btn-primary"> Restore</a>
+                                        <form action="<?= site_url('dataPeminjaman/deletePermanent/'.$value->idManajemenPeminjaman) ?>"
+                                            method="POST" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button class="btn btn-danger" type="submit"> Delete Permanent </button>
+                                        </form>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>

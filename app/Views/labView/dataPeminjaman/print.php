@@ -57,9 +57,7 @@
                     <td>
                         <?= $key + 1 ?>
                     </td>
-                    <td>
-                        <?= $value->tanggal ?>
-                    </td>
+                    <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
                     <td>
                         <?= $value->namaPeminjam ?>
                     </td>

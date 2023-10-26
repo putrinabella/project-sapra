@@ -1,23 +1,24 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Layanan Aset &verbar; SARPRA </title>
+<title>Rincian Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
+
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Layanan Aset</li>
+        <li class="breadcrumb-item active" aria-current="page">Rincian Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Layanan Aset</h4>
+        <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('saranaLayananAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -28,8 +29,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('saranaLayananAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('saranaLayananAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('rincianAset/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('rincianAset/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -39,11 +40,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('saranaLayananAset/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('rincianAset/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('saranaLayananAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('rincianAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -79,50 +80,96 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="dataTable">
+                    <table class="table table-hover" id="dataTable">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th>Tanggal</th>
-                                <th>Nama Aset</th>
+                                <th>Tanggal Pemusnahan</th>
+                                <th style="width: 12%;">Kode Aset</th>
                                 <th>Lokasi</th>
-                                <th>Status Layanan</th>
-                                <th>Kategori</th>
+                                <th>Kategori Aset</th>
+                                <th>Nama Aset</th>
                                 <th>Sumber Dana</th>
-                                <th>Biaya</th>
-                                <th>Bukti</th>
-                                <th style="width: 20%;">Aksi</th>
+                                <th>Tahun Pengadaan</th>
+                                <th>Harga Beli</th>
+                                <th>Merek</th>
+                                <th>Nama Akun</th>
+                                <th>Kode Akun</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataSaranaLayananAset as $key => $value) : ?>
+                            <?php foreach ($dataRincianAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggalPemusnahan)) ?></td>
+                                <td class="text-center"><?=$value->kodeRincianAset?></td>
                                 <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                                <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
-                                    <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
+                                    <?php 
+                                        if($value->tahunPengadaan == 0 || 0000) {
+                                            echo "Tidak diketahui"; 
+                                        } else {
+                                            echo $value->tahunPengadaan;
+                                        };
+                                    ?>
                                 </td>
+                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td class="text-center"><?=$value->merk?></td>
+                                <td class="text-center"><?= $value->namaAkun; ?> </td>
+                                <td class="text-center"><?= $value->kodeAkun; ?> </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset.'/edit') ?>"
+                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>"
+                                        class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idSaranaLayananAset;?>">
+                                    <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>" method="post"
+                                        class="d-inline" id="del-<?= $value->idRincianAset;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <button class="btn btn-danger btn-icon"
+                                            data-confirm="Apakah anda yakin menghapus data ini?"
+                                            data-title="Hapus Aset">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
                                 </td>
+                                <td class="text-center">
+                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center">
+                                                <select name="sectionAset" id="sectionAsetSelect" class="form-control me-2" style="width: 130px;">
+                                                    <option value="None">None</option>
+                                                    <option value="Dimusnahkan">Dimusnahkan</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-success btn-icon ml-2">
+                                                    <i data-feather="check"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <!-- <td class="text-center">
+                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <div class="form-group">
+                                            <select name="sectionAset" id="sectionAsetSelect" class="form-control">
+                                                <option value="None">None</option>
+                                                <option value="Dipinjam">Dipinjam</option>
+                                                <option value="Dimusnahkan">Dimusnahkan</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-icon">
+                                            <i data-feather="edit"></i> 
+                                        </button>
+                                    </form>
+                                </td> -->
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -140,7 +187,8 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("saranaLayananAset/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url(" rincianAset/import")?>" method="POST" enctype="multipart/form-data"
+                id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
@@ -153,4 +201,5 @@
         </div>
     </div>
 </div>
+
 <?= $this->endSection(); ?>

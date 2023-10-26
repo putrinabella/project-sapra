@@ -84,7 +84,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->tanggal?></td>
+                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaPrasarana?></td>
                                 <td class="text-center"><?=$value->namaStatusLayanan?></td>

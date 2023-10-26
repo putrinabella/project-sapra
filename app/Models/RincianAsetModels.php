@@ -9,7 +9,7 @@ class RincianAsetModels extends Model
     protected $table            = 'tblRincianAset';
     protected $primaryKey       = 'idRincianAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang', 'status', 'sectionAset'];
+    protected $allowedFields    = ['idRincianAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang', 'status', 'sectionAset','tanggalPemusnahan' , 'namaAkun', 'kodeAkun'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -21,6 +21,18 @@ class RincianAsetModels extends Model
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDestroy() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset =', 'Dimusnahkan');
         $query = $builder->get();
         return $query->getResult();
     }
@@ -133,13 +145,35 @@ class RincianAsetModels extends Model
         return $totalSarana;
     }
 
-    public function updateSectionAset($idRincianAset, $newSectionAset)
-    {
+    public function updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun) {
         if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {
             $data = ['sectionAset' => $newSectionAset];
+
+            if ($newSectionAset === 'Dimusnahkan') {
+                $data['tanggalPemusnahan'] = date('Y-m-d H:i:s');
+                $data['namaAkun'] = $namaAkun; // Use the passed value
+                $data['kodeAkun'] = $kodeAkun; // Use the passed value
+            }
+
             $this->update($idRincianAset, $data);
-            return true; 
+            return true;
         }
-        return false; 
+        return false;
     }
+
+    // public function updateSectionAset($idRincianAset, $newSectionAset)
+    // {
+    //     if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {
+    //         $data = ['sectionAset' => $newSectionAset];
+    
+    //         if ($newSectionAset === 'Dimusnahkan') {
+    //             $data['tanggalPemusnahan'] = date('Y-m-d H:i:s');
+    //         }
+    
+    //         $this->update($idRincianAset, $data);
+    //         return true;
+    //     }
+    //     return false;
+    // }
+    
 }

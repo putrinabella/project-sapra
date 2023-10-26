@@ -36,7 +36,7 @@
                         <td style="width: 15%;">Tanggal</td>
                             <td style="width: 2%;">:</td>
                             <td>
-                                <?= $dataSaranaLayananAset->tanggal?>
+                                <?= date('d F Y', strtotime($dataSaranaLayananAset->tanggal)) ?>
                             </td>
                         </tr>
                         <tr>
