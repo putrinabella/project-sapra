@@ -148,6 +148,8 @@
   <!-- endinject -->
 
   <!-- Plugin js for this page -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/jquery-validation/jquery.validate.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/chartjs/Chart.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/jquery.flot/jquery.flot.js"></script>

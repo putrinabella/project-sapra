@@ -139,9 +139,10 @@
                                     </form>
                                 </td>
                                 <td class="text-center">
-                                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalPemusnahan">Musnahkan Aset</a>
-                              
-                                    <!-- <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                <!-- <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalPemusnahan">Musnahkan Aset</a> -->
+                                <!-- <button type="button" class="btn btn-warning-custom btn-icon" data-bs-toggle="modal" data-bs-target="#modalPemusnahan"><i data-feather="alert-triangle"></i></button> -->
+
+                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
                                         <?= csrf_field() ?>
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
@@ -149,12 +150,14 @@
                                                     <option value="None">None</option>
                                                     <option value="Dimusnahkan">Dimusnahkan</option>
                                                 </select>
+                                                <input  class="form-control"  type="text" name="namaAkun" id="namaAkun" value="<?=userLogin()->nama?>" hidden>
+                                                <input  class="form-control"  type="text" name="kodeAkun" id="kodeAkun" value="<?=userLogin()->role?>" hidden>
                                                 <button type="submit" class="btn btn-success btn-icon ml-2">
                                                     <i data-feather="check"></i>
                                                 </button>
                                             </div>
                                         </div>
-                                    </form> -->
+                                    </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -188,38 +191,5 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalPemusnahan" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Pemusnahan Aset</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-            </div>
-            <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="POST" enctype="multipart/form-data"
-                id="custom-validation">
-                <div class="modal-body">
-                    <?= csrf_field() ?>
-                    <div class="row px-3 mb-3">
-                        <label for="sectionAsetSelect">Status Pemusnahan</label>
-                        <input type="text" id="sectionAsetSelect" name="sectionAset" class="form-control me-2" value="Dimusnahkan" readonly>
-                    </div>
-
-                    <div class="row px-3 mb-3">
-                        <label for="namaAkun">Nama Akun</label>
-                        <input  class="form-control"  type="text" name="namaAkun" id="namaAkun">
-                    </div>
-                    <div class="row px-3 mb-3">
-                        <label for="namaAkun">Kode Akun</label>
-                        <input  class="form-control"  type="text" name="kodeAkun" id="kodeAkun">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <?= $this->endSection(); ?>
