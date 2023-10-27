@@ -43,14 +43,15 @@ class PrasaranaRuanganModels extends Model
 
     function getSaranaByPrasaranaId($idIdentitasPrasarana) {
         $builder = $this->db->table('tblRincianAset');
-        $builder->join('tblIdentitasPrasarana', 'tblRincianAset.kodePrasarana = tblIdentitasPrasarana.kodePrasarana');
+        $builder->join('tblIdentitasPrasarana', 'tblRincianAset.idIdentitasPrasarana = tblIdentitasPrasarana.idIdentitasPrasarana');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
         $builder->where('tblIdentitasPrasarana.idIdentitasPrasarana', $idIdentitasPrasarana);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->where('tblRincianAset.deleted_at', null); 
         $query = $builder->get();
-    
+
         return $query->getResult();
     }
 

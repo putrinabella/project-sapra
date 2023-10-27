@@ -71,13 +71,15 @@
                                 <tr class="text-center">
                                     <th style="width: 5%;">No.</th>
                                     <th style="width: 12%;">Kode Aset</th>
+                                    <th>Lokasi</th>
+                                    <th>Kategori Aset</th>
                                     <th>Nama Aset</th>
-                                    <th>Tahun Pengadaan</th>
-                                    <th>Kategori Manajemen</th>
+                                    <th>Status</th>
                                     <th>Sumber Dana</th>
-                                    <th>Aset Layak</th>
-                                    <th>Aset Rusak</th>
-                                    <th>Total Aset</th>
+                                    <th>Tahun Pengadaan</th>
+                                    <th>Harga Beli</th>
+                                    <th>Merek</th>
+                                    <th>Warna</th>
                                     <th style="width: 20%;">Aksi</th>
                                 </tr>
                             </thead>
@@ -88,13 +90,23 @@
                                         <?=$key + 1?>
                                     </td>
                                     <td class="text-center"><?=$value->kodeRincianAset?></td>
-                                    <td class="text-center"><?=$value->namaSarana?></td>
-                                    <td class="text-center"><?=$value->tahunPengadaan?></td>
+                                    <td class="text-center"><?=$value->namaPrasarana?></td>
                                     <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                                    <td class="text-center"><?=$value->namaSarana?></td>
+                                    <td class="text-center"><?=$value->status?></td>
                                     <td class="text-center"><?=$value->namaSumberDana?></td>
-                                    <td class="text-center"><?=$value->saranaLayak?></td>
-                                    <td class="text-center"><?=$value->saranaRusak?></td>
-                                    <td class="text-center"><?=$value->totalSarana?></td>
+                                    <td class="text-center">
+                                    <?php 
+                                        if($value->tahunPengadaan == 0 || 0000) {
+                                            echo "Tidak diketahui"; 
+                                        } else {
+                                            echo $value->tahunPengadaan;
+                                        };
+                                    ?>
+                                </td>
+                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td class="text-center"><?=$value->merk?></td>
+                                <td class="text-center"><?=$value->warna?></td>
                                     <td class="text-center">
                                         <a href="<?=site_url('prasaranaRuangan/showInfo/'.$value->idRincianAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     </td>

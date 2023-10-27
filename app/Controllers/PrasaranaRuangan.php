@@ -135,7 +135,7 @@ class PrasaranaRuangan extends ResourceController
     
                 $dompdf = new Dompdf($options);
                 $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->setPaper('A4', 'landscape');
                 $dompdf->render();
                 $namaPrasarana = $data['dataPrasaranaRuangan']->namaPrasarana;
                 $filename = "Prasarana - $namaPrasarana.pdf";

@@ -36,19 +36,12 @@
                 </div>
                 <br>
                 <div class="table-responsive">
-                    <table class="my-table">
+                <table class="my-table">
                         <tr>
                             <td style="width: 15%;">Kode Aset</td>
                             <td style="width: 2%;">:</td>
                             <td>
                                 <?= $dataRincianAset->kodeRincianAset?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Nama Aset</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataRincianAset->namaSarana?>
                             </td>
                         </tr>
                         <tr>
@@ -59,17 +52,31 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Kategori Barang</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->namaKategoriManajemen?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nama Aset</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->namaSarana?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Status Aset</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->status?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Sumber Dana</td>
                             <td>:</td>
                             <td>
                                 <?= $dataRincianAset->namaSumberDana?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Kategori Manajemen</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataRincianAset->namaKategoriManajemen?>
                             </td>
                         </tr>
                         <tr>
@@ -80,24 +87,31 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Sarana Layak</td>
+                            <td>Harga Beli</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->saranaLayak?>
+                                <?= $dataRincianAset->hargaBeli?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Sarana Rusak</td>
+                            <td>Nomor Seri</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->saranaRusak?>
+                                <?= $dataRincianAset->noSeri?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Total Sarana</td>
+                            <td>Merek</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->totalSarana?>
+                                <?= $dataRincianAset->merk?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Warna</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->warna?>
                             </td>
                         </tr>
                         <tr>
