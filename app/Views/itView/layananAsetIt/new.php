@@ -34,23 +34,35 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataSaranaIt as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasSarana?>"><?=$value->namaSarana?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
                         <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
                                 <option value="" hidden>Pilih lokasi</option>
                                 <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
+                                <option value="" hidden>Pilih Kategori MEP</option>
+                                <?php foreach($dataKategoriManajemen as $key =>$value): ?>
+                                <option value="<?=$value->idKategoriManajemen?>"><?=$value->namaKategoriManajemen?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
+                                <option value="" hidden>Pilih aset</option>
+                                <?php foreach($dataSaranaIt as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasSarana?>"><?=$value->namaSarana?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -73,18 +85,6 @@
                                 <option value="" hidden>Pilih sumber dana</option>
                                 <?php foreach($dataSumberDana as $key =>$value): ?>
                                 <option value="<?=$value->idSumberDana?>"><?=$value->namaSumberDana?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
-                                <option value="" hidden>Pilih Kategori MEP</option>
-                                <?php foreach($dataKategoriManajemen as $key =>$value): ?>
-                                <option value="<?=$value->idKategoriManajemen?>"><?=$value->namaKategoriManajemen?>
-                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

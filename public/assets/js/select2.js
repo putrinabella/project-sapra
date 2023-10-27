@@ -8,7 +8,7 @@ $(function() {
   if ($(".js-example-basic-multiple").length) {
     $(".js-example-basic-multiple").select2();
   }
-
+  
   $('#modalImport').on('shown.bs.modal', function() {
     $('.myselect2').select2({
       allowClear: true,

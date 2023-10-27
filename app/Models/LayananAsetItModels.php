@@ -44,7 +44,7 @@ class LayananAsetItModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.kodePrasarana = tblRincianAset.kodePrasarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblIdentitasSarana.perangkatIt', 1);
         $query = $builder->get();
@@ -65,7 +65,7 @@ class LayananAsetItModels extends Model
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         "/", tahunPengadaan, 
                         "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", kodePrasarana)',
+                        "/", idIdentitasPrasarana)',
                         false
                         );
         $builder->where('idRincianAset', $id);
@@ -78,7 +78,7 @@ class LayananAsetItModels extends Model
                         'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
                         "/", tahunPengadaan, 
                         "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", kodePrasarana)',
+                        "/", idIdentitasPrasarana)',
                         false
                         );
         $builder->update();
