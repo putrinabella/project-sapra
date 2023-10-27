@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\PerangkatItModels; 
 use App\Models\IdentitasSaranaModels; 
+use App\Models\PrasaranaRuanganModels; 
 use App\Models\RincianAsetModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -17,6 +18,7 @@ class PerangkatIt extends ResourceController
     
      function __construct() {
         $this->perangkatItModel = new PerangkatItModels();
+        $this->prasaranaRuanganModel = new PrasaranaRuanganModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -28,13 +30,13 @@ class PerangkatIt extends ResourceController
     public function show($id = null) {
         if ($id != null) {
             $dataPerangkatIt = $this->perangkatItModel->find($id);
-            
+        
             if (is_object($dataPerangkatIt)) {
-
                 $dataAsetIT = $this->perangkatItModel->getData($dataPerangkatIt->idIdentitasSarana);
                 $totalSarana = $this->perangkatItModel->getTotalSarana($dataPerangkatIt->idIdentitasSarana);
                 $saranaLayak = $this->perangkatItModel->getSaranaLayak($dataPerangkatIt->idIdentitasSarana);
                 $saranaRusak = $this->perangkatItModel->getSaranaRusak($dataPerangkatIt->idIdentitasSarana);
+                $saranaHilang = $this->perangkatItModel->getSaranaHilang($dataPerangkatIt->idIdentitasSarana);
 
                 $data = [
                     'dataPerangkatIt'  => $dataPerangkatIt,
@@ -42,8 +44,10 @@ class PerangkatIt extends ResourceController
                     'totalSarana'      => $totalSarana,
                     'saranaLayak'      => $saranaLayak,
                     'saranaRusak'      => $saranaRusak,
+                    'saranaHilang'      => $saranaHilang,
                     
                 ];
+
                 return view('itView/perangkatIt/show', $data);
             } else {
                 return view('error/404');
@@ -51,8 +55,25 @@ class PerangkatIt extends ResourceController
         } else {
             return view('error/404');
         }
+        // if ($id != null) {
+        //     $dataPerangkatIt = $this->perangkatItModel->find($id);
+            
+        //     if (is_object($dataPerangkatIt)) {
+
+        //         $dataAsetIT = $this->perangkatItModel->getData($dataPerangkatIt->idIdentitasSarana);
+
+        //         $data = [
+        //             'dataPerangkatIt'  => $dataPerangkatIt,
+        //             'dataAsetIT'       => $dataAsetIT,
+        //         ];
+        //         return view('itView/perangkatIt/show', $data);
+        //     } else {
+        //         return view('error/404');
+        //     }
+        // } else {
+        //     return view('error/404');
+        // }
     }
-    
     
     private function htmlConverter($html) {
         $plainText = strip_tags(str_replace('<br />', "\n", $html));

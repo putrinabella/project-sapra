@@ -43,6 +43,7 @@
                                 <td class="text-center">
                                     <a href="<?=site_url('perangkatIt/'.$value->idIdentitasSarana) ?>" class="btn btn-success btn-icon-text"> <i  class="btn-icon-prepend" data-feather="info"></i> Show Detail</a>
                                 </td>
+                                
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

@@ -126,7 +126,7 @@ $routes->delete('statusLayanan/deletePermanent', 'StatusLayanan::deletePermanent
 $routes->presenter('statusLayanan', ['filter' => 'isLoggedIn']);
 
 // Kategori Manajemen
-$routes->get('s', 'KategoriManajemen::createTemplate');
+$routes->get('kategoriManajemen/createTemplate', 'KategoriManajemen::createTemplate');
 $routes->get('kategoriManajemen/generatePDF', 'KategoriManajemen::generatePDF');
 $routes->get('kategoriManajemen/export', 'KategoriManajemen::export');
 $routes->post('kategoriManajemen/import', 'KategoriManajemen::import');
@@ -224,6 +224,7 @@ $routes->get('perangkatIt/print/(:num)', 'perangkatIt::print/$1');
 $routes->get('perangkatIt/createTemplate', 'perangkatIt::createTemplate');
 $routes->get('perangkatIt/generatePDF', 'perangkatIt::generatePDF');
 $routes->get('perangkatIt/export', 'perangkatIt::export');
+$routes->get('perangkatIt/rincian/(:num)', 'perangkatIt::rincian/$1');
 $routes->resource('perangkatIt', ['filter' => 'isLoggedIn']);
 
 // Layanan Aset IT

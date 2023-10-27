@@ -34,28 +34,22 @@
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-md-3">
-                        <h5 class="p-2">Jumlah Keseluruhan</h5>
+                    <div class="col-md-4">
+                        <h5 class="p-2">Jumlah <?= $dataPerangkatIt->namaSarana; ?> Keseluruhan</h5>
                         <div class="border rounded-2 p-2">
                         <?= !empty($totalSarana) ? $totalSarana : '-'; ?>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <h5 class="p-2">Jumlah Layak</h5>
+                    <div class="col-md-4">
+                        <h5 class="p-2">Jumlah <?= $dataPerangkatIt->namaSarana; ?> Layak</h5>
                         <div class="border rounded-2 p-2">
                         <?= !empty($saranaLayak) ? $saranaLayak : '-'; ?>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <h5 class="p-2">Jumlah Rusak</h5>
+                    <div class="col-md-4">
+                        <h5 class="p-2">Jumlah <?= $dataPerangkatIt->namaSarana; ?> Rusak</h5>
                         <div class="border rounded-2 p-2">
                         <?= !empty($saranaRusak) ? $saranaRusak : '-'; ?>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <h5 class="p-2">Jumlah Hilang</h5>
-                        <div class="border rounded-2 p-2">
-                        <?= !empty($saranaHilang) ? $saranaHilang : '-'; ?>
                         </div>
                     </div>
                 </div>
@@ -73,8 +67,9 @@
                                     <th style="width: 12%;">Kode Aset</th>
                                     <th>Lokasi</th>
                                     <th>Tahun Pengadaan</th>
-                                    <th>Status Aset</th>
-                                    <th>Sumber Dana</th>
+                                    <th>Aset Layak</th>
+                                    <th>Aset Rusak</th>
+                                    <th>Total Aset</th>
                                     <th style="width: 10%;">Aksi</th>
                                 </tr>
                             </thead>
@@ -87,8 +82,9 @@
                                     <td class="text-center"><?=$value->kodeRincianAset?></td>
                                     <td class="text-center"><?=$value->namaPrasarana?></td>
                                     <td class="text-center"><?=$value->tahunPengadaan?></td>
-                                    <td class="text-center"><?=$value->status?></td>
-                                    <td class="text-center"><?=$value->namaSumberDana?></td>
+                                    <td class="text-center"><?=$value->saranaLayak?></td>
+                                    <td class="text-center"><?=$value->saranaRusak?></td>
+                                    <td class="text-center"><?=$value->totalSarana?></td>
                                     <td class="text-center">
                                         <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                         <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>" class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
