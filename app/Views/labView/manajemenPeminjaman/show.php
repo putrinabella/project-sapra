@@ -93,7 +93,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <?= ($value->jumlahPeminjaman === null) ? 0 : $value->jumlahPeminjaman ?>
+                                        <?= ($value->saranaDipinjam === null) ? 0 : $value->saranaDipinjam ?>
                                     </td>
                                     <td class="text-center">
                                         <?php

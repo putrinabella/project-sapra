@@ -16,6 +16,26 @@ class ManajemenPeminjamanModels extends Model
 
     protected $tableRincianLabAset            = 'tblRincianLabAset';
 
+    public function getAssetsByIdRincianLabAset($idRincianLabAset)
+    {
+        $builder = $this->db->table($this->tableRincianLabAset);
+        return $builder->where('idRincianLabAset', $idRincianLabAset)
+            ->get()
+            ->getResultArray();
+    }
+
+    public function updateSectionAset($idRincianLabAset, $sectionAsetValue) {
+        $builder = $this->db->table($this->tableRincianLabAset);
+        $data = [
+            'sectionAset' => $sectionAsetValue,
+        ];
+    
+        $builder->where('idRincianLabAset', $idRincianLabAset)
+                ->set($data)
+                ->update();
+    }
+    
+
     function getKodeLabData($idIdentitasSarana){
         $builder = $this->db->table($this->tableRincianLabAset);
         $builder->select('tblRincianLabAset.idIdentitasLab, tblIdentitasLab.namaLab');
@@ -91,7 +111,6 @@ class ManajemenPeminjamanModels extends Model
     public function updateAsetTersedia($idIdentitasSarana, $saranaLayak) {
         $builder = $this->db->table('tblRincianLabAset');
         
-        // Check if the value is different before attempting the update
         $existingAsetTersedia = $builder->select('saranaLayak')
             ->where('idIdentitasSarana', $idIdentitasSarana)
             ->get()

@@ -102,6 +102,46 @@ class DataPeminjamanModels extends Model
         return $totalSarana;
     }
 
+    // public function updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang) {
+    //     $builder = $this->db->table('tblRincianLabAset');
+    //     $existingAsetTersedia = $builder->select('saranaLayak, saranaRusak, saranaHilang')
+    //         ->where('idRincianLabAset', $idRincianLabAset)
+    //         ->get()
+    //         ->getRow();
+    
+    //     if ($existingAsetTersedia) {
+    //         $currentSaranaLayak = $existingAsetTersedia->saranaLayak;
+    //         $currentSaranaRusak = $existingAsetTersedia->saranaRusak;
+    //         $currentSaranaHilang = $existingAsetTersedia->saranaHilang;
+    
+    //         if ($jumlahBarangRusak != 0) {
+    //             $newSaranaRusak = $currentSaranaRusak + $jumlahBarangRusak;
+    //             $builder->set('saranaRusak', $newSaranaRusak);
+    //         }
+    
+    //         if ($jumlahBarangHilang != 0) {
+    //             $newSaranaHilang = $currentSaranaHilang + $jumlahBarangHilang;
+    //             $builder->set('saranaHilang', $newSaranaHilang);
+    //         }
+    
+    //         if ($jumlahBarangRusak != 0 || $jumlahBarangHilang != 0) {
+    //             $newSaranaLayak = $currentSaranaLayak - ($jumlahBarangRusak + $jumlahBarangHilang);
+    
+    //             // Make sure the new value is not negative
+    //             if ($newSaranaLayak < 0) {
+    //                 $newSaranaLayak = 0;
+    //             }
+    
+    //             // Check if the value is different before attempting the update
+    //             if ($currentSaranaLayak !== $newSaranaLayak) {
+    //                 $builder->set('saranaLayak', $newSaranaLayak);
+    //             }
+    //         }
+    
+    //         $builder->where('idRincianLabAset', $idRincianLabAset)->update();
+    //     }
+    // }
+    
     public function updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang) {
         $builder = $this->db->table('tblRincianLabAset');
         $existingAsetTersedia = $builder->select('saranaLayak, saranaRusak, saranaHilang')
@@ -141,5 +181,4 @@ class DataPeminjamanModels extends Model
             $builder->where('idRincianLabAset', $idRincianLabAset)->update();
         }
     }
-    
 }
