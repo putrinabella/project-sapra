@@ -70,6 +70,7 @@
                                 <th style="width: 5%;">No.</th>
                                 <th style="width: 12%;">ID</th>
                                 <th>Nama</th>
+                                <th>Tipe</th>
                                 <th>Lokasi Gedung</th>
                                 <th>Lokasi Lantai</th>
                                 <th>Luas</th>
@@ -86,6 +87,7 @@
                                     <?=$value->kodeLab?>
                                 </td>
                                 <td class="text-left"><?=$value->namaLab?></td>
+                                <td class="text-center"><?=$value->tipe?></td>
                                 <td class="text-center"><?=$value->namaGedung?></td>
                                 <td class="text-center"><?=$value->namaLantai?></td>
                                 <td class="text-center"><?=$value->luas?> m&sup2;</td>
@@ -109,6 +111,3 @@
         </div>
     </div>
 </div>
-
-
-<?= $this->endSection(); ?>

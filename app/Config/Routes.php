@@ -301,18 +301,42 @@ $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
 // LABORATORIUM
 
 // Manajemen Aset
+$routes->get('pemusnahanAsetDetail/(:num)', 'RincianLabAset::pemusnahanAsetDetail/$1');
+$routes->get('pemusnahanAset', 'RincianLabAset::pemusnahanAset');
+$routes->get('dataSaranaDetail/(:num)', 'RincianLabAset::dataSaranaDetail/$1');
+$routes->get('dataSarana', 'RincianLabAset::dataSarana');
+$routes->get('dataSarana/generatePDF', 'RincianLabAset::dataSaranaGeneratePDF');
+$routes->get('dataSarana/export', 'RincianLabAset::dataSaranaExport');
 $routes->get('rincianLabAset/createTemplate', 'RincianLabAset::createTemplate');
 $routes->get('rincianLabAset/print/(:num)', 'RincianLabAset::print/$1');
 $routes->get('rincianLabAset/generatePDF', 'RincianLabAset::generatePDF');
 $routes->get('rincianLabAset/export', 'RincianLabAset::export');
 $routes->post('rincianLabAset/import', 'RincianLabAset::import');
 $routes->get('rincianLabAset/edit', 'RincianLabAset::edit');
+$routes->get('rincianLabAset/editPemusnahan/(:any)', 'RincianLabAset::editPemusnahan/$1');
 $routes->get('rincianLabAset/trash', 'RincianLabAset::trash');
 $routes->get('rincianLabAset/restore/(:any)', 'RincianLabAset::restore/$1');
 $routes->get('rincianLabAset/restore', 'RincianLabAset::restore');
+$routes->get('pemusnahanAset/dataDestroyaGeneratePDF', 'RincianLabAset::dataDestroyaGeneratePDF');
+$routes->get('pemusnahanAset/exportDestroyFile', 'RincianLabAset::exportDestroyFile');
+$routes->post('pemusnahanAset/delete/(:any)', 'RincianLabAset::pemusnahanAsetDelete/$1');
+$routes->patch('pemusnahanAset/updatePemusnahan/(:any)', 'RincianLabAset::updatePemusnahan/$1');
 $routes->delete('rincianLabAset/deletePermanent/(:any)', 'RincianLabAset::deletePermanent/$1');
 $routes->delete('rincianLabAset/deletePermanent', 'RincianLabAset::deletePermanent');
 $routes->resource('rincianLabAset', ['filter' => 'isLoggedIn']);
+
+// $routes->get('rincianLabAset/createTemplate', 'RincianLabAset::createTemplate');
+// $routes->get('rincianLabAset/print/(:num)', 'RincianLabAset::print/$1');
+// $routes->get('rincianLabAset/generatePDF', 'RincianLabAset::generatePDF');
+// $routes->get('rincianLabAset/export', 'RincianLabAset::export');
+// $routes->post('rincianLabAset/import', 'RincianLabAset::import');
+// $routes->get('rincianLabAset/edit', 'RincianLabAset::edit');
+// $routes->get('rincianLabAset/trash', 'RincianLabAset::trash');
+// $routes->get('rincianLabAset/restore/(:any)', 'RincianLabAset::restore/$1');
+// $routes->get('rincianLabAset/restore', 'RincianLabAset::restore');
+// $routes->delete('rincianLabAset/deletePermanent/(:any)', 'RincianLabAset::deletePermanent/$1');
+// $routes->delete('rincianLabAset/deletePermanent', 'RincianLabAset::deletePermanent');
+// $routes->resource('rincianLabAset', ['filter' => 'isLoggedIn']);
 
 // Laboratorium
 $routes->get('laboratorium/print/(:num)', 'Laboratorium::print/$1');

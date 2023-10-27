@@ -84,16 +84,17 @@
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
                                 <th style="width: 12%;">Kode Aset</th>
-                                <th>Nama Aset</th>
                                 <th>Lokasi</th>
-                                <th>Tahun Pengadaan</th>
-                                <th>Kategori Manajemen</th>
+                                <th>Kategori Aset</th>
+                                <th>Nama Aset</th>
+                                <th>Status</th>
                                 <th>Sumber Dana</th>
-                                <th>Aset Layak</th>
-                                <th>Aset Rusak</th>
-                                <th>Aset Hilang</th>
-                                <th>Total Aset</th>
+                                <th>Tahun Pengadaan</th>
+                                <th>Harga Beli</th>
+                                <th>Merek</th>
+                                <th>Warna</th>
                                 <th style="width: 20%;">Aksi</th>
+                                <th style="width: 20%;">Pemusnahan</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
@@ -103,27 +104,56 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?=$value->kodeRincianLabAset?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaLab?></td>
-                                <td class="text-center"><?=$value->tahunPengadaan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td class="text-center"><?=$value->status?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->saranaLayak?></td>
-                                <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?=$value->saranaHilang?></td>
-                                <td class="text-center"><?= $totalSarana = $value->saranaLayak + $value->saranaRusak + $value->saranaHilang ?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <?php 
+                                        if($value->tahunPengadaan == 0 || 0000) {
+                                            echo "Tidak diketahui"; 
+                                        } else {
+                                            echo $value->tahunPengadaan;
+                                        };
+                                    ?>
+                                </td>
+                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td class="text-center"><?=$value->merk?></td>
+                                <td class="text-center"><?=$value->warna?></td>
+                                <td class="text-center">
+                                    <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>"
+                                        class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('rincianLabAset/'.$value->idRincianLabAset)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idRincianLabAset;?>">
+                                    <form action="<?=site_url('rincianLabAset/'.$value->idRincianLabAset)?>" method="post"
+                                        class="d-inline" id="del-<?= $value->idRincianLabAset;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <button class="btn btn-danger btn-icon"
+                                            data-confirm="Apakah anda yakin menghapus data ini?"
+                                            data-title="Hapus Aset">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
+                                </td>
+                                <td class="text-center">
+                                <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianLabAset) ?>" method="post" class="d-inline">
+                                    <?= csrf_field() ?>
+                                    <div class="form-group">
+                                        <div class="d-flex align-items-center">
+                                            <select name="sectionAset" class="form-control me-2 sectionAsetSelect" style="width: 130px">
+                                                <option value="None">None</option>
+                                                <option value="Dimusnahkan">Dimusnahkan</option>
+                                            </select>
+                                            <input class="form-control" type="text" name="namaAkun" value="<?=userLogin()->nama?>" hidden>
+                                            <input class="form-control" type="text" name="kodeAkun" value="<?=userLogin()->role?>" hidden>
+                                            <button type="submit" class="btn btn-success btn-icon ml-2 submitButton">
+                                                <i data-feather="check"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

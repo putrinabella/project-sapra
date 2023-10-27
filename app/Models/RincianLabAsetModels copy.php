@@ -9,11 +9,10 @@ class RincianLabAsetModels extends Model
     protected $table            = 'tblRincianLabAset';
     protected $primaryKey       = 'idRincianLabAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idRincianLabAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasLab', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'bukti', 'kodeRincianLabAset', 'hargaBeli', 'merk', 'type', 'warna', 'noSeri', 'nomorBarang', 'status', 'sectionAset','tanggalPemusnahan' , 'namaAkun', 'kodeAkun'];
+    protected $allowedFields    = ['idRincianLabAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasLab', 'tahunPengadaan', 'saranaLayak', 'saranaRusak', 'spesifikasi', 'totalSarana', 'bukti', 'kodeRincianLabAset'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
-
-    function getAll() {
+   function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
@@ -166,19 +165,41 @@ class RincianLabAsetModels extends Model
         return false;
     }
 
-    // public function updateSectionAset($idRincianLabAset, $newSectionAset)
-    // {
-    //     if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {
-    //         $data = ['sectionAset' => $newSectionAset];
+    // function getAll() {
+    //     $builder = $this->db->table($this->table);
+    //     $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+    //     $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
+    //     $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+    //     $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+    //     $builder->where('tblRincianLabAset.deleted_at', null);
+    //     $query = $builder->get();
+    //     return $query->getResult();
+    // } 
     
-    //         if ($newSectionAset === 'Dimusnahkan') {
-    //             $data['tanggalPemusnahan'] = date('Y-m-d H:i:s');
-    //         }
-    
-    //         $this->update($idRincianLabAset, $data);
-    //         return true;
-    //     }
-    //     return false;
+    // function getRecycle() {
+    //     $builder = $this->db->table($this->table);
+    //     $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+    //     $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
+    //     $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+    //     $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+    //     $builder->where('tblRincianLabAset.deleted_at IS NOT NULL');
+    //     $query = $builder->get();
+    //     return $query->getResult();
     // }
-    
+
+    // function find($id = null, $columns = '*') {
+    //     $builder = $this->db->table($this->table);
+    //     $builder->select($columns);
+        
+    //     $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+    //     $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
+    //     $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+    //     $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        
+    //     $builder->where($this->primaryKey, $id);
+
+    //     $query = $builder->get();
+    //     return $query->getRow();
+    // }
+
 }

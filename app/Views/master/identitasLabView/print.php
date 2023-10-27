@@ -43,6 +43,7 @@
                     <th>No.</th>
                     <th>Kode</th>
                     <th>Nama</th>
+                    <th>Tipe</th>
                     <th>Lokasi Gedung</th>
                     <th>Lokasi Lantai</th>
                     <th>Luas</th>
@@ -59,6 +60,9 @@
                     </td>
                     <td>
                         <?= $value->namaLab ?>
+                    </td>
+                    <td>
+                        <?= $value->tipe ?>
                     </td>
                     <td>
                         <?= $value->namaGedung ?>

@@ -39,21 +39,15 @@ class IdentitasLab extends ResourceController
         return view('master/identitasLabView/new', $data);        
     }
 
+    
     public function create() {
         $data = $this->request->getPost();
-    
-        $kodeLab = $data['kodeLab'];
-        $namaLab = $data['namaLab'];
-    
-        if ($this->identitasLabModel->isDuplicate($kodeLab, $namaLab)) {
-            return redirect()->to(site_url('identitasLab'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
-        } else {
             unset($data['idIdentitasLab']);
             $this->identitasLabModel->insert($data);
+            $this->identitasLabModel->setKodeLab();
             return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil disimpan');
-        }
     }
-    
+
 
     public function edit($id = null) {
         if ($id != null) {
@@ -77,15 +71,9 @@ class IdentitasLab extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            $kodeLab = $data['kodeLab'];
-            $namaLab = $data['namaLab'];
-             
-            if ($this->identitasLabModel->isDuplicate($kodeLab, $namaLab)) {
-                return redirect()->to(site_url('identitasLab'))->with('error', 'Gagal update karena ditemukan duplikat data!');
-            } else {
                 $this->identitasLabModel->update($id, $data);
+                $this->identitasLabModel->updateKodeLab($id);
                 return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diupdate');
-            }
         } else {
             return view('error/404');
         }
@@ -145,7 +133,7 @@ class IdentitasLab extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Kode', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
+        $headerInputTable = ['No.', 'Kode', 'Nama Lab', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -153,15 +141,15 @@ class IdentitasLab extends ResourceController
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeLab);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaLab);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->luas . ' m²');
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaGedung);
-            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaLantai);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->luas . ' m²');
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaGedung);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLantai);
             
-            // $activeWorksheet->getStyle('B'.($index + 2))
-            //     ->getAlignment()
-            //     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            $activeWorksheet->getStyle('B'.($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
                 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F' ,'G'];
+            $columns = ['A', 'C', 'D', 'E', 'F'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -169,18 +157,18 @@ class IdentitasLab extends ResourceController
             }    
         }
     
-        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:F')->getAlignment()->setWrapText(true);
         
-        foreach (range('A', 'G') as $column) {
+        foreach (range('A', 'F') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Data Master - Identitas Lab.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Laboratorium.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -198,46 +186,51 @@ class IdentitasLab extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Kode Lab', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'Status'];
+        $headerInputTable = ['No.', 'Kode Lab', 'Nama Lab', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Lab'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
-        $headerTipeLab = ['Tipe'];
-        $activeWorksheet->fromArray([$headerTipeLab], NULL, 'J1');
-        $activeWorksheet->getStyle('J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
+        $activeWorksheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         $headerGedungID = ['ID Identitas Gedung', 'Nama Gedung'];
-        $activeWorksheet->fromArray([$headerGedungID], NULL, 'L1');
-        $activeWorksheet->getStyle('L1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->fromArray([$headerGedungID], NULL, 'I1');
+        $activeWorksheet->getStyle('I1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         $headerLantaiID = ['ID Identitas Lantai', 'Nama Lantai'];
-        $activeWorksheet->fromArray([$headerLantaiID], NULL, 'O1');
-        $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->fromArray([$headerLantaiID], NULL, 'L1');
+        $activeWorksheet->getStyle('L1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         $headerLabID = ['ID Identitas Lab', 'Nama Lab'];
-        $activeWorksheet->fromArray([$headerLabID], NULL, 'R1');
-        $activeWorksheet->getStyle('R1:S1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->fromArray([$headerLabID], NULL, 'O1');
+        $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         $latestID = null;
 
         foreach ($data as $index => $value) {
-            if ($index >= 1) {
+            if ($index >= 3) {
                 break;
             }
-            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyLab)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyLab)+1).',0))),"ERROR: Duplicate Data",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyGedung)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyLantai)+1).',0))),"CORRECT","ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai")),"ERROR: Empty data")';
 
+            $latestData = end($data); 
+
+            if ($latestID === null) {
+                $latestID = $latestData->idIdentitasLab +1;
+            } else {
+                $latestID = "=G".($index + 1)." + 1";
+            }
+
+            $formula = '=CONCAT("LAB", TEXT(G'.($index + 2).', "000"), "/G", TEXT(E'.($index + 2).', "00"), "/L", TEXT(F'.($index + 2).', "00"))';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), '');
+            $activeWorksheet->setCellValue('B'.($index + 2), $formula);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
             $activeWorksheet->setCellValue('F'.($index + 2), '');
-            $activeWorksheet->setCellValue('G'.($index + 2), '');
-            $activeWorksheet->setCellValue('H'.($index + 2), $getFormula);
+            $activeWorksheet->setCellValue('G'.($index + 2), $latestID);
             
-            
-
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H'];
+            $activeWorksheet->getStyle('B'.($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                
+            $columns = ['A', 'C', 'D', 'E', 'F', 'G'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -245,40 +238,46 @@ class IdentitasLab extends ResourceController
             }    
         }
     
-        $activeWorksheet->getStyle('A1:H1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
-        $activeWorksheet->getStyle('A1:H'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
         
-        foreach (range('A', 'H') as $column) {
-            if ($column === 'D' || $column === 'E') {
-                $activeWorksheet->getColumnDimension($column)->setWidth(20);
-            } else {
+        foreach (range('A', 'G') as $column) {
+            if ($column === 'A') {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            } else if ($column === 'B') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(30);
+            } else {
+                $activeWorksheet->getColumnDimension($column)->setWidth(20);
             }
         }
-
-        $activeWorksheet->setCellValue('J2', 'Ruangan');
-        $activeWorksheet->setCellValue('J3', 'Non Ruangan');
-
-        $activeWorksheet->getStyle('J1')
-            ->getAlignment()
-            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $activeWorksheet->getStyle('J1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        $activeWorksheet->getStyle('J2:J3')
-            ->getAlignment()
-            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $activeWorksheet->getStyle('J2:J3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        $activeWorksheet->getStyle('J')->getAlignment()->setWrapText(true);
-        $activeWorksheet->getColumnDimension('J')->setAutoSize(true);
+        
 
         foreach ($keyGedung as $index => $value) {
-            $activeWorksheet->setCellValue('L'.($index + 2), $value->idIdentitasGedung);
-            $activeWorksheet->setCellValue('M'.($index + 2), $value->namaGedung);
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->idIdentitasGedung);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->namaGedung);
+    
+            $columns = ['I', 'J'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('I1:J1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('I1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('I1:J'.(count($keyGedung) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('I:J')->getAlignment()->setWrapText(true);
+    
+        foreach (range('I', 'J') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        foreach ($keyLantai as $index => $value) {
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->idIdentitasLantai);
+            $activeWorksheet->setCellValue('M'.($index + 2), $value->namaLantai);
     
             $columns = ['L', 'M'];
             foreach ($columns as $column) {
@@ -290,16 +289,16 @@ class IdentitasLab extends ResourceController
 
         $activeWorksheet->getStyle('L1:M1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('L1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('L1:M'.(count($keyGedung) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('L1:M'.(count($keyLantai) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('L:M')->getAlignment()->setWrapText(true);
     
         foreach (range('L', 'M') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
 
-        foreach ($keyLantai as $index => $value) {
-            $activeWorksheet->setCellValue('O'.($index + 2), $value->idIdentitasLantai);
-            $activeWorksheet->setCellValue('P'.($index + 2), $value->namaLantai);
+        foreach ($keyLab as $index => $value) {
+            $activeWorksheet->setCellValue('O'.($index + 2), $value->idIdentitasLab);
+            $activeWorksheet->setCellValue('P'.($index + 2), $value->namaLab);
     
             $columns = ['O', 'P'];
             foreach ($columns as $column) {
@@ -311,31 +310,10 @@ class IdentitasLab extends ResourceController
 
         $activeWorksheet->getStyle('O1:P1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('O1:P1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('O1:P'.(count($keyLantai) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('O1:P'.(count($keyLab) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('O:P')->getAlignment()->setWrapText(true);
     
         foreach (range('O', 'P') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
-        }
-
-        foreach ($keyLab as $index => $value) {
-            $activeWorksheet->setCellValue('R'.($index + 2), $value->idIdentitasLab);
-            $activeWorksheet->setCellValue('S'.($index + 2), $value->namaLab);
-    
-            $columns = ['R', 'S'];
-            foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
-        }
-
-        $activeWorksheet->getStyle('R1:S1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('R1:S1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('R1:S'.(count($keyLab) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('R:S')->getAlignment()->setWrapText(true);
-    
-        foreach (range('R', 'S') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -343,7 +321,7 @@ class IdentitasLab extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headerExampleTable = ['No.', 'Kode Lab', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
+        $headerExampleTable = ['No.', 'Kode Lab', 'Nama Lab', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'ID Lab'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -354,9 +332,10 @@ class IdentitasLab extends ResourceController
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $value->kodeLab);
             $exampleSheet->setCellValue('C'.($index + 2), $value->namaLab);
-            $exampleSheet->setCellValue('E'.($index + 2), $value->luas);
-            $exampleSheet->setCellValue('F'.($index + 2), $value->idIdentitasGedung);
-            $exampleSheet->setCellValue('G'.($index + 2), $value->idIdentitasLantai);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->luas);
+            $exampleSheet->setCellValue('E'.($index + 2), $value->idIdentitasGedung);
+            $exampleSheet->setCellValue('F'.($index + 2), $value->idIdentitasLantai);
+            $exampleSheet->setCellValue('G'.($index + 2), $value->idIdentitasLab);
             
             $exampleSheet->getStyle('B'.($index + 2))
                 ->getAlignment()
@@ -387,76 +366,52 @@ class IdentitasLab extends ResourceController
         $writer->save('php://output');
         exit();
     }
-
     
     public function import() {
         $file = $this->request->getFile('formExcel');
         $extension = $file->getClientExtension();
-        $hasErrors = false;
-        $errorMessage = '';
-    
-        if ($extension == 'xlsx' || $extension == 'xls') {
-            if ($extension == 'xls') {
+        if($extension == 'xlsx' || $extension == 'xls') {
+            if($extension == 'xls') {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
             }
             $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-    
+            
             $spreadsheet = $reader->load($file);
             $theFile = $spreadsheet->getActiveSheet()->toArray();
-    
+
             foreach ($theFile as $key => $value) {
                 if ($key == 0) {
                     continue;
                 }
-                $kodeLab = $value[1] ?? null;
-                $namaLab = $value[2] ?? null;
-                $luas = $value[4] ?? null;
-                $idIdentitasGedung = $value[5] ?? null;
-                $idIdentitasLantai = $value[6] ?? null;
-                $status = $value[7] ?? null;
-    
+                $namaLab            = $value[2] ?? null;
+                $luas               = $value[3] ?? null;
+                $idIdentitasGedung  = $value[4] ?? null;
+                $idIdentitasLantai  = $value[5] ?? null;
+                $kodeLab            = $value[1] ?? null;
+
                 $data = [
                     'namaLab' => $namaLab,
-                    'luas' => $luas,
+                    'luas'  => $luas,
                     'idIdentitasGedung' => $idIdentitasGedung,
                     'idIdentitasLantai' => $idIdentitasLantai,
                     'kodeLab' => $kodeLab,
-                    'status' => $status,
                 ];
-    
-                if ($status == 'CORRECT') {
-                    if ($this->identitasLabModel->isDuplicate($kodeLab, $namaLab)) {
-                        $hasErrors = true;
-                        $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
-                        break;
+
+                if (!empty($data['namaLab']) && !empty($data['luas']) && !empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai']) && !empty($data['kodeLab'])) {
+                    if ($status == 'ERROR') {
+                        return redirect()->to(site_url('identitasLab'))->with('error', 'Pastikan excel sudah benar');
                     } else {
                         $this->identitasLabModel->insert($data);
                     }
-                } else if ($status == 'ERROR: Empty data') {
-                    $hasErrors = true;
-                    $errorMessage = 'Pastikan semua data telah terisi.';
-                    break;
-                } else if ($status == 'ERROR: Duplicate Data') {
-                    $hasErrors = true;
-                    $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
-                    break;
-                } else if ($status == 'ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai') {
-                    $errorMessage = 'ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai!';
-                    break;
+                } else {
+                    return redirect()->to(site_url('identitasLab'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
-    
-            if ($hasErrors) {
-                return redirect()->to(site_url('identitasLab'))->with('error', $errorMessage);
-            } else {
-                return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diimport');
-            }
+            return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diimport');
         } else {
             return redirect()->to(site_url('identitasLab'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
-    
-
 
     public function generatePDF() {
         $filePath = APPPATH . 'Views/master/identitasLabView/print.php';
@@ -480,7 +435,7 @@ class IdentitasLab extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Data Master - Identitas Lab.pdf';
+        $filename = 'Data Master - Identitas Laboratorium.pdf';
         $dompdf->stream($filename);
     }
 }

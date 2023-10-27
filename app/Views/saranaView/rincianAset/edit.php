@@ -103,7 +103,7 @@
                         <label for="tahunPengadaan" class="col-sm-3 col-form-label">Tahun Pengadaan</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="tahunPengadaan" name="tahunPengadaan"
-                                value="<?=$dataRincianAset->tahunPengadaan?>" placeholder="Masukkan tahun pengadaan">
+                                value="<?=$dataRincianAset->tahunPengadaan == 0 ? '0000' : $dataRincianAset->tahunPengadaan?>" placeholder="Masukkan tahun pengadaan">
                                 <p class="text-primary" style="font-size: 12px;">Jika tahun pengadaan tidak diketahui, tulis dengan <b>0000</b></p>
                         </div>
                     </div>

@@ -69,15 +69,15 @@
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
                                 <th style="width: 12%;">Kode Aset</th>
-                                <th>Nama Aset</th>
                                 <th>Lokasi</th>
-                                <th>Tahun Pengadaan</th>
-                                <th>Kategori Manajemen</th>
+                                <th>Kategori Barang</th>
+                                <th>Spesifikasi Barang</th>
+                                <th>Status</th>
                                 <th>Sumber Dana</th>
-                                <th>Aset Layak</th>
-                                <th>Aset Rusak</th>
-                                <th>Aset Hilang</th>
-                                <th>Total Aset</th>
+                                <th>Tahun Pengadaan</th>
+                                <th>Harga Beli</th>
+                                <th>Merek</th>
+                                <th>Warna</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -88,15 +88,15 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?=$value->kodeRincianLabAset?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaLab?></td>
-                                <td class="text-center"><?=$value->tahunPengadaan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td class="text-center"><?=$value->status?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->saranaLayak?></td>
-                                <td class="text-center"><?=$value->saranaRusak?></td>
-                                <td class="text-center"><?=$value->saranaHilang?></td>
-                                <td class="text-center"><?=$totalSarana = $value->saranaLayak + $value->saranaRusak + $value->saranaHilang?></td>
+                                <td class="text-center"><?=$value->tahunPengadaan?></td>
+                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td class="text-center"><?=$value->merk?></td>
+                                <td class="text-center"><?=$value->warna?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianLabAset/restore/'.$value->idRincianLabAset) ?>"
                                         class="btn btn-primary"> Restore</a>

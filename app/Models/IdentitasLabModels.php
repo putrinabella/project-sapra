@@ -31,20 +31,10 @@ class IdentitasLabModels extends Model
         return $query->getResult();
     }
 
-    function updateKodeLab($id) {
+    public function isDuplicate($kodeLab, $namaLab) {
         $builder = $this->db->table($this->table);
-        $builder->set('kodeLab', 'CONCAT("LAB", LPAD(idIdentitasLab, 3, "0"), 
-                        "/G", LPAD(idIdentitasGedung, 2, "0"), 
-                        "/L", LPAD(idIdentitasLantai, 2, "0"))', false);
-        $builder->where('idIdentitasLab', $id);
-        $builder->update();
-    }
-
-    function setKodeLab() {
-        $builder = $this->db->table($this->table);
-        $builder->set('kodeLab', 'CONCAT("LAB", LPAD(idIdentitasLab, 3, "0"), 
-                        "/G", LPAD(idIdentitasGedung, 2, "0"), 
-                        "/L", LPAD(idIdentitasLantai, 2, "0"))', false);
-        $builder->update();
+        return $builder->where('kodeLab', $kodeLab)
+            ->orWhere('namaLab', $namaLab)
+            ->countAllResults() > 0;
     }
 }

@@ -22,16 +22,35 @@
                 </div>
             </div>
             <div class="card-body">
+                <div>
+                    <?php if(session()->getFlashdata('error')) :?>
+                    <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
+                        <div class="alert-body">
+                            <b>Error!</b>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
+                            <?=session()->getFlashdata('error')?>
+                        </div>
+                    </div>
+                    <br>
+                    <?php endif; ?>
+                </div>
                 <form action="<?= site_url('identitasLab')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
+                    <div class="row mb-3">
+                        <label for="kodeLab" class="col-sm-3 col-form-label">Kode Lab</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kodeLab" name="kodeLab"
+                                placeholder="Masukkan kode prasarana">
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="namaLab" class="col-sm-3 col-form-label">Identitas Lab</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaLab" name="namaLab"
-                                placeholder="Masukkan Identitas Lab">
+                                placeholder="Masukkan identitas prasarana">
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <label for="idIdentitasGedung" class="col-sm-3 col-form-label">Lokasi Gedung</label>
                         <div class="col-sm-9">
@@ -58,7 +77,7 @@
                         <label for="luas" class="col-sm-3 col-form-label">Luas</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="luas" name="luas"
-                                placeholder="Masukkan Luas">
+                                placeholder="Masukkan luas (satuan meter)">
                         </div>
                     </div>
                     <div class="row mb-3">

@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class RincianLabAsetLab extends Migration
+class RincianLabAset extends Migration
 {
     public function up()
     {
@@ -39,15 +39,19 @@ class RincianLabAsetLab extends Migration
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'saranaLayak' => [
-                'type' => 'INT',
-                'constraint' => 4,
+            'noSeri' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
-            'saranaRusak' => [
-                'type' => 'INT',
-                'constraint' => 4,
+            'merk' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
-            'saranaHilang' => [
+            'warna' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'nomorBarang' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
@@ -59,6 +63,27 @@ class RincianLabAsetLab extends Migration
             ],
             'hargaBeli' => [
                 'type' => 'INT',
+            ],
+            'status' => [
+                'type' => 'ENUM("Bagus", "Rusak", "Hilang")',
+                'default' => 'Bagus',
+            ],
+            'sectionAset' => [
+                'type' => 'ENUM("Dipinjam", "Dimusnahkan", "None")',
+                'default' => 'None',
+            ],
+            'tanggalPemusnahan' => [
+                'type' => 'DATE',
+            ],
+            'namaAkun' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
+            'kodeAkun' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

@@ -104,7 +104,64 @@ class LaboratoriumModels extends Model
         return $query->getResult();
     }
     
+    public function getSaranaLayakCount($idIdentitasLab)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('COUNT(idRincianLabAset) as saranaLayakCount');
+        $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianLabAset.status', 'Bagus');
 
+        $query = $builder->get();
+        $result = $query->getRow();
+
+        if ($result) {
+            return $result->saranaLayakCount;
+        } else {
+            return 0; // No records found
+        }
+    }
+
+    public function getSaranaRusakCount($idIdentitasLab)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('COUNT(idRincianLabAset) as saranaRusakCount');
+        $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianLabAset.status', 'Rusak');
+
+        $query = $builder->get();
+        $result = $query->getRow();
+
+        if ($result) {
+            return $result->saranaRusakCount;
+        } else {
+            return 0; // No records found
+        }
+    }
+
+    public function getSaranaHilangCount($idIdentitasLab)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('COUNT(idRincianLabAset) as saranaHilangCount');
+        $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianLabAset.status', 'Hilang');
+
+        $query = $builder->get();
+        $result = $query->getRow();
+
+        if ($result) {
+            return $result->saranaHilangCount;
+        } else {
+            return 0; // No records found
+        }
+    }
     
 
     function getAll() {

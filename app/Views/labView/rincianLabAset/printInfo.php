@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Rincian Aset Lab Report</title>
+    <title>Detail Rincian Aset Laboratorium</title>
 
     <bukti rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/simplemde/simplemde.min.css">
         <style>
@@ -48,6 +48,7 @@
                 max-height: 300px;
                 display: block;
                 margin: 0 auto;
+                max-widht: 90%;
             }
         </style>
 </head>
@@ -55,7 +56,7 @@
 <body>
     <div class="card overflow-hidden">
         <div class="card-body">
-            <h3>Data Rincian Aset Lab
+            <h3>Data Rincian Aset Laboratorium
                 <?= $data['dataRincianLabAset']->namaSarana?>
             </h3>
             <div class="image-container">
@@ -66,7 +67,6 @@
                         echo '(no image)';
                     }
                 ?>
-
             </div>
             <br>
             <table class="table" style="max-width: 90%; margin: 0 auto;">
@@ -74,14 +74,7 @@
                     <td style="width: 30%;">Kode Aset</td>
                     <td style="width: 5%;">:</td>
                     <td>
-                        <?= $data['dataRincianLabAset']->kodeLab ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Nama Aset</td>
-                    <td>:</td>
-                    <td>
-                        <?= $data['dataRincianLabAset']->namaSarana?>
+                        <?= $data['dataRincianLabAset']->kodeRincianLabAset ?>
                     </td>
                 </tr>
                 <tr>
@@ -92,17 +85,31 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Kategori Barang</td>
+                    <td>:</td>
+                    <td>
+                        <?= $data['dataRincianLabAset']->namaKategoriManajemen?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Spesifikasi Barang</td>
+                    <td>:</td>
+                    <td>
+                        <?= $data['dataRincianLabAset']->namaSarana?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Status Aset</td>
+                    <td>:</td>
+                    <td>
+                        <?= $data['dataRincianLabAset']->status?>
+                    </td>
+                </tr>
+                <tr>
                     <td>Sumber Dana</td>
                     <td>:</td>
                     <td>
                         <?= $data['dataRincianLabAset']->namaSumberDana?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Kategori Manajemen</td>
-                    <td>:</td>
-                    <td>
-                        <?= $data['dataRincianLabAset']->namaKategoriManajemen?>
                     </td>
                 </tr>
                 <tr>
@@ -113,31 +120,24 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Sarana Layak</td>
+                    <td>Harga Beli</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianLabAset']->saranaLayak?>
+                        <?= $data['dataRincianLabAset']->hargaBeli?>
                     </td>
                 </tr>
                 <tr>
-                    <td>Sarana Rusak</td>
+                    <td>Merek</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianLabAset']->saranaRusak?>
+                        <?= $data['dataRincianLabAset']->merk?>
                     </td>
                 </tr>
                 <tr>
-                    <td>Sarana Hilang</td>
+                    <td>Warna</td>
                     <td>:</td>
                     <td>
-                        <?= $data['dataRincianLabAset']->saranaHilang?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Total Sarana</td>
-                    <td>:</td>
-                    <td>
-                        <?= $data['dataRincianLabAset']->saranaLayak + $data['dataRincianLabAset']->saranaRusak + $data['dataRincianLabAset']->saranaHilang?>
+                        <?= $data['dataRincianLabAset']->warna?>
                     </td>
                 </tr>
                 <tr>
