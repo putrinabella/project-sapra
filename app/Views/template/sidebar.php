@@ -56,34 +56,20 @@
             </ul>
         </div>
     </li>
-
-    <li class="nav-item nav-category">Sarana dan Prasarana</li>
-    <!-- <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#sarana" role="button" aria-expanded="false" aria-controls="sarana">
-            <i class="link-icon" data-feather="monitor"></i>
-            <span class="link-title">Sarana</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
+    <li class="nav-item nav-category">Prasarana</li>
+    <li class="nav-item">
+        <a href="<?= site_url('prasaranaRuangan') ?>" class="nav-link">
+            <i class="link-icon" data-feather="list"></i>
+            <span class="link-title">Ruangan</span>
         </a>
-        <div class="collapse" id="sarana">
-            <ul class="nav sub-menu">
-                <li class="nav-item">
-                    <a href="<?= site_url('saranaLayananAset') ?>" class="nav-link">Layanan Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('saranaLayananNonAset') ?>" class="nav-link">Layanan Non Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('dataSarana') ?>" class="nav-link">Data Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('rincianAset') ?>" class="nav-link">Rincian Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('pemusnahanAset') ?>" class="nav-link">Pemusnahan Aset</a>
-                </li>
-            </ul>
-        </div>
-    </li> -->
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('prasaranaNonRuangan') ?>" class="nav-link">
+            <i class="link-icon" data-feather="list"></i>
+            <span class="link-title">Non Ruangan</span>
+        </a>
+    </li>
+    <!-- <li class="nav-item nav-category">Prasarana</li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#prasarana" role="button" aria-expanded="false" aria-controls="prasarana">
             <i class="link-icon" data-feather="check-circle"></i>
@@ -100,7 +86,7 @@
                 </li>
             </ul>
         </div>
-    </li>
+    </li> -->
 
     <li class="nav-item nav-category">Laboratorium</li>
     <li class="nav-item">

@@ -25,8 +25,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('rincianAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('rincianAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('pemusnahanAset/exportDestroyFile') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('pemusnahanAset/dataDestroyaGeneratePDF') ?>">Download as PDF</a>
             </div>
         </div>
     </div>

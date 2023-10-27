@@ -827,8 +827,104 @@ class RincianAset extends ResourceController
         $writer->save('php://output');
         exit();
     }
-}
-            // $generateID = '=CONCAT("TS-BJB ", TEXT(D'.($index + 2).', "000"), " ", TEXT(C'.($index + 2).', "00"), " ", H'. ($index + 2).', " ", I' .($index + 2) .', " ", TEXT(E'.($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
-            // $generateID = '=CONCAT("TS-BJB ", TEXT(D' . ($index + 2) . ', "000"), " ", TEXT(C' . ($index + 2) . ', "00"), " ", H' . ($index + 2) . ', " ", IF(I' . ($index + 2) . ' = 0, "XX", TEXT(I' . ($index + 2) . ', "00")), " ", TEXT(E' . ($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
-            // $generateID = '=CONCAT("TS-BJB ", TEXT(D' . ($index + 2) . ', "000"), " ", TEXT(C' . ($index + 2) . ', "00"), " ", H' . ($index + 2) . ', " ", IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", TEXT(E' . ($index + 2) . ', "000"), " ", TEXT(F' . ($index + 2) . ', "000"))';
+
+    public function exportDestroyFile() {
+        $data = $this->rincianAsetModel->getDestroy();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+    
+        $headers = ['No.', 'Tanggal Pemusnahan',  'Nama Akun',  'Kode Akun', 'Kode Aset', 'Lokasi', 'Kategori Barang','Spesifikasi Barang', 'Status', 'Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($data as $index => $value) {
+            $spesifikasiMarkup = $value->spesifikasi; 
+            $parsedown = new Parsedown();
+            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
+
+            $pengadaan = $value->tahunPengadaan;
+            if ($pengadaan == 0 || 0000) {
+                $pengadaan = "Tidak Diketahui";
+            } else {
+                $pengadaan = $value->tahunPengadaan;
+            }
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggalPemusnahan);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaAkun);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->kodeAkun);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->kodeRincianAset);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaPrasarana);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaKategoriManajemen);
+            $activeWorksheet->setCellValue('H'.($index + 2), $value->namaSarana);
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->status);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->namaSumberDana);
+            $activeWorksheet->setCellValue('K'.($index + 2), $pengadaan);
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->hargaBeli);
+            $activeWorksheet->setCellValue('M'.($index + 2), $value->merk);
+            $activeWorksheet->setCellValue('N'.($index + 2), $value->noSeri);
+            $activeWorksheet->setCellValue('O'.($index + 2), $value->warna);
+            $activeWorksheet->setCellValue('P'.($index + 2), $spesifikasiText);
+            $linkCell = 'Q' . ($index + 2);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $activeWorksheet->setCellValue($linkCell, $hyperlinkFormula);
+        
             
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q' ];
+            
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                ->getAlignment()
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }            
+        }
+
+        $activeWorksheet->getStyle('A1:Q1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:Q1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:Q'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:Q')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'Q') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Sarana - Pemusnahan Aset.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+    
+    public function dataDestroyaGeneratePDF() {
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/printPemusnahan.php';
+    
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        $data['dataPemusnahan'] = $this->rincianAsetModel->getDestroy();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $filename = 'Sarana - Data Pemusnahan Report.pdf';
+        $dompdf->stream($filename);
+    }
+}
