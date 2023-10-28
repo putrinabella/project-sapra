@@ -30,9 +30,11 @@
                         <label for="namaPeminjam" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam"
-                                value="<?=$dataDataPeminjaman->namaPeminjam?>">
-                                <input type="text" class="form-control" id="idRincianLabAset" name="idRincianLabAset" 
-                                value="<?=$dataDataPeminjaman->idRincianLabAset?>">
+                            value="<?=$dataDataPeminjaman->namaPeminjam?>">
+                            <input type="text" class="form-control" id="idRincianLabAset" name="idRincianLabAset" 
+                            value="<?=$dataDataPeminjaman->idRincianLabAset?>" hidden>
+                            <input type="text" class="form-control" id="idManajemenPeminjaman" name="idManajemenPeminjaman" 
+                            value="<?=$dataDataPeminjaman->idManajemenPeminjaman?>" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -72,7 +74,7 @@
                         <div class="col-sm-9">
                             <select class="form-select" id="status" name="status">
                                 <!-- <option value="" hidden>Pilih status</option> -->
-                                <option value="Peminjaman" hidden>Peminjaman</option>
+                                <!-- <option value="Peminjaman" hidden></option> -->
                                 <option value="Pengembalian" <?=$dataDataPeminjaman->status == 'Pengembalian' ?
                                     'selected' : '' ?>>Pengembalian</option>
                             </select>

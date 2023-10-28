@@ -194,14 +194,15 @@ class ManajemenPeminjaman extends ResourceController
         if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($jumlah)) {
             // DIE THE INSERT FIRST
             $this->manajemenPeminjamanModel->insert($data);
+            $idManajemenPeminjaman = $this->db->insertID();
     
-            $assetsToBorrow = $this->manajemenPeminjamanModel->getAssetsByIdIdentitasSarana($idIdentitasSarana, $jumlah, $idIdentitasLab);
+            $assetsToBorrow = $this->manajemenPeminjamanModel->getBorrowItems($idIdentitasSarana, $jumlah, $idIdentitasLab);
             // echo "Assets to Borrow:\n";
             // print_r($assetsToBorrow);
             // echo "Assets to Borrow: " . count($assetsToBorrow) . " rows\n";
       
             foreach ($assetsToBorrow as $asset) {
-                $this->manajemenPeminjamanModel->updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah);
+                $this->manajemenPeminjamanModel->updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman);
             }
             // echo "Updating asset ID: " . $asset['idIdentitasSarana'] . "\n";
             // die;

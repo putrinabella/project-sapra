@@ -89,7 +89,8 @@
                                     <td class="text-center"><?=$value->namaSarana?></td>
                                     <td class="text-center"><?=$value->totalSarana?></td>
                                     <td class="text-center">
-                                        <?php echo $value->asetTidakTersedia + $value->saranaRusak; ?>
+                                        <?php echo $value->saranaRusak + $value->saranaHilang; ?>
+                                        <!-- <?php $value->asetTidakTersedia + $value->saranaRusak; ?> -->
                                     </td>
 
                                     <td class="text-center">
@@ -98,10 +99,10 @@
                                     <td class="text-center">
                                         <?php
                                             if ($value->jumlahPeminjaman == 0) {
-                                                $value->asetTersedia = $value->totalSarana - ($value->asetTidakTersedia + $value->saranaRusak);
+                                                $value->asetTersedia = $value->totalSarana - ($value->saranaRusak + $value->saranaHilang);
                                                 echo $value->asetTersedia;
                                             } else {
-                                                $value->asetTersedia = $value->totalSarana - ($value->asetTidakTersedia + $value->saranaRusak) - $value->jumlahPeminjaman;
+                                                $value->asetTersedia = $value->totalSarana - ($value->saranaRusak + $value->saranaHilang) - $value->jumlahPeminjaman;
                                                 echo $value->asetTersedia;
                                             }
                                         ?>

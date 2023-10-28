@@ -46,8 +46,7 @@ class DataPeminjamanModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
-        
-        $builder->where($this->primaryKey, $id);
+        $builder->where('tblManajemenPeminjaman.'.$this->primaryKey, $id);
 
         $query = $builder->get();
         return $query->getRow();
@@ -100,101 +99,5 @@ class DataPeminjamanModels extends Model
         $saranaRusak = intval($saranaRusak);
         $totalSarana = $saranaLayak + $saranaRusak;
         return $totalSarana;
-    }
-
-    // public function updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang) {
-    //     $builder = $this->db->table('tblRincianLabAset');
-    //     $existingAsetTersedia = $builder->select('saranaLayak, saranaRusak, saranaHilang')
-    //         ->where('idRincianLabAset', $idRincianLabAset)
-    //         ->get()
-    //         ->getRow();
-    
-    //     if ($existingAsetTersedia) {
-    //         $currentSaranaLayak = $existingAsetTersedia->saranaLayak;
-    //         $currentSaranaRusak = $existingAsetTersedia->saranaRusak;
-    //         $currentSaranaHilang = $existingAsetTersedia->saranaHilang;
-    
-    //         if ($jumlahBarangRusak != 0) {
-    //             $newSaranaRusak = $currentSaranaRusak + $jumlahBarangRusak;
-    //             $builder->set('saranaRusak', $newSaranaRusak);
-    //         }
-    
-    //         if ($jumlahBarangHilang != 0) {
-    //             $newSaranaHilang = $currentSaranaHilang + $jumlahBarangHilang;
-    //             $builder->set('saranaHilang', $newSaranaHilang);
-    //         }
-    
-    //         if ($jumlahBarangRusak != 0 || $jumlahBarangHilang != 0) {
-    //             $newSaranaLayak = $currentSaranaLayak - ($jumlahBarangRusak + $jumlahBarangHilang);
-    
-    //             // Make sure the new value is not negative
-    //             if ($newSaranaLayak < 0) {
-    //                 $newSaranaLayak = 0;
-    //             }
-    
-    //             // Check if the value is different before attempting the update
-    //             if ($currentSaranaLayak !== $newSaranaLayak) {
-    //                 $builder->set('saranaLayak', $newSaranaLayak);
-    //             }
-    //         }
-    
-    //         $builder->where('idRincianLabAset', $idRincianLabAset)->update();
-    //     }
-    // }
-
-    public function getSaranaRusakCount($idIdentitasLab)
-    {
-        $builder = $this->db->table('tblRincianLabAset');
-        $builder->select('COUNT(idRincianLabAset) as saranaRusakCount');
-        $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
-        $builder->where('tblRincianLabAset.deleted_at', null);
-        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
-        $builder->where('tblRincianLabAset.status', 'Rusak');
-
-        $query = $builder->get();
-        $result = $query->getRow();
-
-        if ($result) {
-            return $result->saranaRusakCount;
-        } else {
-            return 0; 
-        }
-    }
-    
-    public function updateSaranaLayak1($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang) {
-        $builder = $this->db->table('tblRincianLabAset');
-        $existingAsetTersedia = $builder->select('saranaLayak, saranaRusak, saranaHilang')
-            ->where('idRincianLabAset', $idRincianLabAset)
-            ->get()
-            ->getRow();
-    
-        if ($existingAsetTersedia) {
-            $currentSaranaLayak = $existingAsetTersedia->saranaLayak;
-            $currentSaranaRusak = $existingAsetTersedia->saranaRusak;
-            $currentSaranaHilang = $existingAsetTersedia->saranaHilang;
-    
-            if ($jumlahBarangRusak != 0) {
-                $newSaranaRusak = $currentSaranaRusak + $jumlahBarangRusak;
-                $builder->set('saranaRusak', $newSaranaRusak);
-            }
-    
-            if ($jumlahBarangHilang != 0) {
-                $newSaranaHilang = $currentSaranaHilang + $jumlahBarangHilang;
-                $builder->set('saranaHilang', $newSaranaHilang);
-            }
-    
-            if ($jumlahBarangRusak != 0 || $jumlahBarangHilang != 0) {
-                $newSaranaLayak = $currentSaranaLayak - ($jumlahBarangRusak + $jumlahBarangHilang);
-    
-                if ($newSaranaLayak < 0) {
-                    $newSaranaLayak = 0;
-                }
-                if ($currentSaranaLayak !== $newSaranaLayak) {
-                    $builder->set('saranaLayak', $newSaranaLayak);
-                }
-            }
-    
-            $builder->where('idRincianLabAset', $idRincianLabAset)->update();
-        }
     }
 }

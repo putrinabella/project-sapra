@@ -14,9 +14,9 @@ class ManajemenPeminjamanModels extends Model
     protected $useSoftDeletes   = true;
 
 
-    protected $tableRincianLabAset            = 'tblRincianLabAset';
+    protected $tableRincianLabAset  = 'tblRincianLabAset';
 
-    public function getAssetsByIdIdentitasSarana($idIdentitasSarana, $jumlah, $idIdentitasLab) {
+    public function getBorrowItems($idIdentitasSarana, $jumlah, $idIdentitasLab) {
         $builder = $this->db->table($this->tableRincianLabAset);
         return $builder->where('idIdentitasSarana', $idIdentitasSarana)
             ->where('idIdentitasLab', $idIdentitasLab) 
@@ -25,10 +25,11 @@ class ManajemenPeminjamanModels extends Model
             ->getResultArray();
     }
     
-    public function updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah) {
+    public function updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman) {
         $builder = $this->db->table($this->tableRincianLabAset);
         $data = [
             'sectionAset' => $sectionAsetValue,
+            'idManajemenPeminjaman' => $idManajemenPeminjaman,
         ];
     
         $builder->where('idIdentitasSarana', $idIdentitasSarana)
@@ -38,65 +39,69 @@ class ManajemenPeminjamanModels extends Model
                 ->update();
     }
     
-    // ===========================================================
-  // public function getAssetsByIdRincianLabAset($idRincianLabAset)
-    // {
-    //     $builder = $this->db->table($this->tableRincianLabAset);
-    //     return $builder->where('idRincianLabAset', $idRincianLabAset)
-    //         ->get()
-    //         ->getResultArray();
-    // }
-
-    // public function getAssetsByIdRincianLabAset($idRincianLabAset, $jumlah) {
-    //     $builder = $this->db->table($this->tableRincianLabAset);
-    //     return $builder->where('idRincianLabAset', $idRincianLabAset)
-    //         ->limit($jumlah) // Limit the number of rows to retrieve
-    //         ->get()
-    //         ->getResultArray();
-    // }
-
-    // public function getAssetsByIdRincianLabAset($idRincianLabAset, $jumlah) {
-    //     $idArray = explode(',', $idRincianLabAset);
-    //     $assets = [];
-    
-    //     foreach ($idArray as $id) {
-    //         $builder = $this->db->table($this->tableRincianLabAset);
-    //         $result = $builder->where('idRincianLabAset', $id)
-    //             ->limit($jumlah)
-    //             ->get()
-    //             ->getResultArray();
-    
-    //         $assets = array_merge($assets, $result);
-    //     }
-    
-    //     return $assets;
-    // }
-    
-    // public function getAssetsByIdIdentitasSarana($idIdentitasSarana, $jumlah) {
-    //     $builder = $this->db->table($this->tableRincianLabAset);
-    //     return $builder->where('idIdentitasSarana', $idIdentitasSarana)
-    //         ->limit($jumlah)
-    //         ->get()
-    //         ->getResultArray();
-    // }
-    
-    // public function updateSectionAset($idIdentitasSarana, $sectionAsetValue) {
-    //     $builder = $this->db->table($this->tableRincianLabAset);
-    //     $data = [
-    //         'sectionAset' => $sectionAsetValue,
-    //     ];
-    
-    //     $builder->where('idIdentitasSarana', $idIdentitasSarana)
-    //             ->set($data)
-    //             ->update();
-    // }
-
-    public function updateStatus($idRincianLabAset, $newStatus, $count = 1) {
+    // Data Peminjaman for return
+    public function getBorrowedItems($idIdentitasSarana, $jumlah, $idIdentitasLab) {
         $builder = $this->db->table($this->tableRincianLabAset);
-        $builder->where('idRincianLabAset', $idRincianLabAset)
+        return $builder->where('idIdentitasSarana', $idIdentitasSarana)
+            ->where('idIdentitasLab', $idIdentitasLab) 
+            ->where('sectionAset', "Dipinjam") 
+            ->limit($jumlah)
+            ->get()
+            ->getResultArray();
+    }
+
+    public function updateReturnStatus($idIdentitasSarana, $newStatus, $count = 1, $idIdentitasLab, $idManajemenPeminjaman) {
+        $builder = $this->db->table($this->tableRincianLabAset);
+        $builder->where('idIdentitasSarana', $idIdentitasSarana)
+                ->where('idManajemenPeminjaman', $idManajemenPeminjaman) 
+                ->where('idIdentitasLab', $idIdentitasLab) 
+                ->where('sectionAset', "Dipinjam") 
                 ->set('status', $newStatus)
-                ->where('sectionAset', 'Dipinjam')
                 ->limit($count)
+                ->update();
+    }
+    
+    public function updateReturnSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman) {
+        $builder = $this->db->table($this->tableRincianLabAset);
+        $data = [
+            'sectionAset' => $sectionAsetValue,
+        ];
+    
+        $builder->where('idIdentitasSarana', $idIdentitasSarana)
+                ->where('idManajemenPeminjaman', $idManajemenPeminjaman) 
+                ->where('idIdentitasLab', $idIdentitasLab) 
+                ->limit($jumlah)
+                ->set($data)
+                ->update();
+    }
+
+    public function updateReturnSectionAsetRusak($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman, $status) {
+        $builder = $this->db->table($this->tableRincianLabAset);
+        $data = [
+            'sectionAset' => $sectionAsetValue,
+        ];
+    
+        $builder->where('idIdentitasSarana', $idIdentitasSarana)
+                ->where('idManajemenPeminjaman', $idManajemenPeminjaman) 
+                ->where('idIdentitasLab', $idIdentitasLab) 
+                ->where('status', $status)
+                ->limit($jumlah)
+                ->set($data)
+                ->update();
+    }
+
+    public function updateReturnSectionAsetHilang($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman, $status) {
+        $builder = $this->db->table($this->tableRincianLabAset);
+        $data = [
+            'sectionAset' => $sectionAsetValue,
+        ];
+    
+        $builder->where('idIdentitasSarana', $idIdentitasSarana)
+                ->where('idManajemenPeminjaman', $idManajemenPeminjaman) 
+                ->where('idIdentitasLab', $idIdentitasLab) 
+                ->where('status', $status)
+                ->limit($jumlah)
+                ->set($data)
                 ->update();
     }
 
@@ -186,6 +191,4 @@ class ManajemenPeminjamanModels extends Model
                 ->update();
         }
     }
-    
-
 }
