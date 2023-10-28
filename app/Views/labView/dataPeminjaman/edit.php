@@ -32,7 +32,7 @@
                             <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam"
                                 value="<?=$dataDataPeminjaman->namaPeminjam?>">
                                 <input type="text" class="form-control" id="idRincianLabAset" name="idRincianLabAset" 
-                                value="<?=$dataDataPeminjaman->idRincianLabAset?>" hidden>
+                                value="<?=$dataDataPeminjaman->idRincianLabAset?>">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -52,12 +52,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kodeLab" class="col-sm-3 col-form-label">Lokasi</label>
+                        <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaLab" name="namaLab"
                                 value="<?=$dataDataPeminjaman->namaLab?>" readonly>
-                            <input type="text" class="form-control" id="kodeLab" name="kodeLab"
-                                value="<?=$dataDataPeminjaman->kodeLab?>" hidden>
+                            <input type="text" class="form-control" id="idIdentitasLab" name="idIdentitasLab"
+                                value="<?=$dataDataPeminjaman->idIdentitasLab?>" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -71,9 +71,8 @@
                         <label for="status" class="col-sm-3 col-form-label">Status</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="status" name="status">
-                                <option value="" hidden>Pilih status</option>
-                                <option value="Peminjaman" <?=$dataDataPeminjaman->status == 'Peminjaman' ? 'selected' :
-                                    '' ?>>Peminjaman</option>
+                                <!-- <option value="" hidden>Pilih status</option> -->
+                                <option value="Peminjaman" hidden>Peminjaman</option>
                                 <option value="Pengembalian" <?=$dataDataPeminjaman->status == 'Pengembalian' ?
                                     'selected' : '' ?>>Pengembalian</option>
                             </select>
@@ -107,7 +106,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="asetDikembalikan" class="col-sm-3 col-form-label" id="labelAsetDikembalikanContainer" style="display: none;">Aset Dikembalikan</label>
+                        <label for="asetDikembalikan" class="col-sm-3 col-form-label" id="labelAsetDikembalikanContainer" style="display: none;">Aset Bagus</label>
                         <div class="col-sm-9" id="asetDikembalikanContainer" style="display: none;">
                             <input type="number" class="form-control" id="jumlahBarangDikembalikan" name="jumlahBarangDikembalikan" value="<?=$dataDataPeminjaman->jumlahBarangDikembalikan?>" >
                         </div>

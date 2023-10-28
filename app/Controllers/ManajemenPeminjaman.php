@@ -148,30 +148,95 @@ class ManajemenPeminjaman extends ResourceController
     // }
 
 
+    // public function addLoan() {
+    //     $data = $this->request->getPost();
+    //     $idRincianLabAset = $data['idRincianLabAset'];
+    //     $jumlah = $data['jumlah'];
+  
+    //     if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($jumlah)) {
+    //         // DIE THE INSERT FIRST
+    //         // $this->manajemenPeminjamanModel->insert($data);
+    
+    //         $assetsToBorrow = $this->manajemenPeminjamanModel->getAssetsByIdRincianLabAset($idRincianLabAset, $jumlah);
+    //         echo "Assets to Borrow:\n";
+    //         print_r($assetsToBorrow);
+    //         // Debugging: Output the number of assets retrieved
+    //         echo "Assets to Borrow: " . count($assetsToBorrow) . " rows\n";
+    //         die;
+    //         // Update the sectionAset for all matching assets
+    //         foreach ($assetsToBorrow as $asset) {
+    //             // Debugging: Output the asset ID being updated
+    //             echo "Updating asset ID: " . $asset['idRincianLabAset'] . "\n";
+    
+    //             $this->manajemenPeminjamanModel->updateSectionAset($asset['idRincianLabAset'], 'Dipinjam');
+    //         }
+    
+    //         return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
+    //     } else {
+    //         return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
+    //     }
+    // }
+
+
     public function addLoan() {
         $data = $this->request->getPost();
         $idRincianLabAset = $data['idRincianLabAset'];
+        $idIdentitasSarana = $data['idIdentitasSarana'];
+        $idIdentitasLab = $data['idIdentitasLab'];
         $jumlah = $data['jumlah'];
+        $sectionAsetValue = 'Dipinjam'; 
         
+        // echo "ID Identitas Lab : \n";
+        // print_r($idIdentitasLab); 
+        // echo "ID Identitas Sarana : \n";
+        // print_r($idIdentitasSarana); 
+    
         if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($jumlah)) {
+            // DIE THE INSERT FIRST
             $this->manajemenPeminjamanModel->insert($data);
     
-            $assetsToBorrow = $this->manajemenPeminjamanModel->getAssetsByIdRincianLabAset($idRincianLabAset);
-            
-            $count = 0;
+            $assetsToBorrow = $this->manajemenPeminjamanModel->getAssetsByIdIdentitasSarana($idIdentitasSarana, $jumlah, $idIdentitasLab);
+            // echo "Assets to Borrow:\n";
+            // print_r($assetsToBorrow);
+            // echo "Assets to Borrow: " . count($assetsToBorrow) . " rows\n";
+      
             foreach ($assetsToBorrow as $asset) {
-                if ($count < $jumlah) {
-                    $this->manajemenPeminjamanModel->updateSectionAset($asset['idRincianLabAset'], 'Dipinjam');
-                    $count++;
-                } else {
-                    break; 
-                }
+                $this->manajemenPeminjamanModel->updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah);
             }
+            // echo "Updating asset ID: " . $asset['idIdentitasSarana'] . "\n";
+            // die;
     
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
         }
     }
+    
+    
+// WORK BUT BUT THAT ONLY ONE DATA SET TO DIPINJAM
+    // public function addLoan() {
+    //     $data = $this->request->getPost();
+    //     $idRincianLabAset = $data['idRincianLabAset'];
+    //     $jumlah = $data['jumlah'];
+    
+    //     if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam']) && !empty($jumlah)) {
+    //         $this->manajemenPeminjamanModel->insert($data);
+    
+    //         $assetsToBorrow = $this->manajemenPeminjamanModel->getAssetsByIdRincianLabAset($idRincianLabAset);
+    
+    //         $count = 0;
+    //         foreach ($assetsToBorrow as $asset) {
+    //             if ($count < $jumlah) {
+    //                 $this->manajemenPeminjamanModel->updateSectionAset($asset['idRincianLabAset'], 'Dipinjam');
+    //                 $count++;
+    //             }
+    //         }
+    
+    //         return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
+    //     } else {
+    //         return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
+    //     }
+    // }
+    
     
 }

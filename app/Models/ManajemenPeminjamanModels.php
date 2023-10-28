@@ -16,25 +16,89 @@ class ManajemenPeminjamanModels extends Model
 
     protected $tableRincianLabAset            = 'tblRincianLabAset';
 
-    public function getAssetsByIdRincianLabAset($idRincianLabAset)
-    {
+    public function getAssetsByIdIdentitasSarana($idIdentitasSarana, $jumlah, $idIdentitasLab) {
         $builder = $this->db->table($this->tableRincianLabAset);
-        return $builder->where('idRincianLabAset', $idRincianLabAset)
+        return $builder->where('idIdentitasSarana', $idIdentitasSarana)
+            ->where('idIdentitasLab', $idIdentitasLab) 
+            ->limit($jumlah)
             ->get()
             ->getResultArray();
     }
-
-    public function updateSectionAset($idRincianLabAset, $sectionAsetValue) {
+    
+    public function updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah) {
         $builder = $this->db->table($this->tableRincianLabAset);
         $data = [
             'sectionAset' => $sectionAsetValue,
         ];
     
-        $builder->where('idRincianLabAset', $idRincianLabAset)
+        $builder->where('idIdentitasSarana', $idIdentitasSarana)
+                ->where('idIdentitasLab', $idIdentitasLab) 
+                ->limit($jumlah)
                 ->set($data)
                 ->update();
     }
     
+    // ===========================================================
+  // public function getAssetsByIdRincianLabAset($idRincianLabAset)
+    // {
+    //     $builder = $this->db->table($this->tableRincianLabAset);
+    //     return $builder->where('idRincianLabAset', $idRincianLabAset)
+    //         ->get()
+    //         ->getResultArray();
+    // }
+
+    // public function getAssetsByIdRincianLabAset($idRincianLabAset, $jumlah) {
+    //     $builder = $this->db->table($this->tableRincianLabAset);
+    //     return $builder->where('idRincianLabAset', $idRincianLabAset)
+    //         ->limit($jumlah) // Limit the number of rows to retrieve
+    //         ->get()
+    //         ->getResultArray();
+    // }
+
+    // public function getAssetsByIdRincianLabAset($idRincianLabAset, $jumlah) {
+    //     $idArray = explode(',', $idRincianLabAset);
+    //     $assets = [];
+    
+    //     foreach ($idArray as $id) {
+    //         $builder = $this->db->table($this->tableRincianLabAset);
+    //         $result = $builder->where('idRincianLabAset', $id)
+    //             ->limit($jumlah)
+    //             ->get()
+    //             ->getResultArray();
+    
+    //         $assets = array_merge($assets, $result);
+    //     }
+    
+    //     return $assets;
+    // }
+    
+    // public function getAssetsByIdIdentitasSarana($idIdentitasSarana, $jumlah) {
+    //     $builder = $this->db->table($this->tableRincianLabAset);
+    //     return $builder->where('idIdentitasSarana', $idIdentitasSarana)
+    //         ->limit($jumlah)
+    //         ->get()
+    //         ->getResultArray();
+    // }
+    
+    // public function updateSectionAset($idIdentitasSarana, $sectionAsetValue) {
+    //     $builder = $this->db->table($this->tableRincianLabAset);
+    //     $data = [
+    //         'sectionAset' => $sectionAsetValue,
+    //     ];
+    
+    //     $builder->where('idIdentitasSarana', $idIdentitasSarana)
+    //             ->set($data)
+    //             ->update();
+    // }
+
+    public function updateStatus($idRincianLabAset, $newStatus, $count = 1) {
+        $builder = $this->db->table($this->tableRincianLabAset);
+        $builder->where('idRincianLabAset', $idRincianLabAset)
+                ->set('status', $newStatus)
+                ->where('sectionAset', 'Dipinjam')
+                ->limit($count)
+                ->update();
+    }
 
     function getKodeLabData($idIdentitasSarana){
         $builder = $this->db->table($this->tableRincianLabAset);

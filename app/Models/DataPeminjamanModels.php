@@ -9,7 +9,7 @@ class DataPeminjamanModels extends Model
     protected $table            = 'tblManajemenPeminjaman';
     protected $primaryKey       = 'idManajemenPeminjaman';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'status', 'tanggalPengembalian', 'kodePeminjaman', 'namaPenerima', 'jumlahBarangDikembalikan', 'jumlahBarangRusak', 'jumlahBarangHilang'];
+    protected $allowedFields    = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'status', 'tanggalPengembalian', 'kodePeminjaman', 'namaPenerima', 'jumlahBarangDikembalikan', 'jumlahBarangRusak', 'jumlahBarangHilang', 'idRincianLabAset'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -141,8 +141,27 @@ class DataPeminjamanModels extends Model
     //         $builder->where('idRincianLabAset', $idRincianLabAset)->update();
     //     }
     // }
+
+    public function getSaranaRusakCount($idIdentitasLab)
+    {
+        $builder = $this->db->table('tblRincianLabAset');
+        $builder->select('COUNT(idRincianLabAset) as saranaRusakCount');
+        $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianLabAset.status', 'Rusak');
+
+        $query = $builder->get();
+        $result = $query->getRow();
+
+        if ($result) {
+            return $result->saranaRusakCount;
+        } else {
+            return 0; 
+        }
+    }
     
-    public function updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang) {
+    public function updateSaranaLayak1($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang) {
         $builder = $this->db->table('tblRincianLabAset');
         $existingAsetTersedia = $builder->select('saranaLayak, saranaRusak, saranaHilang')
             ->where('idRincianLabAset', $idRincianLabAset)
@@ -167,12 +186,9 @@ class DataPeminjamanModels extends Model
             if ($jumlahBarangRusak != 0 || $jumlahBarangHilang != 0) {
                 $newSaranaLayak = $currentSaranaLayak - ($jumlahBarangRusak + $jumlahBarangHilang);
     
-                // Make sure the new value is not negative
                 if ($newSaranaLayak < 0) {
                     $newSaranaLayak = 0;
                 }
-    
-                // Check if the value is different before attempting the update
                 if ($currentSaranaLayak !== $newSaranaLayak) {
                     $builder->set('saranaLayak', $newSaranaLayak);
                 }

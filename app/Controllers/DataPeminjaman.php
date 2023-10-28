@@ -8,6 +8,7 @@ use App\Models\IdentitasSaranaModels;
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
 use App\Models\IdentitasLabModels; 
+use App\Models\ManajemenPeminjamanModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -18,6 +19,7 @@ class DataPeminjaman extends ResourceController
 {
     
      function __construct() {
+        $this->manajemenPeminjamanModel = new ManajemenPeminjamanModels();
         $this->dataPeminjamanModel = new DataPeminjamanModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
@@ -62,35 +64,133 @@ class DataPeminjaman extends ResourceController
         }
     }
 
+
     // public function update($id = null) {
     //     if ($id != null) {
     //         $data = $this->request->getPost();
-   
+            
+    //         // Extract the relevant data from $data
+    //         $jumlahBarangRusak = $data['jumlahBarangRusak'];
+    //         $jumlahBarangHilang = $data['jumlahBarangHilang'];
+    //         $idRincianLabAset = $data['idRincianLabAset'];
+    
+    //         $this->dataPeminjamanModel->updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang);
     //         $this->dataPeminjamanModel->update($id, $data);
+            
     //         return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diupdate');
     //     } else {
     //         return view('error/404');
     //     }
     // }
 
+    // public function update($id = null) {
+    //     $data = $this->request->getPost();
+    //     $idRincianLabAset = $data['idRincianLabAset'];
+    
+    //     if ($data['status'] === 'Pengembalian') {
+    //         $jumlahBarangDikembalikan = $data['jumlahBarangDikembalikan'];
+    //         $jumlahBarangRusak = $data['jumlahBarangRusak'];
+    //         $jumlahBarangHilang = $data['jumlahBarangHilang'];
+    
+    //         // Check the number of damaged and lost items
+    //         if ($jumlahBarangRusak > 0) {
+    //             // Update the status of damaged items
+    //             $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Rusak', $jumlahBarangRusak);
+    //         }
+    //         if ($jumlahBarangHilang > 0) {
+    //             // Update the status of lost items
+    //             $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Hilang', $jumlahBarangHilang);
+    //         }
+    //     } else {
+    //         // If not returning, update the status to 'Baik' for all items
+    //         $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Baik');
+    //     }
+    
+    //     // Update the sectionAset to 'None' for the assets
+    //     $this->manajemenPeminjamanModel->updateSectionAset($idRincianLabAset, 'None');
+    //     $this->dataPeminjamanModel->update($id, $data);
+    
+    //     return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Return data berhasil disimpan');
+    // }
+    
+// ===================
     public function update($id = null) {
-        if ($id != null) {
-            $data = $this->request->getPost();
-            
-            // Extract the relevant data from $data
+        $data = $this->request->getPost();
+        $idRincianLabAset = $data['idRincianLabAset'];
+        $idIdentitasSarana = $data['idIdentitasSarana'];
+        $idIdentitasLab = $data['idIdentitasLab'];
+        $sectionAsetValue = 'None';
+        $jumlah = $data['jumlahPeminjaman'];
+        // echo "ID Identitas Lab : \n";
+        // print_r($idIdentitasLab); 
+        // echo "ID Identitas Sarana : \n";
+        // print_r($idIdentitasSarana); 
+        // die;
+        
+        if ($data['status'] === 'Pengembalian') {
+            $jumlahBarangDikembalikan = $data['jumlahBarangDikembalikan'];
             $jumlahBarangRusak = $data['jumlahBarangRusak'];
             $jumlahBarangHilang = $data['jumlahBarangHilang'];
-            $idRincianLabAset = $data['idRincianLabAset'];
-    
-            $this->dataPeminjamanModel->updateSaranaLayak($idRincianLabAset, $jumlahBarangRusak, $jumlahBarangHilang);
-            $this->dataPeminjamanModel->update($id, $data);
-            
-            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil diupdate');
+
+            // Check the number of damaged and lost items
+            if ($jumlahBarangRusak > 0) {
+                // Update the status of damaged items
+                $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Rusak', $jumlahBarangRusak);
+            }
+            if ($jumlahBarangHilang > 0) {
+                // Update the status of lost items
+                $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Hilang', $jumlahBarangHilang);
+            }
         } else {
-            return view('error/404');
+            // If not returning, update the status to 'Baik' for all items
+            $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Baik');
         }
+
+        // Update the sectionAset to 'None' for the assets
+        $this->manajemenPeminjamanModel->updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah);
+        $this->dataPeminjamanModel->update($id, $data);
+
+        return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Return data berhasil disimpan');
     }
-    
+
+    //  public function update($id = null) {
+    //     $data = $this->request->getPost();
+    //     $idRincianLabAset = $data['idRincianLabAset'];
+    //     $idIdentitasSarana = $data['idIdentitasSarana'];
+    //     $idIdentitasLab = $data['idIdentitasLab'];
+    //     $sectionAsetValue = 'None';
+    //     $jumlah = $data['jumlahPeminjaman'];
+    //     // echo "ID Identitas Lab : \n";
+    //     // print_r($idIdentitasLab); 
+    //     // echo "ID Identitas Sarana : \n";
+    //     // print_r($idIdentitasSarana); 
+    //     // die;
+        
+    //     if ($data['status'] === 'Pengembalian') {
+    //         $jumlahBarangDikembalikan = $data['jumlahBarangDikembalikan'];
+    //         $jumlahBarangRusak = $data['jumlahBarangRusak'];
+    //         $jumlahBarangHilang = $data['jumlahBarangHilang'];
+
+    //         // Check the number of damaged and lost items
+    //         if ($jumlahBarangRusak > 0) {
+    //             // Update the status of damaged items
+    //             $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Rusak', $jumlahBarangRusak);
+    //         }
+    //         if ($jumlahBarangHilang > 0) {
+    //             // Update the status of lost items
+    //             $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Hilang', $jumlahBarangHilang);
+    //         }
+    //     } else {
+    //         // If not returning, update the status to 'Baik' for all items
+    //         $this->manajemenPeminjamanModel->updateStatus($idRincianLabAset, 'Baik');
+    //     }
+
+    //     // Update the sectionAset to 'None' for the assets
+    //     $this->manajemenPeminjamanModel->updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah);
+    //     $this->dataPeminjamanModel->update($id, $data);
+
+    //     return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Return data berhasil disimpan');
+    // }
 
 
     public function delete($id = null) {
