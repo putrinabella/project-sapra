@@ -90,9 +90,7 @@
                                     <td class="text-center"><?=$value->totalSarana?></td>
                                     <td class="text-center">
                                         <?php echo $value->saranaRusak + $value->saranaHilang; ?>
-                                        <!-- <?php $value->asetTidakTersedia + $value->saranaRusak; ?> -->
                                     </td>
-
                                     <td class="text-center">
                                         <?= ($value->saranaDipinjam === null) ? 0 : $value->saranaDipinjam ?>
                                     </td>

@@ -65,6 +65,7 @@ class ManajemenPeminjamanModels extends Model
         $builder = $this->db->table($this->tableRincianLabAset);
         $data = [
             'sectionAset' => $sectionAsetValue,
+            'idManajemenPeminjaman' => null, 
         ];
     
         $builder->where('idIdentitasSarana', $idIdentitasSarana)
@@ -74,11 +75,12 @@ class ManajemenPeminjamanModels extends Model
                 ->set($data)
                 ->update();
     }
-
+    
     public function updateReturnSectionAsetRusak($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman, $status) {
         $builder = $this->db->table($this->tableRincianLabAset);
         $data = [
             'sectionAset' => $sectionAsetValue,
+            'idManajemenPeminjaman' => null, 
         ];
     
         $builder->where('idIdentitasSarana', $idIdentitasSarana)
@@ -89,11 +91,12 @@ class ManajemenPeminjamanModels extends Model
                 ->set($data)
                 ->update();
     }
-
+    
     public function updateReturnSectionAsetHilang($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman, $status) {
-        $builder = $this->db->table($this->tableRincianLabAset);
+        $builder = this->db->table($this->tableRincianLabAset);
         $data = [
             'sectionAset' => $sectionAsetValue,
+            'idManajemenPeminjaman' => null, 
         ];
     
         $builder->where('idIdentitasSarana', $idIdentitasSarana)
@@ -104,6 +107,7 @@ class ManajemenPeminjamanModels extends Model
                 ->set($data)
                 ->update();
     }
+    
 
     function getKodeLabData($idIdentitasSarana){
         $builder = $this->db->table($this->tableRincianLabAset);

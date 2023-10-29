@@ -1,14 +1,14 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Rincian Aset &verbar; SARPRA </title>
+<title>Rincian Aset Laboratorium &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Detail Rincian Aset</h4>
+        <h4 class="mb-3 mb-md-0">Detail Rincian Aset Laboratorium</h4>
     </div>
 </div>
 
@@ -24,7 +24,7 @@
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                        <a href="<?= site_url('rincianAset/print/'.$dataRincianAset->idRincianLabAset)?>"
+                        <a href="<?= site_url('rincianLabAset/print/'.$dataRincianAset->idRincianLabAset)?>"
                             class="btn btn-outline-success btn-icon-text mb-2 mb-md-0" target="_blank">
                             <i class="btn-icon-prepend" data-feather="printer"></i>
                             Print
@@ -45,6 +45,20 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Lokasi</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->namaLab?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kategori Barang</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->namaKategoriManajemen?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Nama Aset</td>
                             <td>:</td>
                             <td>
@@ -52,10 +66,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Lokasi</td>
+                            <td>Status Aset</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->namaLab?>
+                                <?= $dataRincianAset->status?>
                             </td>
                         </tr>
                         <tr>
@@ -66,13 +80,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Kategori Manajemen</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataRincianAset->namaKategoriManajemen?>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>Tahun Pengadaan</td>
                             <td>:</td>
                             <td>
@@ -80,24 +87,31 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Sarana Layak</td>
+                            <td>Harga Beli</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->saranaLayak?>
+                                <?= $dataRincianAset->hargaBeli?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Sarana Rusak</td>
+                            <td>Nomor Seri</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->saranaRusak?>
+                                <?= $dataRincianAset->noSeri?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Total Sarana</td>
+                            <td>Merek</td>
                             <td>:</td>
                             <td>
-                                <?= $dataRincianAset->saranaRusak +  $dataRincianAset->saranaLayak ?>
+                                <?= $dataRincianAset->merk?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Warna</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataRincianAset->warna?>
                             </td>
                         </tr>
                         <tr>

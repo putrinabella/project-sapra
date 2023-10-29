@@ -120,13 +120,15 @@
                 <thead>
                     <tr class="text-center">
                         <th style="width: 5%;">No.</th>
+                        <th style="width: 12%;">Kode Aset</th>
+                        <th>Kategori Aset</th>
                         <th>Nama Aset</th>
-                        <th>Tahun Pengadaan</th>
-                        <th>Kategori Manajemen</th>
+                        <th>Status</th>
                         <th>Sumber Dana</th>
-                        <th>Aset Layak</th>
-                        <th>Aset Rusak</th>
-                        <th>Total Aset</th>
+                        <th>Tahun Pengadaan</th>
+                        <th>Harga Beli</th>
+                        <th>Merek</th>
+                        <th>Warna</th>
                     </tr>
                 </thead>
                 <tbody class="py-2">
@@ -135,27 +137,23 @@
                         <td class="text-center">
                             <?= $key + 1 ?>
                         </td>
+                        <td class="text-center"><?=$value->kodeRincianLabAset?></td>
+                        <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                        <td class="text-center"><?=$value->namaSarana?></td>
+                        <td class="text-center"><?=$value->status?></td>
+                        <td class="text-center"><?=$value->namaSumberDana?></td>
                         <td class="text-center">
-                            <?= $value->namaSarana ?>
+                        <?php 
+                            if($value->tahunPengadaan == 0 || 0000) {
+                                echo "Tidak diketahui"; 
+                            } else {
+                                echo $value->tahunPengadaan;
+                            };
+                        ?>
                         </td>
-                        <td class="text-center">
-                            <?= $value->tahunPengadaan ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $value->namaKategoriManajemen ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $value->namaSumberDana ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $value->saranaLayak ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $value->saranaRusak ?>
-                        </td>
-                        <td class="text-center">
-                            <?= $totalSarana = $value->saranaLayak + $value->saranaRusak ?>
-                        </td>
+                        <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                        <td class="text-center"><?=$value->merk?></td>
+                        <td class="text-center"><?=$value->warna?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

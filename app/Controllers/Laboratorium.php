@@ -40,19 +40,18 @@ class Laboratorium extends ResourceController
     public function show($id = null) {
         if ($id != null) {
             $dataLaboratorium = $this->laboratoriumModel->find($id);
-            
             if (is_object($dataLaboratorium)) {
-                
                 $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
                 $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
                 $dataSarana = $this->laboratoriumModel->getSaranaByLabId($dataLaboratorium->idIdentitasLab);
 
                 $data = [
                     'dataLaboratorium'  => $dataLaboratorium,
-                    'dataInfoLab'     => $dataInfoLab,
-                    'dataSarana'            => $dataSarana,
+                    'dataInfoLab'       => $dataInfoLab,
+                    'dataSarana'        => $dataSarana,
                     
                 ];
+                $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getAll();
                 return view('labView/laboratorium/show', $data);
             } else {
                 return view('error/404');
@@ -86,7 +85,7 @@ class Laboratorium extends ResourceController
     
                 $dompdf = new Dompdf($options);
                 $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->setPaper('A4', 'landscape');
                 $dompdf->render();
                 $namaLab = $data['dataLaboratorium']->namaLab;
                 $filename = "Laboratorium - $namaLab.pdf";

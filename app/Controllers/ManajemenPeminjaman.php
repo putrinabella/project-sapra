@@ -71,7 +71,6 @@ class ManajemenPeminjaman extends ResourceController
                     'dataSarana'        => $dataSarana,
                     'asetBagus'         => $asetBagus,
                 ];
-    
                 return view('labView/manajemenPeminjaman/show', $data);
             } else {
                 return view('error/404');
