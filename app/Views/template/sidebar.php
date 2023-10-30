@@ -1,34 +1,17 @@
 <ul class="nav">
-    <!-- <li class="nav-item nav-category">Main</li>
+    <li class="nav-item nav-category">Main</li>
     <li class="nav-item">
         <a href="<?= site_url('home') ?>" class="nav-link">
             <i class="link-icon" data-feather="box"></i>
             <span class="link-title">Dashboard</span>
         </a>
-    </li> -->
+    </li>
     <?php if (session()->get('role') == 'Super Admin') { ?>
     <li class="nav-item nav-category">Sarana</li>
     <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#layananSaranaUmum" role="button" aria-expanded="false" aria-controls="layananSaranaUmum">
-            <i class="link-icon" data-feather="server"></i>
-            <span class="link-title">Layanan</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-        </a>
-        <div class="collapse" id="layananSaranaUmum">
-            <ul class="nav sub-menu">
-                <li class="nav-item">
-                    <a href="<?= site_url('saranaLayananAset') ?>" class="nav-link">Layanan Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('saranaLayananNonAset') ?>" class="nav-link">Layanan Non Aset</a>
-                </li>
-            </ul>
-        </div>
-    </li>
-    <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#dataAsetUmum" role="button" aria-expanded="false" aria-controls="dataAsetUmum">
             <i class="link-icon" data-feather="folder"></i>
-            <span class="link-title">Data Aset</span>
+            <span class="link-title">Manajemen Aset</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
         <div class="collapse" id="dataAsetUmum">
@@ -37,7 +20,7 @@
                     <a href="<?= site_url('dataSarana') ?>" class="nav-link">Data General</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian</a>
+                    <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian Aset</a>
                 </li>
             </ul>
         </div>
@@ -56,55 +39,49 @@
             </ul>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#layananSaranaUmum" role="button" aria-expanded="false" aria-controls="layananSaranaUmum">
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Layanan</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="layananSaranaUmum">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('saranaLayananAset') ?>" class="nav-link">Layanan Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('saranaLayananNonAset') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
     <li class="nav-item nav-category">Prasarana</li>
     <li class="nav-item">
         <a href="<?= site_url('prasaranaRuangan') ?>" class="nav-link">
-            <i class="link-icon" data-feather="list"></i>
+            <i class="link-icon" data-feather="bookmark"></i>
             <span class="link-title">Ruangan</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="<?= site_url('prasaranaNonRuangan') ?>" class="nav-link">
-            <i class="link-icon" data-feather="list"></i>
+            <i class="link-icon" data-feather="bookmark"></i>
             <span class="link-title">Non Ruangan</span>
         </a>
     </li>
-    <!-- <li class="nav-item nav-category">Prasarana</li>
-    <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#prasarana" role="button" aria-expanded="false" aria-controls="prasarana">
-            <i class="link-icon" data-feather="check-circle"></i>
-            <span class="link-title">Prasarana</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-        </a>
-        <div class="collapse" id="prasarana">
-            <ul class="nav sub-menu">
-                <li class="nav-item">
-                    <a href="<?= site_url('prasaranaRuangan') ?>" class="nav-link">Ruangan</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('prasaranaNonRuangan') ?>" class="nav-link">Non Ruangan</a>
-                </li>
-            </ul>
-        </div>
-    </li> -->
 
     <li class="nav-item nav-category">Laboratorium</li>
     <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLayanan" role="button" aria-expanded="false" aria-controls="manajemenLayanan">
-            <i class="link-icon" data-feather="server"></i>
-            <span class="link-title">Layanan</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
+        <a href="<?= site_url('laboratorium') ?>" class="nav-link">
+            <i class="link-icon" data-feather="bookmark"></i>
+            <span class="link-title">Laboratorium</span>
         </a>
-        <div class="collapse" id="manajemenLayanan">
-            <ul class="nav sub-menu">
-                <li class="nav-item">
-                    <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">Layanan Non Aset</a>
-                </li>
-            </ul>
-        </div>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
+            <i class="link-icon" data-feather="folder"></i>
+            <span class="link-title">Manajemen Aset</span>
+        </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
@@ -124,16 +101,21 @@
         </div>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
-            <i class="link-icon" data-feather="bookmark"></i>
-            <span class="link-title">Manajemen Aset</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLayanan" role="button" aria-expanded="false" aria-controls="manajemenLayanan">
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Layanan</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?= site_url('laboratorium') ?>" class="nav-link">
-            <i class="link-icon" data-feather="message-square"></i>
-            <span class="link-title">Laboratorium</span>
-        </a>
+        <div class="collapse" id="manajemenLayanan">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+            </ul>
+        </div>
     </li>
 
     <li class="nav-item nav-category">IT</li>
@@ -150,22 +132,24 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('website') ?>" class="nav-link">
-            <i class="link-icon" data-feather="link"></i>
-            <span class="link-title">Website</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#aplikasiIT" role="button" aria-expanded="false" aria-controls="aplikasiIT">
+            <i class="link-icon" data-feather="folder"></i>
+            <span class="link-title">Platform Digital </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?= site_url('sosialMedia') ?>" class="nav-link">
-            <i class="link-icon" data-feather="globe"></i>
-            <span class="link-title">Sosial Media</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?= site_url('aplikasi') ?>" class="nav-link">
-            <i class="link-icon" data-feather="smartphone"></i>
-            <span class="link-title">Aplikasi</span>
-        </a>
+        <div class="collapse" id="aplikasiIT">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('aplikasi') ?>" class="nav-link">Aplikasi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('sosialMedia') ?>" class="nav-link">Sosial Media</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('website') ?>" class="nav-link">Website</a>
+                </li>
+            </ul>
+        </div>
     </li>
 
     <li class="nav-item nav-category">Profil</li>
@@ -250,21 +234,16 @@
 <?php if (session()->get('role') == 'Laboran') { ?>
     <li class="nav-item nav-category">Laboratorium</li>
     <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLayanan" role="button" aria-expanded="false" aria-controls="manajemenLayanan">
-            <i class="link-icon" data-feather="server"></i>
-            <span class="link-title">Layanan</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
+        <a href="<?= site_url('laboratorium') ?>" class="nav-link">
+            <i class="link-icon" data-feather="bookmark"></i>
+            <span class="link-title">Laboratorium</span>
         </a>
-        <div class="collapse" id="manajemenLayanan">
-            <ul class="nav sub-menu">
-                <li class="nav-item">
-                    <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">Layanan Non Aset</a>
-                </li>
-            </ul>
-        </div>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
+            <i class="link-icon" data-feather="folder"></i>
+            <span class="link-title">Manajemen Aset</span>
+        </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
@@ -284,17 +263,124 @@
         </div>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
-            <i class="link-icon" data-feather="bookmark"></i>
+        <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLayanan" role="button" aria-expanded="false" aria-controls="manajemenLayanan">
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Layanan</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="manajemenLayanan">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+<?php } ?>
+
+<?php if (session()->get('role') == 'Admin Sarpra') { ?>
+    <li class="nav-item nav-category">Sarana</li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#dataAsetUmum" role="button" aria-expanded="false" aria-controls="dataAsetUmum">
+            <i class="link-icon" data-feather="folder"></i>
             <span class="link-title">Manajemen Aset</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="dataAsetUmum">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('dataSarana') ?>" class="nav-link">Data General</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#pemusnahanAsetUmum" role="button" aria-expanded="false" aria-controls="pemusnahanAsetUmum">
+            <i class="link-icon" data-feather="trash"></i>
+            <span class="link-title">Pemusnahan Aset</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="pemusnahanAsetUmum">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('pemusnahanAset') ?>" class="nav-link">Pemusnahan Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#layananSaranaUmum" role="button" aria-expanded="false" aria-controls="layananSaranaUmum">
+            <i class="link-icon" data-feather="server"></i>
+            <span class="link-title">Layanan</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="layananSaranaUmum">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('saranaLayananAset') ?>" class="nav-link">Layanan Aset</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('saranaLayananNonAset') ?>" class="nav-link">Layanan Non Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item nav-category">Prasarana</li>
+    <li class="nav-item">
+        <a href="<?= site_url('prasaranaRuangan') ?>" class="nav-link">
+            <i class="link-icon" data-feather="bookmark"></i>
+            <span class="link-title">Ruangan</span>
         </a>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('laboratorium') ?>" class="nav-link">
-            <i class="link-icon" data-feather="message-square"></i>
-            <span class="link-title">Laboratorium</span>
+        <a href="<?= site_url('prasaranaNonRuangan') ?>" class="nav-link">
+            <i class="link-icon" data-feather="bookmark"></i>
+            <span class="link-title">Non Ruangan</span>
         </a>
     </li>
+<?php } ?>
+
+<?php if (session()->get('role') == 'Admin IT') { ?>
+  <li class="nav-item nav-category">IT</li>
+    <li class="nav-item">
+        <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
+            <i class="link-icon" data-feather="wifi"></i>
+            <span class="link-title">Perangkat IT</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">
+            <i class="link-icon" data-feather="list"></i>
+            <span class="link-title">Layanan Perangkat IT</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#aplikasiIT" role="button" aria-expanded="false" aria-controls="aplikasiIT">
+            <i class="link-icon" data-feather="folder"></i>
+            <span class="link-title">Platform Digital </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="aplikasiIT">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('aplikasi') ?>" class="nav-link">Aplikasi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('sosialMedia') ?>" class="nav-link">Sosial Media</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('website') ?>" class="nav-link">Website</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
 <?php } ?>
 
 </ul>
