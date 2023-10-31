@@ -38,7 +38,7 @@
                         <div class="col-sm-9">
                             <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
                                 <option value="" hidden>Pilih lokasi</option>
-                                <?php foreach($dataSaranaLayananAset as $key =>$value): ?>
+                                <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -113,38 +113,41 @@
     </div>
 </div>
 
-<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
-<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+<script src="<?= site_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= site_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+
 
 <script>
-    var csrfToken = '<?= csrf_hash() ?>';
+  $('#idIdentitasPrasarana').select2({});
 
-    $(document).ready(function() {
-    $('#idIdentitasPrasarana').select2();
-
-    $('#idIdentitasPrasarana').on('change', function() {
-        var selectedPrasarana = $(this).val();
-        console.log('Selected Prasarana:', selectedPrasarana);
-
-        $.ajax({
-            url: '<?= site_url('saranaLayananAset/fetchKategoriManajemen')?>',
-            type: 'POST',
-            data: { idIdentitasPrasarana: selectedPrasarana },
-            headers: {
-                'X-CSRF-TOKEN': csrfToken // Set the CSRF token as a header
-            },
-            success: function(response) {
-                console.log('Response:', response);
-                $('#idKategoriManajemen').val(response.idKategoriManajemen);
-            },
-            error: function() {
-                console.log('AJAX Error');
-            }
-        });
-    });
-});
-
-
+  $('#idKategoriManajemen').select2({
+    ajax: {
+      url: "<?= site_url('saranaLayananAset/setKategoriManajemen'); ?>",
+      dataType: 'json',
+      delay: 250,
+      data: function(data) {
+        return {
+          idIdentitasPrasarana: $('#idIdentitasPrasarana').val(),
+          searchTerm: data.term
+        };
+      },
+      processResults: function(data) {
+        console.log('Data received from the server:', data); 
+        if (data && data.data) {
+          return {
+            results: data.data,
+          };
+        } else {
+          console.error('Data does not contain the expected structure.');
+          return { results: [] };
+        }
+      },
+      cache: true
+    },
+    error: function(xhr, status, error) {
+      console.error('AJAX request failed. Status:', status, 'Error:', error);
+    }
+  });
 </script>
 
 

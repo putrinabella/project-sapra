@@ -7,6 +7,7 @@ use App\Models\SaranaLayananAsetModels;
 use App\Models\IdentitasSaranaModels; 
 use App\Models\StatusLayananModels; 
 use App\Models\SumberDanaModels; 
+use App\Models\RincianAsetModels; 
 use App\Models\KategoriManajemenModels; 
 use App\Models\IdentitasPrasaranaModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -23,9 +24,74 @@ class SaranaLayananAset extends ResourceController
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
         $this->statusLayananModel = new StatusLayananModels();
         $this->sumberDanaModel = new SumberDanaModels();
+        $this->rincianAsetModel = new RincianAsetModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
         $this->db = \Config\Database::connect();
     }
+
+    public function fetchKategoriManajemen()
+    {
+        $idIdentitasPrasarana = $this->request->getPost('idIdentitasPrasarana');
+        $kategoriManajemen =  $this->saranaLayananAsetModel->getKategoriManajemen($idIdentitasPrasarana);
+
+        return $this->response->setJSON($kategoriManajemen);
+    }
+
+    public function setKategoriManajemen()
+    {
+        $dataPaket = new RincianAsetModels();
+        $idIdentitasPrasarana = $this->request->getVar('idIdentitasPrasarana');
+
+        $kategoriManajemenLoad = $dataPaket->select('idKategoriManajemen, namaKategoriManajemen')->where(
+            'idIdentitasPrasarana',
+            $idIdentitasPrasarana
+        )->orderBy('namaKategoriManajemen')->findAll();
+        $data = [];
+        foreach ($kategoriManajemenLoad as $value) {
+            $data[] = [
+                'id' => $value->idKategoriManajemen,
+                'text' => $value->namaKategoriManajemen
+            ];
+        }
+        $response['data'] = $data;
+        echo $data;
+        die;
+        return $this->response->setJSON($response);
+    }
+
+    // public function fetchKategoriManajemen() {
+    //     $this->request->getJSON(); 
+
+    //     $idIdentitasPrasarana = $this->request->getVar('idIdentitasPrasarana');
+    //     $idKategoriManajemen = $this->saranaLayananAsetModel->getIdKategoriManajemenByPrasaranaId($idIdentitasPrasarana); 
+
+      
+    //     return $this->response->setJSON(['idKategoriManajemen' => $idKategoriManajemen]);
+    // }
+
+    // public function fetchKategoriManajemen() {
+    //     $idIdentitasPrasarana = $this->request->getVar('idIdentitasPrasarana');
+    //     // $idIdentitasPrasarana = $this->request->getVar('idIdentitasPrasarana');
+    //     // Debug statement
+    //     echo "Received idIdentitasPrasarana: $idIdentitasPrasarana";
+        
+    //     $kategoriManajemenLoad = $this->saranaLayananAsetModel->getKategoriManajemen($idIdentitasPrasarana);
+    
+    //     $data = [];
+    //     foreach ($kategoriManajemenLoad as $value) {
+    //         $data[] = [
+    //             'id' => $value->idKategoriManajemen,
+    //             'text' => $value->namaKategoriManajemen
+    //         ];
+    //     }
+        
+    //     $response['data'] = $data;
+        
+    //     return $this->response->setJSON($response);
+    // }
+
+
+
 
     public function index() {
         $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
@@ -66,6 +132,7 @@ class SaranaLayananAset extends ResourceController
             'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
             'dataSumberDana'            => $this->sumberDanaModel->findAll(),
             'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+            'dataSaranaLayananAset' => $this->saranaLayananAsetModel->getPrasarana(),
         ];
         
         return view('saranaView/layananAset/new', $data);        

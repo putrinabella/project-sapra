@@ -25,6 +25,14 @@ class RincianAsetModels extends Model
         return $query->getResult();
     }
 
+    public function getKategoriManajemen($idIdentitasPrasarana)
+    {
+        // Query the database to get the idKategoriManajemen based on idIdentitasPrasarana
+        return $this->select('idKategoriManajemen')
+            ->where('idIdentitasPrasarana', $idIdentitasPrasarana);
+            // ->first();
+    }
+
     function getDestroy() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');

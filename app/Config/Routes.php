@@ -179,6 +179,13 @@ $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
 // Layanan Aset
+$routes->get('/countries', 'CountryController::index');
+$routes->post('/countries/fetch', 'CountryController::fetch');
+
+$routes->post('saranaLayananAset/setKategoriManajemen', 'SaranaLayananAset::setKategoriManajemen');
+$routes->post('saranaLayananAset/getKategoriManajemenOptions', 'SaranaLayananAsetController::getKategoriManajemenOptions');
+
+$routes->post('saranaLayananAset/fetchKategoriManajemen', 'SaranaLayananAset::fetchKategoriManajemen');
 $routes->get('saranaLayananAset/createTemplate', 'SaranaLayananAset::createTemplate');
 $routes->get('saranaLayananAset/generatePDF', 'SaranaLayananAset::generatePDF');
 $routes->get('saranaLayananAset/export', 'SaranaLayananAset::export');
