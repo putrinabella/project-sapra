@@ -19,12 +19,10 @@ class User extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
                 'unique' => true,
-                'collate' => 'utf8mb4_bin',
             ],
             'password' => [
                 'type' => 'VARCHAR',
                 'constraint' => 70,
-                'collate' => 'utf8mb4_bin',
             ],
             'nama' => [
                 'type' => 'VARCHAR',

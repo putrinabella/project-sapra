@@ -33,6 +33,7 @@ class Auth extends BaseController
                     'id_user'  => $user->idUser,
                     'username' => $user->username,
                     'role'     => $user->role,
+                    'nama'     => $user->nama,
                 ];
                 $session->set($session_data);
                 return redirect()->to(site_url('home'));

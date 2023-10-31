@@ -162,16 +162,21 @@
 
     <li class="nav-item nav-category">Master</li>
     <li class="nav-item">
-        <a href="<?= site_url('viewLogs') ?>" class="nav-link">
-            <i class="link-icon" data-feather="activity"></i>
-            <span class="link-title">User Log</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?= site_url('manajemenUser') ?>" class="nav-link">
-            <i class="link-icon" data-feather="user"></i>
+        <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
+            <i class="link-icon" data-feather="users"></i>
             <span class="link-title">Manajemen User</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
+        <div class="collapse" id="users">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('manajemenUser') ?>"  class="nav-link">Data User</a>
+                </li>
+                <li class="nav-item">
+                <a href="<?= site_url('viewLogs') ?>" class="nav-link">User Logs</a>
+                </li>
+            </ul>
+        </div>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#database" role="button" aria-expanded="false" aria-controls="database">

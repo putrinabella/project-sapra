@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Data Master</a></li>
+        <li class="breadcrumb-item"><a href="#">Manajemen User</a></li>
         <li class="breadcrumb-item active" aria-current="page">User Log</li>
     </ol>
 </nav>
@@ -77,7 +77,14 @@
                                 <td class="text-center"><?=$value->role?></td>
                                 <td class="text-center"><?= date('H:i:s', strtotime($value->loginTime)) ?></td>
                                 <td class="text-center"><?= date('d F Y', strtotime($value->loginTime)) ?></td>
-                                <td class="text-center"><?= $value->actionType ?></td>
+                                <td class="text-center">
+                                    <?php if ($value->actionType === 'Login') : ?>
+                                        <span class="badge bg-success"><?= $value->actionType ?></span>
+                                    <?php elseif ($value->actionType === 'Logout') : ?>
+                                        <span class="badge bg-warning"><?= $value->actionType ?></span>
+                                    <?php else : ?>
+                                        <?= $value->actionType ?>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

@@ -4,40 +4,46 @@ $(document).ready(function () {
 
     return this.optional(element) || pattern.test(value);
   }, "Input harus berupa Google Drive Link");
-  
-    $("#modalPemusnahan").validate({
-      rules: {
-          kodeAkun: {
-              required: true,
-          },
-          bukti: {
-              required: true,
-              googleDriveLink: true,
-          },
-      },
-      messages: {
-          kodeAkun: {
-              required: "Silahkan masukkan kode akun",
-          },
-          bukti: {
-              required: "Silahkan masukkan bukti",
-              googleDriveLink: "Input harus berupa Google Drive Link",
-          },
-      },
-      errorPlacement: function (label, element) {
-          label.addClass("mt-1 tx-13 text-danger");
-          label.insertAfter(element);
-      },
-      highlight: function (element, errorClass) {
-          $(element).parent().addClass("validation-error");
-          $(element).addClass("border-danger");
-      },
-      unhighlight: function (element, errorClass) {
-          $(element).parent().removeClass("validation-error");
-          $(element).removeClass("border-danger");
-          $(element).addClass("border-success");
-      },
-  });
+  $.validator.addMethod("passwordMatch", function(value, element) {
+    var password = $("#password").val();
+    var konfirmasiPassword = value;
+
+    return password === konfirmasiPassword;
+  }, "Password harus sama dengan Konfirmasi Password");
+
+  //   $("#modalPemusnahan").validate({
+  //     rules: {
+  //         kodeAkun: {
+  //             required: true,
+  //         },
+  //         bukti: {
+  //             required: true,
+  //             googleDriveLink: true,
+  //         },
+  //     },
+  //     messages: {
+  //         kodeAkun: {
+  //             required: "Silahkan masukkan kode akun",
+  //         },
+  //         bukti: {
+  //             required: "Silahkan masukkan bukti",
+  //             googleDriveLink: "Input harus berupa Google Drive Link",
+  //         },
+  //     },
+  //     errorPlacement: function (label, element) {
+  //         label.addClass("mt-1 tx-13 text-danger");
+  //         label.insertAfter(element);
+  //     },
+  //     highlight: function (element, errorClass) {
+  //         $(element).parent().addClass("validation-error");
+  //         $(element).addClass("border-danger");
+  //     },
+  //     unhighlight: function (element, errorClass) {
+  //         $(element).parent().removeClass("validation-error");
+  //         $(element).removeClass("border-danger");
+  //         $(element).addClass("border-success");
+  //     },
+  // });
   $("#custom-validation").validate({
     rules: {
       username: {
@@ -46,6 +52,10 @@ $(document).ready(function () {
       password: {
         required: true,
         minlength: 5,
+      },
+      konfirmasiPassword: {
+        required: true,
+        equalTo: "#password", 
       },
       tahunPengadaan: {
         required: true,
@@ -276,6 +286,10 @@ $(document).ready(function () {
       password: {
         required: "Silahkan masukkan kata sandi",
         minlength: "Kata sandi harus terdiri dari setidaknya 5 karakter",
+      },
+      konfirmasiPassword: {
+        required: "Silahkan masukkan konfirmasi password",
+        equalTo: "Password harus sama dengan Konfirmasi Password",
       },
       tahunPengadaan: {
         required: "Silahkan masukkan tahun pengadaan",

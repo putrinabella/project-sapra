@@ -98,9 +98,9 @@ class RincianAset extends ResourceController
 
         $result = $writer->write($qrCode);
 
-        $dataUri = $result->getDataUri();
+        $dataUrl = $result->getDataUrl();
 
-        return $dataUri;
+        return $dataUrl;
     }
 
     public function show($id = null) {

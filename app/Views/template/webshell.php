@@ -93,7 +93,7 @@
               <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                   <div class="text-center">
-                  <div class="tx-16 fw-bolder"> <?= session('username'); ?> </div>
+                  <div class="tx-16 fw-bolder"> <?= session('nama'); ?> </div>
                     <div class="tx-12 text-muted"> <?= session('role'); ?> </div>
                   </div>
                 </div>
