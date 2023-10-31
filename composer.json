@@ -13,7 +13,7 @@
     "php": "^7.4 || ^8.0",
     "codeigniter4/framework": "^4.0",
     "dompdf/dompdf": "^2.0",
-    "endroid/qr-code": "^3.9",
+    "endroid/qr-code": "^4.8",
     "erusev/parsedown": "^1.7",
     "html2text/html2text": "^4.3",
     "phpoffice/phpspreadsheet": "^1.29",

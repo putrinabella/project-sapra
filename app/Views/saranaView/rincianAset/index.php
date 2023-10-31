@@ -137,6 +137,10 @@
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
+                                    <a href="<?= site_url('QRBarcode/' . $value->kodeRincianAset) ?>" target="_blank" class="btn btn-success btn-icon generate-qr-code"
+                                    data-kode="<?= $value->kodeRincianAset ?>">
+                                        <i data-feather="code"></i>
+                                    </a> 
                                 </td>
                                 <td class="text-center">
                                 <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
@@ -205,6 +209,15 @@
             if (select.value === 'None') {
                 submitButtons[index].disabled = true;
             }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.generate-qr-code').click(function () {
+            var kodeRincianAset = $(this).data('kode');
+            var url = '/generateQRCode/' + kodeRincianAset;
+            window.open(url, '_blank');
         });
     });
 </script>
