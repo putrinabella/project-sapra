@@ -17,6 +17,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 
 class RincianAset extends ResourceController
 {
@@ -62,7 +70,7 @@ class RincianAset extends ResourceController
     
             if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
                 if ($newSectionAset === 'Dimusnahkan') {
-                    return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Aset berhasil dimusnahkan');
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
                     return redirect()->to(site_url('rincianAset'))->with('success', 'Sarana berhasil dikembalikan');
                 }
@@ -78,6 +86,22 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/dataSaranaDetail', $data);
     }
 
+    public function generateQRCode($kodeRincianAset)    {
+        $writer = new PngWriter();
+        $qrCode = QrCode::create($kodeRincianAset)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(300)
+            ->setMargin(10)
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+
+        $result = $writer->write($qrCode);
+
+        $dataUri = $result->getDataUri();
+
+        return $dataUri;
+    }
 
     public function show($id = null) {
         if ($id != null) {
@@ -90,6 +114,8 @@ class RincianAset extends ResourceController
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
                 
                 $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
+                $qrCodeData = $this->generateQRCode($dataRincianAset->kodeRincianAset); // Replace with the appropriate field from $dataRincianAset
+
                 $data = [
                     'dataRincianAset'           => $dataRincianAset,
                     'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
@@ -98,6 +124,7 @@ class RincianAset extends ResourceController
                     'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
+                    'qrCodeData'                => $qrCodeData
                 ];
                 return view('saranaView/rincianAset/show', $data);
             } else {

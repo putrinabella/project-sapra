@@ -13,9 +13,9 @@ use Endroid\QrCode\Writer\PngWriter;
 class QRBarcode extends BaseController
 {
 
-    public function generateQRCode($idRincianAset)    {
+    public function generateQRCode($kodeRincianAset)    {
         $writer = new PngWriter();
-        $qrCode = QrCode::create($idRincianAset)
+        $qrCode = QrCode::create($kodeRincianAset)
             ->setEncoding(new Encoding('UTF-8'))
             ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
             ->setSize(300)

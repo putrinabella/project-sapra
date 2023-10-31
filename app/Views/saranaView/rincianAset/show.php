@@ -31,9 +31,6 @@
                         </a>
                     </div>
                 </div>
-                <div class="text-center">
-                    <img src="<?= $buktiUrl ?>" alt="Foto Bukti" style=" max-height: 300px;" class="mx-auto">
-                </div>
                 <br>
                 <div class="table-responsive">
                     <table class="my-table">
@@ -128,6 +125,20 @@
                             <td>:</td>
                             <td>
                                 <?= $spesifikasiHtml ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Foto Dokumentasi</td>
+                            <td>:</td>
+                            <td>
+                            <img src="<?= $buktiUrl ?>" alt="Foto Bukti" style="height: 250px;" class="text-center">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>QR Code</td>
+                            <td>:</td>
+                            <td>
+                            <img src="<?= $qrCodeData ?>" alt="QR Code" style="height: 250px;" class="text-center">
                             </td>
                         </tr>
                     </table>

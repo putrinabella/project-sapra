@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/prismjs/themes/prism.css">
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/select2/select2.min.css">
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/dropify/dist/dropify.min.css">
+  <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/mdi/css/materialdesignicons.min.css">
   <!-- End plugin css for this page -->
 
   <!-- inject:css -->
