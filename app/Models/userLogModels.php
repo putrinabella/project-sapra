@@ -14,6 +14,7 @@
         function getAll() {
             $builder = $this->db->table($this->table);
             $builder->join('tblUser', 'tblUser.idUser = tblUserLogs.user_id');
+            $builder->orderBy('loginTime', 'desc'); 
             $query = $builder->get();
             return $query->getResult();
         }
