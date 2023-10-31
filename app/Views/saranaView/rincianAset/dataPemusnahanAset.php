@@ -120,8 +120,8 @@
                                                     <option value="Dimusnahkan">Dimusnahkan</option>
                                                     <option value="None">None</option>
                                                 </select>
-                                                <input class="form-control" type="text" name="namaAkun" value="<?=userLogin()->nama?>" hidden>
-                                                <input class="form-control" type="text" name="kodeAkun" value="<?=userLogin()->role?>" hidden>
+                                                <input class="form-control" type="text" name="namaAkun" value=" <?= session('username'); ?>" hidden>
+                                                <input class="form-control" type="text" name="kodeAkun" value=" <?= session('role'); ?>" hidden>
                                                 <button type="submit" class="btn btn-success btn-icon ml-2 submitButton">
                                                     <i data-feather="check"></i>
                                                 </button>

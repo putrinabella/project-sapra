@@ -1,44 +1,45 @@
 {
-    "name": "codeigniter4/appstarter",
-    "description": "CodeIgniter4 starter app",
-    "license": "MIT",
-    "type": "project",
-    "homepage": "https://codeigniter.com",
-    "support": {
-        "forum": "https://forum.codeigniter.com/",
-        "source": "https://github.com/codeigniter4/CodeIgniter4",
-        "slack": "https://codeigniterchat.slack.com"
-    },
-    "require": {
-        "php": "^7.4 || ^8.0",
-        "codeigniter4/framework": "^4.0",
-        "dompdf/dompdf": "^2.0",
-        "erusev/parsedown": "^1.7",
-        "html2text/html2text": "^4.3",
-        "phpoffice/phpspreadsheet": "^1.29",
-        "symfony/deprecation-contracts": "*"
-    },
-    "require-dev": {
-        "fakerphp/faker": "^1.23",
-        "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.1"
-    },
-    "autoload": {
-        "exclude-from-classmap": [
-            "**/Database/Migrations/**"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\Support\\": "tests/_support"
-        }
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "scripts": {
-        "test": "phpunit"
+  "name": "codeigniter4/appstarter",
+  "description": "CodeIgniter4 starter app",
+  "license": "MIT",
+  "type": "project",
+  "homepage": "https://codeigniter.com",
+  "support": {
+    "forum": "https://forum.codeigniter.com/",
+    "source": "https://github.com/codeigniter4/CodeIgniter4",
+    "slack": "https://codeigniterchat.slack.com"
+  },
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "codeigniter4/framework": "^4.0",
+    "dompdf/dompdf": "^2.0",
+    "endroid/qr-code": "^3.9",
+    "erusev/parsedown": "^1.7",
+    "html2text/html2text": "^4.3",
+    "phpoffice/phpspreadsheet": "^1.29",
+    "symfony/deprecation-contracts": "*"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^1.23",
+    "mikey179/vfsstream": "^1.6",
+    "phpunit/phpunit": "^9.1"
+  },
+  "autoload": {
+    "exclude-from-classmap": [
+      "**/Database/Migrations/**"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Support\\": "tests/_support"
     }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
 }

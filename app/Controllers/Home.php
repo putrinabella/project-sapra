@@ -8,4 +8,9 @@ class Home extends BaseController
     {
         return view('home');
     }
+
+        function userLogin(){
+        $db = \Config\Database::connect();
+        return $db->table('tblUser')->where('idUser', session('id_user'))->get()->getRow();
+    }
 }
