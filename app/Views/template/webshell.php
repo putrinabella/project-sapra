@@ -37,26 +37,16 @@
   <!-- endinject -->
 
   <!-- Layout styles -->
-  <!-- <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/light/style.css" id="light-mode" class="theme">
-  <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/dark/style.css" id="dark-mode" class="theme" disabled> -->
 
-<?php 
-  $mode = session('mode');
-  if ($mode === 'light') {
-      echo '<link rel="stylesheet" href="' . base_url() . '/assets/css/light/style.css">';
-  } elseif ($mode === 'dark') {
-      echo '<link rel="stylesheet" href="' . base_url() . '/assets/css/dark/style.css">';
-  } else {
-      // Default to the light CSS if the "mode" session variable is not set or has an unexpected value
-      echo '<link rel="stylesheet" href="' . base_url() . '/assets/css/light/style.css">';
-  }
-?>
-
+  <?php
+    $cssFile = session()->get('mode') === 'dark' ? 'dark' : 'light';
+    ?>
+  <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/<?= $cssFile ?>/style.css">
 
   <!-- End layout styles -->
 
   <!-- Custom css for this page -->
-  <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/light/custom.css">
+  <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/custom.css">
   <!-- End custom css for this page -->
 
   <link rel="shortcut icon" href="<?= base_url(); ?>/assets/images/favicon.png" />
@@ -104,18 +94,27 @@
               <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                 <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                   <div class="text-center">
-                  <div class="tx-16 fw-bolder"> <?= session('nama'); ?> </div>
-                    <div class="tx-12 text-muted"> <?= session('role'); ?> </div>
-                    <div class="tx-12 text-muted"> <?= session('mode'); ?> </div>
+                    <div class="tx-16 fw-bolder">
+                      <?= session('nama'); ?>
+                    </div>
+                    <div class="tx-12 text-muted">
+                      <?= session('role'); ?>
+                    </div>
+                    <div class="tx-12 text-muted">
+                      <?= session('mode'); ?>
+                    </div>
                   </div>
                 </div>
                 <ul class="list-unstyled p-1">
-                <li class="dropdown-item py-2">
+                  <li class="dropdown-item py-2">
                     <div class="form-check form-switch ms-0">
-                        <input class="form-check-input" type="checkbox" id="modeSwitch" onchange="toggleTheme()">
-                        <label class="form-check-label" for="modeSwitch">Theme Switch</label>
+                      <input class="form-check-input" type="checkbox" id="modeSwitch" <?=(session()->get('mode') ===
+                      'dark') ? 'checked' : '' ?>>
+                      <label class="form-check-label" for="modeSwitch" id="modeLabel">
+                        <?= (session()->get('mode') === 'dark') ? 'Dark Mode' : 'Light Mode' ?>
+                      </label>
                     </div>
-                </li>
+                  </li>
                   <li class="dropdown-item py-2">
                     <a href="<?= site_url('logout') ?>" class="text-body ms-0">
                       <i class="me-2 icon-md" data-feather="log-out"></i>
@@ -140,8 +139,7 @@
         class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
         <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://github.com/putrinabella/project-sapra"
             target="_blank">StellarCoder</a>.</p>
-        <!-- <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm"
-                        data-feather="heart"></i></p> -->
+        <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart"></i></p>
       </footer>
       <!-- partial -->
 
@@ -168,7 +166,6 @@
   <script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/dropify/dist/dropify.min.js"></script>
-  <script src="<?= base_url(); ?>/assets/vendors/inputmask/jquery.inputmask.min.js"></script>
   <!-- End plugin js for this page -->
 
   <!-- inject:js -->
@@ -186,60 +183,43 @@
   <script src="<?= base_url(); ?>/assets/js/select2.js"></script>
   <script src="<?= base_url(); ?>/assets/js/dropify.js"></script>
   <script src="<?= base_url(); ?>/assets/js/custom.js"></script>
-  <script src="../../../assets/js/inputmask.js"></script>
   <!-- End custom js for this page -->
 
   <script>
-function toggleTheme() {
-    const modeSwitch = document.getElementById("modeSwitch");
-    const newMode = modeSwitch.checked ? "dark" : "light";
-    
-    $.ajax({
-        url: "<?= site_url('updateTheme') ?>",
-        type: "POST",
-        data: { mode: newMode },
-        dataType: "json",
-        success: function(response) {
-            if (response.success) {
-            } else {
-            }
-        },
-        error: function() {
-        }
-    });
-}
-</script>
+    $(document).ready(function () {
+      updateSessionMode();
 
+      $('#modeSwitch').change(function () {
+        updateSessionMode();
+      });
 
-  <!-- <script>
-    function setThemePreference(theme) {
-      localStorage.setItem('theme', theme);
-    }
+      function updateSessionMode() {
+        var isChecked = $('#modeSwitch').is(':checked');
+        var mode = isChecked ? 'dark' : 'light';
 
-    // Function to enable light mode
-    function enableLightMode() {
-      document.getElementById('light-mode').disabled = false;
-      document.getElementById('dark-mode').disabled = true;
-      setThemePreference('light');
-    }
-
-    function enableDarkMode() {
-      document.getElementById('light-mode').disabled = true;
-      document.getElementById('dark-mode').disabled = false;
-      setThemePreference('dark');
-    }
-
-    function applySavedTheme() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        enableDarkMode();
-      } else {
-        enableLightMode(); // Default to light mode if the preference is not found.
+        $.ajax({
+          url: "<?= site_url('updateSessionMode') ?>",
+          type: "POST",
+          data: { mode: mode },
+          success: function (data) {
+          }
+        });
       }
-    }
+    });
+  </script>
 
-    applySavedTheme();
-  </script> -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var modeSwitch = document.getElementById('modeSwitch');
+      var modeLabel = document.getElementById('modeLabel');
+
+      modeSwitch.addEventListener('change', function () {
+        location.reload();
+        modeLabel.textContent = modeSwitch.checked ? 'Light Mode' : 'Dark Mode';
+      });
+    });
+  </script>
+
 </body>
 
 </html>

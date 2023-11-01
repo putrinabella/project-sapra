@@ -17,8 +17,9 @@ $routes->get('createDatabase', function () {
 $routes->get('login', 'Auth::login');
 $routes->get('auth', 'Auth::index');
 $routes->post('loginProcess', 'Auth::loginProcess');
+$routes->get('loginProcess', 'Auth::loginProcess');
 $routes->get('logout', 'Auth::logout');
-$routes->post('updateTheme', 'Auth::updateTheme');
+$routes->post('updateSessionMode', 'Auth::updateSessionMode');
 
 // User Logs
 $routes->get('viewLogs', 'UserLogs::viewLogs');

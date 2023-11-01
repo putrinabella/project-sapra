@@ -82,12 +82,25 @@ class Auth extends BaseController
     public function updateTheme() {
         $request = service('request');
         $mode = $request->getJSON('mode');
-
+    
         if ($mode === 'light' || $mode === 'dark') {
-            session()->set('mode', $mode);
-            return $this->response->setJSON(['success' => true]);
+            session()->set('mode', $mode); // Set the session value
+            return $this->response->setJSON(['success' => true, 'mode' => $mode]); // Include the mode in the response
         } else {
             return $this->response->setJSON(['success' => false, 'message' => 'Invalid mode value']);
         }
     }
+
+    public function updateSessionMode() {
+        $mode = $this->request->getPost('mode');
+        $session = session();
+    
+        if ($mode === 'dark' || $mode === 'light') {
+            $session->set('mode', $mode);
+        }
+        return $this->response->setJSON(['mode' => $mode]);
+        // return $this->response->setJSON(['success' => true, 'mode' => $mode]);
+    }
+    
+    
 }
