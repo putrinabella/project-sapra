@@ -37,7 +37,7 @@ class SaranaLayananAsetModels extends Model
             ->get()
             ->getResultArray();
     }
-// Modify the model function to accept $idIdentitasPrasarana
+
     function getKategoriManajemen($idIdentitasPrasarana) {
         $builder = $this->db->table('tblRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -47,7 +47,6 @@ class SaranaLayananAsetModels extends Model
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblRincianAset.idStatusLayanan');
         $builder->where('tblRincianAset.deleted_at', null);
         
-        // Add a condition to filter by $idIdentitasPrasarana
         $builder->where('tblRincianAset.idIdentitasPrasarana', $idIdentitasPrasarana);
         
         $query = $builder->get();
@@ -68,20 +67,50 @@ class SaranaLayananAsetModels extends Model
     }
 
     function getPrasarana() {
-        $builder = $this->db->table('tblSaranaLayananAset');
-        $builder->select('DISTINCT(tblSaranaLayananAset.idIdentitasPrasarana), tblIdentitasPrasarana.namaPrasarana');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblSaranaLayananAset.idIdentitasSarana');
-        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblSaranaLayananAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblSaranaLayananAset.idIdentitasPrasarana');
-        $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
-        $builder->where('tblSaranaLayananAset.deleted_at', null);
-        $builder->groupBy('tblIdentitasPrasarana.idIdentitasPrasarana'); // Group by idIdentitasPrasarana
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('DISTINCT(tblRincianAset.idIdentitasPrasarana), tblIdentitasPrasarana.namaPrasarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->groupBy('tblIdentitasPrasarana.idIdentitasPrasarana'); 
         $query = $builder->get();
         return $query->getResult();
     }
     
+    function getSarana() {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('DISTINCT(tblRincianAset.idIdentitasSarana), tblIdentitasSarana.namaSarana');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset', "None");  
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
 
+    function getKodeRincianAset() {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('DISTINCT(tblRincianAset.kodeRincianAset), tblIdentitasSarana.namaSarana');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset', "None");
+        $builder->whereIn('tblRincianAset.status', ['Bagus', 'Rusak']);
+        $builder->groupBy('tblRincianAset.kodeRincianAset'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    public function getKodeRincianAsetBySarana($idIdentitasSarana) {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('kodeRincianAset');
+        $builder->distinct();
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+        $builder->where('tblRincianAset.sectionAset', 'None');
+        $builder->whereIn('tblRincianAset.status', ['Bagus', 'Rusak']);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
     function getRecycle() {
         $builder = $this->db->table('tblSaranaLayananAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblSaranaLayananAset.idIdentitasSarana');

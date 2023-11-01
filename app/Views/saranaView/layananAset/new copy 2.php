@@ -5,13 +5,13 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
-<meta name="csrf-token" content="<?= csrf_hash() ?>">
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
         <h4 class="mb-3 mb-md-0">Layanan Aset</h4>
     </div>
 </div>
+
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -34,34 +34,34 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
-                        <div class="col-sm-9" style="display: flex; align-items: center;">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="idIdentitasSarana" name="idIdentitasSarana">
-                                <option value="" selected disabled hidden>Pilih Nama Aset</option>
-                                <?php foreach ($dataIdentitsaSarana as $key => $value): ?>
-                                    <option value="<?= $value->idIdentitasSarana ?>"><?= $value->namaSarana ?></option>
+                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
+                                <option value="" hidden>Pilih lokasi</option>
+                                <?php foreach($dataSaranaLayananAset as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kodeRincianAset" class="col-sm-3 col-form-label">Kode Aset</label>
+                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true" id="kodeRincianAset" name="kodeRincianAset">
-                            <option value="" selected disabled hidden>Pilih Kode Aset</option>
+                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
+                                <option value="" selected disabled hidden>Select Here</option>
+                                <option value=""></option>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
+                        <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="idIdentitasPrasarana" name="idIdentitasPrasarana"
-                                placeholder="Masukkan Lokasi">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
-                        <div class="col-sm-9">
+                            <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
+                                <option value="" hidden>Pilih aset</option>
+                                <?php foreach($dataIdentitasSarana as $key =>$value): ?>
+                                <option value="<?=$value->idIdentitasSarana?>"><?=$value->namaSarana?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -117,81 +117,10 @@
 <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        $("#idIdentitasSarana").on("change", function() {
-            var selectedIdIdentitasSarana = $(this).val();
-            var $kodeRincianAsetSelect = $("#kodeRincianAset");
-
-            $.ajax({
-                url: "<?= site_url('getKodeRincianAsetBySarana') ?>",
-                type: "POST",
-                data: {
-                    idIdentitasSarana: selectedIdIdentitasSarana,
-                },
-                dataType: "json",
-                success: function(response) {
-                    $kodeRincianAsetSelect.empty();
-                    if (response.length === 0) {
-                        $kodeRincianAsetSelect.append("<option value='' selected disabled hidden>No data</option>");
-                    } else {
-                        $kodeRincianAsetSelect.append("<option value='' selected disabled hidden>Pilih Kode Aset</option>");
-                        $.each(response, function(key, value) {
-                            $kodeRincianAsetSelect.append("<option value='" + value.kodeRincianAset + "'>" + value.kodeRincianAset + "</option>");
-                        });
-                    }
-                },
-                error: function() {
-                    alert("Failed to retrieve kodeRincianAset options.");
-                }
-            });
-        });
-    });
-</script>
-<!-- <script>
-    $(document).ready(function() {
-        $("#searchButton").on("click", function() {
-            var selectedIdIdentitasSarana = $("#idIdentitasSarana").val();
-
-
-            $.ajax({
-                url: "<?= site_url('getKodeRincianAsetBySarana') ?>",
-                type: "POST",
-                data: { 
-                    idIdentitasSarana: selectedIdIdentitasSarana,
-     
-                },
-                dataType: "json",
-                success: function(response) {
-                    var kodeRincianAsetSelect = $("#kodeRincianAset");
-                    kodeRincianAsetSelect.empty(); 
-                    kodeRincianAsetSelect.append("<option value='' hidden>Pilih Kode Aset</option>");
-                    $.each(response, function(key, value) {
-                        kodeRincianAsetSelect.append("<option value='" + value.kodeRincianAset + "'>" + value.kodeRincianAset + "</option>");
-                    });
-                },
-                error: function() {
-                    alert("Failed to retrieve kodeRincianAset options.");
-                }
-            });
-        });
-    });
-</script> -->
-
-
-<!-- <script>
-document.getElementById('searchButton').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent the default link behavior
-    var selectedValue = document.getElementById('idIdentitasSarana').value;
-    var url = '<?=site_url('saranaLayananAset')?>/' + selectedValue; // Append selected value to the URL
-    window.location.href = url;
-});
-</script> -->
-<script>
     var csrfToken = '<?= csrf_hash() ?>';
 
     $(document).ready(function() {
     $('#idIdentitasPrasarana').select2();
-    $('#kodeRincianAset').select2();
 
     $('#idIdentitasPrasarana').on('change', function() {
         var selectedPrasarana = $(this).val();
@@ -202,7 +131,7 @@ document.getElementById('searchButton').addEventListener('click', function(event
             type: 'POST',
             data: { idIdentitasPrasarana: selectedPrasarana },
             headers: {
-                'X-CSRF-TOKEN': csrfToken 
+                'X-CSRF-TOKEN': csrfToken // Set the CSRF token as a header
             },
             success: function(response) {
                 console.log('Response:', response);
