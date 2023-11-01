@@ -24,7 +24,7 @@ class Auth extends BaseController
         $post = $this->request->getPost();
         $query = $this->db->table('tblUser')->getWhere(['username' => $post['username']]);
         $user = $query->getRow();
-        
+        $mode = 'light'; 
         if ($user) {
             if (password_verify($post['password'], $user->password)) {
                 $this->logEvent($user->idUser, 'Login', $_SERVER['REMOTE_ADDR']);
@@ -34,6 +34,7 @@ class Auth extends BaseController
                     'username' => $user->username,
                     'role'     => $user->role,
                     'nama'     => $user->nama,
+                    'mode'     => $mode,
                 ];
                 $session->set($session_data);
                 return redirect()->to(site_url('home'));
@@ -67,7 +68,6 @@ class Auth extends BaseController
     }
 
     protected function logEvent($userId, $actionType, $ipAddress) {
-        // $userLoginLogModel = new UserLoginLogModel();
 
         $data = [
             'user_id'     => $userId,
@@ -77,5 +77,17 @@ class Auth extends BaseController
         ];
 
         $this->userLogModel->insert($data);
+    }
+
+    public function updateTheme() {
+        $request = service('request');
+        $mode = $request->getJSON('mode');
+
+        if ($mode === 'light' || $mode === 'dark') {
+            session()->set('mode', $mode);
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid mode value']);
+        }
     }
 }

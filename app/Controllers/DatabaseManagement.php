@@ -169,6 +169,8 @@ class DatabaseManagement extends BaseController
     public function restore() {
         $file = $this->request->getFile('database');
     
+        // Add drop database
+        
         if (!$file->isValid()) {
             return redirect()->to(site_url('restore'))->with('error', 'Invalid File');
         }

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- <html lang="en" class="light-theme"> -->
 <html lang="en">
 
 
@@ -38,8 +37,20 @@
   <!-- endinject -->
 
   <!-- Layout styles -->
-  <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/light/style.css" id="light-mode" class="theme">
-  <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/dark/style.css" id="dark-mode" class="theme" disabled>
+  <!-- <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/light/style.css" id="light-mode" class="theme">
+  <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/dark/style.css" id="dark-mode" class="theme" disabled> -->
+
+<?php 
+  $mode = session('mode');
+  if ($mode === 'light') {
+      echo '<link rel="stylesheet" href="' . base_url() . '/assets/css/light/style.css">';
+  } elseif ($mode === 'dark') {
+      echo '<link rel="stylesheet" href="' . base_url() . '/assets/css/dark/style.css">';
+  } else {
+      // Default to the light CSS if the "mode" session variable is not set or has an unexpected value
+      echo '<link rel="stylesheet" href="' . base_url() . '/assets/css/light/style.css">';
+  }
+?>
 
 
   <!-- End layout styles -->
@@ -95,22 +106,16 @@
                   <div class="text-center">
                   <div class="tx-16 fw-bolder"> <?= session('nama'); ?> </div>
                     <div class="tx-12 text-muted"> <?= session('role'); ?> </div>
+                    <div class="tx-12 text-muted"> <?= session('mode'); ?> </div>
                   </div>
                 </div>
                 <ul class="list-unstyled p-1">
-                  <h6 class="text-center text-muted py-2">
-                    Theme:
-                  </h6>
-                  <li class="dropdown-item py-2">
-                    <a href="javascript:void(0);" onclick="enableLightMode()">
-                      <h6 class="text-muted mb-2 theme-item">Light</h6>
-                    </a>
-                  </li>
-                  <li class="dropdown-item py-2">
-                    <a href="javascript:void(0);" onclick="enableDarkMode()">
-                      <h6 class="text-muted mb-2 theme-item">Dark</h6>
-                    </a>
-                  </li>
+                <li class="dropdown-item py-2">
+                    <div class="form-check form-switch ms-0">
+                        <input class="form-check-input" type="checkbox" id="modeSwitch" onchange="toggleTheme()">
+                        <label class="form-check-label" for="modeSwitch">Theme Switch</label>
+                    </div>
+                </li>
                   <li class="dropdown-item py-2">
                     <a href="<?= site_url('logout') ?>" class="text-body ms-0">
                       <i class="me-2 icon-md" data-feather="log-out"></i>
@@ -149,8 +154,6 @@
   <!-- endinject -->
 
   <!-- Plugin js for this page -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
   <script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/jquery-validation/jquery.validate.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/chartjs/Chart.min.js"></script>
@@ -165,6 +168,7 @@
   <script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/dropify/dist/dropify.min.js"></script>
+  <script src="<?= base_url(); ?>/assets/vendors/inputmask/jquery.inputmask.min.js"></script>
   <!-- End plugin js for this page -->
 
   <!-- inject:js -->
@@ -182,57 +186,32 @@
   <script src="<?= base_url(); ?>/assets/js/select2.js"></script>
   <script src="<?= base_url(); ?>/assets/js/dropify.js"></script>
   <script src="<?= base_url(); ?>/assets/js/custom.js"></script>
+  <script src="../../../assets/js/inputmask.js"></script>
   <!-- End custom js for this page -->
 
-  <!-- BASED ON DEVICE BROWSER MODE -->
-  <!-- <script>
-      // Check if the browser supports the 'prefers-color-scheme' media feature
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          // Dark mode preference detected, activate dark mode
-          document.getElementById('light-mode').disabled = true;
-      } else {
-          // Light mode preference detected, activate light mode
-          document.getElementById('dark-mode').disabled = true;
-      }
-  </script> -->
-
-
-  <!-- <script>
-    function setThemePreference(theme) {
-      localStorage.setItem('theme', theme);
-    }
-    // Function to enable light mode
-    function enableLightMode() {
-      document.getElementById('light-mode').disabled = false;
-      document.getElementById('dark-mode').disabled = true;
-      setThemePreference('light');
-    }
-
-    function enableDarkMode() {
-      document.getElementById('light-mode').disabled = true;
-      document.getElementById('dark-mode').disabled = false;
-      setThemePreference('dark');
-    }
-
-    function applySavedTheme() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        enableDarkMode();
-      }
-    }
-
-    applySavedTheme();
-    const html = document.querySelector('html');
-
-    document.addEventListener('DOMContentLoaded', function () {
-      if (html.classList.contains('dark-theme')) {
-        enableDarkMode();
-      }
-    });
-  </script> -->
-
-
   <script>
+function toggleTheme() {
+    const modeSwitch = document.getElementById("modeSwitch");
+    const newMode = modeSwitch.checked ? "dark" : "light";
+    
+    $.ajax({
+        url: "<?= site_url('updateTheme') ?>",
+        type: "POST",
+        data: { mode: newMode },
+        dataType: "json",
+        success: function(response) {
+            if (response.success) {
+            } else {
+            }
+        },
+        error: function() {
+        }
+    });
+}
+</script>
+
+
+  <!-- <script>
     function setThemePreference(theme) {
       localStorage.setItem('theme', theme);
     }
@@ -260,7 +239,7 @@
     }
 
     applySavedTheme();
-  </script>
+  </script> -->
 </body>
 
 </html>

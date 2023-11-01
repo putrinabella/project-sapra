@@ -95,12 +95,19 @@ class SaranaLayananAset extends ResourceController
         return $this->response->setJSON(['idKategoriManajemen' => $idKategoriManajemen, 'namaKategoriManajemen' => $namaKategoriManajemen]);
     }
 
+    public function getIdRincianAsetByKodeRincianAset()
+    {
+        $kodeRincianAset = $this->request->getPost('kodeRincianAset');
+        $saranaLayananAsetModel = new \App\Models\SaranaLayananAsetModels();
+        $idRincianAset = $saranaLayananAsetModel->getIdRincianAsetByKodeRincianAset($kodeRincianAset);
+        return $this->response->setJSON(['idRincianAset' => $idRincianAset]);
+    }
+
     
     public function create() {
         $data = $this->request->getPost();
-        // $buktiPath = $this->uploadFile('bukti'); 
-        if (!empty($data['idIdentitasSarana']) && !empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen'])) {
-            // $data['bukti'] = $buktiPath;
+     
+        if (!empty($data['idRincianAset']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['biaya'])) {
             $this->saranaLayananAsetModel->insert($data);
             return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
         } else {

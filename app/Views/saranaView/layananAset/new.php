@@ -48,8 +48,9 @@
                         <label for="kodeRincianAset" class="col-sm-3 col-form-label">Kode Aset</label>
                         <div class="col-sm-9">
                             <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true" id="kodeRincianAset" name="kodeRincianAset">
-                            <option value="" selected disabled hidden>Pilih Kode Aset</option>
+                                <option value="" selected disabled hidden>Pilih Kode Aset</option>
                             </select>
+                            <input type="text" class="form-control" id="idRincianAset" name="idRincianAset" placeholder="Menampilkan ID rincian aset" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -69,8 +70,8 @@
                     <div class="row mb-3">
                         <label for="idStatusLayanan" class="col-sm-3 col-form-label">Status Layanan</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idStatusLayanan" name="idStatusLayanan">
-                                <option value="" hidden>Pilih status layanan</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true" id="idStatusLayanan" name="idStatusLayanan">
+                                <option value="" selected disabled hidden>Pilih status layanan</option>
                                 <?php foreach($dataStatusLayanan as $key =>$value): ?>
                                 <option value="<?=$value->idStatusLayanan?>"><?=$value->namaStatusLayanan?></option>
                                 <?php endforeach; ?>
@@ -80,8 +81,8 @@
                     <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idSumberDana" name="idSumberDana">
-                                <option value="" hidden>Pilih sumber dana</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true"  id="idSumberDana" name="idSumberDana">
+                                <option value="" selected disabled hidden>Pilih sumber dana</option>
                                 <?php foreach($dataSumberDana as $key =>$value): ?>
                                 <option value="<?=$value->idSumberDana?>"><?=$value->namaSumberDana?></option>
                                 <?php endforeach; ?>
@@ -197,6 +198,28 @@
                 }
             });
         });
+
+        $("#kodeRincianAset").on("change", function() {
+        var selectedKodeRincianAset = $(this).val();
+        var $idRincianAsetInput = $("#idRincianAset");
+
+        $.ajax({
+            url: "<?= site_url('getIdRincianAsetByKodeRincianAset') ?>",
+            type: "POST",
+            data: {
+                kodeRincianAset: selectedKodeRincianAset,
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.idRincianAset) {
+                    $idRincianAsetInput.val(response.idRincianAset);
+                }
+            },
+            error: function() {
+                alert("Failed to retrieve ID rincian aset.");
+            }
+        });
+    });
     });
 </script>
 

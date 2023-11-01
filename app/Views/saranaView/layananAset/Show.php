@@ -40,13 +40,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Nama Aset</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataSaranaLayananAset->namaSarana?>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>Lokasi</td>
                             <td>:</td>
                             <td>
@@ -54,17 +47,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Status Layanan</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataSaranaLayananAset->namaStatusLayanan?>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>Kategori Manajemen</td>
                             <td>:</td>
                             <td>
                                 <?= $dataSaranaLayananAset->namaKategoriManajemen?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nama Aset</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataSaranaLayananAset->namaSarana?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Status Layanan</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataSaranaLayananAset->namaStatusLayanan?>
                             </td>
                         </tr>
                         <tr>
@@ -86,6 +86,13 @@
                                 <a href="<?= $dataSaranaLayananAset->bukti ?>" target="_blank">
                                     <?= $dataSaranaLayananAset->bukti ?>
                                 </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Keterangan</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataSaranaLayananAset->keterangan?>
                             </td>
                         </tr>
                     </table>

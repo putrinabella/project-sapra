@@ -18,6 +18,7 @@ $routes->get('login', 'Auth::login');
 $routes->get('auth', 'Auth::index');
 $routes->post('loginProcess', 'Auth::loginProcess');
 $routes->get('logout', 'Auth::logout');
+$routes->post('updateTheme', 'Auth::updateTheme');
 
 // User Logs
 $routes->get('viewLogs', 'UserLogs::viewLogs');
@@ -197,6 +198,7 @@ $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 $routes->post('getKodeRincianAsetBySarana', 'SaranaLayananAset::getKodeRincianAsetBySarana');
 $routes->post('getIdentitasPrasaranaByKodeRincianAset', 'SaranaLayananAset::getIdentitasPrasaranaByKodeRincianAset');
 $routes->post('getKategoriManajemenByKodeRincianAset', 'SaranaLayananAset::getKategoriManajemenByKodeRincianAset');
+$routes->post('getIdRincianAsetByKodeRincianAset', 'SaranaLayananAset::getIdRincianAsetByKodeRincianAset');
 
 // $routes->post('saranaLayananAset/setKategoriManajemen', 'SaranaLayananAset::setKategoriManajemen');
 // $routes->post('saranaLayananAset/getKategoriManajemenOptions', 'SaranaLayananAsetController::getKategoriManajemenOptions');

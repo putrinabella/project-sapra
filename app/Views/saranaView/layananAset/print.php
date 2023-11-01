@@ -46,12 +46,13 @@
                 <tr class="text-center">
                     <th>No.</th>
                     <th>Tanggal</th>
-                    <th>Nama Aset</th>
                     <th>Lokasi</th>
-                    <th>Status Layanan</th>
                     <th>Kategori Manajemen</th>
+                    <th>Nama Aset</th>
+                    <th>Status Layanan</th>
                     <th>Sumber Dana</th>
                     <th>Biaya</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody class="py-2">
@@ -62,22 +63,25 @@
                         </td>
                         <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
                         <td>
-                            <?= $value->namaSarana ?>
-                        </td>
-                        <td>
                             <?= $value->namaPrasarana ?>
                         </td>
                         <td>
-                            <?= $value->namaStatusLayanan ?>
+                            <?= $value->namaKategoriManajemen ?>
                         </td>
                         <td>
-                            <?= $value->namaKategoriManajemen ?>
+                            <?= $value->namaSarana ?>
+                        </td>
+                        <td>
+                            <?= $value->namaStatusLayanan ?>
                         </td>
                         <td>
                             <?= $value->namaSumberDana ?>
                         </td>
                         <td>
                             Rp<?= number_format($value->biaya, 0, ',', '.') ?>
+                        </td>
+                        <td>
+                            <?= $value->keterangan ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

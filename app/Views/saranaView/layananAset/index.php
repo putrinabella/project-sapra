@@ -84,13 +84,14 @@
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
                                 <th>Tanggal</th>
-                                <th>Nama Aset</th>
                                 <th>Lokasi</th>
-                                <th>Status Layanan</th>
                                 <th>Kategori</th>
+                                <th>Nama Aset</th>
+                                <th>Status Layanan</th>
                                 <th>Sumber Dana</th>
                                 <th>Biaya</th>
                                 <th>Bukti</th>
+                                <th>Keterangan</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -101,14 +102,17 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
+                                </td>
+                                <td class="text-center">
+                                    <?=$value->keterangan?>
                                 </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('saranaLayananAset/'.$value->idSaranaLayananAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
