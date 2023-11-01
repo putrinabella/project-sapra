@@ -35,7 +35,7 @@
                     </div>
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
-                        <div class="col-sm-9" style="display: flex; align-items: center;">
+                        <div class="col-sm-9">
                             <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="idIdentitasSarana" name="idIdentitasSarana">
                                 <option value="" selected disabled hidden>Pilih Nama Aset</option>
                                 <?php foreach ($dataIdentitsaSarana as $key => $value): ?>
@@ -56,12 +56,14 @@
                         <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="idIdentitasPrasarana" name="idIdentitasPrasarana"
-                                placeholder="Masukkan Lokasi">
+                                placeholder="Masukkan Lokasi" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
+                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Aset</label>
                         <div class="col-sm-9">
+                        <input type="text" class="form-control" id="idKategoriManajemen" name="idKategoriManajemen"
+                                placeholder="Masukkan Kategori Aset" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -99,7 +101,13 @@
                             <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan link dokumentasi">
                         </div>
                     </div>
-                    
+                    <div class="row mb-3">
+                        <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="4"
+                                placeholder="Masukkan keterangan layanan"></textarea>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('saranaLayananAset') ?>" class="btn btn-secondary me-2">Cancel</a>
@@ -141,84 +149,55 @@
                     }
                 },
                 error: function() {
-                    alert("Failed to retrieve kodeRincianAset options.");
+                    alert("Failed to retrieve kode rincian aset options.");
                 }
             });
         });
-    });
-</script>
-<!-- <script>
-    $(document).ready(function() {
-        $("#searchButton").on("click", function() {
-            var selectedIdIdentitasSarana = $("#idIdentitasSarana").val();
 
+        $("#kodeRincianAset").on("change", function() {
+            var selectedKodeRincianAset = $(this).val();
+            var $idIdentitasPrasaranaSelect = $("#idIdentitasPrasarana");
 
             $.ajax({
-                url: "<?= site_url('getKodeRincianAsetBySarana') ?>",
+                url: "<?= site_url('getIdentitasPrasaranaByKodeRincianAset') ?>",
                 type: "POST",
-                data: { 
-                    idIdentitasSarana: selectedIdIdentitasSarana,
-     
+                data: {
+                    kodeRincianAset: selectedKodeRincianAset,
                 },
                 dataType: "json",
                 success: function(response) {
-                    var kodeRincianAsetSelect = $("#kodeRincianAset");
-                    kodeRincianAsetSelect.empty(); 
-                    kodeRincianAsetSelect.append("<option value='' hidden>Pilih Kode Aset</option>");
-                    $.each(response, function(key, value) {
-                        kodeRincianAsetSelect.append("<option value='" + value.kodeRincianAset + "'>" + value.kodeRincianAset + "</option>");
-                    });
+                    if (response.idIdentitasPrasarana) {
+                        $idIdentitasPrasaranaSelect.val(response.namaPrasarana);
+                    }
                 },
                 error: function() {
-                    alert("Failed to retrieve kodeRincianAset options.");
+                    alert("Failed to retrieve lokasi.");
+                }
+            });
+        });
+
+        $("#kodeRincianAset").on("change", function() {
+            var selectedKodeRincianAset = $(this).val();
+            var $idKategoriManajemenSelect = $("#idKategoriManajemen"); 
+
+            $.ajax({
+                url: "<?= site_url('getKategoriManajemenByKodeRincianAset') ?>",
+                type: "POST",
+                data: {
+                    kodeRincianAset: selectedKodeRincianAset,
+                },
+                dataType: "json",
+                success: function(kategoriManajemenResponse) {
+                    if (kategoriManajemenResponse.idKategoriManajemen) {
+                        $idKategoriManajemenSelect.val(kategoriManajemenResponse.namaKategoriManajemen);
+                    }
+                },
+                error: function() {
+                    alert("Failed to retrieve kategori aset.");
                 }
             });
         });
     });
-</script> -->
-
-
-<!-- <script>
-document.getElementById('searchButton').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent the default link behavior
-    var selectedValue = document.getElementById('idIdentitasSarana').value;
-    var url = '<?=site_url('saranaLayananAset')?>/' + selectedValue; // Append selected value to the URL
-    window.location.href = url;
-});
-</script> -->
-<script>
-    var csrfToken = '<?= csrf_hash() ?>';
-
-    $(document).ready(function() {
-    $('#idIdentitasPrasarana').select2();
-    $('#kodeRincianAset').select2();
-
-    $('#idIdentitasPrasarana').on('change', function() {
-        var selectedPrasarana = $(this).val();
-        console.log('Selected Prasarana:', selectedPrasarana);
-
-        $.ajax({
-            url: '<?= site_url('saranaLayananAset/fetchKategoriManajemen')?>',
-            type: 'POST',
-            data: { idIdentitasPrasarana: selectedPrasarana },
-            headers: {
-                'X-CSRF-TOKEN': csrfToken 
-            },
-            success: function(response) {
-                console.log('Response:', response);
-                $('#idKategoriManajemen').val(response.idKategoriManajemen);
-            },
-            error: function() {
-                console.log('AJAX Error');
-            }
-        });
-    });
-});
-
-
 </script>
-
-
-
 
 <?= $this->endSection(); ?>

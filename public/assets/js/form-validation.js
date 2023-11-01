@@ -4,12 +4,17 @@ $(document).ready(function () {
 
     return this.optional(element) || pattern.test(value);
   }, "Input harus berupa Google Drive Link");
+
   $.validator.addMethod("passwordMatch", function(value, element) {
     var password = $("#password").val();
     var konfirmasiPassword = value;
 
     return password === konfirmasiPassword;
   }, "Password harus sama dengan Konfirmasi Password");
+
+  $.validator.addMethod("validDate", function(value, element) {
+    return !/Invalid|NaN/.test(new Date(value).toString());
+  }, "Tanggal tidak valid");
 
   //   $("#modalPemusnahan").validate({
   //     rules: {
@@ -160,6 +165,7 @@ $(document).ready(function () {
       },  
       tanggal: {
         required: true,
+        validDate: true,
       },  
       namaWebsite: {
         required: true,
@@ -394,6 +400,7 @@ $(document).ready(function () {
       },
       tanggal: {
         required: "Silahkan masukkan tanggal",
+        validDate: "Tanggal tidak valid",
       },
       tanggalPengembalian: {
         required: "Silahkan masukkan tanggal pengembalian",
@@ -514,8 +521,18 @@ $(document).ready(function () {
       },
     },
     errorPlacement: function (label, element) {
-      label.addClass("mt-1 tx-13 text-danger");
-      label.insertAfter(element);
+      var errorContainer = element.closest('.col-sm-9');
+      label.addClass('error mt-1 tx-13 text-danger');
+      label.appendTo(errorContainer);
+      // var newRow = $("<div class='row mb-2 error-row'></div>").insertAfter(element.closest(".row"));
+      // var emptyCol = $("<div class='col-sm-3'></div>");
+      // var errorCol = $("<div class='col-sm-9'></div>");
+      // label.addClass("error mt-1 tx-13 text-danger");
+      // label.appendTo(errorCol);
+      // newRow.append(emptyCol).append(errorCol);
+
+      // label.addClass("mt-1 tx-13 text-danger");
+      // label.insertAfter(element);
     },
     highlight: function (element, errorClass) {
       $(element).parent().addClass("validation-error");

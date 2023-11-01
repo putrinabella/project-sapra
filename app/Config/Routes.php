@@ -193,9 +193,13 @@ $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
 // Layanan Aset
-$routes->post('saranaLayananAset/setKategoriManajemen', 'SaranaLayananAset::setKategoriManajemen');
-$routes->post('saranaLayananAset/getKategoriManajemenOptions', 'SaranaLayananAsetController::getKategoriManajemenOptions');
+// Ajax Select2
 $routes->post('getKodeRincianAsetBySarana', 'SaranaLayananAset::getKodeRincianAsetBySarana');
+$routes->post('getIdentitasPrasaranaByKodeRincianAset', 'SaranaLayananAset::getIdentitasPrasaranaByKodeRincianAset');
+$routes->post('getKategoriManajemenByKodeRincianAset', 'SaranaLayananAset::getKategoriManajemenByKodeRincianAset');
+
+// $routes->post('saranaLayananAset/setKategoriManajemen', 'SaranaLayananAset::setKategoriManajemen');
+// $routes->post('saranaLayananAset/getKategoriManajemenOptions', 'SaranaLayananAsetController::getKategoriManajemenOptions');
 
 
 $routes->post('saranaLayananAset/fetchKategoriManajemen', 'SaranaLayananAset::fetchKategoriManajemen');
