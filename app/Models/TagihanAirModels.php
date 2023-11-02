@@ -28,4 +28,12 @@ class TagihanAirModels extends Model
         $query = $builder->get();
         return $query->getRow();
     }
+
+    public function getChartData() {
+        $builder = $this->db->table($this->table);
+        $builder->select('bulanPemakaianAir, biaya');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
 }

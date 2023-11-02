@@ -126,7 +126,7 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">Line chart</h6>
-                    <div id="apexLine"></div>
+                    <div id="apexBar"></div>
             </div>
         </div>
     </div>
@@ -152,5 +152,58 @@
         </div>
     </div>
 </div>
+
+<!-- app/Views/your_view.php -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<?php if (isset($categories) && isset($biaya)) : ?>
+    <div id="apexBar"></div>
+
+<script>
+     document.addEventListener("DOMContentLoaded", function () {
+        <?php if (isset($categories) && isset($biaya)) : ?>
+            
+            var options = {
+                chart: {
+                    type: 'bar',
+                    height: '320',
+                    // Add other chart options here
+                },
+                series: [{
+                    name: 'Biaya',
+                    data: <?= json_encode($biaya); ?>
+                }],
+                xaxis: {
+                    type: 'category',
+                    categories: <?= json_encode($categories); ?>
+                    // Add other X-axis options here
+                },
+                // Add data labels or tooltips to the bars
+                dataLabels: {
+                    enabled: false // Hide the data labels on the bars
+                },
+                // Customize the tooltip
+                tooltip: {
+                    enabled: true,
+                    y: {
+                        formatter: function (val) {
+                            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
+                        }
+                    }
+                }
+                // Add other chart options here
+            };
+
+            var apexBarChart = new ApexCharts(document.querySelector("#apexBar"), options);
+            apexBarChart.render();
+        <?php endif; ?>
+    });
+</script>
+
+
+<?php else : ?>
+    <p>No data available for the chart.</p>
+<?php endif; ?>
+
 
 <?= $this->endSection(); ?>

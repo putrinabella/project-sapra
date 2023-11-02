@@ -17,12 +17,44 @@ class TagihanAir extends ResourceController
         $this->tagihanAirModel = new TagihanAirModels();
         $this->db = \Config\Database::connect();
     }
-
     public function index() {
         $data['dataTagihanAir'] = $this->tagihanAirModel->findAll();
+    
+        // Additional code to retrieve chart data
+        $chartData = $this->getChartDataForChart();
+    
+        // Merge the data arrays
+        $data = array_merge($data, $chartData);
+    
         return view('profilSekolahView/tagihanAir/index', $data);
     }
+    
+  // Add a new method to retrieve chart data
+    private function getChartDataForChart() {
+        $chartData = [];
 
+        // Add code to retrieve chart data from the model
+        $chartDataResult = $this->tagihanAirModel->getChartData();
+
+        if ($chartDataResult) {
+            $categories = [];
+            $biaya = [];
+
+            foreach ($chartDataResult as $row) {
+                $categories[] = $row->bulanPemakaianAir;  // Use object notation -> instead of ['']
+                $biaya[] = (int) $row->biaya;  // Use object notation -> instead of ['']
+            }
+
+            $chartData = [
+                'categories' => $categories,
+                'biaya' => $biaya,
+            ];
+        }
+
+        return $chartData;
+    }
+
+    
     public function show($id = null) {
         if ($id != null) {
             $dataTagihanAir = $this->tagihanAirModel->find($id);

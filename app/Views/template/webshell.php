@@ -186,7 +186,7 @@
   <script src="<?= base_url(); ?>/assets/js/select2.js"></script>
   <script src="<?= base_url(); ?>/assets/js/dropify.js"></script>
   <script src="<?= base_url(); ?>/assets/js/custom.js"></script>
-  <script src="<?= base_url(); ?>/assets/js/apexcharts-light.js"></script>
+  <!-- <script src="<?= base_url(); ?>/assets/js/apexcharts-light.js"></script> -->
   <!-- End custom js for this page -->
 
   <script>
