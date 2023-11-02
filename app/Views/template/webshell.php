@@ -40,7 +40,7 @@
 
   <?php
     $cssFile = session()->get('mode') === 'dark' ? 'dark' : 'light';
-    ?>
+  ?>
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/<?= $cssFile ?>/style.css">
 
   <!-- End layout styles -->
@@ -80,14 +80,19 @@
           <i data-feather="menu"></i>
         </a>
         <div class="navbar-content">
-          <img class="" src="<?= base_url(); ?>/assets/images/header-pic.png" alt="Logo SMK TELKOM BJB"
+        <?php
+          $headerPicture = session()->get('mode') === 'dark' ? 'header-dark.png' : 'header-light.png';
+          $userPicture = session()->get('mode') === 'dark' ? 'user-dark.png' : 'user-light.png';
+        ?>
+
+          <img class="" src="<?= base_url(); ?>/assets/images/<?= $headerPicture ?>" alt="Logo SMK TELKOM BJB"
             style="padding-top: 10px; padding-bottom: 10px;">
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <div class="d-flex align-items-center">
-                  <img class="wd-30 ht-30 rounded-circle mr-2 pr-2" src="<?= base_url(); ?>/assets/images/user.png"
+                  <img class="wd-30 ht-30 rounded-circle mr-2 pr-2" src="<?= base_url(); ?>/assets/images/<?= $userPicture ?>"
                     alt="profile">
                 </div>
               </a>
