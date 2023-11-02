@@ -100,9 +100,6 @@
                     <div class="tx-12 text-muted">
                       <?= session('role'); ?>
                     </div>
-                    <div class="tx-12 text-muted">
-                      <?= session('mode'); ?>
-                    </div>
                   </div>
                 </div>
                 <ul class="list-unstyled p-1">

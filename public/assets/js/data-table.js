@@ -13,7 +13,8 @@ $(function() {
       },
       "language": {
         search: ""
-      }
+      },
+      "scrollX": true 
     });
     $('#dataTable').each(function() {
       var datatable = $(this);
