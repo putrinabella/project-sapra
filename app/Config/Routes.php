@@ -325,6 +325,19 @@ $routes->delete('profilSekolah/deletePermanent', 'ProfilSekolah::deletePermanent
 $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
 
 
+// Tagihan
+$routes->get('tagihanAir/createTemplate', 'TagihanAir::createTemplate');
+$routes->get('tagihanAir/generatePDF', 'TagihanAir::generatePDF');
+$routes->get('tagihanAir/export', 'TagihanAir::export');
+$routes->post('tagihanAir/import', 'TagihanAir::import');
+$routes->get('tagihanAir/edit', 'TagihanAir::edit');
+$routes->get('tagihanAir/trash', 'TagihanAir::trash');
+$routes->get('tagihanAir/restore/(:any)', 'TagihanAir::restore/$1');
+$routes->get('tagihanAir/restore', 'TagihanAir::restore');
+$routes->delete('tagihanAir/deletePermanent/(:any)', 'TagihanAir::deletePermanent/$1');
+$routes->delete('tagihanAir/deletePermanent', 'TagihanAir::deletePermanent');
+$routes->resource('tagihanAir', ['filter' => 'isLoggedIn']);
+
 // LABORATORIUM
 
 // Manajemen Aset

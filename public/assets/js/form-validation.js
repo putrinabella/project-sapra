@@ -67,6 +67,11 @@ $(document).ready(function () {
         minlength: 4,
         maxlength: 4,
       },
+      tahunPemakaianAir: {
+        required: true,
+        minlength: 4,
+        maxlength: 4,
+      },
       namaSumberDana: {
         required: true,
         maxlength: 255,
@@ -130,6 +135,9 @@ $(document).ready(function () {
         required: true,
       },
       idIdentitasLantai: {
+        required: true,
+      },
+      bulanPemakaianAir: {
         required: true,
       },
       idIdentitasGedung: {
@@ -302,6 +310,11 @@ $(document).ready(function () {
         minlength: "Tahun pengadaan minimal terdiri dari 4 karakter",
         maxlength: "Tahun pengadaan maksimal terdiri dari 4 karakter",
       },
+      tahunPemakaianAir: {
+        required: "Silahkan masukkan tahun",
+        minlength: "Tahun minimal terdiri dari 4 karakter",
+        maxlength: "Tahun maksimal terdiri dari 4 karakter",
+      },
       namaSumberDana: {
         required: "Silahkan masukkan nama sumber dana",
         maxlength: "Nama sumber dana tidak boleh melebihi 255 karakter",
@@ -365,6 +378,9 @@ $(document).ready(function () {
         required: "Silahkan masukkan link dokumentasi",
       },
       idIdentitasLantai: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      bulanPemakaianAir: {
         required: "Silahkan pilih sebuah opsi",
       },
       idIdentitasGedung: {

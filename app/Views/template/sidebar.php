@@ -152,12 +152,32 @@
         </div>
     </li>
 
-    <li class="nav-item nav-category">Profil</li>
+    <li class="nav-item nav-category">Sekolah</li>
     <li class="nav-item">
         <a href="<?= site_url('profilSekolah') ?>" class="nav-link">
             <i class="link-icon" data-feather="home"></i>
             <span class="link-title">Profil Sekolah</span>
         </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#tagihan" role="button" aria-expanded="false" aria-controls="tagihan">
+            <i class="link-icon" data-feather="file-text"></i>
+            <span class="link-title">Tagihan </span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="tagihan">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('tagihanAir') ?>" class="nav-link">Tagihan Air</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('tagihanListrik') ?>" class="nav-link">Tagihan Listrik</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('tagihanInternet') ?>" class="nav-link">Tagihan Internet</a>
+                </li>
+            </ul>
+        </div>
     </li>
 
     <li class="nav-item nav-category">Master</li>
