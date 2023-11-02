@@ -20,7 +20,8 @@ class TagihanAir extends Migration
                 'constraint' => 255,
             ],
             'bulanPemakaianAir' => [
-                'type' => 'ENUM("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")',
+                'type' => 'INT',
+                'constraint' => 2,
             ],
             'tahunPemakaianAir' => [
                 'type' => 'VARCHAR',

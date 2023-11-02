@@ -29,7 +29,6 @@ class DataPeminjamanModels extends Model
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
     
         if ($startDate !== null && $endDate !== null) {
-            // Add a where clause to filter by the date range
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
             $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
         }
@@ -69,35 +68,35 @@ class DataPeminjamanModels extends Model
     }
 
 
-    function updateKodeLabAset($id) {
-        $builder = $this->db->table($this->table);
-        $builder->set('kodeRincianLabAset', 
-                        'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
-                        "/", tahunPengadaan, 
-                        "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", idIdentitasLab)',
-                        false
-                        );
-        $builder->where('idRincianLabAset', $id);
-        $builder->update();
-    }
+    // function updateKodeLabAset($id) {
+    //     $builder = $this->db->table($this->table);
+    //     $builder->set('kodeRincianLabAset', 
+    //                     'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
+    //                     "/", tahunPengadaan, 
+    //                     "/", "SD", LPAD(idSumberDana, 2, "0"), 
+    //                     "/", idIdentitasLab)',
+    //                     false
+    //                     );
+    //     $builder->where('idRincianLabAset', $id);
+    //     $builder->update();
+    // }
 
-    function setKodeLabAset() {
-        $builder = $this->db->table($this->table);
-        $builder->set('kodeRincianLabAset', 
-                        'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
-                        "/", tahunPengadaan, 
-                        "/", "SD", LPAD(idSumberDana, 2, "0"), 
-                        "/", idIdentitasLab)',
-                        false
-                        );
-        $builder->update();
-    }
+    // function setKodeLabAset() {
+    //     $builder = $this->db->table($this->table);
+    //     $builder->set('kodeRincianLabAset', 
+    //                     'CONCAT("A", LPAD(idIdentitasSarana, 3, "0"), 
+    //                     "/", tahunPengadaan, 
+    //                     "/", "SD", LPAD(idSumberDana, 2, "0"), 
+    //                     "/", idIdentitasLab)',
+    //                     false
+    //                     );
+    //     $builder->update();
+    // }
 
-    function calculateTotalSarana($saranaLayak, $saranaRusak) {
-        $saranaLayak = intval($saranaLayak);
-        $saranaRusak = intval($saranaRusak);
-        $totalSarana = $saranaLayak + $saranaRusak;
-        return $totalSarana;
-    }
+    // function calculateTotalSarana($saranaLayak, $saranaRusak) {
+    //     $saranaLayak = intval($saranaLayak);
+    //     $saranaRusak = intval($saranaRusak);
+    //     $totalSarana = $saranaLayak + $saranaRusak;
+    //     return $totalSarana;
+    // }
 }

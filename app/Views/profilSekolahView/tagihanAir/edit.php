@@ -35,18 +35,33 @@
                     <div class="row mb-3">
                         <label for="bulanPemakaianAir" class="col-sm-3 col-form-label">Bulan</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="bulanPemakaianAir" name="bulanPemakaianAir">
-                                <option value="" selected disabled hidden>Pilih bulan</option>
-                                <?php
-                                    $bulanPemakaianAirOptions = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-                                    $selectedValue = $dataTagihanAir->bulanPemakaianAir; 
-                                    foreach ($bulanPemakaianAirOptions as $bulan):
-                                        $selected = ($bulan == $selectedValue) ? 'selected' : '';
-                                        ?>
-                                        <option value="<?= $bulan ?>" <?= $selected ?>><?= $bulan ?></option>
-                                    <?php endforeach;
-                                    ?>
-                            </select>
+                        <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="bulanPemakaianAir" name="bulanPemakaianAir">
+    <option value="" selected disabled hidden>Pilih bulan</option>
+    <?php
+    $bulanPemakaianAirOptions = [
+        1 => "January",
+        2 => "February",
+        3 => "March",
+        4 => "April",
+        5 => "May",
+        6 => "June",
+        7 => "July",
+        8 => "August",
+        9 => "September",
+        10 => "October",
+        11 => "November",
+        12 => "December"
+    ];
+
+    $selectedValue = $dataTagihanAir->bulanPemakaianAir;
+    foreach ($bulanPemakaianAirOptions as $value => $bulan): 
+        $selected = ($value == $selectedValue) ? 'selected' : '';
+        ?>
+        <option value="<?= $value ?>" <?= $selected ?>><?= $bulan ?></option>
+    <?php endforeach;
+    ?>
+</select>
+
                         </div>
                     </div>
                     <div class="row mb-3">

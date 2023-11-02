@@ -17,42 +17,79 @@ class TagihanAir extends ResourceController
         $this->tagihanAirModel = new TagihanAirModels();
         $this->db = \Config\Database::connect();
     }
+
     public function index() {
-        $data['dataTagihanAir'] = $this->tagihanAirModel->findAll();
+        $startYear = $this->request->getVar('startYear');
+        $endYear = $this->request->getVar('endYear');
     
-        // Additional code to retrieve chart data
-        $chartData = $this->getChartDataForChart();
+        $formattedStartYear = !empty($startYear) ? $startYear : '';
+        $formattedEndYear = !empty($endYear) ? $endYear : '';
     
-        // Merge the data arrays
+        $tableHeading = "";
+        if (!empty($formattedStartYear) && !empty($formattedEndYear)) {
+            $tableHeading = "Tahun $formattedStartYear - $formattedEndYear";
+        }
+    
+        $data['tableHeading'] = $tableHeading;
+        
+        // Get the data from the model
+        $dataTagihanAir = $this->tagihanAirModel->getData($startYear, $endYear);
+        
+        // Convert the month values to month names in the controller
+        foreach ($dataTagihanAir as $value) {
+            $value->bulanPemakaianAir = $this->tagihanAirModel->convertMonth($value->bulanPemakaianAir);
+        }
+        
+        $data['dataTagihanAir'] = $dataTagihanAir;
+    
+        $chartDataResult = $dataTagihanAir; // Use the converted data
+        $chartData = $this->createChart($chartDataResult);
+    
         $data = array_merge($data, $chartData);
     
         return view('profilSekolahView/tagihanAir/index', $data);
     }
     
-  // Add a new method to retrieve chart data
-    private function getChartDataForChart() {
-        $chartData = [];
-
-        // Add code to retrieve chart data from the model
-        $chartDataResult = $this->tagihanAirModel->getChartData();
-
+    // public function index() {
+    //     $startYear = $this->request->getVar('startYear');
+    //     $endYear = $this->request->getVar('endYear');
+        
+    //     $formattedStartYear = !empty($startYear) ? $startYear : '';
+    //     $formattedEndYear = !empty($endYear) ? $endYear : '';
+        
+    //     $tableHeading = "";
+    //     if (!empty($formattedStartYear) && !empty($formattedEndYear)) {
+    //         $tableHeading = "Tahun $formattedStartYear - $formattedEndYear";
+    //     }
+    
+    //     $data['tableHeading'] = $tableHeading;
+    //     $data['dataTagihanAir'] = $this->tagihanAirModel->getData($startYear, $endYear);
+    
+    //     $chartDataResult = $this->tagihanAirModel->getData($startYear, $endYear);
+    //     $chartData = $this->createChart($chartDataResult);
+    
+    //     $data = array_merge($data, $chartData);
+    
+    //     return view('profilSekolahView/tagihanAir/index', $data);
+    // }
+    
+    private function createChart($chartDataResult) {
+        $chartData = [
+            'categories' => [],
+            'biaya' => [],
+        ];
+    
         if ($chartDataResult) {
-            $categories = [];
-            $biaya = [];
-
             foreach ($chartDataResult as $row) {
-                $categories[] = $row->bulanPemakaianAir;  // Use object notation -> instead of ['']
-                $biaya[] = (int) $row->biaya;  // Use object notation -> instead of ['']
+                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
+                $chartData['categories'][] = $category;
+                $chartData['biaya'][] = (int) $row->biaya;
             }
-
-            $chartData = [
-                'categories' => $categories,
-                'biaya' => $biaya,
-            ];
         }
-
+    
         return $chartData;
     }
+    
 
     
     public function show($id = null) {
@@ -178,7 +215,10 @@ class TagihanAir extends ResourceController
     } 
     
     public function export() {
-        $data = $this->tagihanAirModel->findAll();
+        $startYear = $this->request->getVar('startYear');
+        $endYear = $this->request->getVar('endYear');
+
+        $data = $this->tagihanAirModel->getData($startYear, $endYear);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('TagihanAir');
@@ -351,13 +391,17 @@ class TagihanAir extends ResourceController
 
 
     public function generatePDF() {
+        $startYear = $this->request->getVar('startYear');
+        $endYear = $this->request->getVar('endYear');
+        
+
         $filePath = APPPATH . 'Views/profilSekolahView/tagihanAir/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataTagihanAir'] = $this->tagihanAirModel->findAll();
+        $data['dataTagihanAir'] = $this->tagihanAirModel->getData($startYear, $endYear);
 
         ob_start();
 

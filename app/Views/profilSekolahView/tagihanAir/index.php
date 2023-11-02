@@ -14,7 +14,24 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Tagihan Air</h4>
+        <form action="<?=site_url('tagihanAir')?>" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
+                <input type="text" class="form-control" id="startYear" name="startYear" placeholder="Start Year" readonly>
+                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endYearPicker">
+                <input type="text" class="form-control" id="endYear" name="endYear" placeholder="End Year" readonly>
+                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('tagihanAir') ?>" class="btn btn-secondary btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('tagihanAir/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
@@ -22,16 +39,28 @@
             Recycle Bin
         </a>
         <div class="dropdown">
+            <?php
+                if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
+                    $exportLink = site_url('tagihanAir/export');
+                    $generatePDFLink = site_url('tagihanAir/generatePDF');
+                } else {
+                    $startYear = $_GET['startYear'] ?? '';
+                    $endYear = $_GET['endYear'] ?? '';
+                    $exportLink = site_url("tagihanAir/export?startYear=$startYear&endYear=$endYear");
+                    $generatePDFLink = site_url("tagihanAir/generatePDF?startYear=$startYear&endYear=$endYear");
+                }
+            ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('tagihanAir/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('tagihanAir/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
+
         <div class="dropdown">
             <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,6 +107,11 @@
                     <br>
                     <?php endif; ?>
                 </div>
+                <h4 class="text-center py-3">Tagihan Pemakaian Air</h4>
+                <?php if (!empty($tableHeading)) : ?>
+                    <p class="text-center"><?= $tableHeading ?></p>
+                <?php endif; ?>
+                <br>
                 <div class="table-responsive">
                     <table class="table table-hover"  id="dataTable">
                         <thead>
@@ -91,7 +125,7 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataTagihanAir as $key => $value) : ?>
+                            <?php foreach ($dataTagihanAir as $key => $value) : ?>
                             <tr class="text-center" style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td>
                                     <?=$key + 1?>
@@ -125,7 +159,8 @@
     <div class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Line chart</h6>
+                
+                <h6 class="card-title">Grafik Tagihan Air</h6>
                     <div id="apexBar"></div>
             </div>
         </div>
@@ -160,14 +195,13 @@
     <div id="apexBar"></div>
 
 <script>
-     document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         <?php if (isset($categories) && isset($biaya)) : ?>
             
             var options = {
                 chart: {
                     type: 'bar',
                     height: '320',
-                    // Add other chart options here
                 },
                 series: [{
                     name: 'Biaya',
@@ -176,13 +210,10 @@
                 xaxis: {
                     type: 'category',
                     categories: <?= json_encode($categories); ?>
-                    // Add other X-axis options here
                 },
-                // Add data labels or tooltips to the bars
                 dataLabels: {
-                    enabled: false // Hide the data labels on the bars
+                    enabled: false 
                 },
-                // Customize the tooltip
                 tooltip: {
                     enabled: true,
                     y: {
@@ -191,7 +222,6 @@
                         }
                     }
                 }
-                // Add other chart options here
             };
 
             var apexBarChart = new ApexCharts(document.querySelector("#apexBar"), options);
