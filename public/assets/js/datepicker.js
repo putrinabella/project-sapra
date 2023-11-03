@@ -6,12 +6,22 @@ $(function() {
       format: "yyyy",
       todayHighlight: true,
       autoclose: true,
-      minViewMode: "years" // Set the minimum view to years
+      minViewMode: "years"
+    });
+  }
+
+
+  function initializeMonthYearDatepicker(selector) {
+    $(selector).datepicker({
+      format: "yyyy-mm",
+      todayHighlight: true,
+      autoclose: true,
+      minViewMode: "months"
     });
   }
   
   function initializeDatepicker(selector) {
-    var date = new Date();
+    // var date = new Date();
     // var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     
     $(selector).datepicker({

@@ -31,26 +31,57 @@ class TagihanAir extends ResourceController
         }
     
         $data['tableHeading'] = $tableHeading;
-        
-        // Get the data from the model
+
         $dataTagihanAir = $this->tagihanAirModel->getData($startYear, $endYear);
         
-        // Convert the month values to month names in the controller
         foreach ($dataTagihanAir as $value) {
             $value->bulanPemakaianAir = $this->tagihanAirModel->convertMonth($value->bulanPemakaianAir);
         }
         
         $data['dataTagihanAir'] = $dataTagihanAir;
     
-        $chartDataResult = $dataTagihanAir; // Use the converted data
-        $chartData = $this->createChart($chartDataResult);
+        $chartDataResult = $dataTagihanAir; 
+        $chartBiaya = $this->chartBiaya($chartDataResult);
+        $chartPemakaian = $this->chartPemakaian($chartDataResult);
     
-        $data = array_merge($data, $chartData);
+        $data = array_merge($data, $chartBiaya, $chartPemakaian);
     
         return view('profilSekolahView/tagihanAir/index', $data);
     }
     
-    // public function index() {
+    private function chartBiaya($chartDataResult) {
+        $chartBiaya = [
+            'categories' => [],
+            'biaya' => [],
+        ];
+    
+        if ($chartDataResult) {
+            foreach ($chartDataResult as $row) {
+                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
+                $chartBiaya['categories'][] = $category;
+                $chartBiaya['biaya'][] = (int) $row->biaya;
+            }
+        }
+        return $chartBiaya;
+    }
+
+    private function chartPemakaian($chartDataResult) {
+        $chartPemakaian = [
+            'categories' => [],
+            'pemakaianAir' => [],
+        ];
+    
+        if ($chartDataResult) {
+            foreach ($chartDataResult as $row) {
+                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
+                $chartPemakaian['categories'][] = $category;
+                $chartPemakaian['pemakaianAir'][] = $row->pemakaianAir;
+            }
+        }
+        return $chartPemakaian;
+    }
+    
+        // public function index() {
     //     $startYear = $this->request->getVar('startYear');
     //     $endYear = $this->request->getVar('endYear');
         
@@ -66,29 +97,12 @@ class TagihanAir extends ResourceController
     //     $data['dataTagihanAir'] = $this->tagihanAirModel->getData($startYear, $endYear);
     
     //     $chartDataResult = $this->tagihanAirModel->getData($startYear, $endYear);
-    //     $chartData = $this->createChart($chartDataResult);
+    //     $chartData = $this->chartPemakaian($chartDataResult);
     
     //     $data = array_merge($data, $chartData);
     
     //     return view('profilSekolahView/tagihanAir/index', $data);
     // }
-    
-    private function createChart($chartDataResult) {
-        $chartData = [
-            'categories' => [],
-            'biaya' => [],
-        ];
-    
-        if ($chartDataResult) {
-            foreach ($chartDataResult as $row) {
-                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
-                $chartData['categories'][] = $category;
-                $chartData['biaya'][] = (int) $row->biaya;
-            }
-        }
-    
-        return $chartData;
-    }
     
 
     

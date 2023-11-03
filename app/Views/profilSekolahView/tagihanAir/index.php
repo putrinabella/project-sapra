@@ -159,9 +159,18 @@
     <div class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                
-                <h6 class="card-title">Grafik Tagihan Air</h6>
-                    <div id="apexBar"></div>
+                <h6 class="card-title">Grafik Tagihan Pemakaian Air</h6>
+                <div id="apexBar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Grafik Banyak Pemakaian Air</h6>
+                <div id="apexPemakaianAir"></div> <!-- New chart container -->
             </div>
         </div>
     </div>
@@ -188,51 +197,89 @@
     </div>
 </div>
 
-<!-- app/Views/your_view.php -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <?php if (isset($categories) && isset($biaya)) : ?>
     <div id="apexBar"></div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        <?php if (isset($categories) && isset($biaya)) : ?>
-            
-            var options = {
-                chart: {
-                    type: 'bar',
-                    height: '320',
-                },
-                series: [{
-                    name: 'Biaya',
-                    data: <?= json_encode($biaya); ?>
-                }],
-                xaxis: {
-                    type: 'category',
-                    categories: <?= json_encode($categories); ?>
-                },
-                dataLabels: {
-                    enabled: false 
-                },
-                tooltip: {
-                    enabled: true,
-                    y: {
-                        formatter: function (val) {
-                            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            <?php if (isset($categories) && isset($biaya)) : ?>
+                
+                var options = {
+                    chart: {
+                        type: 'bar',
+                        height: '320',
+                    },
+                    series: [{
+                        name: 'Biaya',
+                        data: <?= json_encode($biaya); ?>
+                    }],
+                    xaxis: {
+                        type: 'category',
+                        categories: <?= json_encode($categories); ?>
+                    },
+                    dataLabels: {
+                        enabled: false 
+                    },
+                    tooltip: {
+                        enabled: true,
+                        y: {
+                            formatter: function (val) {
+                                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(val);
+                            }
                         }
                     }
-                }
-            };
+                };
 
-            var apexBarChart = new ApexCharts(document.querySelector("#apexBar"), options);
-            apexBarChart.render();
-        <?php endif; ?>
-    });
-</script>
-
+                var apexBarChart = new ApexCharts(document.querySelector("#apexBar"), options);
+                apexBarChart.render();
+            <?php endif; ?>
+        });
+    </script>
 
 <?php else : ?>
     <p>No data available for the chart.</p>
+<?php endif; ?>
+
+<?php if (isset($categories) && isset($pemakaianAir)) : ?>
+    <div id="apexPemakaianAir"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            <?php if (isset($categories) && isset($pemakaianAir)) : ?>
+                var pemakaianAirOptions = {
+                    chart: {
+                        type: 'bar',
+                        height: '320',
+                    },
+                    series: [{
+                        name: 'Pemakaian Air',
+                        data: <?= json_encode($pemakaianAir); ?>
+                    }],
+                    xaxis: {
+                        type: 'category',
+                        categories: <?= json_encode($categories); ?>
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        enabled: true,
+                        y: {
+                            formatter: function (val) {
+                                return val.toLocaleString() + ' m³';
+                            }
+                        }
+                    }
+                };
+
+                var apexPemakaianAirChart = new ApexCharts(document.querySelector("#apexPemakaianAir"), pemakaianAirOptions);
+                apexPemakaianAirChart.render();
+            <?php endif; ?>
+        });
+    </script>
+<?php else : ?>
+    <p>No data available for the Pemakaian Air chart.</p>
 <?php endif; ?>
 
 

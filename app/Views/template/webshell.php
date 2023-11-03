@@ -101,6 +101,7 @@
                   <div class="text-center">
                     <div class="tx-16 fw-bolder">
                       <?= session('nama'); ?>
+                      <!-- <?=userLogin()->nama?> -->
                     </div>
                     <div class="tx-12 text-muted">
                       <?= session('role'); ?>
@@ -187,6 +188,7 @@
   <script src="<?= base_url(); ?>/assets/js/dropify.js"></script>
   <script src="<?= base_url(); ?>/assets/js/custom.js"></script>
   <!-- <script src="<?= base_url(); ?>/assets/js/apexcharts-light.js"></script> -->
+  <!-- <script src="<?= base_url(); ?>/assets/js/apexcharts-dark.js"></script> -->
   <!-- End custom js for this page -->
 
   <script>

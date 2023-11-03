@@ -38,20 +38,16 @@ class TagihanAirModels extends Model
             $builder->where('tblTagihanAir.tahunPemakaianAir <=', $endYear);
         }
     
-        $builder->orderBy('tblTagihanAir.tahunPemakaianAir', 'asc'); // Sort by year in ascending order
+        $builder->orderBy('tblTagihanAir.tahunPemakaianAir', 'asc'); 
         $builder->orderBy('tblTagihanAir.bulanPemakaianAir', 'asc');
         $query = $builder->get();
         return $query->getResult();
     }
 
-    public function convertMonth($monthValue)
-    {
-        // Ensure $monthValue is a valid integer from 1 to 12
+    public function convertMonth($monthValue) {
         if (!is_numeric($monthValue) || $monthValue < 1 || $monthValue > 12) {
             return 'Invalid Month';
         }
-
-        // Use the date() function to get the month name
         return date('F', mktime(0, 0, 0, $monthValue, 1));
     }
 
