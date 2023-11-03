@@ -66,9 +66,15 @@
                     </div>
                     <div class="row mb-3">
                         <label for="tahunPemakaianAir" class="col-sm-3 col-form-label">Tahun</label>
-                        <div class="col-sm-9">
+                        <!-- <div class="col-sm-9">
                             <input type="number" class="form-control" id="tahunPemakaianAir" name="tahunPemakaianAir"
                                 placeholder="Masukkan Tahun" value="<?=$dataTagihanAir->tahunPemakaianAir?>">
+                        </div> -->
+                        <div class="col-sm-9">
+                            <div class="input-group date datepicker" id="tahunPemakaianAir">
+                                <input type="number" class="form-control" name="tahunPemakaianAir" value="<?=$dataTagihanAir->tahunPemakaianAir?>">
+                                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">

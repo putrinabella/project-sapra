@@ -58,4 +58,14 @@ $(function() {
       $('#endYear').datepicker('setStartDate', new Date(selectedStartYear, 0, 1));
     });
   }
+
+  if ($('#tahunPemakaianAir').length) {
+    initializeYearDatepicker('#tahunPemakaianAir');
+  }
+  if ($('#tahunPemakaianListrik').length) {
+    initializeYearDatepicker('#tahunPemakaianListrik');
+  }
+  if ($('#tahunPemakaianInternet').length) {
+    initializeYearDatepicker('#tahunPemakaianInternet');
+  }
 });

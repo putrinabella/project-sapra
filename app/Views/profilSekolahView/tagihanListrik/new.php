@@ -1,14 +1,14 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Tambah Tagihan Air &verbar; SARPRA </title>
+<title>Tambah Tagihan Listrik &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Tagihan Air</h4>
+        <h4 class="mb-3 mb-md-0">Tagihan Listrik</h4>
     </div>
 </div>
 
@@ -22,22 +22,22 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('tagihanAir')?>" method="post" autocomplete="off"  id="custom-validation">
+                <form action="<?= site_url('tagihanListrik')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
-                        <label for="pemakaianAir" class="col-sm-3 col-form-label">Pemakaian Air</label>
+                        <label for="pemakaianListrik" class="col-sm-3 col-form-label">Pemakaian Listrik</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="pemakaianAir" name="pemakaianAir"
-                                placeholder="Masukkan pemakaian air (dalam kubik)">
+                            <input type="number" class="form-control" id="pemakaianListrik" name="pemakaianListrik"
+                                placeholder="Masukkan pemakaian listrik (dalam kWh)">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="bulanPemakaianAir" class="col-sm-3 col-form-label">Bulan</label>
+                        <label for="bulanPemakaianListrik" class="col-sm-3 col-form-label">Bulan</label>
                         <div class="col-sm-9">
-                        <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="bulanPemakaianAir" name="bulanPemakaianAir">
+                        <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="bulanPemakaianListrik" name="bulanPemakaianListrik">
                             <option value="" selected disabled hidden>Pilih bulan</option>
                             <?php 
-                            $bulanPemakaianAirOptions = [
+                            $bulanPemakaianListrikOptions = [
                                 1 => "January",
                                 2 => "February",
                                 3 => "March",
@@ -51,7 +51,7 @@
                                 11 => "November",
                                 12 => "December"
                             ];
-                            foreach ($bulanPemakaianAirOptions as $value => $bulan): ?>
+                            foreach ($bulanPemakaianListrikOptions as $value => $bulan): ?>
                                 <option value="<?= $value ?>"><?= $bulan ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -59,10 +59,10 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="tahunPemakaianAir" class="col-sm-3 col-form-label">Tahun</label>
+                        <label for="tahunPemakaianListrik" class="col-sm-3 col-form-label">Tahun</label>
                         <div class="col-sm-9">
-                            <div class="input-group date datepicker" id="tahunPemakaianAir">
-                                <input type="number" class="form-control" name="tahunPemakaianAir">
+                            <div class="input-group date datepicker" id="tahunPemakaianListrik">
+                                <input type="number" class="form-control" name="tahunPemakaianListrik" placeholder="Masukkan Tahun">
                                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                     </div> -->
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('tagihanAir') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('tagihanListrik') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

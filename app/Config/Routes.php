@@ -325,7 +325,7 @@ $routes->delete('profilSekolah/deletePermanent', 'ProfilSekolah::deletePermanent
 $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
 
 
-// Tagihan
+// Tagihan Air
 $routes->get('tagihanAir/createTemplate', 'TagihanAir::createTemplate');
 $routes->get('tagihanAir/generatePDF', 'TagihanAir::generatePDF');
 $routes->get('tagihanAir/export', 'TagihanAir::export');
@@ -337,6 +337,32 @@ $routes->get('tagihanAir/restore', 'TagihanAir::restore');
 $routes->delete('tagihanAir/deletePermanent/(:any)', 'TagihanAir::deletePermanent/$1');
 $routes->delete('tagihanAir/deletePermanent', 'TagihanAir::deletePermanent');
 $routes->resource('tagihanAir', ['filter' => 'isLoggedIn']);
+
+// Tagihan Listrik
+$routes->get('tagihanListrik/createTemplate', 'TagihanListrik::createTemplate');
+$routes->get('tagihanListrik/generatePDF', 'TagihanListrik::generatePDF');
+$routes->get('tagihanListrik/export', 'TagihanListrik::export');
+$routes->post('tagihanListrik/import', 'TagihanListrik::import');
+$routes->get('tagihanListrik/edit', 'TagihanListrik::edit');
+$routes->get('tagihanListrik/trash', 'TagihanListrik::trash');
+$routes->get('tagihanListrik/restore/(:any)', 'TagihanListrik::restore/$1');
+$routes->get('tagihanListrik/restore', 'TagihanListrik::restore');
+$routes->delete('tagihanListrik/deletePermanent/(:any)', 'TagihanListrik::deletePermanent/$1');
+$routes->delete('tagihanListrik/deletePermanent', 'TagihanListrik::deletePermanent');
+$routes->resource('tagihanListrik', ['filter' => 'isLoggedIn']);
+
+// Tagihan Internet
+$routes->get('tagihanInternet/createTemplate', 'TagihanInternet::createTemplate');
+$routes->get('tagihanInternet/generatePDF', 'TagihanInternet::generatePDF');
+$routes->get('tagihanInternet/export', 'TagihanInternet::export');
+$routes->post('tagihanInternet/import', 'TagihanInternet::import');
+$routes->get('tagihanInternet/edit', 'TagihanInternet::edit');
+$routes->get('tagihanInternet/trash', 'TagihanInternet::trash');
+$routes->get('tagihanInternet/restore/(:any)', 'TagihanInternet::restore/$1');
+$routes->get('tagihanInternet/restore', 'TagihanInternet::restore');
+$routes->delete('tagihanInternet/deletePermanent/(:any)', 'TagihanInternet::deletePermanent/$1');
+$routes->delete('tagihanInternet/deletePermanent', 'TagihanInternet::deletePermanent');
+$routes->resource('tagihanInternet', ['filter' => 'isLoggedIn']);
 
 // LABORATORIUM
 
