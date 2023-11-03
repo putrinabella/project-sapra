@@ -135,9 +135,9 @@
                             <td class="text-center"><?=$value->jumlah?></td>
                             <td class="text-center">
                                 <?php if ($value->status == "Peminjaman"): ?>
-                                    <span class="badge bg-warning"> <?=$value->status?></span>
+                                    <span class="badge bg-warning">Sedang Dipinjam</span>
                                 <?php else: ?>
-                                    <span class="badge bg-success"><?=$value->status?></span>
+                                    <span class="badge bg-success">Sudah Dikembalikan</span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-left">

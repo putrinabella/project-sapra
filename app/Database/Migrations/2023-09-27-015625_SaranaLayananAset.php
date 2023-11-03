@@ -19,15 +19,7 @@ class SaranaLayananAset extends Migration
                 'type' => 'DATE', 
                 'null' => true,
             ],
-            'idIdentitasSarana' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'idIdentitasPrasarana' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'idStatusLayanan' => [
+            'idRincianAset' => [
                 'type' => 'INT',
                 'constraint' => 3,
             ],
@@ -35,7 +27,7 @@ class SaranaLayananAset extends Migration
                 'type' => 'INT',
                 'constraint' => 2,
             ],
-            'idKategoriManajemen' => [
+            'idStatusLayanan' => [
                 'type' => 'INT',
                 'constraint' => 3,
             ],
@@ -43,6 +35,9 @@ class SaranaLayananAset extends Migration
                 'type' => 'INT',
             ],
             'bukti' => [
+                'type' => 'TEXT',
+            ],
+            'keterangan' => [
                 'type' => 'TEXT',
             ],
             'created_at' => [

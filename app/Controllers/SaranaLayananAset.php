@@ -148,11 +148,13 @@ class SaranaLayananAset extends ResourceController
             if (is_object($dataSaranaLayananAset)) {
                 $data = [
                     'dataSaranaLayananAset'     => $dataSaranaLayananAset,
-                    'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitsaSarana'       => $this->saranaLayananAsetModel->getSarana(),
                     'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
                     'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
+                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+
+          
                 ];
                 return view('saranaView/layananAset/edit', $data);
             } else {

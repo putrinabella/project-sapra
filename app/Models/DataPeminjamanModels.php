@@ -37,6 +37,22 @@ class DataPeminjamanModels extends Model
         return $query->getResult();
     }
     
+    function getDataExport($startDate = null, $endDate = null) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblManajemenPeminjaman.idIdentitasLab');
+        $builder->where('tblManajemenPeminjaman.deleted_at', null);
+        $builder->where('tblManajemenPeminjaman.status', "Pengembalian");
+    
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
+            $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
+        }
+    
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
 
     function find($id = null, $columns = '*') {
         $builder = $this->db->table($this->table);

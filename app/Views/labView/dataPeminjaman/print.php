@@ -74,7 +74,11 @@
                         <?= $value->jumlah ?> 
                     </td>
                     <td>
-                        <?= $value->status ?> 
+                        <?php if ($value->status == "Peminjaman"): ?>
+                            <span class="badge bg-warning">Sedang Dipinjam</span>
+                        <?php else: ?>
+                            <span class="badge bg-success">Sudah Dikembalikan</span>
+                        <?php endif; ?>
                     </td>
                     <td>
                         <?= $value->tanggalPengembalian ?> 

@@ -156,7 +156,7 @@ class DataPeminjaman extends ResourceController
         $endDate = $this->request->getVar('endDate');
 
         // $data = $this->dataPeminjamanModel->getAll();
-        $data = $this->dataPeminjamanModel->getData($startDate, $endDate);
+        $data = $this->dataPeminjamanModel->getDataExport($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Peminjaman');
@@ -174,7 +174,11 @@ class DataPeminjaman extends ResourceController
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLab);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->jumlah);
-            $activeWorksheet->setCellValue('H'.($index + 2), $value->status);
+            if ($value->status == "Peminjaman") {
+                $activeWorksheet->setCellValue('H'.($index + 2), 'Sedang Dipinjam');
+            } else {
+                $activeWorksheet->setCellValue('H'.($index + 2), 'Sudah Dikembalikan');
+            }
             $activeWorksheet->setCellValue('I'.($index + 2), $value->tanggalPengembalian);
 
             
@@ -220,7 +224,7 @@ class DataPeminjaman extends ResourceController
             return view('error/404');
         }
 
-        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getDataExport($startDate, $endDate);
 
         ob_start();
 
