@@ -205,7 +205,7 @@ $routes->post('getIdRincianAsetByKodeRincianAset', 'SaranaLayananAset::getIdRinc
 // $routes->post('saranaLayananAset/getKategoriManajemenOptions', 'SaranaLayananAsetController::getKategoriManajemenOptions');
 
 
-$routes->post('saranaLayananAset/fetchKategoriManajemen', 'SaranaLayananAset::fetchKategoriManajemen');
+// $routes->post('saranaLayananAset/fetchKategoriManajemen', 'SaranaLayananAset::fetchKategoriManajemen');
 $routes->get('saranaLayananAset/createTemplate', 'SaranaLayananAset::createTemplate');
 $routes->get('saranaLayananAset/generatePDF', 'SaranaLayananAset::generatePDF');
 $routes->get('saranaLayananAset/export', 'SaranaLayananAset::export');

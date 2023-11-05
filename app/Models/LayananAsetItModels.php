@@ -9,7 +9,7 @@ class LayananAsetItModels extends Model
     protected $table            = 'tblSaranaLayananAset';
     protected $primaryKey       = 'idSaranaLayananAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idSaranaLayananAset', 'idIdentitasSarana', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasPrasarana', 'idStatusLayanan', 'biaya', 'bukti','tanggal'];
+    protected $allowedFields    = ['idSaranaLayananAset', 'idRincianAset', 'idSumberDana','idStatusLayanan', 'biaya', 'bukti','tanggal' , 'keterangan'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -26,11 +26,13 @@ class LayananAsetItModels extends Model
 
 
     function getAll() {
-        $builder = $this->db->table($this->table);
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblSaranaLayananAset.idIdentitasSarana');
+        $builder = $this->db->table('tblRincianAset');
+        // $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');
+        $builder->join('tblSaranaLayananAset', 'tblSaranaLayananAset.idRincianAset = tblRincianAset.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblSaranaLayananAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblSaranaLayananAset.idIdentitasPrasarana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
         $builder->where('tblSaranaLayananAset.deleted_at', null);
         $builder->where('tblIdentitasSarana.perangkatIt', 1);
@@ -52,11 +54,19 @@ class LayananAsetItModels extends Model
     }
 
     function getSaranaIT() {
-        $builder = $this->db->table($this->tableSarana);
-        $builder->where('tblIdentitasSarana.deleted_at', null);
+        $builder = $this->db->table($this->tableRincianAset);
+        $builder->select('DISTINCT(tblRincianAset.idIdentitasSarana), tblIdentitasSarana.namaSarana');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblIdentitasSarana.perangkatIt', 1);
+        $builder->where('tblRincianAset.sectionAset', "None");  
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
         $query = $builder->get();
         return $query->getResult();
+
+        // $builder->where('tblIdentitasSarana.deleted_at', null);
+        // $query = $builder->get();
+        // return $query->getResult();
     }
 
     function updateKodeAset($id) {
@@ -93,11 +103,12 @@ class LayananAsetItModels extends Model
 
     
     function getRecycle() {
-        $builder = $this->db->table($this->table);
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblSaranaLayananAset.idIdentitasSarana');
+        $builder = $this->db->table('tblSaranaLayananAset');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblSaranaLayananAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblSaranaLayananAset.idIdentitasPrasarana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
         $builder->where('tblSaranaLayananAset.deleted_at IS NOT NULL');
         $query = $builder->get();
@@ -108,10 +119,11 @@ class LayananAsetItModels extends Model
         $builder = $this->db->table($this->table);
         $builder->select($columns);
         
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblSaranaLayananAset.idIdentitasSarana');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblSaranaLayananAset.idKategoriManajemen');
-        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblSaranaLayananAset.idIdentitasPrasarana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
         
         $builder->where($this->primaryKey, $id);

@@ -6,7 +6,7 @@ $(function() {
 
     var tableWidth = dataTable.width();
 
-    var scrollXThreshold = 1200; 
+    var scrollXThreshold = 1160; 
 
     var dataTableOptions = {
       "aLengthMenu": [

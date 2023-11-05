@@ -30,7 +30,8 @@
                         <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
-                                <input type="text" class="form-control" name="tanggal"  value="<?=$dataSaranaLayananAset->tanggal?>">
+                                <input type="text" class="form-control" name="tanggal"
+                                    value="<?=$dataSaranaLayananAset->tanggal?>">
                                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
@@ -38,12 +39,15 @@
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="idIdentitasSarana" name="idIdentitasSarana">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"
+                                id="idIdentitasSarana" name="idIdentitasSarana">
                                 <option value="" disabled hidden>Pilih Nama Aset</option>
                                 <?php foreach ($dataIdentitsaSarana as $key => $value): ?>
-                                    <option value="<?= $value->idIdentitasSarana ?>" <?php echo ($value->idIdentitasSarana == $dataSaranaLayananAset->idIdentitasSarana) ? 'selected' : '' ?>>
-                                        <?= $value->namaSarana ?>
-                                    </option>
+                                <option value="<?= $value->idIdentitasSarana ?>" <?php echo ($value->idIdentitasSarana
+                                    == $dataSaranaLayananAset->idIdentitasSarana) ? 'selected' : '' ?>>
+                                    <?= $value->namaSarana ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -51,35 +55,45 @@
                     <div class="row mb-3">
                         <label for="kodeRincianAset" class="col-sm-3 col-form-label">Kode Aset</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true" id="kodeRincianAset" name="kodeRincianAset">
-                                <option value="" selected disabled hidden>Pilih Kode Aset</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true"
+                                id="kodeRincianAset" name="kodeRincianAset">
+                                <option value="<?=$dataSaranaLayananAset->kodeRincianAset?>">
+                                    <?=$dataSaranaLayananAset->kodeRincianAset?></option>
                             </select>
-                            <input type="text" class="form-control" id="idRincianAset" name="idRincianAset" placeholder="Menampilkan ID rincian aset" hidden>
+                            <input type="text" class="form-control" id="idRincianAset" name="idRincianAset"
+                                placeholder="Menampilkan ID rincian aset"
+                                value="<?=$dataSaranaLayananAset->idRincianAset?>" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="idIdentitasPrasarana" name="idIdentitasPrasarana"
-                                placeholder="Masukkan Lokasi" value="<?=$dataSaranaLayananAset->namaPrasarana?>" readonly>
+                            <input type="text" class="form-control" id="idIdentitasPrasarana"
+                                name="idIdentitasPrasarana" placeholder="Masukkan Lokasi"
+                                value="<?=$dataSaranaLayananAset->namaPrasarana?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Aset</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="idKategoriManajemen" name="idKategoriManajemen"
-                                placeholder="Masukkan Kategori Aset" value="<?=$dataSaranaLayananAset->namaKategoriManajemen?>" readonly>
+                            <input type="text" class="form-control" id="idKategoriManajemen" name="idKategoriManajemen"
+                                placeholder="Masukkan Kategori Aset"
+                                value="<?=$dataSaranaLayananAset->namaKategoriManajemen?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idStatusLayanan" class="col-sm-3 col-form-label">Status Layanan</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true" id="idStatusLayanan" name="idStatusLayanan">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true"
+                                id="idStatusLayanan" name="idStatusLayanan">
                                 <option value="" disabled hidden>Pilih status layanan</option>
                                 <?php foreach ($dataStatusLayanan as $key => $value): ?>
-                                    <option value="<?= $value->idStatusLayanan ?>" <?php echo ($value->idStatusLayanan == $dataSaranaLayananAset->idStatusLayanan) ? 'selected' : '' ?>>
-                                        <?= $value->namaStatusLayanan ?>
-                                    </option>
+                                <option value="<?= $value->idStatusLayanan ?>" <?php echo ($value->idStatusLayanan ==
+                                    $dataSaranaLayananAset->idStatusLayanan) ? 'selected' : '' ?>>
+                                    <?= $value->namaStatusLayanan ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -87,12 +101,15 @@
                     <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true"  id="idSumberDana" name="idSumberDana">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true" id="idSumberDana"
+                                name="idSumberDana">
                                 <option value="" selected disabled hidden>Pilih sumber dana</option>
                                 <?php foreach ($dataSumberDana as $key => $value): ?>
-                                    <option value="<?= $value->idSumberDana ?>" <?php echo ($value->idSumberDana == $dataSaranaLayananAset->idSumberDana) ? 'selected' : '' ?>>
-                                        <?= $value->namaSumberDana ?>
-                                    </option>
+                                <option value="<?= $value->idSumberDana ?>" <?php echo ($value->idSumberDana ==
+                                    $dataSaranaLayananAset->idSumberDana) ? 'selected' : '' ?>>
+                                    <?= $value->namaSumberDana ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -107,13 +124,15 @@
                     <div class="row mb-3">
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan link dokumentasi" value="<?=$dataSaranaLayananAset->bukti?>">
+                            <input type="text" class="form-control" id="bukti" name="bukti"
+                                placeholder="Masukkan link dokumentasi" value="<?=$dataSaranaLayananAset->bukti?>">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" id="keterangan" name="keterangan" rows="4" placeholder="Masukkan keterangan layanan"><?=$dataSaranaLayananAset->keterangan?></textarea>
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="4"
+                                placeholder="Masukkan keterangan layanan"><?=$dataSaranaLayananAset->keterangan?></textarea>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -129,13 +148,12 @@
     </div>
 </div>
 
-
 <script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
 <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        $("#idIdentitasSarana").on("change", function() {
+    $(document).ready(function () {
+        $("#idIdentitasSarana").on("change", function () {
             var selectedIdIdentitasSarana = $(this).val();
             var $kodeRincianAsetSelect = $("#kodeRincianAset");
 
@@ -146,24 +164,24 @@
                     idIdentitasSarana: selectedIdIdentitasSarana,
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     $kodeRincianAsetSelect.empty();
                     if (response.length === 0) {
                         $kodeRincianAsetSelect.append("<option value='' selected disabled hidden>No data</option>");
                     } else {
                         $kodeRincianAsetSelect.append("<option value='' selected disabled hidden>Pilih Kode Aset</option>");
-                        $.each(response, function(key, value) {
+                        $.each(response, function (key, value) {
                             $kodeRincianAsetSelect.append("<option value='" + value.kodeRincianAset + "'>" + value.kodeRincianAset + "</option>");
                         });
                     }
                 },
-                error: function() {
+                error: function () {
                     alert("Failed to retrieve kode rincian aset options.");
                 }
             });
         });
 
-        $("#kodeRincianAset").on("change", function() {
+        $("#kodeRincianAset").on("change", function () {
             var selectedKodeRincianAset = $(this).val();
             var $idIdentitasPrasaranaSelect = $("#idIdentitasPrasarana");
 
@@ -174,20 +192,20 @@
                     kodeRincianAset: selectedKodeRincianAset,
                 },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     if (response.idIdentitasPrasarana) {
                         $idIdentitasPrasaranaSelect.val(response.namaPrasarana);
                     }
                 },
-                error: function() {
+                error: function () {
                     alert("Failed to retrieve lokasi.");
                 }
             });
         });
 
-        $("#kodeRincianAset").on("change", function() {
+        $("#kodeRincianAset").on("change", function () {
             var selectedKodeRincianAset = $(this).val();
-            var $idKategoriManajemenSelect = $("#idKategoriManajemen"); 
+            var $idKategoriManajemenSelect = $("#idKategoriManajemen");
 
             $.ajax({
                 url: "<?= site_url('getKategoriManajemenByKodeRincianAset') ?>",
@@ -196,38 +214,38 @@
                     kodeRincianAset: selectedKodeRincianAset,
                 },
                 dataType: "json",
-                success: function(kategoriManajemenResponse) {
+                success: function (kategoriManajemenResponse) {
                     if (kategoriManajemenResponse.idKategoriManajemen) {
                         $idKategoriManajemenSelect.val(kategoriManajemenResponse.namaKategoriManajemen);
                     }
                 },
-                error: function() {
+                error: function () {
                     alert("Failed to retrieve kategori aset.");
                 }
             });
         });
 
-        $("#kodeRincianAset").on("change", function() {
-        var selectedKodeRincianAset = $(this).val();
-        var $idRincianAsetInput = $("#idRincianAset");
+        $("#kodeRincianAset").on("change", function () {
+            var selectedKodeRincianAset = $(this).val();
+            var $idRincianAsetInput = $("#idRincianAset");
 
-        $.ajax({
-            url: "<?= site_url('getIdRincianAsetByKodeRincianAset') ?>",
-            type: "POST",
-            data: {
-                kodeRincianAset: selectedKodeRincianAset,
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.idRincianAset) {
-                    $idRincianAsetInput.val(response.idRincianAset);
+            $.ajax({
+                url: "<?= site_url('getIdRincianAsetByKodeRincianAset') ?>",
+                type: "POST",
+                data: {
+                    kodeRincianAset: selectedKodeRincianAset,
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.idRincianAset) {
+                        $idRincianAsetInput.val(response.idRincianAset);
+                    }
+                },
+                error: function () {
+                    alert("Failed to retrieve ID rincian aset.");
                 }
-            },
-            error: function() {
-                alert("Failed to retrieve ID rincian aset.");
-            }
+            });
         });
-    });
     });
 </script>
 

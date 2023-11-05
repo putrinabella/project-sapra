@@ -91,6 +91,7 @@
                                 <th>Sumber Dana</th>
                                 <th>Biaya</th>
                                 <th>Bukti</th>
+                                <th>Keterangan</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -109,6 +110,9 @@
                                 <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
+                                </td>
+                                <td class="text-center">
+                                    <?=$value->keterangan?>
                                 </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('layananAsetIt/'.$value->idSaranaLayananAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>

@@ -62,7 +62,6 @@ class LayananAsetIt extends ResourceController
     public function new() {
         $data = [
             'dataSaranaIt'              => $this->layananAsetItModel->getSaranaIT(),
-            'dataIdentitasSaranaIt'     => $this->layananAsetItModel->getRincianIT(),
             'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
             'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
             'dataSumberDana'            => $this->sumberDanaModel->findAll(),
@@ -72,10 +71,10 @@ class LayananAsetIt extends ResourceController
         return view('itView/layananAsetIt/new', $data);        
     }
 
-    
     public function create() {
-        $data = $this->request->getPost(); 
-        if (!empty($data['idIdentitasSarana']) && !empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen'])) {
+        $data = $this->request->getPost();
+     
+        if (!empty($data['idRincianAset']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['biaya'])) {
             $this->layananAsetItModel->insert($data);
             return redirect()->to(site_url('layananAsetIt'))->with('success', 'Data berhasil disimpan');
         } else {
@@ -111,13 +110,10 @@ class LayananAsetIt extends ResourceController
     
             if (is_object($dataLayananAsetIt)) {
                 $data = [
+                    'dataLayananAsetIt'         => $dataLayananAsetIt,
                     'dataSaranaIt'              => $this->layananAsetItModel->getSaranaIT(),
-                    'dataIdentitasSaranaIt'     => $this->layananAsetItModel->getRincianIT(),
-                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
                     'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataLayananAsetIt'         => $dataLayananAsetIt,
                 ];
                 return view('itView/layananAsetIt/edit', $data);
             } else {
@@ -141,12 +137,12 @@ class LayananAsetIt extends ResourceController
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblLayananAsetIt')
+            $this->db->table('tblSaranaLayananAset')
                 ->set('deleted_at', null, true)
-                ->where(['idLayananAsetIt' => $id])
+                ->where(['idSaranaLayananAset' => $id])
                 ->update();
         } else {
-            $this->db->table('tblLayananAsetIt')
+            $this->db->table('tblSaranaLayananAset')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
@@ -186,9 +182,9 @@ class LayananAsetIt extends ResourceController
         $activeWorksheet->setTitle('Layanan Perangkat IT');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti', 'Kode Lokasi'];
+        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
@@ -200,9 +196,8 @@ class LayananAsetIt extends ResourceController
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('H'.($index + 2), $value->biaya);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
-            $activeWorksheet->setCellValue('J'.($index + 2), $value->kodePrasarana);
     
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -211,12 +206,12 @@ class LayananAsetIt extends ResourceController
             }            
         }
     
-        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
-        $activeWorksheet->getStyle('A1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'J') as $column) {
+        foreach (range('A', 'I') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     

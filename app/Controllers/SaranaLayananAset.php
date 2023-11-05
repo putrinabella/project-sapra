@@ -153,8 +153,6 @@ class SaranaLayananAset extends ResourceController
                     'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-
-          
                 ];
                 return view('saranaView/layananAset/edit', $data);
             } else {
@@ -223,9 +221,9 @@ class SaranaLayananAset extends ResourceController
         $activeWorksheet->setTitle('Layanan Aset');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti', 'Kode Lokasi'];
+        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
@@ -237,9 +235,8 @@ class SaranaLayananAset extends ResourceController
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('H'.($index + 2), $value->biaya);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
-            $activeWorksheet->setCellValue('J'.($index + 2), $value->kodePrasarana);
     
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -248,12 +245,12 @@ class SaranaLayananAset extends ResourceController
             }            
         }
     
-        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
-        $activeWorksheet->getStyle('A1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'J') as $column) {
+        foreach (range('A', 'I') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -581,34 +578,34 @@ class SaranaLayananAset extends ResourceController
     }
 
     
-    public function fetchKategoriManajemen()
-    {
-        $idIdentitasPrasarana = $this->request->getPost('idIdentitasPrasarana');
-        $kategoriManajemen =  $this->saranaLayananAsetModel->getKategoriManajemen($idIdentitasPrasarana);
+    // public function fetchKategoriManajemen()
+    // {
+    //     $idIdentitasPrasarana = $this->request->getPost('idIdentitasPrasarana');
+    //     $kategoriManajemen =  $this->saranaLayananAsetModel->getKategoriManajemen($idIdentitasPrasarana);
 
-        return $this->response->setJSON($kategoriManajemen);
-    }
+    //     return $this->response->setJSON($kategoriManajemen);
+    // }
 
-    public function setKategoriManajemen()
-    {
-        $dataPaket = new RincianAsetModels();
-        $idIdentitasPrasarana = $this->request->getVar('idIdentitasPrasarana');
+    // public function setKategoriManajemen()
+    // {
+    //     $dataPaket = new RincianAsetModels();
+    //     $idIdentitasPrasarana = $this->request->getVar('idIdentitasPrasarana');
 
-        $kategoriManajemenLoad = $dataPaket->select('idKategoriManajemen, namaKategoriManajemen')->where(
-            'idIdentitasPrasarana',
-            $idIdentitasPrasarana
-        )->orderBy('namaKategoriManajemen')->findAll();
-        $data = [];
-        foreach ($kategoriManajemenLoad as $value) {
-            $data[] = [
-                'id' => $value->idKategoriManajemen,
-                'text' => $value->namaKategoriManajemen
-            ];
-        }
-        $response['data'] = $data;
-        echo $data;
-        die;
-        return $this->response->setJSON($response);
-    }
+    //     $kategoriManajemenLoad = $dataPaket->select('idKategoriManajemen, namaKategoriManajemen')->where(
+    //         'idIdentitasPrasarana',
+    //         $idIdentitasPrasarana
+    //     )->orderBy('namaKategoriManajemen')->findAll();
+    //     $data = [];
+    //     foreach ($kategoriManajemenLoad as $value) {
+    //         $data[] = [
+    //             'id' => $value->idKategoriManajemen,
+    //             'text' => $value->namaKategoriManajemen
+    //         ];
+    //     }
+    //     $response['data'] = $data;
+    //     echo $data;
+    //     die;
+    //     return $this->response->setJSON($response);
+    // }
 }
 
