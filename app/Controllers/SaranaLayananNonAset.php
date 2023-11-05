@@ -7,7 +7,7 @@ use App\Models\SaranaLayananNonAsetModels;
 use App\Models\IdentitasSaranaModels; 
 use App\Models\StatusLayananModels; 
 use App\Models\SumberDanaModels; 
-use App\Models\KategoriManajemenModels; 
+use App\Models\KategoriMepModels; 
 use App\Models\IdentitasPrasaranaModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -23,7 +23,7 @@ class SaranaLayananNonAset extends ResourceController
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
         $this->statusLayananModel = new StatusLayananModels();
         $this->sumberDanaModel = new SumberDanaModels();
-        $this->kategoriManajemenModel = new KategoriManajemenModels();
+        $this->kategoriMepModel = new KategoriMepModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -46,7 +46,7 @@ class SaranaLayananNonAset extends ResourceController
                 $data = [
                     'dataSaranaLayananNonAset'  => $dataSaranaLayananNonAset,
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataKategoriMep'           => $this->kategoriMepModel->findAll(),
                     'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
                     'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
@@ -67,7 +67,7 @@ class SaranaLayananNonAset extends ResourceController
             'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
             'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
             'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-            'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+            'dataKategoriMep'           => $this->kategoriMepModel->findAll(),
         ];
         
         return view('saranaView/layananNonAset/new', $data);        
@@ -76,11 +76,11 @@ class SaranaLayananNonAset extends ResourceController
     
     public function create() {
         $data = $this->request->getPost();
-        if (!empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['idKategoriManajemen'])) {
+        if (!empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['idKategoriMep'])) {
             $this->saranaLayananNonAsetModel->insert($data);
             return redirect()->to(site_url('saranaLayananNonAset'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('saranaLayananNonAset'))->with('error', 'File error');
+            return redirect()->to(site_url('saranaLayananNonAset'))->with('error', 'Pastikan semua data sudah terisi!');
         }
     }
     
@@ -129,7 +129,7 @@ class SaranaLayananNonAset extends ResourceController
                 $data = [
                     'dataSaranaLayananNonAset'     => $dataSaranaLayananNonAset,
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
+                    'dataKategoriMep'     => $this->kategoriMepModel->findAll(),
                     'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
                     'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
                 ];
@@ -214,7 +214,7 @@ class SaranaLayananNonAset extends ResourceController
             $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggal);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaStatusLayanan);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaKategoriManajemen);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaKategoriMep);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->biaya);
             $activeWorksheet->setCellValue('H'.($index + 2), $value->bukti);
@@ -261,7 +261,7 @@ class SaranaLayananNonAset extends ResourceController
         $keyPrasarana = $this->identitasPrasaranaModel->findAll();
         $keyStatusLayanan = $this->statusLayananModel->findAll();
         $keySumberDana = $this->sumberDanaModel->findAll();
-        $keyKategoriManajemen = $this->kategoriManajemenModel->findAll();
+        $keyKategoriMep = $this->kategoriMepModel->findAll();
         $spreadsheet = new Spreadsheet();
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
@@ -276,8 +276,8 @@ class SaranaLayananNonAset extends ResourceController
         $activeWorksheet->fromArray([$headerPrasaranaID], NULL, 'K1');
         $activeWorksheet->getStyle('K1:L1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $headerKategoriManajemenID = ['ID Kategori Manajemen', 'Kategori Manajemen'];
-        $activeWorksheet->fromArray([$headerKategoriManajemenID], NULL, 'N1');
+        $headerKategoriMepID = ['ID Kategori Manajemen', 'Kategori Manajemen'];
+        $activeWorksheet->fromArray([$headerKategoriMepID], NULL, 'N1');
         $activeWorksheet->getStyle('N1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         $headerPrasaranaID = ['ID Status Layanan', 'Nama Layanan'];
@@ -349,9 +349,9 @@ class SaranaLayananNonAset extends ResourceController
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
-        foreach ($keyKategoriManajemen as $index => $value) {
-            $activeWorksheet->setCellValue('N'.($index + 2), $value->idKategoriManajemen);
-            $activeWorksheet->setCellValue('O'.($index + 2), $value->namaKategoriManajemen);
+        foreach ($keyKategoriMep as $index => $value) {
+            $activeWorksheet->setCellValue('N'.($index + 2), $value->idKategoriMep);
+            $activeWorksheet->setCellValue('O'.($index + 2), $value->namaKategoriMep);
     
             $columns = ['N', 'O'];
             foreach ($columns as $column) {
@@ -363,7 +363,7 @@ class SaranaLayananNonAset extends ResourceController
 
         $activeWorksheet->getStyle('N1:O1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('N1:O1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('N1:O'.(count($keyKategoriManajemen) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('N1:O'.(count($keyKategoriMep) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('N:O')->getAlignment()->setWrapText(true);
     
         foreach (range('N', 'O') as $column) {
@@ -432,7 +432,7 @@ class SaranaLayananNonAset extends ResourceController
             $exampleSheet->setCellValue('B'.($index + 2), $currentDate);
             $exampleSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
             $exampleSheet->setCellValue('D'.($index + 2), $value->namaStatusLayanan);
-            $exampleSheet->setCellValue('E'.($index + 2), $value->namaKategoriManajemen);
+            $exampleSheet->setCellValue('E'.($index + 2), $value->namaKategoriMep);
             $exampleSheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
             $exampleSheet->setCellValue('G'.($index + 2), $value->biaya);
             $exampleSheet->setCellValue('H'.($index + 2), $value->bukti);
@@ -483,7 +483,7 @@ class SaranaLayananNonAset extends ResourceController
                 $tanggal                = $value[1] ?? null;
                 $idIdentitasPrasarana   = $value[2] ?? null;
                 $idStatusLayanan        = $value[3] ?? null;
-                $idKategoriManajemen    = $value[4] ?? null;
+                $idKategoriMep    = $value[4] ?? null;
                 $idSumberDana           = $value[5] ?? null;
                 $biaya                  = $value[6] ?? null;
                 $bukti                  = $value[7] ?? null;
@@ -496,7 +496,7 @@ class SaranaLayananNonAset extends ResourceController
                     'tanggal' => $tanggal,
                     'idIdentitasPrasarana' => $idIdentitasPrasarana,
                     'idStatusLayanan' => $idStatusLayanan,
-                    'idKategoriManajemen' => $idKategoriManajemen,
+                    'idKategoriMep' => $idKategoriMep,
                     'idSumberDana' => $idSumberDana,
                     'biaya' => $biaya,
                     'bukti' => $bukti,
@@ -504,7 +504,7 @@ class SaranaLayananNonAset extends ResourceController
                 ];
 
                 if (!empty($data['tanggal']) && !empty($data['idIdentitasPrasarana'])
-                    && !empty($data['idStatusLayanan']) && !empty($data['idKategoriManajemen']) 
+                    && !empty($data['idStatusLayanan']) && !empty($data['idKategoriMep']) 
                     && !empty($data['idSumberDana']) && !empty($data['biaya'])
                     && !empty($data['bukti']) && !empty($data['spesifikasi']) ) {
                     if ($status == 'ERROR') {

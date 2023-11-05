@@ -251,6 +251,9 @@
                 <li class="nav-item">
                     <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Barang </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('kategoriMep') ?>" class="nav-link">Kategori MEP </a>
+                </li>
             </ul>
         </div>
     </li>

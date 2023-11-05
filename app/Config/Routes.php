@@ -151,6 +151,19 @@ $routes->delete('kategoriManajemen/deletePermanent/(:any)', 'KategoriManajemen::
 $routes->delete('kategoriManajemen/deletePermanent', 'KategoriManajemen::deletePermanent');
 $routes->presenter('kategoriManajemen', ['filter' => 'isLoggedIn']);
 
+// Kategori MEP
+$routes->get('kategoriMep/createTemplate', 'KategoriMep::createTemplate');
+$routes->get('kategoriMep/generatePDF', 'KategoriMep::generatePDF');
+$routes->get('kategoriMep/export', 'KategoriMep::export');
+$routes->post('kategoriMep/import', 'KategoriMep::import');
+$routes->get('kategoriMep/edit', 'KategoriMep::edit');
+$routes->get('kategoriMep/trash', 'KategoriMep::trash');
+$routes->get('kategoriMep/restore/(:any)', 'KategoriMep::restore/$1');
+$routes->get('kategoriMep/restore', 'KategoriMep::restore');
+$routes->delete('kategoriMep/deletePermanent/(:any)', 'KategoriMep::deletePermanent/$1');
+$routes->delete('kategoriMep/deletePermanent', 'KategoriMep::deletePermanent');
+$routes->presenter('kategoriMep', ['filter' => 'isLoggedIn']);
+
 // Kelas Siswa
 $routes->get('identitasKelas/createTemplate', 'IdentitasKelas::createTemplate');
 $routes->get('identitasKelas/generatePDF', 'IdentitasKelas::generatePDF');
@@ -201,11 +214,6 @@ $routes->post('getIdentitasPrasaranaByKodeRincianAset', 'SaranaLayananAset::getI
 $routes->post('getKategoriManajemenByKodeRincianAset', 'SaranaLayananAset::getKategoriManajemenByKodeRincianAset');
 $routes->post('getIdRincianAsetByKodeRincianAset', 'SaranaLayananAset::getIdRincianAsetByKodeRincianAset');
 
-// $routes->post('saranaLayananAset/setKategoriManajemen', 'SaranaLayananAset::setKategoriManajemen');
-// $routes->post('saranaLayananAset/getKategoriManajemenOptions', 'SaranaLayananAsetController::getKategoriManajemenOptions');
-
-
-// $routes->post('saranaLayananAset/fetchKategoriManajemen', 'SaranaLayananAset::fetchKategoriManajemen');
 $routes->get('saranaLayananAset/createTemplate', 'SaranaLayananAset::createTemplate');
 $routes->get('saranaLayananAset/generatePDF', 'SaranaLayananAset::generatePDF');
 $routes->get('saranaLayananAset/export', 'SaranaLayananAset::export');

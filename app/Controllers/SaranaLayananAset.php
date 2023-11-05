@@ -111,7 +111,7 @@ class SaranaLayananAset extends ResourceController
             $this->saranaLayananAsetModel->insert($data);
             return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('saranaLayananAset'))->with('error', 'File error');
+            return redirect()->to(site_url('saranaLayananAset'))->with('error', 'Pastikan semua data sudah terisi!');
         }
     }
 
