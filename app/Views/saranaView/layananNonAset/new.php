@@ -37,7 +37,7 @@
                         <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
                         <div class="col-sm-9">
                             <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
-                                <option value="" hidden>Pilih lokasi</option>
+                                <option value="" selected disabled hidden>Pilih lokasi</option>
                                 <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
                                 <?php endforeach; ?>
@@ -48,7 +48,7 @@
                         <label for="idStatusLayanan" class="col-sm-3 col-form-label">Status Layanan</label>
                         <div class="col-sm-9">
                             <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true" id="idStatusLayanan" name="idStatusLayanan">
-                                <option value="" hidden>Pilih status layanan</option>
+                                <option value="" selected disabled hidden>Pilih status layanan</option>
                                 <?php foreach($dataStatusLayanan as $key =>$value): ?>
                                 <option value="<?=$value->idStatusLayanan?>"><?=$value->namaStatusLayanan?></option>
                                 <?php endforeach; ?>
@@ -59,9 +59,21 @@
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
                             <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true" id="idSumberDana" name="idSumberDana">
-                                <option value="" hidden>Pilih sumber dana</option>
+                                <option value="" selected disabled hidden>Pilih sumber dana</option>
                                 <?php foreach($dataSumberDana as $key =>$value): ?>
                                 <option value="<?=$value->idSumberDana?>"><?=$value->namaSumberDana?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idKategoriMep" class="col-sm-3 col-form-label">Kategori MEP</label>
+                        <div class="col-sm-9">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true" id="idKategoriMep" name="idKategoriMep">
+                                <option value="" selected disabled hidden>Pilih Kategori MEP</option>
+                                <?php foreach($dataKategoriMep as $key =>$value): ?>
+                                <option value="<?=$value->idKategoriMep?>"><?=$value->namaKategoriMep?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

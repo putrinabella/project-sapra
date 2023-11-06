@@ -54,10 +54,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Kategori Manajemen</td>
+                            <td>Kategori MEP</td>
                             <td>:</td>
                             <td>
-                                <?= $dataSaranaLayananNonAset->namaKategoriManajemen?>
+                                <?= $dataSaranaLayananNonAset->namaKategoriMep?>
                             </td>
                         </tr>
                         <tr>

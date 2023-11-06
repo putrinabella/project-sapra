@@ -71,7 +71,7 @@
                                 <th>Tanggal</th>
                                 <th>Lokasi</th>
                                 <th>Status Layanan</th>
-                                <th>Kategori Manajemen</th>
+                                <th>Kategori MEP</th>
                                 <th>Sumber Dana</th>
                                 <th>Biaya</th>
                                 <th style="width: 20%;">Aksi</th>
@@ -86,7 +86,7 @@
                                 <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
                                 <td class="text-center"><?=$value->namaPrasarana?></td>
                                 <td class="text-center"><?=$value->namaStatusLayanan?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                                <td class="text-center"><?=$value->namaKategoriMep?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">

@@ -48,7 +48,7 @@
                     <th>Tanggal</th>
                     <th>Lokasi</th>
                     <th>Status Layanan</th>
-                    <th>Kategori Manajemen</th>
+                    <th>Kategori</th>
                     <th>Sumber Dana</th>
                     <th>Biaya</th>
                     <th>Keterangan</th>
@@ -68,7 +68,7 @@
                             <?= $value->namaStatusLayanan ?>
                         </td>
                         <td>
-                            <?= $value->namaKategoriManajemen ?>
+                            <?= $value->namaKategoriMep ?>
                         </td>
                         <td>
                             <?= $value->namaSumberDana ?>
