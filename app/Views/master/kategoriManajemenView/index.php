@@ -84,7 +84,6 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th>Kode</th>
                                 <th>Nama Kategori Barang</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -95,7 +94,6 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->kodeKategoriManajemen?></td>
                                 <td class="text-left"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('kategoriManajemen/edit/'.$value->idKategoriManajemen) ?>"

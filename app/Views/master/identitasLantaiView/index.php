@@ -84,7 +84,6 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">ID</th>
                                 <th>Nama Lantai</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -94,9 +93,6 @@
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
-                                </td>
-                                <td class="text-center">
-                                    L<?= sprintf('%02d', $value->idIdentitasLantai) ?>
                                 </td>
                                 <td class="text-left"><?=$value->namaLantai?></td>
                                 <td class="text-center">

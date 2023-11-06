@@ -84,7 +84,6 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 10%;">No.</th>
-                                <th style="width: 15%;">Kode</th>
                                 <th>Nama Sumber Dana</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
@@ -95,7 +94,6 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->kodeSumberDana?></td>
                                 <td class="text-left"><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('sumberDana/edit/'.$value->idSumberDana) ?>"
