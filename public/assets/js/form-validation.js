@@ -134,6 +134,9 @@ $(document).ready(function () {
       link: {
         required: true,
       },
+      kodeRincianLabAset: {
+        required: true,
+      },
       idIdentitasLantai: {
         required: true,
       },
@@ -376,6 +379,9 @@ $(document).ready(function () {
       },
       link: {
         required: "Silahkan masukkan link dokumentasi",
+      },
+      kodeRincianLabAset: {
+        required: "Silahkan pilih sebuah opsi",
       },
       idIdentitasLantai: {
         required: "Silahkan pilih sebuah opsi",

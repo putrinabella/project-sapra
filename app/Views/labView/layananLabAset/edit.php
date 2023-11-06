@@ -27,10 +27,12 @@
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
+                    <div class="row mb-3">
                         <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
-                                <input type="text" class="form-control" name="tanggal"  value="<?=$dataLayananLabAset->tanggal?>">
+                                <input type="text" class="form-control" name="tanggal"
+                                    value="<?=$dataLayananLabAset->tanggal?>">
                                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
@@ -38,43 +40,60 @@
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataIdentitasSarana as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasSarana?>" <?=$dataLayananLabAset->
-                                    idIdentitasSarana ==
-                                    $value->idIdentitasSarana ? 'selected' : null ?>>
-                                    <?=$value->namaSarana?>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"
+                                id="idIdentitasSarana" name="idIdentitasSarana">
+                                <?php foreach ($dataIdentitsaSarana as $key => $value): ?>
+                                <option value=""  hidden>Pilih Nama Aset</option>
+                                <option value="<?= $value->idIdentitasSarana ?>" <?php echo ($value->idIdentitasSarana
+                                    == $dataLayananLabAset->idIdentitasSarana) ? 'selected' : '' ?>>
+                                    <?= $value->namaSarana ?>
                                 </option>
                                 <?php endforeach; ?>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="kodeRincianLabAset" class="col-sm-3 col-form-label">Kode Aset</label>
+                        <div class="col-sm-9">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true"
+                                id="kodeRincianLabAset" name="kodeRincianLabAset">
+                                <option value="<?=$dataLayananLabAset->kodeRincianLabAset?>">
+                                    <?=$dataLayananLabAset->kodeRincianLabAset?></option>
+                            </select>
+                            <input type="text" class="form-control" id="idRincianLabAset" name="idRincianLabAset"
+                                placeholder="Menampilkan ID rincian aset"
+                                value="<?=$dataLayananLabAset->idRincianLabAset?>" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi Aset</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasLab" name="idIdentitasLab">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataIdentitasLab as $key =>$value): ?>
-                                <option value="<?=$value->idIdentitasLab?>" <?=$dataLayananLabAset->
-                                    idIdentitasLab ==
-                                    $value->idIdentitasLab ? 'selected' : null ?>>
-                                    <?=$value->namaLab?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="text" class="form-control" id="idIdentitasLab"
+                                name="idIdentitasLab" placeholder="Masukkan Lokasi"
+                                value="<?=$dataLayananLabAset->namaLab?>" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Aset</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="idKategoriManajemen" name="idKategoriManajemen"
+                                placeholder="Masukkan Kategori Aset"
+                                value="<?=$dataLayananLabAset->namaKategoriManajemen?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idStatusLayanan" class="col-sm-3 col-form-label">Status Layanan</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idStatusLayanan" name="idStatusLayanan">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataStatusLayanan as $key =>$value): ?>
-                                <option value="<?=$value->idStatusLayanan?>" <?=$dataLayananLabAset->idStatusLayanan
-                                    ==
-                                    $value->idStatusLayanan ? 'selected' : null ?>>
-                                    <?=$value->namaStatusLayanan?>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true"
+                                id="idStatusLayanan" name="idStatusLayanan">
+                                <option value="" disabled hidden>Pilih status layanan</option>
+                                <?php foreach ($dataStatusLayanan as $key => $value): ?>
+                                <option value="<?= $value->idStatusLayanan ?>" <?php echo ($value->idStatusLayanan ==
+                                    $dataLayananLabAset->idStatusLayanan) ? 'selected' : '' ?>>
+                                    <?= $value->namaStatusLayanan ?>
                                 </option>
                                 <?php endforeach; ?>
                             </select>
@@ -83,26 +102,14 @@
                     <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idSumberDana" name="idSumberDana">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataSumberDana as $key =>$value): ?>
-                                <option value="<?=$value->idSumberDana?>" <?=$dataLayananLabAset->idSumberDana ==
-                                    $value->idSumberDana ? 'selected' : null ?>>
-                                    <?=$value->namaSumberDana?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Manajemen</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
-                                <option value="" hidden>Pilih aset</option>
-                                <?php foreach($dataKategoriManajemen as $key =>$value): ?>
-                                <option value="<?=$value->idKategoriManajemen?>" <?=$dataLayananLabAset->
-                                    idKategoriManajemen == $value->idKategoriManajemen ? 'selected' : null ?>>
-                                    <?=$value->namaKategoriManajemen?>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true" id="idSumberDana"
+                                name="idSumberDana">
+                                <option value="" selected disabled hidden>Pilih sumber dana</option>
+                                <?php foreach ($dataSumberDana as $key => $value): ?>
+                                <option value="<?= $value->idSumberDana ?>" <?php echo ($value->idSumberDana ==
+                                    $dataLayananLabAset->idSumberDana) ? 'selected' : '' ?>>
+                                    <?= $value->namaSumberDana ?>
                                 </option>
                                 <?php endforeach; ?>
                             </select>
@@ -112,13 +119,21 @@
                         <label for="biaya" class="col-sm-3 col-form-label">Biaya</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="biaya" name="biaya"
-                                value="<?=$dataLayananLabAset->biaya?>" placeholder="Masukkan biaya">
+                                placeholder="Masukkan biaya" value="<?=$dataLayananLabAset->biaya?>">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bukti" name="bukti" value="<?=$dataLayananLabAset->bukti?>"  placeholder="Masukkan link bukti">
+                            <input type="text" class="form-control" id="bukti" name="bukti"
+                                placeholder="Masukkan link dokumentasi" value="<?=$dataLayananLabAset->bukti?>">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="4"
+                                placeholder="Masukkan keterangan layanan"><?=$dataLayananLabAset->keterangan?></textarea>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -134,4 +149,106 @@
     </div>
 </div>
 
+
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        
+        $("#idIdentitasSarana").on("change", function () {
+            var selectedIdIdentitasSarana = $(this).val();
+            var $kodeRincianLabAsetSelect = $("#kodeRincianLabAset");
+
+            $.ajax({
+                url: "<?= site_url('getKodeRincianLabAsetBySarana') ?>",
+                type: "POST",
+                data: {
+                    idIdentitasSarana: selectedIdIdentitasSarana,
+                },
+                dataType: "json",
+                success: function (response) {
+                    $kodeRincianLabAsetSelect.empty();
+                    if (response.length === 0) {
+                        $kodeRincianLabAsetSelect.append("<option value='' selected disabled hidden>No data</option>");
+                    } else {
+                        $kodeRincianLabAsetSelect.append("<option value='' selected disabled hidden>Pilih Kode Aset</option>");
+                        $.each(response, function (key, value) {
+                            $kodeRincianLabAsetSelect.append("<option value='" + value.kodeRincianLabAset + "'>" + value.kodeRincianLabAset + "</option>");
+                        });
+                    }
+                },
+                error: function () {
+                    alert("Failed to retrieve kode rincian aset options.");
+                }
+            });
+        });
+
+        $("#kodeRincianLabAset").on("change", function () {
+            var selectedKodeRincianLabAset = $(this).val();
+            var $idIdentitasLabSelect = $("#idIdentitasLab");
+
+            $.ajax({
+                url: "<?= site_url('getIdentitasLabByKodeRincianLabAset') ?>",
+                type: "POST",
+                data: {
+                    kodeRincianLabAset: selectedKodeRincianLabAset,
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.idIdentitasLab) {
+                        $idIdentitasLabSelect.val(response.namaLab);
+                    }
+                },
+                error: function () {
+                    alert("Failed to retrieve lokasi.");
+                }
+            });
+        });
+
+        $("#kodeRincianLabAset").on("change", function () {
+            var selectedKodeRincianLabAset = $(this).val();
+            var $idKategoriManajemenSelect = $("#idKategoriManajemen");
+
+            $.ajax({
+                url: "<?= site_url('getKategoriManajemenByKodeRincianLabAset') ?>",
+                type: "POST",
+                data: {
+                    kodeRincianLabAset: selectedKodeRincianLabAset,
+                },
+                dataType: "json",
+                success: function (kategoriManajemenResponse) {
+                    if (kategoriManajemenResponse.idKategoriManajemen) {
+                        $idKategoriManajemenSelect.val(kategoriManajemenResponse.namaKategoriManajemen);
+                    }
+                },
+                error: function () {
+                    alert("Failed to retrieve kategori aset.");
+                }
+            });
+        });
+
+        $("#kodeRincianLabAset").on("change", function () {
+            var selectedKodeRincianLabAset = $(this).val();
+            var $idRincianLabAsetInput = $("#idRincianLabAset");
+
+            $.ajax({
+                url: "<?= site_url('getIdRincianLabAsetByKodeRincianLabAset') ?>",
+                type: "POST",
+                data: {
+                    kodeRincianLabAset: selectedKodeRincianLabAset,
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.idRincianLabAset) {
+                        $idRincianLabAsetInput.val(response.idRincianLabAset);
+                    }
+                },
+                error: function () {
+                    alert("Failed to retrieve ID rincian aset.");
+                }
+            });
+        });
+    });
+</script>
 <?= $this->endSection(); ?>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarana Layanan Aset Laboratorium Report</title>
+    <title>Layanan Aset Laboratorium Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,7 +40,7 @@
 
 <body>
     <div class="table-responsive">
-    <h2 class="mt-3 mb-4">Sarana Layanan Aset Laboratorium Report</h2>
+    <h2 class="mt-3 mb-4">Layanan Aset Laboratorium Report</h2>
         <table class="table table-hover" id="dataTable">
             <thead>
                 <tr class="text-center">

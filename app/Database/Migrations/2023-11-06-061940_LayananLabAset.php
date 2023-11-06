@@ -19,15 +19,7 @@ class LayananLabAset extends Migration
                 'type' => 'DATE', 
                 'null' => true,
             ],
-            'idIdentitasSarana' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'idIdentitasLab' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'idStatusLayanan' => [
+            'idRincianLabAset' => [
                 'type' => 'INT',
                 'constraint' => 3,
             ],
@@ -35,7 +27,7 @@ class LayananLabAset extends Migration
                 'type' => 'INT',
                 'constraint' => 2,
             ],
-            'idKategoriManajemen' => [
+            'idStatusLayanan' => [
                 'type' => 'INT',
                 'constraint' => 3,
             ],
@@ -44,6 +36,10 @@ class LayananLabAset extends Migration
             ],
             'bukti' => [
                 'type' => 'TEXT',
+            ],
+            'keterangan' => [
+                'type' => 'TEXT',
+                'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

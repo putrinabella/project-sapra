@@ -407,6 +407,13 @@ $routes->resource('laboratorium', ['filter' => 'isLoggedIn']);
 // MANAJEMEN LAYANAN
 
 // Layanan Aset Lab
+// Ajax Select2
+$routes->post('getAllKodeRincianLabAset', 'LayananLabAset::getAllKodeRincianLabAset');
+$routes->post('getKodeRincianLabAsetBySarana', 'LayananLabAset::getKodeRincianLabAsetBySarana');
+$routes->post('getIdentitasLabByKodeRincianLabAset', 'LayananLabAset::getIdentitasLabByKodeRincianLabAset');
+$routes->post('getKategoriManajemenByKodeRincianLabAset', 'LayananLabAset::getKategoriManajemenByKodeRincianLabAset');
+$routes->post('getIdRincianLabAsetByKodeRincianLabAset', 'LayananLabAset::getIdRincianLabAsetByKodeRincianLabAset');
+
 $routes->get('layananLabAset/createTemplate', 'LayananLabAset::createTemplate');
 $routes->get('layananLabAset/generatePDF', 'LayananLabAset::generatePDF');
 $routes->get('layananLabAset/export', 'LayananLabAset::export');
