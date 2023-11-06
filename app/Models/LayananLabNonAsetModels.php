@@ -5,18 +5,18 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class LayananLabNonAsetModels extends Model
-{
+{   
     protected $table            = 'tblLayananLabNonAset';
     protected $primaryKey       = 'idLayananLabNonAset';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idLayananLabNonAset', 'idSumberDana', 'idKategoriManajemen', 'idIdentitasLab', 'idStatusLayanan', 'biaya', 'bukti', 'tanggal', 'spesifikasi'];
+    protected $allowedFields    = ['idLayananLabNonAset', 'idSumberDana', 'idKategoriMep', 'idIdentitasLab', 'idStatusLayanan', 'biaya', 'bukti', 'tanggal', 'spesifikasi'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblLayananLabNonAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblLayananLabNonAset.idKategoriManajemen');
+        $builder->join('tblKategoriMep', 'tblKategoriMep.idKategoriMep = tblLayananLabNonAset.idKategoriMep');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblLayananLabNonAset.idIdentitasLab');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblLayananLabNonAset.idStatusLayanan');
         $builder->where('tblLayananLabNonAset.deleted_at', null);
@@ -27,7 +27,7 @@ class LayananLabNonAsetModels extends Model
     function getRecycle() {
         $builder = $this->db->table($this->table);
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblLayananLabNonAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblLayananLabNonAset.idKategoriManajemen');
+        $builder->join('tblKategoriMep', 'tblKategoriMep.idKategoriMep = tblLayananLabNonAset.idKategoriMep');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblLayananLabNonAset.idIdentitasLab');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblLayananLabNonAset.idStatusLayanan');
         $builder->where('tblLayananLabNonAset.deleted_at IS NOT NULL');
@@ -39,7 +39,7 @@ class LayananLabNonAsetModels extends Model
         $builder = $this->db->table($this->table);
         $builder->select($columns);
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblLayananLabNonAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblLayananLabNonAset.idKategoriManajemen');
+        $builder->join('tblKategoriMep', 'tblKategoriMep.idKategoriMep = tblLayananLabNonAset.idKategoriMep');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblLayananLabNonAset.idIdentitasLab');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblLayananLabNonAset.idStatusLayanan');
         

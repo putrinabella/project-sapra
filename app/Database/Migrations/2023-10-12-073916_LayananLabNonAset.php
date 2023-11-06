@@ -31,7 +31,7 @@ class LayananLabNonAset extends Migration
                 'type' => 'INT',
                 'constraint' => 2,
             ],
-            'idKategoriManajemen' => [
+            'idKategoriMep' => [
                 'type' => 'INT',
                 'constraint' => 3,
             ],

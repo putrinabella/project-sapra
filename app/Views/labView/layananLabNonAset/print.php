@@ -68,7 +68,7 @@
                             <?= $value->namaStatusLayanan ?>
                         </td>
                         <td>
-                            <?= $value->namaKategoriManajemen ?>
+                            <?= $value->namaKategoriMep ?>
                         </td>
                         <td>
                             <?= $value->namaSumberDana ?>

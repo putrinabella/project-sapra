@@ -86,7 +86,7 @@
                                 <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
                                 <td class="text-center"><?=$value->namaLab?></td>
                                 <td class="text-center"><?=$value->namaStatusLayanan?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
+                                <td class="text-center"><?=$value->namaKategoriMep?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">

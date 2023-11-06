@@ -57,7 +57,7 @@
                             <td>Kategori Manajemen</td>
                             <td>:</td>
                             <td>
-                                <?= $dataLayananLabNonAset->namaKategoriManajemen?>
+                                <?= $dataLayananLabNonAset->namaKategoriMep?>
                             </td>
                         </tr>
                         <tr>
