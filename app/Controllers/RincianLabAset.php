@@ -49,12 +49,12 @@ class RincianLabAset extends ResourceController
         return view('labView/rincianLabAset/dataSarana', $data);
     }
 
-    public function pemusnahanAset() {
+    public function pemusnahanLabAset() {
         $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getDestroy();
-        return view('labView/rincianLabAset/dataPemusnahanAset', $data);
+        return view('labView/rincianLabAset/dataPemusnahanLabAset', $data);
     }
 
-    public function pemusnahanAsetDelete($idRincianLabAset) {
+    public function pemusnahanLabAsetDelete($idRincianLabAset) {
         if ($this->request->getMethod(true) === 'POST') {
             $newSectionAset = $this->request->getPost('sectionAset');
             $namaAkun = $this->request->getPost('namaAkun'); 
@@ -62,7 +62,7 @@ class RincianLabAset extends ResourceController
     
             if ($this->rincianLabAsetModel->updateSectionAset($idRincianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
                 if ($newSectionAset === 'Dimusnahkan') {
-                    return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Aset berhasil dimusnahkan');
+                    return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
                     return redirect()->to(site_url('rincianLabAset'))->with('success', 'Sarana berhasil dikembalikan');
                 }
@@ -194,7 +194,7 @@ class RincianLabAset extends ResourceController
         }
     }
 
-    public function editPemusnahan($id = null) {
+    public function editPemusnahanLab($id = null) {
         if ($id != null) {
             $dataRincianLabAset = $this->rincianLabAsetModel->find($id);
     
@@ -206,7 +206,7 @@ class RincianLabAset extends ResourceController
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                 ];
-                return view('labView/rincianLabAset/editPemusnahan', $data);
+                return view('labView/rincianLabAset/editPemusnahanLab', $data);
             } else {
                 return view('error/404');
             }
@@ -215,11 +215,11 @@ class RincianLabAset extends ResourceController
         }
     }
 
-    public function updatePemusnahan($id = null) {
+    public function updatePemusnahanLab($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
             $this->rincianLabAsetModel->update($id, $data);
-            return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Data berhasil diupdate');
+            return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
@@ -890,14 +890,14 @@ class RincianLabAset extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Pemusnahan Aset.xlsx');
+        header('Content-Disposition: attachment;filename=Aset Laboratorium -  Pemusnahan Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
     
-    public function dataDestroyaGeneratePDF() {
-        $filePath = APPPATH . 'Views/labView/rincianLabAset/printPemusnahan.php';
+    public function dataDestroyLabGeneratePDF() {
+        $filePath = APPPATH . 'Views/labView/rincianLabAset/printPemusnahaLab.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
@@ -918,7 +918,7 @@ class RincianLabAset extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Sarana - Data Pemusnahan Report.pdf';
+        $filename = 'Aset Laboratorium -  Data Pemusnahan Report.pdf';
         $dompdf->stream($filename);
     }
 }

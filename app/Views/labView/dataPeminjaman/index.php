@@ -24,18 +24,25 @@
                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="search"></i>
+                </button>
+                <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-secondary btn-icon  me-1 ">
+                    <i data-feather="filter"></i>
+                </a>
+                <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-success btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+            <!-- <div class="col py-3 p-0 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary btn-icon-text">
                     <i class="btn-icon-prepend" data-feather="search"></i>
                     Filter
                 </button>
-            </div>
+            </div> -->
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-secondary btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="refresh-ccw"></i>
-            Refresh
-        </a>
         <a href="<?= site_url('dataPeminjaman/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
@@ -175,5 +182,7 @@
         </div>
     </div>
 </div>
+
+
 
 <?= $this->endSection(); ?>

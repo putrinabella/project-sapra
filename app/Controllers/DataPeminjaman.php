@@ -155,7 +155,6 @@ class DataPeminjaman extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        // $data = $this->dataPeminjamanModel->getAll();
         $data = $this->dataPeminjamanModel->getDataExport($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();

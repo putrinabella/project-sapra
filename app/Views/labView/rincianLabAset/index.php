@@ -138,7 +138,7 @@
                                     </form>
                                 </td>
                                 <td class="text-center">
-                                <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianLabAset) ?>" method="post" class="d-inline">
+                                <form action="<?= site_url('pemusnahanLabAset/delete/' . $value->idRincianLabAset) ?>" method="post" class="d-inline">
                                     <?= csrf_field() ?>
                                     <div class="form-group">
                                         <div class="d-flex align-items-center">
@@ -146,7 +146,7 @@
                                                 <option value="None">None</option>
                                                 <option value="Dimusnahkan">Dimusnahkan</option>
                                             </select>
-                                            <input class="form-control" type="text" name="namaAkun" value=" <?= session('username'); ?>" hidden>
+                                            <input class="form-control" type="text" name="namaAkun" value=" <?= session('nama'); ?>" hidden>
                                             <input class="form-control" type="text" name="kodeAkun" value=" <?= session('role'); ?>" hidden>
                                             <button type="submit" class="btn btn-success btn-icon ml-2 submitButton">
                                                 <i data-feather="check"></i>
@@ -164,7 +164,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -186,5 +185,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sectionAsetSelects = document.querySelectorAll('.sectionAsetSelect');
+        const submitButtons = document.querySelectorAll('.submitButton');
+
+        sectionAsetSelects.forEach((select, index) => {
+            select.addEventListener('change', function () {
+                if (select.value === 'None') {
+                    submitButtons[index].disabled = true;
+                } else {
+                    submitButtons[index].disabled = false;
+                }
+            });
+
+            if (select.value === 'None') {
+                submitButtons[index].disabled = true;
+            }
+        });
+    });
+</script>
 
 <?= $this->endSection(); ?>

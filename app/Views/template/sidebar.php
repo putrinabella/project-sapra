@@ -72,17 +72,30 @@
 
     <li class="nav-item nav-category">Laboratorium</li>
     <li class="nav-item">
-        <a href="<?= site_url('laboratorium') ?>" class="nav-link">
-            <i class="link-icon" data-feather="bookmark"></i>
-            <span class="link-title">Laboratorium</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
+        <a class="nav-link" data-bs-toggle="collapse" href="#rincianLabAset" role="button" aria-expanded="false" aria-controls="rincianLabAset">
             <i class="link-icon" data-feather="folder"></i>
             <span class="link-title">Manajemen Aset</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="rincianLabAset">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('laboratorium') ?>" class="nav-link">Laboratorium</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">Data Rincian Aset</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('pemusnahanLabAset') ?>" class="nav-link">
+            <i class="link-icon" data-feather="trash"></i>
+            <span class="link-title">Pemusnahan Aset</span>
         </a>
     </li>
+    
+    
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
             <i class="link-icon" data-feather="user-check"></i>

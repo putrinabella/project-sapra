@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Data Pemusnahan Aset &verbar; SARPRA </title>
+<title>Data Pemusnahan Aset Laboratorium &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -9,13 +9,13 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data Pemusnahan Aset</li>
+        <li class="breadcrumb-item active" aria-current="page">Data Pemusnahan Aset Laboratorium</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Data Pemusnahan Aset</h4>
+        <h4 class="mb-3 mb-md-0">Data Pemusnahan Aset Laboratorium</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <div class="dropdown">
@@ -25,8 +25,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('pemusnahanAset/exportDestroyFile') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('pemusnahanAset/dataDestroyaGeneratePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('pemusnahanLabAset/exportDestroyFile') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('pemusnahanLabAset/dataDestroyLabGeneratePDF') ?>">Download as PDF</a>
             </div>
         </div>
     </div>
@@ -81,14 +81,14 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataRincianAset as $key => $value) : ?>
+                            <?php foreach ($dataRincianLabAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?= date('d F Y', strtotime($value->tanggalPemusnahan)) ?></td>
-                                <td class="text-center"><?=$value->kodeRincianAset?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
+                                <td class="text-center"><?=$value->kodeRincianLabAset?></td>
+                                <td class="text-center"><?=$value->namaLab?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
@@ -106,13 +106,13 @@
                                 <td class="text-center"><?= $value->namaAkun; ?> </td>
                                 <td class="text-center"><?= $value->kodeAkun; ?> </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>"
+                                    <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('rincianAset/editPemusnahan/'.$value->idRincianAset) ?>"
+                                    <a href="<?=site_url('rincianLabAset/editPemusnahanLab/'.$value->idRincianLabAset) ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 </td>
                                 <td class="text-center">
-                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                    <form action="<?= site_url('pemusnahanLabAset/delete/' . $value->idRincianLabAset) ?>" method="post" class="d-inline">
                                         <?= csrf_field() ?>
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">

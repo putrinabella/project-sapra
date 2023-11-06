@@ -375,8 +375,8 @@ $routes->resource('tagihanInternet', ['filter' => 'isLoggedIn']);
 // LABORATORIUM
 
 // Manajemen Aset
-$routes->get('pemusnahanAsetDetail/(:num)', 'RincianLabAset::pemusnahanAsetDetail/$1');
-$routes->get('pemusnahanAset', 'RincianLabAset::pemusnahanAset');
+$routes->get('pemusnahanLabAsetDetail/(:num)', 'RincianLabAset::pemusnahanLabAsetDetail/$1');
+$routes->get('pemusnahanLabAset', 'RincianLabAset::pemusnahanLabAset');
 $routes->get('dataSaranaDetail/(:num)', 'RincianLabAset::dataSaranaDetail/$1');
 $routes->get('dataSarana', 'RincianLabAset::dataSarana');
 $routes->get('dataSarana/generatePDF', 'RincianLabAset::dataSaranaGeneratePDF');
@@ -385,16 +385,16 @@ $routes->get('rincianLabAset/createTemplate', 'RincianLabAset::createTemplate');
 $routes->get('rincianLabAset/print/(:num)', 'RincianLabAset::print/$1');
 $routes->get('rincianLabAset/generatePDF', 'RincianLabAset::generatePDF');
 $routes->get('rincianLabAset/export', 'RincianLabAset::export');
-$routes->post('rincianLabAset/import', 'RincianLabAset::import');
 $routes->get('rincianLabAset/edit', 'RincianLabAset::edit');
-$routes->get('rincianLabAset/editPemusnahan/(:any)', 'RincianLabAset::editPemusnahan/$1');
+$routes->get('rincianLabAset/editPemusnahanLab/(:any)', 'RincianLabAset::editPemusnahanLab/$1');
 $routes->get('rincianLabAset/trash', 'RincianLabAset::trash');
 $routes->get('rincianLabAset/restore/(:any)', 'RincianLabAset::restore/$1');
 $routes->get('rincianLabAset/restore', 'RincianLabAset::restore');
-$routes->get('pemusnahanAset/dataDestroyaGeneratePDF', 'RincianLabAset::dataDestroyaGeneratePDF');
-$routes->get('pemusnahanAset/exportDestroyFile', 'RincianLabAset::exportDestroyFile');
-$routes->post('pemusnahanAset/delete/(:any)', 'RincianLabAset::pemusnahanAsetDelete/$1');
-$routes->patch('pemusnahanAset/updatePemusnahan/(:any)', 'RincianLabAset::updatePemusnahan/$1');
+$routes->get('pemusnahanLabAset/dataDestroyLabGeneratePDF', 'RincianLabAset::dataDestroyLabGeneratePDF');
+$routes->get('pemusnahanLabAset/exportDestroyFile', 'RincianLabAset::exportDestroyFile');
+$routes->post('rincianLabAset/import', 'RincianLabAset::import');
+$routes->post('pemusnahanLabAset/delete/(:any)', 'RincianLabAset::pemusnahanLabAsetDelete/$1');
+$routes->patch('pemusnahanLabAset/updatePemusnahanLab/(:any)', 'RincianLabAset::updatePemusnahanLab/$1');
 $routes->delete('rincianLabAset/deletePermanent/(:any)', 'RincianLabAset::deletePermanent/$1');
 $routes->delete('rincianLabAset/deletePermanent', 'RincianLabAset::deletePermanent');
 $routes->resource('rincianLabAset', ['filter' => 'isLoggedIn']);
