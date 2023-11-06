@@ -79,11 +79,21 @@ class LaboratoriumModels extends Model
 
     public function getSaranaByLab($idIdentitasLab) {
         $builder = $this->db->table('tblRincianLabAset');
-        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE WHEN tblRincianLabAset.status = "Bagus" OR tblRincianLabAset.status = "Rusak" OR tblRincianLabAset.status = "Hilang" THEN 1 ELSE 0 END) as totalSarana');
-        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE WHEN tblRincianLabAset.status = "Bagus" THEN 1 ELSE 0 END) as saranaLayak');
-        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE WHEN tblRincianLabAset.status = "Rusak" THEN 1 ELSE 0 END) as saranaRusak');
-        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE WHEN tblRincianLabAset.status = "Hilang" THEN 1 ELSE 0 END) as saranaHilang');
-        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE WHEN tblRincianLabAset.sectionAset = "Dipinjam" THEN 1 ELSE 0 END) as saranaDipinjam');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianLabAset.sectionAset != "dimusnahkan" AND (tblRincianLabAset.status = "Bagus" OR tblRincianLabAset.status = "Rusak" OR tblRincianLabAset.status = "Hilang")
+        THEN 1 ELSE 0 END) as totalSarana');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianLabAset.sectionAset != "dimusnahkan" AND tblRincianLabAset.status = "Bagus" 
+        THEN 1 ELSE 0 END) as saranaLayak');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianLabAset.sectionAset != "dimusnahkan" AND tblRincianLabAset.status = "Rusak" 
+        THEN 1 ELSE 0 END) as saranaRusak');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianLabAset.sectionAset != "dimusnahkan" AND tblRincianLabAset.status = "Hilang" 
+        THEN 1 ELSE 0 END) as saranaHilang');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianLabAset.sectionAset != "dimusnahkan" AND tblRincianLabAset.sectionAset = "Dipinjam" 
+        THEN 1 ELSE 0 END) as saranaDipinjam');
         $builder->select('tblRincianLabAset.idRincianLabAset');
         $builder->select('(SELECT SUM(jumlah) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "peminjaman") as jumlahPeminjaman', false);
         $builder->select('(SELECT SUM(jumlahBarangRusak + jumlahBarangHilang) FROM tblManajemenPeminjaman WHERE tblManajemenPeminjaman.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana AND tblManajemenPeminjaman.idIdentitasLab = tblRincianLabAset.idIdentitasLab AND tblManajemenPeminjaman.status = "pengembalian") as asetTidakTersedia', false);
