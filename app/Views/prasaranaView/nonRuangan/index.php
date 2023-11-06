@@ -23,10 +23,10 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="dataTable">
+                    <table class="table table-hover"  id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
-                                <th style="width: 10%;">No.</th>
+                                <th>No.</th>
                                 <th>Nama</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
