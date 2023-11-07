@@ -27196,3 +27196,27 @@ div.tox .tox-dialog__body {
   margin: 0 0 0 0.7em;
 }
 /*# sourceMappingURL=../maps/light/style.css.map */
+.box {
+  margin: 3px 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.box-number {
+  flex: 1;
+  text-align: center;
+  background-color: #8c8e8f;
+  padding: 5px;
+  color: whitesmoke;
+}
+
+.box-label {
+  flex: 3;
+  text-align: left;
+  border-top: 1px solid #000;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 5px;
+}

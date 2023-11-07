@@ -28,12 +28,11 @@ $routes->get('viewLogs/export', 'UserLogs::export');
 
 
 // HOME
-$routes->get('/', 'ProfilSekolah::index');
-$routes->get('home', 'ProfilSekolah::index');
-// $routes->get('home/generate', 'Home::generate');
-// $routes->get('/', 'Home::index');
-// $routes->get('home', 'Home::index');
-// $routes->get('home/generate', 'Home::generate');
+// $routes->get('/', 'ProfilSekolah::index');
+// $routes->get('home', 'ProfilSekolah::index');
+
+$routes->get('/', 'Home::index');
+$routes->get('home', 'Home::index');
 
 
 // DATA MASTER

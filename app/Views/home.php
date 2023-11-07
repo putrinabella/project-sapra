@@ -8,11 +8,14 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Manajemen Sarana, Prasarana, IT dan Laboratorium</h4>
+        <h4 class="mb-3 mb-md-0">Selamat Datang,
+            <?= session('nama'); ?>!
+        </h4>
     </div>
-    <!-- <div class="d-flex align-items-center flex-wrap text-nowrap">
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
         <div class="input-group date datepicker wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-            <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar" class=" text-primary"></i></span>
+            <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"
+                    class=" text-primary"></i></span>
             <input type="text" class="form-control border-primary bg-transparent">
         </div>
         <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
@@ -23,176 +26,74 @@
             <i class="btn-icon-prepend" data-feather="download-cloud"></i>
             Download Report
         </button>
-    </div> -->
+    </div>
 
 </div>
-
 <div class="row">
     <div class="col-12 col-xl-12 stretch-card">
         <div class="row flex-grow-1">
-            <div class="col-md-3 grid-margin stretch-card">
+            <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <h6 class="card-title mb-0">Jumlah Aset Tersedia</h6>
-                            <div class="dropdown mb-2">
-                                <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                            class="">Edit</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="trash" class="icon-sm me-2"></i> <span
-                                            class="">Delete</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="printer" class="icon-sm me-2"></i> <span
-                                            class="">Print</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="download" class="icon-sm me-2"></i> <span
-                                            class="">Download</span></a>
-                                </div>
-                            </div>
+                        <div class="row text-center mb-4">
+                            <h4>Data Aset SMK Telkom Banjarbaru</h4>
                         </div>
                         <div class="row">
-                            <!-- <div class="col-6 col-md-12 col-xl-5"> -->
-                            <div>
-                                <h3 class="mb-2">3,897 putri nabella </h3>
-                                <div class="d-flex align-items-baseline">
-                                    <p class="text-success">
-                                        <span>+3.3%</span>
-                                        <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <h6 class="card-title mb-0">Jumlah Aset Tersedia</h6>
-                            <div class="dropdown mb-2">
-                                <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                            class="">Edit</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="trash" class="icon-sm me-2"></i> <span
-                                            class="">Delete</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="printer" class="icon-sm me-2"></i> <span
-                                            class="">Print</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="download" class="icon-sm me-2"></i> <span
-                                            class="">Download</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">3,897</h3>
-                                <div class="d-flex align-items-baseline">
-                                    <p class="text-success">
-                                        <span>+3.3%</span>
-                                        <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <h6 class="card-title mb-0">Jumlah Aset Tersedia</h6>
-                            <div class="dropdown mb-2">
-                                <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                            class="">Edit</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="trash" class="icon-sm me-2"></i> <span
-                                            class="">Delete</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="printer" class="icon-sm me-2"></i> <span
-                                            class="">Print</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="download" class="icon-sm me-2"></i> <span
-                                            class="">Download</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">3,897</h3>
-                                <div class="d-flex align-items-baseline">
-                                    <p class="text-success">
-                                        <span>+3.3%</span>
-                                        <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <h6 class="card-title mb-0">Jumlah Aset Tersedia</h6>
-                            <div class="dropdown mb-2">
-                                <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                            class="">Edit</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="trash" class="icon-sm me-2"></i> <span
-                                            class="">Delete</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="printer" class="icon-sm me-2"></i> <span
-                                            class="">Print</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="download" class="icon-sm me-2"></i> <span
-                                            class="">Download</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">3,897</h3>
-                                <div class="d-flex align-items-baseline">
-                                    <p class="text-success">
-                                        <span>+3.3%</span>
-                                        <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                    </p>
+                            <div class="col-12 col-xl-12 stretch-card">
+                                <div class="row flex-grow-1">
+                                    <?php foreach ($dataRincianAset as $key => $value) : ?>
+                                    <div class="col-md-4 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-7">
+                                                        <div class="row">
+                                                            <h6 class="card-title">
+                                                                <?= $value->namaSarana; ?>
+                                                            </h6>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="row text-center">
+                                                                <h1>
+                                                                    <?= $value->totalSarana; ?>
+                                                                </h1>
+                                                            </div>
+                                                            <div class="row text-center">
+                                                                <p>Buah</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <div class="row">
+                                                            <div class="box">
+                                                                <div class="box-number">
+                                                                    <?= $value->saranaLayak; ?>
+                                                                </div>
+                                                                <div class="box-label">Bagus</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="box">
+                                                                <div class="box-number">
+                                                                    <?= $value->saranaRusak + $value->saranaHilang; ?>
+                                                                </div>
+                                                                <div class="box-label">Rusak</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="box">
+                                                                <div class="box-number">
+                                                                    <?= $value->saranaDipinjam; ?>
+                                                                </div>
+                                                                <div class="box-label">Dipinjam</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
@@ -201,6 +102,80 @@
             </div>
         </div>
     </div>
-</div> <!-- row -->
+</div>
+<div class="row">
+    <div class="col-12 col-xl-12 stretch-card">
+        <div class="row flex-grow-1">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row text-center mb-4">
+                            <h4>Data Aset Laboratorium</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-12 stretch-card">
+                                <div class="row flex-grow-1">
+                                    <?php foreach ($dataRincianAsetLab as $key => $value) : ?>
+                                    <div class="col-md-4 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-7">
+                                                        <div class="row">
+                                                            <h6 class="card-title">
+                                                                <?= $value->namaSarana; ?>
+                                                            </h6>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="row text-center">
+                                                                <h1>
+                                                                    <?= $value->totalSarana; ?>
+                                                                </h1>
+                                                            </div>
+                                                            <div class="row text-center">
+                                                                <p>Buah</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <div class="row">
+                                                            <div class="box">
+                                                                <div class="box-number">
+                                                                    <?= $value->saranaLayak; ?>
+                                                                </div>
+                                                                <div class="box-label">Bagus</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="box">
+                                                                <div class="box-number">
+                                                                    <?= $value->saranaRusak + $value->saranaHilang; ?>
+                                                                </div>
+                                                                <div class="box-label">Rusak</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="box">
+                                                                <div class="box-number">
+                                                                    <?= $value->saranaDipinjam; ?>
+                                                                </div>
+                                                                <div class="box-label">Dipinjam</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?= $this->endSection(); ?>

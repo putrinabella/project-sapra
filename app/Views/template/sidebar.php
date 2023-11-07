@@ -1,5 +1,5 @@
 <ul class="nav">
-    <li class="nav-item nav-category">Main</li>
+    <!-- <li class="nav-item nav-category">Main</li> -->
     <li class="nav-item">
         <a href="<?= site_url('home') ?>" class="nav-link">
             <i class="link-icon" data-feather="box"></i>
@@ -22,17 +22,6 @@
                 <li class="nav-item">
                     <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian Aset</a>
                 </li>
-            </ul>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#pemusnahanAsetUmum" role="button" aria-expanded="false" aria-controls="pemusnahanAsetUmum">
-            <i class="link-icon" data-feather="trash"></i>
-            <span class="link-title">Pemusnahan Aset</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-        </a>
-        <div class="collapse" id="pemusnahanAsetUmum">
-            <ul class="nav sub-menu">
                 <li class="nav-item">
                     <a href="<?= site_url('pemusnahanAset') ?>" class="nav-link">Pemusnahan Aset</a>
                 </li>
@@ -85,17 +74,12 @@
                 <li class="nav-item">
                     <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">Data Rincian Aset</a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('pemusnahanLabAset') ?>" class="nav-link">Pemusnahan Aset</a>
+                </li>
             </ul>
         </div>
-    </li>
-    <li class="nav-item">
-        <a href="<?= site_url('pemusnahanLabAset') ?>" class="nav-link">
-            <i class="link-icon" data-feather="trash"></i>
-            <span class="link-title">Pemusnahan Aset</span>
-        </a>
-    </li>
-    
-    
+    </li> 
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
             <i class="link-icon" data-feather="user-check"></i>

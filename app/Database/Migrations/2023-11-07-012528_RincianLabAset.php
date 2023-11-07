@@ -19,6 +19,10 @@ class RincianLabAset extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'idManajemenPeminjaman' => [
+                'type' => 'INT',
+                'constraint' => 3,
+            ],
             'idIdentitasSarana' => [
                 'type' => 'INT',
                 'constraint' => 3,

@@ -25651,3 +25651,29 @@ div.tox .tox-dialog__body {
   width: 100%;
 }
 /*# sourceMappingURL=../maps/demo2/style.css.map */
+
+
+.box {
+  margin: 3px 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.box-number {
+  flex: 1;
+  text-align: center;
+  background-color: rgb(208, 214, 225);
+  padding: 5px;
+  color: black;
+}
+
+.box-label {
+  flex: 3;
+  text-align: left;
+  border-top: 1px solid rgb(208, 214, 225);
+  border-right: 1px solid rgb(208, 214, 225);
+  border-bottom: 1px solid rgb(208, 214, 225);
+  padding: 5px;
+}
