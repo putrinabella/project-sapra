@@ -190,7 +190,7 @@ $(function() {
     var date = new Date();
     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     $('#dashboardDate').datepicker({
-      format: "dd-MM-yyyy",
+      format: "dd MM yyyy",
       todayHighlight: true,
       autoclose: true
     });

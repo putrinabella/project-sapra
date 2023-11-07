@@ -19,4 +19,18 @@ class KategoriManajemenModels extends Model
             ->orWhere('namaKategoriManajemen', $namaKategoriManajemen)
             ->countAllResults() > 0;
     }
+    public function getKodeKategoriManajemenById($idKategoriManajemen) {
+        $builder = $this->db->table($this->table);
+        $builder->select('kodeKategoriManajemen');
+        $builder->where('idKategoriManajemen', $idKategoriManajemen);
+        $query = $builder->get();
+        
+        if ($query->getNumRows() > 0) {
+            $result = $query->getRow();
+            return $result->kodeKategoriManajemen;
+        } else {
+            return null; 
+        }
+    }
+    
 }

@@ -179,7 +179,8 @@
 
   <!-- Custom js for this page -->
   <script src="<?= base_url(); ?>/assets/js/form-validation.js"></script>
-  <script src="<?= base_url(); ?>/assets/js/dashboard-light.js"></script>
+  <!-- <script src="<?= base_url(); ?>/assets/js/dashboard-light.js"></script>
+  <script src="<?= base_url(); ?>/assets/js/dashboard-dark.js"></script> -->
   <script src="<?= base_url(); ?>/assets/js/datepicker.js"></script>
   <script src="<?= base_url(); ?>/assets/js/hide-alert.js"></script>
   <script src="<?= base_url(); ?>/assets/js/data-table.js"></script>
@@ -187,6 +188,12 @@
   <script src="<?= base_url(); ?>/assets/js/select2.js"></script>
   <script src="<?= base_url(); ?>/assets/js/dropify.js"></script>
   <script src="<?= base_url(); ?>/assets/js/custom.js"></script>
+  <?php
+    $jsFile = session()->get('mode') === 'dark' ? 'dashboard-dark.js' : 'dashboard-light.js';
+  ?>
+
+  <script src="<?= base_url(); ?>/assets/js/<?= $jsFile ?>"></script>
+
   <!-- <script src="<?= base_url(); ?>/assets/js/apexcharts-light.js"></script> -->
   <!-- <script src="<?= base_url(); ?>/assets/js/apexcharts-dark.js"></script> -->
   <!-- End custom js for this page -->

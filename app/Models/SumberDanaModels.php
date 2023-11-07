@@ -19,4 +19,18 @@ class SumberDanaModels extends Model
             ->orWhere('namaSumberDana', $namaSumberDana)
             ->countAllResults() > 0;
     }
+
+    public function getKodeSumberDanaById($idSumberDana) {
+        $builder = $this->db->table($this->table);
+        $builder->select('kodeSumberDana');
+        $builder->where('idSumberDana', $idSumberDana);
+        $query = $builder->get();
+        
+        if ($query->getNumRows() > 0) {
+            $result = $query->getRow();
+            return $result->kodeSumberDana;
+        } else {
+            return null; 
+        }
+    }
 }

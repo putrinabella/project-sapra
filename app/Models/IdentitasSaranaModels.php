@@ -20,4 +20,18 @@ class IdentitasSaranaModels extends Model
             ->orWhere('namaSarana', $namaSarana)
             ->countAllResults() > 0;
     }
+
+    public function getKodeSaranaById($idIdentitasSarana) {
+        $builder = $this->db->table($this->table);
+        $builder->select('kodeSarana');
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+        $query = $builder->get();
+        
+        if ($query->getNumRows() > 0) {
+            $result = $query->getRow();
+            return $result->kodeSarana;
+        } else {
+            return null; 
+        }
+    }
 }

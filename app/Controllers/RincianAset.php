@@ -38,6 +38,41 @@ class RincianAset extends ResourceController
         $this->db = \Config\Database::connect();
     }
 
+    public function generateKode() {
+        $idKategoriManajemen = $this->request->getPost('idKategoriManajemen');
+        $idIdentitasPrasarana = $this->request->getPost('idIdentitasPrasarana');
+        $idSumberDana = $this->request->getPost('idSumberDana');
+        $tahunPengadaan = $this->request->getPost('tahunPengadaan');
+        $idIdentitasSarana = $this->request->getPost('idIdentitasSarana');
+        $nomorBarang = $this->request->getPost('nomorBarang');
+
+        $kodeKategoriManajemen = $this->kategoriManajemenModel->getKodeKategoriManajemenById($idKategoriManajemen);
+        $kodePrasarana = $this->identitasPrasaranaModel->getKodePrasaranaById($idIdentitasPrasarana);
+        $kodeSumberDana = $this->sumberDanaModel->getKodeSumberDanaById($idSumberDana);
+        $kodeSarana = $this->identitasSaranaModel->getKodeSaranaById($idIdentitasSarana);
+
+        if ($tahunPengadaan === '0000') {
+            $tahunPengadaan = 'xx';
+        } else {
+            $tahunPengadaan = substr($tahunPengadaan, -2);
+        }
+        // $kodePrasarana = substr($kodePrasarana, -2);
+        $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
+
+        
+        $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
+        echo json_encode($kodeRincianAset);
+    }
+
+    public function checkDuplicate() {
+        $kodeRincianAset = $this->request->getPost('kodeRincianAset');
+    
+        $isDuplicate = $this->rincianAsetModel->isDuplicate($kodeRincianAset);
+    
+        echo json_encode(['isDuplicate' => $isDuplicate]);
+    }
+    
+
     public function index() {
         $data['dataRincianAset'] = $this->rincianAsetModel->getAll();
         return view('saranaView/rincianAset/index', $data);
@@ -84,29 +119,6 @@ class RincianAset extends ResourceController
     public function dataSaranaDetail($id = null) {
         $data['dataSarana'] = $this->rincianAsetModel->getDataBySaranaDetail($id);
         return view('saranaView/rincianAset/dataSaranaDetail', $data);
-    }
-    
-    public function generateKode() {
-        $kodeKategoriManajemen = $this->request->getPost('kodeKategoriManajemen');
-        $kodePrasarana = $this->request->getPost('kodePrasarana');
-        $kodeSumberDana = $this->request->getPost('kodeSumberDana');
-        $tahunPengadaan = $this->request->getPost('tahunPengadaan');
-        $kodeSarana = $this->request->getPost('kodeSarana');
-        $nomorBarang = $this->request->getPost('nomorBarang');
-
-        if ($tahunPengadaan === '0000') {
-            $tahunPengadaan = 'xx';
-        } else {
-            $tahunPengadaan = substr($tahunPengadaan, -2);
-        }
-        $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
-        
-        // $kodePrasarana = substr($kodePrasarana, -2);
-
-
-        $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
-
-        echo json_encode($kodeRincianAset);
     }
 
     public function generateQRCode($kodeRincianAset)    {
@@ -173,8 +185,9 @@ class RincianAset extends ResourceController
         $data = $this->request->getPost();
         if (!empty($data['idIdentitasSarana']) && !empty($data['tahunPengadaan']) && !empty($data['idSumberDana']) && !empty($data['idIdentitasPrasarana'])) {
             
-            $insertedID = $this->rincianAsetModel->insert($data);
-            $this->rincianAsetModel->setKodeAset($insertedID);
+            // $insertedID = $this->rincianAsetModel->insert($data);
+            // $this->rincianAsetModel->setKodeAset($insertedID);
+            $this->rincianAsetModel->insert($data);
             
             return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil disimpan');
         } else {
@@ -212,11 +225,8 @@ class RincianAset extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-    
                 $this->rincianAsetModel->update($id, $data);
-                
-                $this->rincianAsetModel->updateKodeAset($id);
-                
+
                 return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');

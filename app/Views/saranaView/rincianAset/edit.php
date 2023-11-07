@@ -27,10 +27,19 @@
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
+                        <label for="kodeRincianAset" class="col-sm-3 col-form-label">Kode Rincian Aset</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kodeRincianAset" name="kodeRincianAset"
+                                placeholder="Kode akan dibuat secara otomatis" value=" <?= $dataRincianAset->kodeRincianAset; ?> "; readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
-                                <option value="" hidden>Pilih Lokasi</option>
+                        <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"
+                                id="idIdentitasPrasarana" name="idIdentitasPrasarana">
+                                <option value="" selected disabled hidden>Pilih lokasi</option>
                                 <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasPrasarana?>" <?=$dataRincianAset->idIdentitasPrasarana ==
                                     $value->idIdentitasPrasarana ? 'selected' : null ?>>
@@ -43,8 +52,10 @@
                     <div class="row mb-3">
                         <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Barang</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
-                                <option value="" hidden>Pilih Kategori Barang</option>
+                        <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true"
+                                id="idKategoriManajemen" name="idKategoriManajemen">
+                                <option value="" selected disabled hidden>Pilih kategori</option>
                                 <?php foreach($dataKategoriManajemen as $key =>$value): ?>
                                 <option value="<?=$value->idKategoriManajemen?>" <?=$dataRincianAset->
                                     idKategoriManajemen == $value->idKategoriManajemen ? 'selected' : null ?>>
@@ -57,8 +68,10 @@
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
-                                <option value="" hidden>Pilih aset</option>
+                        <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true"
+                                id="idIdentitasSarana" name="idIdentitasSarana">
+                                <option value="" selected disabled hidden>Pilih aset</option>
                                 <?php foreach($dataIdentitasSarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasSarana?>" <?=$dataRincianAset->idIdentitasSarana ==
                                     $value->idIdentitasSarana ? 'selected' : null ?>>
@@ -78,7 +91,10 @@
                     <div class="row mb-3">
                         <label for="status" class="col-sm-3 col-form-label">Status</label>
                         <div class="col-sm-9">
-                        <select class="form-select" id="status" name="status">
+                        <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true" id="status"
+                                name="status">
+                                <option value="" selected disabled hidden>Pilih status</option>
                             <option value="Bagus" <?= $dataRincianAset->status == 'Bagus' ? 'selected' : '' ?>>Bagus</option>
                             <option value="Rusak" <?= $dataRincianAset->status == 'Rusak' ? 'selected' : '' ?>>Rusak</option>
                             <option value="Hilang" <?= $dataRincianAset->status == 'Hilang' ? 'selected' : '' ?>>Hilang</option>
@@ -88,8 +104,10 @@
                     <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idSumberDana" name="idSumberDana">
-                                <option value="" hidden>Pilih sumber dana</option>
+                        <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="5" tabindex="-1" aria-hidden="true" id="idSumberDana"
+                                name="idSumberDana">
+                                <option value="" selected disabled hidden>Pilih sumber dana</option>
                                 <?php foreach($dataSumberDana as $key =>$value): ?>
                                 <option value="<?=$value->idSumberDana?>" <?=$dataRincianAset->idSumberDana ==
                                     $value->idSumberDana ? 'selected' : null ?>>
@@ -152,7 +170,8 @@
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('rincianAset') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-primary" id="submit-button"
+                                onclick="checkForDuplicate()">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -160,5 +179,58 @@
         </div>
     </div>
 </div>
+
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+
+<script>
+    function checkForDuplicate() {
+        var kodeRincianAset = $('#kodeRincianAset').val();
+        // alert('Before sending AJAX request: ' + kodeRincianAset);
+
+        $.ajax({
+            type: 'POST',
+            url: 'updateCheckDuplicate',
+            data: { kodeRincianAset: kodeRincianAset },
+            success: function (response) {
+                // alert('Inside success function: ' + response);
+                var result = JSON.parse(response);
+                if (result.isDuplicate) {
+                    alert('Kode Rincian Aset is a duplicate. Please change it.');
+                } else {
+                    $('#custom-validation').submit();
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('#idKategoriManajemen, #idIdentitasPrasarana, #idSumberDana, #tahunPengadaan, #idIdentitasSarana, #nomorBarang').change(function () {
+            var idKategoriManajemen = $('#idKategoriManajemen').val();
+            var idIdentitasPrasarana = $('#idIdentitasPrasarana').val();
+            var idSumberDana = $('#idSumberDana').val();
+            var tahunPengadaan = $('#tahunPengadaan').val();
+            var idIdentitasSarana = $('#idIdentitasSarana').val();
+            var nomorBarang = $('#nomorBarang').val();
+
+            $.ajax({
+                type: 'POST',
+                url: 'updateKode',
+                data: {
+                    idKategoriManajemen: idKategoriManajemen,
+                    idIdentitasPrasarana: idIdentitasPrasarana,
+                    idSumberDana: idSumberDana,
+                    tahunPengadaan: tahunPengadaan,
+                    idIdentitasSarana: idIdentitasSarana,
+                    nomorBarang: nomorBarang
+                },
+                success: function (data) {
+                    data = data.replace(/"/g, '');
+                    $('#kodeRincianAset').val(data);
+                }
+            });
+        });
+    });
+</script>
 
 <?= $this->endSection(); ?>

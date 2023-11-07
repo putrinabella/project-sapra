@@ -13,6 +13,13 @@ class RincianAsetModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
+
+    public function isDuplicate($kodeRincianAset) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodeRincianAset', $kodeRincianAset)
+            ->countAllResults() > 0;
+    }
+
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -185,21 +192,23 @@ class RincianAsetModels extends Model
         return '';
     }
 
-    public function getKodePrasarana($idIdentitasPrasarana) {
-        $builder = $this->db->table('tblIdentitasPrasarana');
-        $builder->select('kodeIdentitasPrasarana');
+
+    // public function getKodePrasarana($idIdentitasPrasarana) {
+    //     $builder = $this->db->table('tblIdentitasPrasarana');
+    //     $builder->select('kodeIdentitasPrasarana');
     
-        $builder->where('idIdentitasPrasarana', $idIdentitasPrasarana);
+    //     $builder->where('idIdentitasPrasarana', $idIdentitasPrasarana);
     
-        $query = $builder->get();
-        $result = $query->getRow();
+    //     $query = $builder->get();
+    //     $result = $query->getRow();
     
-        if ($result) {
-            return $result->kodePrasarana;
-        }
+    //     if ($result) {
+    //         return $result->kodePrasarana;
+    //     }
     
-        return '';
-    }
+    //     return '';
+    // }
+    
     public function getKodeSumberDana($idSumberDana) {
         $builder = $this->db->table('tblSumberDana');
         $builder->select('kodeSumberDana');

@@ -38,6 +38,20 @@ class IdentitasPrasaranaModels extends Model
             ->countAllResults() > 0;
     }
     
+    public function getKodePrasaranaById($idIdentitasPrasarana) {
+        $builder = $this->db->table($this->table);
+        $builder->select('kodePrasarana');
+        $builder->where('idIdentitasPrasarana', $idIdentitasPrasarana);
+        $query = $builder->get();
+        
+        if ($query->getNumRows() > 0) {
+            $result = $query->getRow();
+            return $result->kodePrasarana;
+        } else {
+            return null; 
+        }
+    }
+    
 
     // function getPaginated($num, $keyword = null) {
     //     $builder = $this->builder();
