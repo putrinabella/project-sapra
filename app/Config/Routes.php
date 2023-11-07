@@ -201,6 +201,7 @@ $routes->get('rincianAset/restore', 'RincianAset::restore');
 $routes->get('pemusnahanAset/dataDestroyaGeneratePDF', 'RincianAset::dataDestroyaGeneratePDF');
 $routes->get('pemusnahanAset/exportDestroyFile', 'RincianAset::exportDestroyFile');
 $routes->post('pemusnahanAset/delete/(:any)', 'RincianAset::pemusnahanAsetDelete/$1');
+$routes->post('rincianAset/generateKode', 'RincianAset::generateKode');
 $routes->patch('pemusnahanAset/updatePemusnahan/(:any)', 'RincianAset::updatePemusnahan/$1');
 $routes->delete('rincianAset/deletePermanent/(:any)', 'RincianAset::deletePermanent/$1');
 $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');

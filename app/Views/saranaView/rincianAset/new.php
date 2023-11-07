@@ -25,10 +25,17 @@
                 <form action="<?= site_url('rincianAset')?>" method="post" enctype="multipart/form-data" autocomplete="off" id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
+                        <label for="kodeRincianAset" class="col-sm-3 col-form-label">Kode Rincian Aset</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kodeRincianAset" name="kodeRincianAset"
+                                placeholder="Kode akan dibuat secara otomatis">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
-                                <option value="" hidden>Pilih Lokasi</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="idIdentitasPrasarana" name="idIdentitasPrasarana">
+                                <option value="" selected disabled hidden>Pilih lokasi</option>
                                 <?php foreach($dataIdentitasPrasarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasPrasarana?>"><?=$value->namaPrasarana?></option>
                                 <?php endforeach; ?>
@@ -38,8 +45,8 @@
                     <div class="row mb-3">
                         <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Barang</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idKategoriManajemen" name="idKategoriManajemen">
-                                <option value="" hidden>Pilih Kategori Barang</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true" id="idKategoriManajemen" name="idKategoriManajemen">
+                                <option value="" selected disabled hidden>Pilih kategori</option>
                                 <?php foreach($dataKategoriManajemen as $key =>$value): ?>
                                 <option value="<?=$value->idKategoriManajemen?>"><?=$value->namaKategoriManajemen?>
                                 </option>
@@ -50,8 +57,8 @@
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasSarana" name="idIdentitasSarana">
-                                <option value="" hidden>Pilih aset</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true" id="idIdentitasSarana" name="idIdentitasSarana">
+                                <option value="" selected disabled hidden>Pilih aset</option>
                                 <?php foreach($dataIdentitasSarana as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasSarana?>"><?=$value->namaSarana?></option>
                                 <?php endforeach; ?>
@@ -68,7 +75,8 @@
                     <div class="row mb-3">
                         <label for="status" class="col-sm-3 col-form-label">Status Aset</label>
                         <div class="col-sm-9">
-                        <select class="form-select" id="status" name="status">
+                        <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true" id="status" name="status">
+                            <option value="" selected disabled hidden>Pilih status</option>
                             <option value="Bagus" >Bagus</option>
                             <option value="Rusak" >Rusak</option>
                             <option value="Hilang" >Hilang</option>
@@ -78,8 +86,8 @@
                     <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idSumberDana" name="idSumberDana">
-                                <option value="" hidden>Pilih sumber dana</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="5" tabindex="-1" aria-hidden="true" id="idSumberDana" name="idSumberDana">
+                                <option value="" selected disabled hidden>Pilih sumber dana</option>
                                 <?php foreach($dataSumberDana as $key =>$value): ?>
                                 <option value="<?=$value->idSumberDana?>"><?=$value->namaSumberDana?></option>
                                 <?php endforeach; ?>
@@ -146,5 +154,41 @@
         </div>
     </div>
 </div>
+
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Add change event listeners to the relevant input fields
+        $('#idKategoriManajemen, #idIdentitasPrasarana, #idSumberDana, #tahunPengadaan, #idIdentitasSarana, #nomorBarang').change(function() {
+            // Get the values from the input fields
+            var kodeKategoriManajemen = $('#idKategoriManajemen').val();
+            var kodePrasarana = $('#idIdentitasPrasarana').val();
+            var kodeSumberDana = $('#idSumberDana').val();
+            var tahunPengadaan = $('#tahunPengadaan').val();
+            var kodeSarana = $('#idIdentitasSarana').val();
+            var nomorBarang = $('#nomorBarang').val();
+
+            // Make an Ajax request to the server to generate kodeRincianAset
+            $.ajax({
+                type: 'POST',
+                url: 'generateKode', // Replace with your server URL
+                data: {
+                    kodeKategoriManajemen: kodeKategoriManajemen,
+                    kodePrasarana: kodePrasarana,
+                    kodeSumberDana: kodeSumberDana,
+                    tahunPengadaan: tahunPengadaan,
+                    kodeSarana: kodeSarana,
+                    nomorBarang: nomorBarang
+                },
+                success: function(data) {
+                    // Update the kodeRincianAset input field with the generated code
+                    $('#kodeRincianAset').val(data);
+                }
+            });
+        });
+    });
+</script>
 
 <?= $this->endSection(); ?>

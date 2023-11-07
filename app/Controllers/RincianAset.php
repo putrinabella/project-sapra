@@ -85,6 +85,29 @@ class RincianAset extends ResourceController
         $data['dataSarana'] = $this->rincianAsetModel->getDataBySaranaDetail($id);
         return view('saranaView/rincianAset/dataSaranaDetail', $data);
     }
+    
+    public function generateKode() {
+        $kodeKategoriManajemen = $this->request->getPost('kodeKategoriManajemen');
+        $kodePrasarana = $this->request->getPost('kodePrasarana');
+        $kodeSumberDana = $this->request->getPost('kodeSumberDana');
+        $tahunPengadaan = $this->request->getPost('tahunPengadaan');
+        $kodeSarana = $this->request->getPost('kodeSarana');
+        $nomorBarang = $this->request->getPost('nomorBarang');
+
+        if ($tahunPengadaan === '0000') {
+            $tahunPengadaan = 'xx';
+        } else {
+            $tahunPengadaan = substr($tahunPengadaan, -2);
+        }
+        $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
+        
+        // $kodePrasarana = substr($kodePrasarana, -2);
+
+
+        $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
+
+        echo json_encode($kodeRincianAset);
+    }
 
     public function generateQRCode($kodeRincianAset)    {
         $writer = new PngWriter();

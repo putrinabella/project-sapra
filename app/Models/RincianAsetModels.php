@@ -88,6 +88,7 @@ class RincianAsetModels extends Model
                 $tahunPengadaan = substr($tahunPengadaan, -2);
             }
             $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
+            // $kodePrasarana = substr($kodePrasarana, -2);
 
             $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
     
@@ -147,13 +148,7 @@ class RincianAsetModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-    
-    function calculateTotalSarana($saranaLayak, $saranaRusak) {
-        $saranaLayak = intval($saranaLayak);
-        $saranaRusak = intval($saranaRusak);
-        $totalSarana = $saranaLayak + $saranaRusak;
-        return $totalSarana;
-    }
+
 
     public function updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun) {
         if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {
@@ -173,6 +168,70 @@ class RincianAsetModels extends Model
         }
         return false;
     }
+
+    public function getKodeKategoriManajemen($idKategoriManajemen) {
+        $builder = $this->db->table('tblKategoriManajemen');
+        $builder->select('kodeKategoriManajemen');
+    
+        $builder->where('idKategoriManajemen', $idKategoriManajemen);
+    
+        $query = $builder->get();
+        $result = $query->getRow();
+    
+        if ($result) {
+            return $result->kodeKategoriManajemen;
+        }
+    
+        return '';
+    }
+
+    public function getKodePrasarana($idIdentitasPrasarana) {
+        $builder = $this->db->table('tblIdentitasPrasarana');
+        $builder->select('kodeIdentitasPrasarana');
+    
+        $builder->where('idIdentitasPrasarana', $idIdentitasPrasarana);
+    
+        $query = $builder->get();
+        $result = $query->getRow();
+    
+        if ($result) {
+            return $result->kodePrasarana;
+        }
+    
+        return '';
+    }
+    public function getKodeSumberDana($idSumberDana) {
+        $builder = $this->db->table('tblSumberDana');
+        $builder->select('kodeSumberDana');
+    
+        $builder->where('idSumberDana', $idSumberDana);
+    
+        $query = $builder->get();
+        $result = $query->getRow();
+    
+        if ($result) {
+            return $result->kodeSumberDana;
+        }
+    
+        return '';
+    }
+    
+    public function getKodeIdentitasSarana($idIdentitasSarana) {
+        $builder = $this->db->table('tblIdentitasSarana');
+        $builder->select('kodeIdentitasSarana');
+    
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+    
+        $query = $builder->get();
+        $result = $query->getRow();
+    
+        if ($result) {
+            return $result->kodeSarana;
+        }
+    
+        return '';
+    }
+    
 
     // public function updateSectionAset($idRincianAset, $newSectionAset)
     // {
