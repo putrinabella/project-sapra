@@ -751,20 +751,6 @@ class RincianAset extends ResourceController
             'dataRincianAset' => $dataRincianAset,
         ];
 
-    // $selectedRows = $this->request->getVar('selectedRows');
-    // var_dump($selectedRows); 
-    // die;
-    // if (empty($selectedRows)) {
-    //     return redirect()->to('rincianAset')->with('error', 'No rows selected for QR code generation.');
-    // }
-    
-
-    // $dataRincianAset = $this->rincianAsetModel->getSelectedRows($selectedRows);
-
-    // $data = [
-    //     'dataRincianAset' => $dataRincianAset,
-    // ];
-
     foreach ($data['dataRincianAset'] as $key => $value) {
         $qrCode = $this->generateQRCode($value->kodeRincianAset);
         $data['dataRincianAset'][$key]->qrCodeData = $qrCode;
@@ -789,7 +775,7 @@ class RincianAset extends ResourceController
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');
     $dompdf->render();
-    $filename = 'Sarana - QR Code Rincian Aset.pdf';
+    $filename = 'Sarana - Selected QR Code Rincian Aset .pdf';
     $dompdf->stream($filename);
 }
 
