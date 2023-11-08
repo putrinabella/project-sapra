@@ -23,8 +23,8 @@
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">   
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('rincianAset/generateAllBarcode') ?>">Cetak semua</a>
-                <a class="dropdown-item" href="<?= site_url('rincianAset/generateBarcode') ?>">Cetak Terpilih</a> 
+                <a class="dropdown-item" href="<?= site_url('generateQRDoc') ?>">Generate All</a>
+                <a class="dropdown-item" href="<?= site_url('rincianAset/generateBarcode') ?>">Generate Selected</a> 
             </div>
         </div>
         <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">

@@ -26,8 +26,6 @@ class QRBarcode extends BaseController
         $result = $writer->write($qrCode);
 
         $dataUri = $result->getDataUri();
-
-        // You can return the QR code image or render it on a view as needed
         return view('qrCodeView', ['qrCode' => $dataUri]);
     }
 

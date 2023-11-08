@@ -40,7 +40,7 @@
 
 <body>
     <div class="table-responsive">
-    <h2 class="mt-3 mb-4">Rincian Aset Report</h2>
+    <!-- <h2 class="mt-3 mb-4">Rincian Aset Report</h2> -->
         <table class="table table-hover" id="dataTable">
             <thead>
                 <tr class="text-center">
@@ -54,6 +54,7 @@
                     <th>Harga Beli</th>
                     <th>Merek</th>
                     <th>Warna</th>
+                    <th>QR</th>
             </tr>
             </thead>
             <tbody class="py-2">
@@ -62,7 +63,7 @@
                         <td rowspan="2" >
                             <?= $key + 1 ?>
                         </td>
-                        <td colspan="9">  
+                        <td colspan="10">  
                             <?= $value->kodeRincianAset ?>
                         </td>
                     </tr>
@@ -76,6 +77,15 @@
                         <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                         <td><?=$value->merk?></td>
                         <td><?=$value->warna?></td>
+                        <td>      
+                            <?php
+                                if (!empty($value->qrCodeData)) {
+                                    echo '<img src="' . $value->qrCodeData . '" alt="QR Code" style="max-width: 100px;">';
+                                } else {
+                                    echo '(no image)';
+                                }
+                            ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
