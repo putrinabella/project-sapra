@@ -778,15 +778,18 @@ class RincianAset extends ResourceController
         $parsedown = new Parsedown();
         $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
         $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
-
+        $qrCodeData = $this->generateQRCode($dataRincianAset->kodeRincianAset);
+        // print_r($qrCodeData);
+        // die;
         $data = [
-            'dataRincianAset'           => $dataRincianAset,
-            'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
-            'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-            'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-            'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-            'buktiUrl'                  => $buktiUrl,
-            'spesifikasiHtml'           => $spesifikasiHtml,
+            'dataRincianAset' => $dataRincianAset,
+            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+            'dataSumberDana' => $this->sumberDanaModel->findAll(),
+            'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
+            'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+            'buktiUrl' => $buktiUrl,
+            'spesifikasiHtml' => $spesifikasiHtml,
+            'qrCodeData' => $qrCodeData, // Add this line to pass qrCodeData
         ];
 
         $filePath = APPPATH . 'Views/saranaView/rincianAset/printInfo.php';

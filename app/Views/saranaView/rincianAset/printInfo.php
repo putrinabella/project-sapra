@@ -41,15 +41,15 @@
             }
             
             .image-container {
-                text-align: center;
+                text-align: left;
             }
 
-            .image-container img {
+            /* .image-container img {
                 max-height: 300px;
                 display: block;
                 margin: 0 auto;
                 max-widht: 90%;
-            }
+            } */
         </style>
 </head>
 
@@ -59,15 +59,6 @@
             <h3>Data Rincian Aset
                 <?= $data['dataRincianAset']->namaSarana?>
             </h3>
-            <div class="image-container">
-                <?php
-                    if (!empty($imageData = base64_encode(@file_get_contents($data['buktiUrl'])))) {
-                        echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti">';
-                    } else {
-                        echo '(no image)';
-                    }
-                ?>
-            </div>
             <br>
             <table class="table" style="max-width: 90%; margin: 0 auto;">
                 <tr>
@@ -145,6 +136,36 @@
                     <td>:</td>
                     <td>
                         <?=  $data['spesifikasiHtml']  ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Foto Aset</td>
+                    <td>:</td>
+                    <td>
+                        <div class="image-container">
+                            <?php
+                                if (!empty($imageData = base64_encode(@file_get_contents($data['buktiUrl'])))) {
+                                    echo '<img src="data:image/png;base64,' . $imageData . '" alt="Foto Bukti" style="max-width: 500px;">';
+                                } else {
+                                    echo '(no image)';
+                                }
+                            ?>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>QR Code</td>
+                    <td>:</td>
+                    <td>
+                        <div class="image-container">
+                            <?php
+                                if (!empty($imageData = base64_encode(@file_get_contents($data['qrCodeData'])))) {
+                                    echo '<img src="data:image/png;base64,' . $imageData . '" alt="QR Code" style="max-width: 200px;">';
+                                } else {
+                                    echo '(no image)';
+                                }
+                            ?>
+                        </div>
                     </td>
                 </tr>
             </table>

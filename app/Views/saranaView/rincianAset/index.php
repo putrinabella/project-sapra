@@ -89,7 +89,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover" id="datatables">
+                    <table class="table table-hover" id="dataTable">
                         <thead>
                             <tr class="text-center">
                                 <th></th>
