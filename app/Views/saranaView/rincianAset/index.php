@@ -18,15 +18,16 @@
         <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <div class="dropdown">
-            <button class="btn btn-primary mdi mdi-qrcode-scan dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">   
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('generateQRDoc') ?>">Generate All</a>
-                <a class="dropdown-item" href="<?= site_url('rincianAset/generateBarcode') ?>">Generate Selected</a> 
-            </div>
-        </div>
+    <div class="dropdown">
+    <button class="btn btn-primary btn-text mdi mdi-qrcode-scan dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="<?= site_url('generateQRDoc') ?>">Generate All</a>
+        <a class="dropdown-item" href="#" id="generateSelectedQR">Generate Selected</a>
+    </div>
+</div>
+
         <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
@@ -89,6 +90,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
+                    
                     <table class="table table-hover" id="dataTable">
                         <thead>
                             <tr class="text-center">
@@ -111,7 +113,8 @@
                         <tbody class="py-2">
                             <?php foreach ($dataRincianAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td><input type="checkbox" class="form-check-input row-select"></td>
+                                <td><input type="checkbox" class="form-check-input row-select"  name="selectedRows[]" value="<?= $value->idRincianAset ?>"></td>
+                                
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
@@ -223,5 +226,32 @@
     });
 </script>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const generateSelectedQR = document.getElementById('generateSelectedQR');
+        generateSelectedQR.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const selectedRows = getSelectedRowIds(); // Implement this function to get selected row IDs
+
+            if (selectedRows.length > 0) {
+                const selectedRowsQueryParam = selectedRows.join(',');
+                window.location.href = '<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam;
+            } else {
+                alert('No rows selected for QR code generation.');
+            }
+        });
+
+        function getSelectedRowIds() {
+            const checkboxes = document.querySelectorAll('input[name="selectedRows[]"]:checked');
+            const selectedRowIds = [];
+            checkboxes.forEach(function (checkbox) {
+                selectedRowIds.push(checkbox.value);
+            });
+            return selectedRowIds;
+        }
+    });
+</script>
 
 <?= $this->endSection(); ?>

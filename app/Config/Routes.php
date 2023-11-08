@@ -182,6 +182,9 @@ $routes->presenter('identitasKelas', ['filter' => 'isLoggedIn']);
 // $routes->get('QRBarcode', 'QRBarcode::index');
 // $routes->get('rincianAset/qrcode/(:num)', 'RincianAset::qrcode/$1');
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
+// $routes->get('generateSelectedQR', 'RincianAset::generateSelectedQR');
+$routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
+
 $routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
 $routes->get('pemusnahanAsetDetail/(:num)', 'RincianAset::pemusnahanAsetDetail/$1');
 $routes->get('pemusnahanAset', 'RincianAset::pemusnahanAset');

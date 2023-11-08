@@ -739,6 +739,61 @@ class RincianAset extends ResourceController
         }
     }
 
+    public function generateSelectedQR($selectedRows) {
+        $selectedRows = explode(',', $selectedRows); // Convert the string to an array
+        $dataRincianAset = $this->rincianAsetModel->getSelectedRows($selectedRows);
+    
+        if (empty($selectedRows)) {
+            return redirect()->to('rincianAset')->with('error', 'No rows selected for QR code generation.');
+        }
+    
+        $data = [
+            'dataRincianAset' => $dataRincianAset,
+        ];
+
+    // $selectedRows = $this->request->getVar('selectedRows');
+    // var_dump($selectedRows); 
+    // die;
+    // if (empty($selectedRows)) {
+    //     return redirect()->to('rincianAset')->with('error', 'No rows selected for QR code generation.');
+    // }
+    
+
+    // $dataRincianAset = $this->rincianAsetModel->getSelectedRows($selectedRows);
+
+    // $data = [
+    //     'dataRincianAset' => $dataRincianAset,
+    // ];
+
+    foreach ($data['dataRincianAset'] as $key => $value) {
+        $qrCode = $this->generateQRCode($value->kodeRincianAset);
+        $data['dataRincianAset'][$key]->qrCodeData = $qrCode;
+    }
+
+    $filePath = APPPATH . 'Views/saranaView/rincianAset/printQrCode.php';
+
+    if (!file_exists($filePath)) {
+        return view('error/404');
+    }
+
+    ob_start();
+
+    $includeFile = function ($filePath, $data) {
+        include $filePath;
+    };
+
+    $includeFile($filePath, $data);
+
+    $html = ob_get_clean();
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+    $filename = 'Sarana - QR Code Rincian Aset.pdf';
+    $dompdf->stream($filename);
+}
+
+
     public function generateQRDoc() {
         $dataRincianAset = $this->rincianAsetModel->getAll();
     

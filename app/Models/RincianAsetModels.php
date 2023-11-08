@@ -20,19 +20,20 @@ class RincianAsetModels extends Model
             ->countAllResults() > 0;
     }
 
-    function getDataQR() {
+    public function getSelectedRows($selectedRows) {
         $builder = $this->db->table($this->table);
+        $builder->select('tblRincianAset.*, tblIdentitasSarana.*, tblSumberDana.*, tblKategoriManajemen.*, tblIdentitasPrasarana.*');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
-        $query = $builder->get();
-        return $query->getResultArray();
+        $builder->whereIn('tblRincianAset.idRincianAset', $selectedRows);
+    
+        return $builder->get()->getResult();
     }
     
-
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
