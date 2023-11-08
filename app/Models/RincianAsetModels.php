@@ -32,14 +32,6 @@ class RincianAsetModels extends Model
         return $query->getResult();
     }
 
-    public function getKategoriManajemen($idIdentitasPrasarana)
-    {
-        // Query the database to get the idKategoriManajemen based on idIdentitasPrasarana
-        return $this->select('idKategoriManajemen')
-            ->where('idIdentitasPrasarana', $idIdentitasPrasarana);
-            // ->first();
-    }
-
     function getDestroy() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -175,72 +167,6 @@ class RincianAsetModels extends Model
         }
         return false;
     }
-
-    public function getKodeKategoriManajemen($idKategoriManajemen) {
-        $builder = $this->db->table('tblKategoriManajemen');
-        $builder->select('kodeKategoriManajemen');
-    
-        $builder->where('idKategoriManajemen', $idKategoriManajemen);
-    
-        $query = $builder->get();
-        $result = $query->getRow();
-    
-        if ($result) {
-            return $result->kodeKategoriManajemen;
-        }
-    
-        return '';
-    }
-
-
-    // public function getKodePrasarana($idIdentitasPrasarana) {
-    //     $builder = $this->db->table('tblIdentitasPrasarana');
-    //     $builder->select('kodeIdentitasPrasarana');
-    
-    //     $builder->where('idIdentitasPrasarana', $idIdentitasPrasarana);
-    
-    //     $query = $builder->get();
-    //     $result = $query->getRow();
-    
-    //     if ($result) {
-    //         return $result->kodePrasarana;
-    //     }
-    
-    //     return '';
-    // }
-    
-    public function getKodeSumberDana($idSumberDana) {
-        $builder = $this->db->table('tblSumberDana');
-        $builder->select('kodeSumberDana');
-    
-        $builder->where('idSumberDana', $idSumberDana);
-    
-        $query = $builder->get();
-        $result = $query->getRow();
-    
-        if ($result) {
-            return $result->kodeSumberDana;
-        }
-    
-        return '';
-    }
-    
-    public function getKodeIdentitasSarana($idIdentitasSarana) {
-        $builder = $this->db->table('tblIdentitasSarana');
-        $builder->select('kodeIdentitasSarana');
-    
-        $builder->where('idIdentitasSarana', $idIdentitasSarana);
-    
-        $query = $builder->get();
-        $result = $query->getRow();
-    
-        if ($result) {
-            return $result->kodeSarana;
-        }
-    
-        return '';
-    }
-    
 
     // public function updateSectionAset($idRincianAset, $newSectionAset)
     // {

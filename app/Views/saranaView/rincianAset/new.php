@@ -185,7 +185,11 @@
                 console.log('Response: ' + response);
                 var result = JSON.parse(response);
                 if (result.isDuplicate) {
-                    alert('Kode Rincian Aset is a duplicate. Please change it.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Duplicate Entry',
+                        text: 'Kode Rincian Aset tidak boleh duplikat!',
+                    });
                 } else {
                     $('#custom-validation').submit();
                 }

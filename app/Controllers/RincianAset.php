@@ -149,7 +149,7 @@ class RincianAset extends ResourceController
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
                 
                 $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
-                $qrCodeData = $this->generateQRCode($dataRincianAset->kodeRincianAset); // Replace with the appropriate field from $dataRincianAset
+                $qrCodeData = $this->generateQRCode($dataRincianAset->kodeRincianAset);
 
                 $data = [
                     'dataRincianAset'           => $dataRincianAset,

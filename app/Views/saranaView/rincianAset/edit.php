@@ -182,7 +182,6 @@
 
 <script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
 <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
-
 <script>
     function checkForDuplicate() {
         var kodeRincianAset = $('#kodeRincianAset').val();
@@ -196,7 +195,12 @@
                 // alert('Inside success function: ' + response);
                 var result = JSON.parse(response);
                 if (result.isDuplicate) {
-                    alert('Kode Rincian Aset is a duplicate. Please change it.');
+                    // alert('Kode Rincian Aset is a duplicate. Please change it.');
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Duplicate Entry',
+                        text: 'Kode Rincian Aset tidak boleh duplikat!',
+                    });
                 } else {
                     $('#custom-validation').submit();
                 }

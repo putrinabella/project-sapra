@@ -18,6 +18,15 @@
         <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
+        <div class="dropdown">
+            <button class="btn btn-primary mdi mdi-qrcode-scan dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">   
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= site_url('rincianAset/generateAllBarcode') ?>">Cetak semua</a>
+                <a class="dropdown-item" href="<?= site_url('rincianAset/generateBarcode') ?>">Cetak Terpilih</a> 
+            </div>
+        </div>
         <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
@@ -80,9 +89,10 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover" id="dataTable">
+                    <table class="table table-hover" id="datatables">
                         <thead>
                             <tr class="text-center">
+                                <th></th>
                                 <th style="width: 5%;">No.</th>
                                 <th style="width: 12%;">Kode Aset</th>
                                 <th>Lokasi</th>
@@ -101,6 +111,7 @@
                         <tbody class="py-2">
                             <?php foreach ($dataRincianAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
+                                <td><input type="checkbox" class="form-check-input row-select"></td>
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>

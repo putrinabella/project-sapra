@@ -181,7 +181,7 @@ $routes->presenter('identitasKelas', ['filter' => 'isLoggedIn']);
 // Rincian Aset
 // $routes->get('QRBarcode', 'QRBarcode::index');
 $routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
-$routes->get('rincianAset/qrcode/(:num)', 'RincianAset::qrcode/$1');
+// $routes->get('rincianAset/qrcode/(:num)', 'RincianAset::qrcode/$1');
 $routes->get('pemusnahanAsetDetail/(:num)', 'RincianAset::pemusnahanAsetDetail/$1');
 $routes->get('pemusnahanAset', 'RincianAset::pemusnahanAset');
 $routes->get('dataSaranaDetail/(:num)', 'RincianAset::dataSaranaDetail/$1');

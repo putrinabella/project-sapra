@@ -9,9 +9,9 @@ function generate_pdf($data, $id_barcode)
 {
     $pdf = new MYPDF("P", PDF_UNIT, "F4", true, "UTF-8", false);
     $pdf->SetCreator(PDF_CREATOR);
-    $pdf->SetAuthor("Nicola Asuni");
-    $pdf->SetTitle("BARCODE");
-    $pdf->SetSubject("KEBUN RAYA BANUA");
+    $pdf->SetAuthor("Putri Nabella");
+    $pdf->SetTitle("Sarana, Prasarana, Laboratorium, dan IT");
+    $pdf->SetSubject("SMK TELKOM BANJARBARU");
     $pdf->SetKeywords("TCPDF, PDF, example, test, guide");
     $pdf->SetLineStyle([
         "width" => 0.5,
