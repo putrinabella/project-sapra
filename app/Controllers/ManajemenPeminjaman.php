@@ -6,6 +6,7 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Models\ManajemenPeminjamanModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\IdentitasLabModels; 
+use App\Models\KategoriPegawaiModels; 
 use App\Models\IdentitasKelasModels; 
 use App\Models\RincianLabAsetModels; 
 use App\Models\LaboratoriumModels; 
@@ -25,6 +26,7 @@ class ManajemenPeminjaman extends ResourceController
         $this->rincianLabAsetModel = new RincianLabAsetModels();
         $this->laboratoriumModel = new LaboratoriumModels();
         $this->identitasKelasModel = new IdentitasKelasModels();
+        $this->kategoriPegawaiModel = new KategoriPegawaiModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -53,6 +55,33 @@ class ManajemenPeminjaman extends ResourceController
         $data = $this->manajemenPeminjamanModel->getKodeLabData($idIdentitasSarana);
     
         echo json_encode($data);
+    }
+
+    public function getRole() {
+        $kategoriPeminjam = $this->request->getPost('kategoriPeminjam');
+        
+        if ($kategoriPeminjam === 'karyawan') {
+            $dataIdentitasPegawai = $this->kategoriPegawaiModel->findAll();
+            return $this->response->setJSON($dataIdentitasPegawai);
+        } elseif ($kategoriPeminjam === 'siswa') {
+            $dataIdentitasKelas = $this->identitasKelasModel->findAll();
+            return $this->response->setJSON($dataIdentitasKelas);
+        } else {
+            return $this->response->setJSON([]);
+        }
+    }
+    
+    public function getSaranaByLab() {
+        $selectedIdIdentitasLab = $this->request->getPost('idIdentitasLab');
+        $idIdentitasSaranaOptions = $this->manajemenPeminjamanModel->getSaranaByLab($selectedIdIdentitasLab);
+        return $this->response->setJSON($idIdentitasSaranaOptions);
+    }
+
+    public function getKodeBySarana() {
+        $selectedIdIdentitasSarana = $this->request->getPost('idIdentitasSarana');
+        $selectedIdIdentitasLab = $this->request->getPost('idIdentitasLab'); // Get the selected IdIdentitasLab
+        $kodeRincianLabAsetOptions = $this->manajemenPeminjamanModel->getKodeBySarana($selectedIdIdentitasSarana, $selectedIdIdentitasLab);
+        return $this->response->setJSON($kodeRincianLabAsetOptions);
     }
     
     public function show($id = null) {

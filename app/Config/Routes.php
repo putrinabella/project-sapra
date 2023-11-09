@@ -176,6 +176,19 @@ $routes->delete('identitasKelas/deletePermanent/(:any)', 'IdentitasKelas::delete
 $routes->delete('identitasKelas/deletePermanent', 'IdentitasKelas::deletePermanent');
 $routes->presenter('identitasKelas', ['filter' => 'isLoggedIn']);
 
+// Kelas Siswa
+$routes->get('kategoriPegawai/createTemplate', 'KategoriPegawai::createTemplate');
+$routes->get('kategoriPegawai/generatePDF', 'KategoriPegawai::generatePDF');
+$routes->get('kategoriPegawai/export', 'KategoriPegawai::export');
+$routes->post('kategoriPegawai/import', 'KategoriPegawai::import');
+$routes->get('kategoriPegawai/edit', 'KategoriPegawai::edit');
+$routes->get('kategoriPegawai/trash', 'KategoriPegawai::trash');
+$routes->get('kategoriPegawai/restore/(:any)', 'KategoriPegawai::restore/$1');
+$routes->get('kategoriPegawai/restore', 'KategoriPegawai::restore');
+$routes->delete('kategoriPegawai/deletePermanent/(:any)', 'KategoriPegawai::deletePermanent/$1');
+$routes->delete('kategoriPegawai/deletePermanent', 'KategoriPegawai::deletePermanent');
+$routes->presenter('kategoriPegawai', ['filter' => 'isLoggedIn']);
+
 // SARANA
 
 // Rincian Aset
@@ -463,6 +476,9 @@ $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');
 $routes->get('manajemenPeminjaman/getKodeLab/(:num)', 'ManajemenPeminjaman::getKodeLab/$1');
 $routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
+$routes->post('manajemenPeminjaman/getRole', 'ManajemenPeminjaman::getRole');
+$routes->post('manajemenPeminjaman/getSaranaByLab', 'ManajemenPeminjaman::getSaranaByLab');
+$routes->post('manajemenPeminjaman/getKodeBySarana', 'ManajemenPeminjaman::getKodeBySarana');
 $routes->delete('manajemenPeminjaman/deletePermanent/(:any)', 'ManajemenPeminjaman::deletePermanent/$1');
 $routes->delete('manajemenPeminjaman/deletePermanent', 'ManajemenPeminjaman::deletePermanent');
 $routes->resource('manajemenPeminjaman', ['filter' => 'isLoggedIn']);

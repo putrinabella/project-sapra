@@ -107,7 +107,6 @@
                                     </td>
                                     <td class="text-center">
                                         <?php if ($value->asetTersedia > 0) : ?>
-                                        <a href="<?= site_url('manajemenPeminjaman/new') ?>" class="btn btn-outline-primary me-2">Ajukan</a>
                                         <a href="#" class="btn btn-outline-primary upload-excel-btn"
                                             data-bs-toggle="modal" data-bs-target="#modalImport"
                                             data-id-identitas-sarana="<?= $value->idIdentitasSarana ?>"

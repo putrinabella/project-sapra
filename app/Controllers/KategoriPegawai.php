@@ -3,22 +3,22 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
-use App\Models\IdentitasKelasModels;
+use App\Models\KategoriPegawaiModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-class IdentitasKelas extends ResourcePresenter
+class KategoriPegawai extends ResourcePresenter
 {
     function __construct() {
-        $this->identitasKelasModel = new IdentitasKelasModels();
+        $this->kategoriPegawaiModel = new KategoriPegawaiModels();
     }
 
     public function index()
     {
-        $data['dataIdentitasKelas'] = $this->identitasKelasModel->findAll();
-        return view('master/identitasKelasView/index', $data);
+        $data['dataKategoriPegawai'] = $this->kategoriPegawaiModel->findAll();
+        return view('master/kategoriPegawaiView/index', $data);
     }
 
     public function show($id = null)
@@ -28,24 +28,24 @@ class IdentitasKelas extends ResourcePresenter
 
     public function new()
     {
-        return view('master/identitasKelasView/new');
+        return view('master/kategoriPegawaiView/new');
     }
 
     public function create()
     {
         $data = $this->request->getPost();
-        $this->identitasKelasModel->insert($data);
-        return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil disimpan');
+        $this->kategoriPegawaiModel->insert($data);
+        return redirect()->to(site_url('kategoriPegawai'))->with('success', 'Data berhasil disimpan');
     }
 
     public function edit($id = null)
     {
         if ($id != null) {
-            $dataIdentitasKelas = $this->identitasKelasModel->where('idIdentitasKelas', $id)->first();
+            $dataKategoriPegawai = $this->kategoriPegawaiModel->where('idKategoriPegawai', $id)->first();
     
-            if (is_object($dataIdentitasKelas)) {
-                $data['dataIdentitasKelas'] = $dataIdentitasKelas;
-                return view('master/identitasKelasView/edit', $data);
+            if (is_object($dataKategoriPegawai)) {
+                $data['dataKategoriPegawai'] = $dataKategoriPegawai;
+                return view('master/kategoriPegawaiView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -57,8 +57,8 @@ class IdentitasKelas extends ResourcePresenter
     public function update($id = null)
     {
         $data = $this->request->getPost();
-        $this->identitasKelasModel->update($id, $data);
-        return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil update');
+        $this->kategoriPegawaiModel->update($id, $data);
+        return redirect()->to(site_url('kategoriPegawai'))->with('success', 'Data berhasil update');
     }
 
     public function remove($id = null)
@@ -68,65 +68,65 @@ class IdentitasKelas extends ResourcePresenter
 
     public function delete($id = null)
     {
-        $this->identitasKelasModel->where('idIdentitasKelas', $id)->delete();
-        return redirect()->to(site_url('identitasKelas'));
+        $this->kategoriPegawaiModel->where('idKategoriPegawai', $id)->delete();
+        return redirect()->to(site_url('kategoriPegawai'));
     }
 
     public function trash() {
-        $data['dataIdentitasKelas'] = $this->identitasKelasModel->onlyDeleted()->findAll();
-        return view('master/identitasKelasView/trash', $data);
+        $data['dataKategoriPegawai'] = $this->kategoriPegawaiModel->onlyDeleted()->findAll();
+        return view('master/kategoriPegawaiView/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblIdentitasKelas')
+            $this->db->table('tblKategoriPegawai')
                 ->set('deleted_at', null, true)
-                ->where(['idIdentitasKelas' => $id])
+                ->where(['idKategoriPegawai' => $id])
                 ->update();
         } else {
-            $this->db->table('tblIdentitasKelas')
+            $this->db->table('tblKategoriPegawai')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
         }
 
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('kategoriPegawai'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('identitasKelas/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('kategoriPegawai/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->identitasKelasModel->delete($id, true);
-        return redirect()->to(site_url('identitasKelas/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->kategoriPegawaiModel->delete($id, true);
+        return redirect()->to(site_url('kategoriPegawai/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->identitasKelasModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->kategoriPegawaiModel->onlyDeleted()->countAllResults();
             
             if ($countInTrash > 0) {
-                $this->identitasKelasModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('identitasKelas/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->kategoriPegawaiModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('kategoriPegawai/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('identitasKelas/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('kategoriPegawai/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     }  
 
     public function export() {
-        $data = $this->identitasKelasModel->findAll();
+        $data = $this->kategoriPegawaiModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
     
-        $headers = ['No.', 'ID Identitas Kelas', 'Nama Kelas'];
+        $headers = ['No.', 'ID Kategori Pegawai', 'Nama Kategori Pegawai'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
-            $idIdentitasKelas = str_pad($value->idIdentitasKelas, 3, '0', STR_PAD_LEFT);
+            $idKategoriPegawai = str_pad($value->idKategoriPegawai, 3, '0', STR_PAD_LEFT);
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $idIdentitasKelas);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaKelas);
+            $activeWorksheet->setCellValue('B'.($index + 2), $idKategoriPegawai);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaKategoriPegawai);
     
             $columns = ['A', 'B'];
 
@@ -149,20 +149,20 @@ class IdentitasKelas extends ResourcePresenter
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Data Master - Identitas Kelas.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Kategori Pegawai.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
 
     public function createTemplate() {
-        $data = $this->identitasKelasModel->findAll();
+        $data = $this->kategoriPegawaiModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
 
-        $headers = ['No.', 'Nama Kelas'];
+        $headers = ['No.', 'Nama Kategori Pegawai'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
@@ -195,13 +195,13 @@ class IdentitasKelas extends ResourcePresenter
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Nama Kelas'];
+        $headers = ['No.', 'Nama Kategori Pegawai'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->namaKelas);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->namaKategoriPegawai);
     
             $columns = ['A', 'B'];
 
@@ -224,7 +224,7 @@ class IdentitasKelas extends ResourcePresenter
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Kelas Example.xlsx');
+        header('Content-Disposition: attachment;filename=Kategori Pegawai Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -247,32 +247,32 @@ class IdentitasKelas extends ResourcePresenter
                     continue;
                 }
             
-                $namaKelas = $value[1] ?? null;
+                $namaKategoriPegawai = $value[1] ?? null;
 
                 $data = [
-                    'namaKelas' => $namaKelas,
+                    'namaKategoriPegawai' => $namaKategoriPegawai,
                 ];
                 
-                if (!empty($data['namaKelas'])) {
-                    $this->identitasKelasModel->insert($data);
+                if (!empty($data['namaKategoriPegawai'])) {
+                    $this->kategoriPegawaiModel->insert($data);
                 } else {
-                    return redirect()->to(site_url('identitasKelas'))->with('error', 'Pastikan semua data telah diisi!');
+                    return redirect()->to(site_url('kategoriPegawai'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
-            return redirect()->to(site_url('identitasKelas'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('kategoriPegawai'))->with('success', 'Data berhasil diimport');
         } else {
-            return redirect()->to(site_url('identitasKelas'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+            return redirect()->to(site_url('kategoriPegawai'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/identitasKelasView/print.php';
+        $filePath = APPPATH . 'Views/master/kategoriPegawaiView/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataIdentitasKelas'] = $this->identitasKelasModel->findAll();
+        $data['dataKategoriPegawai'] = $this->kategoriPegawaiModel->findAll();
 
         ob_start();
 
@@ -287,7 +287,7 @@ class IdentitasKelas extends ResourcePresenter
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'potrait');
         $dompdf->render();
-        $filename = 'Data Master - Identitas Kelas.pdf';
+        $filename = 'Data Master - Kategori Pegawai.pdf';
         $dompdf->stream($filename);
     }
 

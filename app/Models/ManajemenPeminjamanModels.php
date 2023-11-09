@@ -108,7 +108,6 @@ class ManajemenPeminjamanModels extends Model
                 ->update();
     }
     
-
     function getKodeLabData($idIdentitasSarana){
         $builder = $this->db->table($this->tableRincianLabAset);
         $builder->select('tblRincianLabAset.idIdentitasLab, tblIdentitasLab.namaLab');
@@ -195,4 +194,33 @@ class ManajemenPeminjamanModels extends Model
                 ->update();
         }
     }
+
+    function getSaranaByLab($idIdentitasLab) {
+        $builder = $this->db->table('tblRincianLabAset');
+        $builder->distinct();
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana', 'left'); // Join with tblIdentitasSarana
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('idIdentitasLab', $idIdentitasLab);
+        $builder->where('tblRincianLabAset.sectionAset', 'None');
+        $builder->whereIn('tblRincianLabAset.status', ['Bagus']);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getKodeBySarana($idIdentitasSarana, $idIdentitasLab) {
+        $builder = $this->db->table('tblRincianLabAset');
+        $builder->select('kodeRincianLabAset');
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.idIdentitasSarana', $idIdentitasSarana);
+        $builder->where('tblRincianLabAset.idIdentitasLab', $idIdentitasLab); // Filter by idIdentitasLab
+        $builder->where('tblRincianLabAset.sectionAset', 'None');
+        $builder->where('tblRincianLabAset.status', ['Bagus']);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
+    
+
+    
 }

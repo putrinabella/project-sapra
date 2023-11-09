@@ -240,16 +240,19 @@
                     <a href="<?= site_url('identitasKelas') ?>" class="nav-link">Identitas Kelas</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('sumberDana') ?>" class="nav-link">Sumber Dana</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('statusLayanan') ?>" class="nav-link">Status Layanan</a>
-                </li>
-                <li class="nav-item">
                     <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Barang </a>
                 </li>
                 <li class="nav-item">
                     <a href="<?= site_url('kategoriMep') ?>" class="nav-link">Kategori MEP </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('kategoriPegawai') ?>" class="nav-link">Kategori Pegawai</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('sumberDana') ?>" class="nav-link">Sumber Dana</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('statusLayanan') ?>" class="nav-link">Status Layanan</a>
                 </li>
             </ul>
         </div>
