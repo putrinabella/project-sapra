@@ -19,9 +19,9 @@ class ManajemenPeminjaman extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'tanggal' => [ 
-                'type' => 'DATE', 
-                'null' => true,
+            'tanggal' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'namaPeminjam' => [
                 'type' => 'VARCHAR',

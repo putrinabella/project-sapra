@@ -64,7 +64,7 @@
                     <td>
                         <?= $value->asalPeminjam ?>
                     </td>
-                    <td>
+                    <!-- <td>
                         <?= $value->namaSarana ?>
                     </td>
                     <td>
@@ -72,7 +72,7 @@
                     </td>
                     <td>
                         <?= $value->jumlah ?> 
-                    </td>
+                    </td> -->
                     <td>
                         <?php if ($value->status == "Peminjaman"): ?>
                             <span class="badge bg-warning">Sedang Dipinjam</span>

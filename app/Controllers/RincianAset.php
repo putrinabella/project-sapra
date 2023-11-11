@@ -226,7 +226,6 @@ class RincianAset extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
                 $this->rincianAsetModel->update($id, $data);
-
                 return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');

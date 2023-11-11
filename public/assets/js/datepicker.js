@@ -25,7 +25,8 @@ $(function() {
     // var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     
     $(selector).datepicker({
-      format: "yyyy-mm-dd",
+      // format: "yyyy-mm-dd",
+      format: "dd MM yyyy",
       todayHighlight: true,
       autoclose: true
     });
@@ -39,6 +40,9 @@ $(function() {
       var selectedStartDate =new Date($('#startDate').val());
       $('#endDate').datepicker('setStartDate', selectedStartDate);
     });
+  }
+  if ($('#tanggalPengembalian').length) {
+    initializeDatepicker('#tanggalPengembalian');
   }
   if ($('#tanggal').length) {
     initializeDatepicker('#tanggal');

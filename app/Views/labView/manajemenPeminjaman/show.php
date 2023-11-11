@@ -223,7 +223,6 @@
                 document.getElementById('idIdentitasSarana').value = idIdentitasSarana;
                 document.getElementById('idIdentitasLab').value = idIdentitasLab;
                 document.getElementById('asetTersedia').value = asetTersedia;
-                // Pass the idRincianLabAset to the modal form
                 document.getElementById('idRincianLabAset').value = idRincianLabAset;
             });
         });

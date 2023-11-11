@@ -233,7 +233,7 @@
         generateSelectedQR.addEventListener('click', function (e) {
             e.preventDefault();
 
-            const selectedRows = getSelectedRowIds(); // Implement this function to get selected row IDs
+            const selectedRows = getSelectedRowIds(); 
 
             if (selectedRows.length > 0) {
                 const selectedRowsQueryParam = selectedRows.join(',');

@@ -15,9 +15,9 @@ class LayananLabNonAset extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'tanggal' => [ 
-                'type' => 'DATE', 
-                'null' => true,
+            'tanggal' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'idIdentitasLab' => [
                 'type' => 'INT',

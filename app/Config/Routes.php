@@ -467,6 +467,9 @@ $routes->get('dataPeminjaman/export', 'DataPeminjaman::export');
 $routes->get('dataPeminjaman/trash', 'DataPeminjaman::trash');
 $routes->get('dataPeminjaman/restore/(:any)', 'DataPeminjaman::restore/$1');
 $routes->get('dataPeminjaman/restore', 'DataPeminjaman::restore');
+$routes->get('dataPeminjaman/history/(:any)', 'DataPeminjaman::getLoanHistory/$1');
+$routes->post('returnItems/changeStatus/(:any)', 'DataPeminjaman::changeStatus/$1');
+$routes->post('returnItems/changeSectionAset/(:any)', 'DataPeminjaman::changeSectionAset/$1');
 $routes->delete('dataPeminjaman/deletePermanent/(:any)', 'DataPeminjaman::deletePermanent/$1');
 $routes->delete('dataPeminjaman/deletePermanent', 'DataPeminjaman::deletePermanent');
 $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
@@ -475,8 +478,11 @@ $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');
 $routes->get('manajemenPeminjaman/getKodeLab/(:num)', 'ManajemenPeminjaman::getKodeLab/$1');
+$routes->post('manajemenPeminjaman/getPeminjamanTabel', 'ManajemenPeminjaman::getPeminjamanTabel');
+$routes->post('manajemenPeminjaman/getRincianLabAsetByLab', 'ManajemenPeminjaman::getRincianLabAsetByLab');
 $routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
 $routes->post('manajemenPeminjaman/getRole', 'ManajemenPeminjaman::getRole');
+$routes->post('manajemenPeminjaman/getFilterOptions', 'ManajemenPeminjaman::getFilterOptions');
 $routes->post('manajemenPeminjaman/getSaranaByLab', 'ManajemenPeminjaman::getSaranaByLab');
 $routes->post('manajemenPeminjaman/getKodeBySarana', 'ManajemenPeminjaman::getKodeBySarana');
 $routes->delete('manajemenPeminjaman/deletePermanent/(:any)', 'ManajemenPeminjaman::deletePermanent/$1');
@@ -490,5 +496,3 @@ $routes->get('restore', 'DatabaseManagement::restoreView');
 $routes->post('restoreDatabase', 'DatabaseManagement::restore');
 
 // Restore
-
-

@@ -4,12 +4,12 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class DataPeminjaman extends Migration
+class ManajemenPeminjaman extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'idPeminjaman' => [
+            'idManajemenPeminjaman' => [
                 'type' => 'INT',
                 'constraint' => 3,
                 'unsigned' => true,
@@ -43,9 +43,9 @@ class DataPeminjaman extends Migration
                 'type' => 'INT',
                 'constraint' => 3,
             ],
-            'idIdentitasPrasarana' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+            'idIdentitasLab' => [
+                'type' => 'INT',
+                'constraint' => 3,
             ],
             'jumlah' => [
                 'type' => 'INT',
@@ -81,12 +81,12 @@ class DataPeminjaman extends Migration
             ],
         ]);
 
-        $this->forge->addKey('idPeminjaman', true);
-        $this->forge->createTable('tblPeminjaman');
+        $this->forge->addKey('idManajemenPeminjaman', true);
+        $this->forge->createTable('tblManajemenPeminjaman');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tblPeminjaman');
+        $this->forge->dropTable('tblManajemenPeminjaman');
     }
 }

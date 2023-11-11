@@ -77,7 +77,8 @@ class RincianLabAset extends Migration
                 'default' => 'None',
             ],
             'tanggalPemusnahan' => [
-                'type' => 'DATE',
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'namaAkun' => [
                 'type' => 'VARCHAR',

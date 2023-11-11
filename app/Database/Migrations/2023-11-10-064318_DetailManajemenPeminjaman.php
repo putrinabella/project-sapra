@@ -4,41 +4,28 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class LayananLabAset extends Migration
+class DetailManajemenPeminjaman extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'idLayananLabAset' => [
+            'idDetailManajemenPeminjaman' => [
                 'type' => 'INT',
-                'constraint' => 10,
+                'constraint' => 3,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'tanggal' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+            'idManajemenPeminjaman' => [
+                'type' => 'INT',
+                'constraint' => 3,
             ],
             'idRincianLabAset' => [
                 'type' => 'INT',
-                'constraint' => 3,
+                'constraint' => 10,
             ],
-            'idSumberDana' => [
-                'type' => 'INT',
-                'constraint' => 2,
-            ],
-            'idStatusLayanan' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'biaya' => [
-                'type' => 'INT',
-            ],
-            'bukti' => [
-                'type' => 'TEXT',
-            ],
-            'keterangan' => [
-                'type' => 'TEXT',
+            'statusSetelahPengembalian' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
                 'null' => true,
             ],
             'created_at' => [
@@ -55,12 +42,12 @@ class LayananLabAset extends Migration
             ],
         ]);
 
-        $this->forge->addKey('idLayananLabAset', true);
-        $this->forge->createTable('tbllayananLabAset');
+        $this->forge->addKey('idDetailManajemenPeminjaman', true);
+        $this->forge->createTable('tblDetailManajemenPeminjaman');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tbllayananLabAset');
+        $this->forge->dropTable('tblDetailDetailManajemenPeminjaman');
     }
 }
