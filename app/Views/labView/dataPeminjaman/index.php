@@ -16,7 +16,8 @@
     <div>
         <form action="<?= site_url('dataPeminjaman') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
-                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date" readonly>
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
+                    readonly>
                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
@@ -50,7 +51,8 @@
                 $generatePDFLink = site_url("dataPeminjaman/generatePDF?startDate=$startDate&endDate=$endDate");
             }
             ?>
-            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Export File
             </button>
@@ -71,29 +73,31 @@
         <div class="card-body">
             <div>
                 <?php if (session()->getFlashdata('success')) : ?>
-                    <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
-                        <div class="alert-body">
-                            <b>Success!</b>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
-                            <?= session()->getFlashdata('success') ?>
-                        </div>
+                <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
+                    <div class="alert-body">
+                        <b>Success!</b>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+                        <?= session()->getFlashdata('success') ?>
                     </div>
-                    <br>
+                </div>
+                <br>
                 <?php endif; ?>
                 <?php if (session()->getFlashdata('error')) : ?>
-                    <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
-                        <div class="alert-body">
-                            <b>Error!</b>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
-                            <?= session()->getFlashdata('error') ?>
-                        </div>
+                <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
+                    <div class="alert-body">
+                        <b>Error!</b>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+                        <?= session()->getFlashdata('error') ?>
                     </div>
-                    <br>
+                </div>
+                <br>
                 <?php endif; ?>
             </div>
             <h3 class="text-center py-3">Data Peminjaman</h3>
             <?php if (!empty($tableHeading)) : ?>
-                <p class="text-center"><?= $tableHeading ?></p>
+            <p class="text-center">
+                <?= $tableHeading ?>
+            </p>
             <?php endif; ?>
             <br>
             <div class="table-responsive">
@@ -107,56 +111,58 @@
                             <th>Lokasi</th>
                             <th>Jumlah Aset Dipinjam</th>
                             <th>Status</th>
-                            <!-- <th>Tanggal Pengembalian</th>
-                            <th>Nama Penerima</th>
-                            <th>Jumlah Barang Dikembalikan</th>
-                            <th>Jumlah Barang Rusak</th>
-                            <th>Jumlah Barang Hilang</th> -->
                             <th style="width: 20%;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="py-2">
                         <?php foreach ($dataDataPeminjaman as $key => $value) : ?>
-                            <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td class="text-center">
-                                    <?= $key + 1 ?>
-                                </td>
-                                <td class="text-left"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
-                                <td class="text-left"><?= $value->namaPeminjam ?></td>
-                                <td class="text-left"><?= $value->asalPeminjam ?></td>
-                                <td class="text-center"><?= $value->namaLab ?></td>
-                                <td class="text-center"><?= $value->jumlahPeminjaman ?></td>
-                                <td class="text-center">
-                                    <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                        <span class="badge bg-warning">Sedang Dipinjam</span>
-                                    <?php else : ?>
-                                        <span class="badge bg-success">Sudah Dikembalikan</span>
-                                    <?php endif; ?>
-                                </td>
-                                <!-- <td class="text-left">
-                                    <?php
-                                    if ($value->tanggalPengembalian !== '' && $value->tanggalPengembalian !== null) {
-                                        echo date('d F Y', strtotime($value->tanggalPengembalian));
-                                    } else {
-                                        echo 'Belum Dikembalikan';
-                                    }
-                                    ?>
-                                </td>
-                                <td class="text-left"><?= $value->namaPenerima !== '' ? $value->namaPenerima : '-' ?></td> -->
-                                <td class="text-center">
-                                    <a href="<?= site_url('dataPeminjaman/history/' . $idManajemenPeminjamanArray[$key]) ?>" class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
-                                    <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                        <a href="<?= site_url('dataPeminjaman/' . $value->idManajemenPeminjaman . '/edit') ?>" class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                        <form action="<?= site_url('dataPeminjaman/' .  $idManajemenPeminjamanArray[$key]) ?>" method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
-                                            <?= csrf_field() ?>
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
-                                                <i data-feather="trash"></i>
-                                            </button>
-                                        </form>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
+
+                        <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
+                            <td class="text-center">
+                                <?= $key + 1 ?>
+                            </td>
+                            <td class="text-left">
+                                <?= date('d F Y', strtotime($value->tanggal)) ?>
+                            </td>
+                            <td class="text-left">
+                                <?= $value->namaPeminjam ?>
+                            </td>
+                            <td class="text-left">
+                                <?= $value->asalPeminjam ?>
+                            </td>
+                            <td class="text-center">
+                                <?= $value->namaLab ?>
+                            </td>
+                            <td class="text-center">
+                                <?= $value->jumlahPeminjaman ?>
+                            </td>
+                            <td class="text-center">
+                                <?php if ($value->loanStatus == "Peminjaman") : ?>
+                                <span class="badge bg-warning">Sedang Dipinjam</span>
+                                <?php else : ?>
+                                <span class="badge bg-success">Sudah Dikembalikan</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="text-center">
+                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
+                                <a href="<?= site_url('dataPeminjaman/' . $value->idManajemenPeminjaman . '/edit') ?>"
+                                    class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
+                                <?php endif; ?>
+                                <?php if ($value->loanStatus == "Pengembalian"): ?>
+                                <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
+                                    class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
+                                <?php endif; ?>
+                                <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger btn-icon"
+                                        data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>

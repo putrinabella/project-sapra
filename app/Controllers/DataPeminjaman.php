@@ -29,26 +29,25 @@ class DataPeminjaman extends ResourceController
         $this->db = \Config\Database::connect();
     }
 
-    // public function index()
-    // {
-    //     $startDate = $this->request->getVar('startDate');
-    //     $endDate = $this->request->getVar('endDate');
-
-    //     $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-    //     $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
-
-    //     $tableHeading = "";
-    //     if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
-    //         $tableHeading = " $formattedStartDate - $formattedEndDate";
-    //     }
-
-    //     $data['tableHeading'] = $tableHeading;
-    //     $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
-    //     return view('labView/dataPeminjaman/index', $data);
-    // }
-
     public function index()
     {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+
+        $tableHeading = "";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = " $formattedStartDate - $formattedEndDate";
+        }
+
+        $data['tableHeading'] = $tableHeading;
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
+        return view('labView/dataPeminjaman/index', $data);
+    }
+
+    public function index2() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
@@ -120,11 +119,6 @@ class DataPeminjaman extends ResourceController
     {
         if ($id != null) {
             $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($id);
-            // $idManajemenPeminjaman = $id;
-            // // $dump = $dataDataPeminjaman->idManajemenPeminjaman;
-            // var_dump($idManajemenPeminjaman);
-            // die;
-            // $dataRincianLabAset = $this->dataPeminjamanModel->getRincianLabAset($dataDataPeminjaman->idRincianLabAset);
             $dataRincianLabAset = $this->dataPeminjamanModel->getRincianLabAset($id);
             if (is_object($dataDataPeminjaman)) {
                 $data = [
@@ -337,7 +331,10 @@ class DataPeminjaman extends ResourceController
         }
 
         $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getDataExport($startDate, $endDate);
-
+        foreach ($data['dataDataPeminjaman'] as $key => $value) {
+            $idManajemenPeminjaman = $value->idManajemenPeminjaman;
+            $data['dataRincianLabAset'] =$this->dataPeminjamanModel->getRincianLabAset($idManajemenPeminjaman);
+        }
         ob_start();
 
         $includeFile = function ($filePath, $data) {

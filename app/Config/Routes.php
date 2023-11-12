@@ -476,6 +476,7 @@ $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 // Manajemen Peminjaman
 
+$routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');
 $routes->get('manajemenPeminjaman/getKodeLab/(:num)', 'ManajemenPeminjaman::getKodeLab/$1');
 $routes->post('manajemenPeminjaman/getPeminjamanTabel', 'ManajemenPeminjaman::getPeminjamanTabel');

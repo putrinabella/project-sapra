@@ -10,8 +10,10 @@
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Form Pengembalian</h4>
+            <div class="d-flex justify-content-between">
+                    <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
+                    <h4 class="text-center">Form Pengembalian</h4>
+                    <div></div>
                 </div>
             </div>
             <div class="card-body">

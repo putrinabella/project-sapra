@@ -64,7 +64,7 @@
                                     <td class="text-left"><?= $value->namaLab ?></td>
                                     <td class="text-center">
                                         <!-- <a href="<?= site_url('manajemenPeminjaman/' . $value->idIdentitasLab) ?>" -->
-                                        <a href="<?= site_url('manajemenPeminjaman/new') ?>" class="btn btn-outline-success">Ajukan Peminjaman</a>
+                                        <a href="<?= site_url('manajemenPeminjaman/loan/' . $value->idIdentitasLab) ?>" class="btn btn-outline-success">Ajukan Peminjaman</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

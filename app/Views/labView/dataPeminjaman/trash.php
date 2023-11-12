@@ -70,7 +70,6 @@
                                 <th>Lokasi</th>
                                 <th>Jumlah</th>
                                 <th>Status</th>
-                                <th>Tanggal Pengembalian</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -85,7 +84,14 @@
                                     <td class="text-center"><?= $value->asalPeminjam ?></td>
                                     <td class="text-center"><?= $value->namaSarana ?></td>
                                     <td class="text-center"><?= $value->namaLab ?></td>
-
+                                    <td class="text-center"><?= $value->jumlahPeminjaman ?></td>
+                                    <td class="text-center">
+                                        <?php if ($value->loanStatus == "Peminjaman") : ?>
+                                            <span class="badge bg-warning">Sedang Dipinjam</span>
+                                        <?php else : ?>
+                                            <span class="badge bg-success">Sudah Dikembalikan</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="text-center">
                                         <a href="<?= site_url('dataPeminjaman/restore/' . $value->idManajemenPeminjaman) ?>" class="btn btn-primary"> Restore</a>
                                         <form action="<?= site_url('dataPeminjaman/deletePermanent/' . $value->idManajemenPeminjaman) ?>" method="POST" class="d-inline">

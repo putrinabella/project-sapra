@@ -27,39 +27,23 @@ class DataPeminjamanModels extends Model
 
     function getData($startDate = null, $endDate = null)
     {
-        $builder = $this->db->table($this->table);
-        $builder->select('tblManajemenPeminjaman.*, tblDetailManajemenPeminjaman.*, tblRincianLabAset.*, tblIdentitasSarana.*, tblIdentitasLab.*');
-        $builder->select('COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder = $this->db->table('tblManajemenPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
-
+    
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
             $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
         }
-
+    
         $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
         $query = $builder->get();
         return $query->getResult();
     }
-
-    public function getIdManajemenPeminjaman($namaPeminjam)
-    {
-        $builder = $this->db->table('tblManajemenPeminjaman');
-        $builder->select('idManajemenPeminjaman');
-        $builder->where('namaPeminjam', $namaPeminjam);
-        $query = $builder->get();
-
-        $result = $query->getRow();
-        if ($result) {
-            return $result->idManajemenPeminjaman;
-        }
-
-        return null;
-    }
+    
 
     function findHistory($id = null, $columns = '*')
     {
@@ -76,23 +60,12 @@ class DataPeminjamanModels extends Model
         return $query->getRow();
     }
 
-
-    public function getRincianLabAset2($idRincianLabAset)
-    {
-        $builder = $this->db->table('tblDetailManajemenPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->where('tblDetailManajemenPeminjaman.idRincianLabAset', $idRincianLabAset);
-        $query = $builder->get();
-
-        return $query->getResult();
-    }
-
     public function getRincianLabAset($idManajemenPeminjaman)
     {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
         $builder->where('tblDetailManajemenPeminjaman.idManajemenPeminjaman', $idManajemenPeminjaman);
         $query = $builder->get();
 
@@ -162,6 +135,7 @@ class DataPeminjamanModels extends Model
     function getDataExport($startDate = null, $endDate = null)
     {
         $builder = $this->db->table($this->table);
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
@@ -173,7 +147,7 @@ class DataPeminjamanModels extends Model
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
             $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
         }
-
+        $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
         $query = $builder->get();
         return $query->getResult();
     }
@@ -205,11 +179,14 @@ class DataPeminjamanModels extends Model
     function getRecycle()
     {
         $builder = $this->db->table($this->table);
+        $builder->select('tblManajemenPeminjaman.*, tblDetailManajemenPeminjaman.*, tblRincianLabAset.*, tblIdentitasSarana.*, tblIdentitasLab.*');
+        $builder->select('COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
         $builder->where('tblManajemenPeminjaman.deleted_at IS NOT NULL');
+        $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
         $query = $builder->get();
         return $query->getResult();
     }

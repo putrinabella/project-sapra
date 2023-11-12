@@ -11,7 +11,7 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">Back</a>
+                    <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Histori Peminjaman</h4>
                     <div></div>
                 </div>
@@ -81,6 +81,7 @@
                                     <th class="d-none">Id Rincian Lab Aset</th>
                                     <th>Kode</th>
                                     <th>Nama</th>
+                                    <th>Kategori</th>
                                     <th>Merk</th>
                                     <th>Warna</th>
                                     <th>Kondisi Awal</th>
@@ -101,6 +102,9 @@
                                         </td>
                                         <td>
                                             <?= $value->namaSarana; ?>
+                                        </td>
+                                        <td>
+                                            <?= $value->namaKategoriManajemen; ?>
                                         </td>
                                         <td>
                                             <?= $value->merk; ?>
