@@ -18,16 +18,18 @@
         <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-    <div class="dropdown">
-    <button class="btn btn-primary btn-text mdi mdi-qrcode-scan dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="<?= site_url('generateQRDoc') ?>">Generate All</a>
-        <a class="dropdown-item" href="#" id="generateSelectedQR">Generate Selected</a>
-    </div>
-</div>
-
+        <div class="dropdown">
+            <button class="btn btn-primary btn-text mdi mdi-qrcode-scan dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= site_url('generateQRDoc') ?>">Generate All</a>
+                <a class="dropdown-item" href="#" id="generateSelectedQR">Generate Selected</a>
+            </div>
+        </div>
+        <form action="<?= site_url('rincianAset/generateAndSetKodeRincianAset') ?>" method="post">
+            <button type="submit" class="btn btn-primary btn-icon-text mdi mdi-key me-2 mb-2 mb-md-0" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click for generate kode aset"></button>
+        </form>
         <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
@@ -90,7 +92,6 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    
                     <table class="table table-hover" id="dataTable">
                         <thead>
                             <tr class="text-center">
@@ -113,8 +114,8 @@
                         <tbody class="py-2">
                             <?php foreach ($dataRincianAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td><input type="checkbox" class="form-check-input row-select"  name="selectedRows[]" value="<?= $value->idRincianAset ?>"></td>
-                                
+                                <td><input type="checkbox" class="form-check-input row-select" name="selectedRows[]"
+                                        value="<?= $value->idRincianAset ?>"></td>
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
@@ -143,7 +144,7 @@
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>" method="post"
                                         class="d-inline" id="del-<?= $value->idRincianAset;?>">
-                                        <?= csrf_field() ?>
+
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?"
@@ -151,27 +152,32 @@
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
-                                    <a href="<?= site_url('QRBarcode/' . $value->kodeRincianAset) ?>" target="_blank" class="btn btn-success mdi mdi-qrcode-scan"
+                                    <a href="<?= site_url('QRBarcode/' . $value->kodeRincianAset) ?>" target="_blank"
+                                        class="btn btn-success mdi mdi-qrcode-scan"
                                         data-kode="<?= $value->kodeRincianAset ?>">
-                                    </a> 
+                                    </a>
                                 </td>
                                 <td class="text-center">
-                                <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
-                                    <?= csrf_field() ?>
-                                    <div class="form-group">
-                                        <div class="d-flex align-items-center">
-                                            <select name="sectionAset" class="form-control me-2 sectionAsetSelect" style="width: 130px">
-                                                <option value="None">None</option>
-                                                <option value="Dimusnahkan">Dimusnahkan</option>
-                                            </select>
-                                            <input class="form-control" type="text" name="namaAkun" value=" <?= session('nama'); ?>" hidden>
-                                            <input class="form-control" type="text" name="kodeAkun" value=" <?= session('role'); ?>" hidden>
-                                            <button type="submit" class="btn btn-success btn-icon ml-2 submitButton">
-                                                <i data-feather="check"></i>
-                                            </button>
+                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>"
+                                        method="post" class="d-inline">
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center">
+                                                <select name="sectionAset" class="form-control me-2 sectionAsetSelect"
+                                                    style="width: 130px">
+                                                    <option value="None">None</option>
+                                                    <option value="Dimusnahkan">Dimusnahkan</option>
+                                                </select>
+                                                <input class="form-control" type="text" name="namaAkun"
+                                                    value=" <?= session('nama'); ?>" hidden>
+                                                <input class="form-control" type="text" name="kodeAkun"
+                                                    value=" <?= session('role'); ?>" hidden>
+                                                <button type="submit"
+                                                    class="btn btn-success btn-icon ml-2 submitButton">
+                                                    <i data-feather="check"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -193,7 +199,7 @@
             <form action="<?=site_url(" rincianAset/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
-                    <?= csrf_field() ?>
+
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">
@@ -233,7 +239,7 @@
         generateSelectedQR.addEventListener('click', function (e) {
             e.preventDefault();
 
-            const selectedRows = getSelectedRowIds(); 
+            const selectedRows = getSelectedRowIds();
 
             if (selectedRows.length > 0) {
                 const selectedRowsQueryParam = selectedRows.join(',');

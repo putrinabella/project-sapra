@@ -94,9 +94,6 @@
                     <li class="nav-item">
                         <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Manajemen Peminjaman</a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a href="<?= site_url('manajemenPeminjaman/new') ?>" class="nav-link">Tambah Peminjaman</a>
-                    </li> -->
                 </ul>
             </div>
         </li>

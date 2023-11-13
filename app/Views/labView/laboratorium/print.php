@@ -114,6 +114,14 @@
                         <?= $luasFormatted = number_format($dataLaboratorium->luas, 0, ',', '.'); ?> m2
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Total Aset
+                    </td>
+                    <td>
+                        <?= count($dataSarana); ?>
+                    </td>
+                </tr>
             </table>
             <h3> Rincian Aset </h3>
             <table class="my-table">
@@ -124,6 +132,7 @@
                         <th>Kategori Aset</th>
                         <th>Nama Aset</th>
                         <th>Status</th>
+                        <th>Ketersediaan</th>
                         <th>Sumber Dana</th>
                         <th>Tahun Pengadaan</th>
                         <th>Harga Beli</th>
@@ -141,9 +150,16 @@
                         <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                         <td class="text-center"><?=$value->namaSarana?></td>
                         <td class="text-center"><?=$value->status?></td>
+                        <td class="text-center">
+                            <?php if ($value->sectionAset == "None") : ?>
+                            Tersedia
+                            <?php else : ?>
+                                <?= $value->sectionAset;; ?>
+                            <?php endif; ?>
+                        </td>
                         <td class="text-center"><?=$value->namaSumberDana?></td>
                         <td class="text-center">
-                        <?php 
+                            <?php 
                             if($value->tahunPengadaan == 0 || 0000) {
                                 echo "Tidak diketahui"; 
                             } else {

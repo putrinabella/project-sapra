@@ -13,6 +13,31 @@ class LaboratoriumModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
+    public function countDataByIdentitasLab($idIdentitasLab)
+    {
+        $builder = $this->db->table('tblRincianLabAset');
+        $builder->where('tblRincianLabAset.idIdentitasLab', $idIdentitasLab);
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->select('COUNT(*) AS jumlahTotal', false);
+        $query = $builder->get();
+        $result = $query->getRow();
+    
+        return $result->jumlahTotal ?? 0;
+    }
+    
+    function getAll3() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
     function getData() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');

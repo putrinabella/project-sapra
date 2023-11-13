@@ -38,6 +38,46 @@ class RincianAset extends ResourceController
         $this->db = \Config\Database::connect();
     }
 
+    
+    public function generateAndSetKodeRincianAset() {
+
+        $dataRincianAset = $this->rincianAsetModel->getAll();
+
+        foreach ($dataRincianAset as $data) {
+            $newKodeRincianAset = $this->generateKodeRincianAset(
+                $data->idKategoriManajemen,
+                $data->idIdentitasPrasarana,
+                $data->idSumberDana,
+                $data->idIdentitasSarana,
+                $data->tahunPengadaan,
+                $data->nomorBarang
+            );
+
+            $this->rincianAsetModel->updateKodeRincianAset($data->idRincianAset, $newKodeRincianAset);
+        }
+        return redirect()->to(site_url('rincianAset'))->with('success', 'Berhasil generate kode aset');
+    }
+
+    public function generateKodeRincianAset($idKategoriManajemen, $idIdentitasPrasarana, $idSumberDana, $idIdentitasSarana, $tahunPengadaan, $nomorBarang) {
+        $kodeKategoriManajemen = $this->kategoriManajemenModel->getKodeKategoriManajemenById($idKategoriManajemen);
+        $kodePrasarana = $this->identitasPrasaranaModel->getKodePrasaranaById($idIdentitasPrasarana);
+        $kodeSumberDana = $this->sumberDanaModel->getKodeSumberDanaById($idSumberDana);
+        $kodeSarana = $this->identitasSaranaModel->getKodeSaranaById($idIdentitasSarana);
+
+        if ($tahunPengadaan === '0000') {
+            $tahunPengadaan = 'xx';
+        } else {
+            $tahunPengadaan = substr($tahunPengadaan, -2);
+        }
+
+        $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
+        // $kodePrasarana = substr($kodePrasarana, -2);
+
+        $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
+
+        return $kodeRincianAset;
+    }
+
     public function generateKode() {
         $idKategoriManajemen = $this->request->getPost('idKategoriManajemen');
         $idIdentitasPrasarana = $this->request->getPost('idIdentitasPrasarana');
@@ -739,7 +779,7 @@ class RincianAset extends ResourceController
     }
 
     public function generateSelectedQR($selectedRows) {
-        $selectedRows = explode(',', $selectedRows); // Convert the string to an array
+        $selectedRows = explode(',', $selectedRows); 
         $dataRincianAset = $this->rincianAsetModel->getSelectedRows($selectedRows);
     
         if (empty($selectedRows)) {
@@ -750,33 +790,33 @@ class RincianAset extends ResourceController
             'dataRincianAset' => $dataRincianAset,
         ];
 
-    foreach ($data['dataRincianAset'] as $key => $value) {
-        $qrCode = $this->generateQRCode($value->kodeRincianAset);
-        $data['dataRincianAset'][$key]->qrCodeData = $qrCode;
+        foreach ($data['dataRincianAset'] as $key => $value) {
+            $qrCode = $this->generateQRCode($value->kodeRincianAset);
+            $data['dataRincianAset'][$key]->qrCodeData = $qrCode;
+        }
+
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/printQrCode.php';
+
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+
+        $includeFile($filePath, $data);
+
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $filename = 'Sarana - Selected QR Code Rincian Aset .pdf';
+        $dompdf->stream($filename);
     }
-
-    $filePath = APPPATH . 'Views/saranaView/rincianAset/printQrCode.php';
-
-    if (!file_exists($filePath)) {
-        return view('error/404');
-    }
-
-    ob_start();
-
-    $includeFile = function ($filePath, $data) {
-        include $filePath;
-    };
-
-    $includeFile($filePath, $data);
-
-    $html = ob_get_clean();
-    $dompdf = new Dompdf();
-    $dompdf->loadHtml($html);
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->render();
-    $filename = 'Sarana - Selected QR Code Rincian Aset .pdf';
-    $dompdf->stream($filename);
-}
 
 
     public function generateQRDoc() {

@@ -17,11 +17,18 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 
 class RincianLabAset extends ResourceController
 {
-    
-     function __construct() {
+    function __construct() {
         $this->rincianLabAsetModel = new RincianLabAsetModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
@@ -29,6 +36,80 @@ class RincianLabAset extends ResourceController
         $this->identitasLabModel = new IdentitasLabModels();
         $this->db = \Config\Database::connect();
     }
+
+    public function generateAndSetKodeRincianLabAset() {
+
+        $dataRincianLabAset = $this->rincianLabAsetModel->getAll();
+
+        foreach ($dataRincianLabAset as $data) {
+            $newKodeRincianLabAset = $this->generateKodeRincianLabAset(
+                $data->idKategoriManajemen,
+                $data->idIdentitasLab,
+                $data->idSumberDana,
+                $data->idIdentitasSarana,
+                $data->tahunPengadaan,
+                $data->nomorBarang
+            );
+
+            $this->rincianLabAsetModel->updateKodeRincianLabAset($data->idRincianLabAset, $newKodeRincianLabAset);
+        }
+        return redirect()->to(site_url('rincianLabAset'))->with('success', 'Berhasil generate kode aset');
+    }
+
+    public function generateKodeRincianLabAset($idKategoriManajemen, $idIdentitasLab, $idSumberDana, $idIdentitasSarana, $tahunPengadaan, $nomorBarang) {
+        $kodeKategoriManajemen = $this->kategoriManajemenModel->getKodeKategoriManajemenById($idKategoriManajemen);
+        $kodeLab = $this->identitasLabModel->getKodeLabById($idIdentitasLab);
+        $kodeSumberDana = $this->sumberDanaModel->getKodeSumberDanaById($idSumberDana);
+        $kodeSarana = $this->identitasSaranaModel->getKodeSaranaById($idIdentitasSarana);
+
+        if ($tahunPengadaan === '0000') {
+            $tahunPengadaan = 'xx';
+        } else {
+            $tahunPengadaan = substr($tahunPengadaan, -2);
+        }
+
+        $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
+        // $kodeLab = substr($kodeLab, -2);
+
+        $kodeRincianLabAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodeLab . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
+
+        return $kodeRincianLabAset;
+    }
+
+    public function generateKode() {
+        $idKategoriManajemen = $this->request->getPost('idKategoriManajemen');
+        $idIdentitasLab = $this->request->getPost('idIdentitasLab');
+        $idSumberDana = $this->request->getPost('idSumberDana');
+        $tahunPengadaan = $this->request->getPost('tahunPengadaan');
+        $idIdentitasSarana = $this->request->getPost('idIdentitasSarana');
+        $nomorBarang = $this->request->getPost('nomorBarang');
+        
+        $kodeKategoriManajemen = $this->kategoriManajemenModel->getKodeKategoriManajemenById($idKategoriManajemen);
+        $kodeLab = $this->identitasLabModel->getKodeLabById($idIdentitasLab);
+        $kodeSumberDana = $this->sumberDanaModel->getKodeSumberDanaById($idSumberDana);
+        $kodeSarana = $this->identitasSaranaModel->getKodeSaranaById($idIdentitasSarana);
+
+        if ($tahunPengadaan === '0000') {
+            $tahunPengadaan = 'xx';
+        } else {
+            $tahunPengadaan = substr($tahunPengadaan, -2);
+        }
+        // $kodeLab = substr($kodeLab, -2);
+        $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
+
+        
+        $kodeRincianLabAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodeLab . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
+        echo json_encode($kodeRincianLabAset);
+    }
+
+    public function checkDuplicate() {
+        $kodeRincianLabAset = $this->request->getPost('kodeRincianLabAset');
+    
+        $isDuplicate = $this->rincianLabAsetModel->isDuplicate($kodeRincianLabAset);
+    
+        echo json_encode(['isDuplicate' => $isDuplicate]);
+    }
+    
 
     public function index() {
         $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getAll();
@@ -919,6 +1000,100 @@ class RincianLabAset extends ResourceController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $filename = 'Aset Laboratorium -  Data Pemusnahan Report.pdf';
+        $dompdf->stream($filename);
+    }
+
+    public function generateSelectedLabQR($selectedRows) {
+        $selectedRows = explode(',', $selectedRows); 
+        $dataRincianLabAset = $this->rincianLabAsetModel->getSelectedRows($selectedRows);
+    
+        if (empty($selectedRows)) {
+            return redirect()->to('rincianLabAset')->with('error', 'No rows selected for QR code generation.');
+        }
+    
+        $data = [
+            'dataRincianLabAset' => $dataRincianLabAset,
+        ];
+
+        foreach ($data['dataRincianLabAset'] as $key => $value) {
+            $qrCode = $this->generateQRCode($value->kodeRincianLabAset);
+            $data['dataRincianLabAset'][$key]->qrCodeData = $qrCode;
+        }
+
+        $filePath = APPPATH . 'Views/labView/rincianLabAset/printQrCode.php';
+
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+
+        $includeFile($filePath, $data);
+
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $filename = 'Laboratorium - Selected QR Code Rincian Aset .pdf';
+        $dompdf->stream($filename);
+    }
+
+    
+    public function generateQRCode($kodeRincianLabAset)    {
+        $writer = new PngWriter();
+        $qrCode = QrCode::create($kodeRincianLabAset)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(300)
+            ->setMargin(10)
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+
+        $result = $writer->write($qrCode);
+
+        $dataUrl = $result->getDataUri();
+
+        return $dataUrl;
+    }
+
+
+    public function generateLabQRDoc() {
+        $dataRincianLabAset = $this->rincianLabAsetModel->getAll();
+    
+        $data = [
+            'dataRincianLabAset' => $dataRincianLabAset,
+        ];
+
+        foreach ($data['dataRincianLabAset'] as $key => $value) {
+            $qrCode = $this->generateQRCode($value->kodeRincianLabAset);
+            $data['dataRincianLabAset'][$key]->qrCodeData = $qrCode;
+        }
+
+        $filePath = APPPATH . 'Views/labView/rincianLabAset/printQrCode.php';
+
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+        
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $filename = 'Laboratorium - QR Code Rincian Aset.pdf';
         $dompdf->stream($filename);
     }
 }

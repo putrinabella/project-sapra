@@ -182,6 +182,20 @@ class RincianAsetModels extends Model
         return false;
     }
 
+    public function updateKodeRincianAset($idRincianAset, $newKodeRincianAset)
+    {
+        $data = [
+            'kodeRincianAset' => $newKodeRincianAset,
+        ];
+
+        $builder = $this->db->table($this->table);
+        $builder->where('idRincianAset', $idRincianAset);
+        $builder->update($data);
+    }
+    
+
+
+
     // public function updateSectionAset($idRincianAset, $newSectionAset)
     // {
     //     if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {

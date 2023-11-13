@@ -194,8 +194,8 @@ $routes->presenter('kategoriPegawai', ['filter' => 'isLoggedIn']);
 // Rincian Aset
 // $routes->get('QRBarcode', 'QRBarcode::index');
 // $routes->get('rincianAset/qrcode/(:num)', 'RincianAset::qrcode/$1');
-$routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 // $routes->get('generateSelectedQR', 'RincianAset::generateSelectedQR');
+$routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
 
 $routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
@@ -217,6 +217,7 @@ $routes->get('rincianAset/restore/(:any)', 'RincianAset::restore/$1');
 $routes->get('rincianAset/restore', 'RincianAset::restore');
 $routes->get('pemusnahanAset/dataDestroyaGeneratePDF', 'RincianAset::dataDestroyaGeneratePDF');
 $routes->get('pemusnahanAset/exportDestroyFile', 'RincianAset::exportDestroyFile');
+$routes->post('rincianAset/generateAndSetKodeRincianAset', 'RincianAset::generateAndSetKodeRincianAset');
 $routes->post('pemusnahanAset/delete/(:any)', 'RincianAset::pemusnahanAsetDelete/$1');
 $routes->post('rincianAset/generateKode', 'RincianAset::generateKode');
 $routes->post('rincianAset/(:any)/updateKode', 'RincianAset::generateKode');
@@ -395,6 +396,11 @@ $routes->resource('tagihanInternet', ['filter' => 'isLoggedIn']);
 // LABORATORIUM
 
 // Manajemen Aset
+$routes->get('generateLabQRDoc', 'RincianLabAset::generateLabQRDoc');
+$routes->add('generateSelectedLabQR/(:any)', 'RincianLabAset::generateSelectedLabQR/$1');
+
+$routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
+
 $routes->get('pemusnahanLabAsetDetail/(:num)', 'RincianLabAset::pemusnahanLabAsetDetail/$1');
 $routes->get('pemusnahanLabAset', 'RincianLabAset::pemusnahanLabAset');
 $routes->get('dataSaranaDetail/(:num)', 'RincianLabAset::dataSaranaDetail/$1');
@@ -414,6 +420,11 @@ $routes->get('pemusnahanLabAset/dataDestroyLabGeneratePDF', 'RincianLabAset::dat
 $routes->get('pemusnahanLabAset/exportDestroyFile', 'RincianLabAset::exportDestroyFile');
 $routes->post('rincianLabAset/import', 'RincianLabAset::import');
 $routes->post('pemusnahanLabAset/delete/(:any)', 'RincianLabAset::pemusnahanLabAsetDelete/$1');
+$routes->post('rincianLabAset/generateAndSetKodeRincianLabAset', 'RincianLabAset::generateAndSetKodeRincianLabAset');
+$routes->post('rincianLabAset/generateKode', 'RincianLabAset::generateKode');
+$routes->post('rincianLabAset/(:any)/updateKode', 'RincianLabAset::generateKode');
+$routes->post('rincianLabAset/checkDuplicate', 'RincianLabAset::checkDuplicate');
+$routes->post('rincianLabAset/(:any)/updateCheckDuplicate', 'RincianLabAset::checkDuplicate');
 $routes->patch('pemusnahanLabAset/updatePemusnahanLab/(:any)', 'RincianLabAset::updatePemusnahanLab/$1');
 $routes->delete('rincianLabAset/deletePermanent/(:any)', 'RincianLabAset::deletePermanent/$1');
 $routes->delete('rincianLabAset/deletePermanent', 'RincianLabAset::deletePermanent');

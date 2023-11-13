@@ -49,6 +49,7 @@
                     <th>Kategori Barang</th>
                     <th>Spesifikasi Barang</th>
                     <th>Status</th>
+                    <th>Ketersediaan</th>
                     <th>Sumber Dana</th>
                     <th>Tahun Pengadaan</th>
                     <th>Harga Beli</th>
@@ -62,7 +63,7 @@
                         <td rowspan="2" >
                             <?= $key + 1 ?>
                         </td>
-                        <td colspan="9">  
+                        <td colspan="10">  
                             <?= $value->kodeRincianLabAset ?>
                         </td>
                     </tr>
@@ -71,6 +72,13 @@
                         <td><?=$value->namaKategoriManajemen?></td>
                         <td><?=$value->namaSarana?></td>
                         <td><?=$value->status?></td>
+                        <td class="text-center">
+                            <?php if ($value->sectionAset == "None") : ?>
+                                Tersedia
+                            <?php else : ?>
+                                <?= $value->sectionAset; ?> 
+                            <?php endif; ?>
+                        </td>
                         <td><?=$value->namaSumberDana?></td>
                         <td><?=$value->tahunPengadaan?></td>
                         <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>

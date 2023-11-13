@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-4">
                         <h5 class="p-2">Nama Lab</h5>
                         <div class="border rounded-2 p-2">
                             <?= $dataLaboratorium->namaLab; ?>
@@ -36,6 +36,12 @@
                         <h5 class="p-2">Kode Lab</h5>
                         <div class="border rounded-2 p-2">
                             <?= $dataLaboratorium->kodeLab; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h5 class="p-2">Total Aset</h5>
+                        <div class="border rounded-2 p-2">
+                            <?= count($dataSarana); ?>
                         </div>
                     </div>
                 </div>
@@ -74,6 +80,7 @@
                                 <th>Kategori Aset</th>
                                 <th>Nama Aset</th>
                                 <th>Status</th>
+                                <th>Ketersediaan</th>
                                 <th>Sumber Dana</th>
                                 <th>Tahun Pengadaan</th>
                                 <th>Harga Beli</th>
@@ -92,7 +99,28 @@
                                 <td class="text-center"><?=$value->kodeRincianLabAset?></td>
                                 <td class="text-center"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->status?></td>
+                                <td class="text-center">
+                                    <?php if ($value->status == "Rusak") : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Hilang"): ?>
+                                    <span class="badge bg-danger">
+                                    <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Bagus"): ?>
+                                    <?= $value->status; ?> 
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php if ($value->sectionAset == "None") : ?>
+                                        Tersedia
+                                    <?php else : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->sectionAset;; ?> 
+                                    </span>
+                                    <?php endif; ?>
+                                </td>
                                 <td class="text-center"><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
                                     <?php 

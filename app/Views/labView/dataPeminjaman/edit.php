@@ -45,9 +45,15 @@
                         <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Jumlah Aset Dipinjam</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="jumlahPeminjaman" name="jumlahPeminjaman" value="<?= $dataDataPeminjaman->jumlahPeminjaman ?>" readonly>
-                            <input type="text" class="form-control" id="loanStatus" name="loanStatus" value="Pengembalian" hidden>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Tujuan</label>
+                        <div class="col-sm-9">
+                        <input type="text" class="form-control" id="loanStatus" name="loanStatus" value="Pengembalian" readonly>
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <label for="tanggal" class="col-sm-3 col-form-label" id="labelTanggalPengembalianContainer">Tanggal Pengembalian</label>
                         <div class="col-sm-9" id="tanggalPengembalianContainer">

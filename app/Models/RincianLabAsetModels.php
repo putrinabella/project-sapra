@@ -13,6 +13,26 @@ class RincianLabAsetModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
+    
+    public function isDuplicate($kodeRincianLabAset) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodeRincianLabAset', $kodeRincianLabAset)
+            ->countAllResults() > 0;
+    }
+    public function getSelectedRows($selectedRows) {
+        $builder = $this->db->table($this->table);
+        $builder->select('tblRincianLabAset.*, tblIdentitasSarana.*, tblSumberDana.*, tblKategoriManajemen.*, tblIdentitasLab.*');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->whereIn('tblRincianLabAset.idRincianLabAset', $selectedRows);
+    
+        return $builder->get()->getResult();
+    }
+
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
@@ -166,6 +186,18 @@ class RincianLabAsetModels extends Model
         return false;
     }
 
+    public function updateKodeRincianLabAset($idRincianLabAset, $newKodeRincianLabAset)
+    {
+        $data = [
+            'kodeRincianLabAset' => $newKodeRincianLabAset,
+        ];
+
+        $builder = $this->db->table($this->table);
+        $builder->where('idRincianLabAset', $idRincianLabAset);
+        $builder->update($data);
+    }
+    
+
     // public function updateSectionAset($idRincianLabAset, $newSectionAset)
     // {
     //     if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {
@@ -180,5 +212,7 @@ class RincianLabAsetModels extends Model
     //     }
     //     return false;
     // }
+
+    
     
 }

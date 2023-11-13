@@ -37,4 +37,19 @@ class IdentitasLabModels extends Model
             ->orWhere('namaLab', $namaLab)
             ->countAllResults() > 0;
     }
+
+    public function getKodeLabById($idIdentitasLab) {
+        $builder = $this->db->table($this->table);
+        $builder->select('kodeLab');
+        $builder->where('idIdentitasLab', $idIdentitasLab);
+        $query = $builder->get();
+        
+        if ($query->getNumRows() > 0) {
+            $result = $query->getRow();
+            return $result->kodeLab;
+        } else {
+            return null; 
+        }
+    }
+    
 }

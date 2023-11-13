@@ -41,17 +41,18 @@ class Laboratorium extends ResourceController
         if ($id != null) {
             $dataLaboratorium = $this->laboratoriumModel->find($id);
             if (is_object($dataLaboratorium)) {
+                $idIdentitasLab = $dataLaboratorium->idIdentitasLab;
                 $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
                 $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
                 $dataSarana = $this->laboratoriumModel->getSaranaByLabId($dataLaboratorium->idIdentitasLab);
-
                 $data = [
                     'dataLaboratorium'  => $dataLaboratorium,
                     'dataInfoLab'       => $dataInfoLab,
                     'dataSarana'        => $dataSarana,
-                    
+                    'dataRincianLabAsetCount' => $this->laboratoriumModel->countDataByIdentitasLab($idIdentitasLab),  
                 ];
                 $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getAll();
+                $data['jumlahAset'] = $this->laboratoriumModel->countDataByIdentitasLab($idIdentitasLab);
                 return view('labView/laboratorium/show', $data);
             } else {
                 return view('error/404');
