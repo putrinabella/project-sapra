@@ -190,6 +190,81 @@ class StatusLayanan extends ResourcePresenter
         }
     }
 
+    public function createTemplate() {
+        $data = $this->statusLayananModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+
+        $headers = ['No.', 'Status Layanan'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), '');
+    
+            $columns = ['A', 'B'];
+
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $activeWorksheet->getStyle('A1:B1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:B1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:B'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:B')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'B') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headers = ['No.', 'Status Layanan'];
+        $exampleSheet->fromArray([$headers], NULL, 'A1');
+        $exampleSheet->getStyle('A1:B1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        foreach ($data as $index => $value) {
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->namaStatusLayanan);
+    
+            $columns = ['A', 'B'];
+
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                                ->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }     
+        }
+    
+        $exampleSheet->getStyle('A1:B1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:B1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $exampleSheet->getStyle('A1:B'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:B')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'B') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Identitas Status Layanan Example.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+
     public function generatePDF() {
         $filePath = APPPATH . 'Views/master/statusLayananView/print.php';
     

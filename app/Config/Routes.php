@@ -114,6 +114,7 @@ $routes->delete('identitasGedung/deletePermanent', 'IdentitasGedung::deletePerma
 $routes->presenter('identitasGedung', ['filter' => 'isLoggedIn']);
 
 // Identitas Lantai
+$routes->get('identitasLantai/createTemplate', 'IdentitasLantai::createTemplate');
 $routes->get('identitasLantai/generatePDF', 'IdentitasLantai::generatePDF');
 $routes->get('identitasLantai/export', 'IdentitasLantai::export');
 $routes->post('identitasLantai/import', 'IdentitasLantai::import');
@@ -126,6 +127,7 @@ $routes->delete('identitasLantai/deletePermanent', 'IdentitasLantai::deletePerma
 $routes->presenter('identitasLantai', ['filter' => 'isLoggedIn']);
 
 // Status Layanan
+$routes->get('statusLayanan/createTemplate', 'StatusLayanan::createTemplate');
 $routes->get('statusLayanan/generatePDF', 'StatusLayanan::generatePDF');
 $routes->get('statusLayanan/export', 'StatusLayanan::export');
 $routes->post('statusLayanan/import', 'StatusLayanan::import');
