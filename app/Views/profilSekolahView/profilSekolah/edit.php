@@ -66,6 +66,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="npwp" class="col-sm-3 col-form-label">NPWP</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="npwp" name="npwp" value="<?=$dataProfilSekolah->npwp?>" >
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="status" class="col-sm-3 col-form-label">Status</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="status" name="status">

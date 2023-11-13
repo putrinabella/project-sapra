@@ -12,6 +12,8 @@ use App\Models\RincianLabAsetModels;
 use App\Models\RincianAsetModels; 
 use App\Models\IdentitasPrasaranaModels; 
 use App\Models\HomeModels; 
+use App\Models\ProfilSekolahModels; 
+use App\Models\DokumenSekolahModels; 
 
 class Home extends BaseController
 {
@@ -23,15 +25,27 @@ class Home extends BaseController
         $this->kategoriManajemenModel = new KategoriManajemenModels();
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
         $this->homeModel = new HomeModels();
+        $this->profilSekolahModel = new ProfilSekolahModels();
+        $this->dokumenSekolahModel = new DokumenSekolahModels();
         $this->db = \Config\Database::connect();
     }
 
     public function index() {
         $dataRincianAset = $this->homeModel->getData();
         $dataRincianAsetLab = $this->homeModel->getDataLab();
+        $dataProfilSekolah = $this->profilSekolahModel->findAll();
+        $dataDokumenSekolah = $this->dokumenSekolahModel->findAll();
+
+        $firstRecord = $this->profilSekolahModel->first();
+        $firstRecordId = $firstRecord ? $firstRecord->idProfilSekolah : null;
+        $rowCount =  $this->profilSekolahModel->getCount();
         $data = [
             'dataRincianAset' => $dataRincianAset,
             'dataRincianAsetLab' => $dataRincianAsetLab,
+            'rowCount'              => $rowCount,
+            'firstRecordId'         => $firstRecordId,
+            'dataProfilSekolah'     => $dataProfilSekolah,
+            'dataDokumenSekolah'    => $dataDokumenSekolah,
         ];
         
         return view('home', $data);

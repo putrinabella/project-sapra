@@ -18,8 +18,7 @@
         <div class="card overflow-hidden">
             <div class="card-body">
             <form action="<?= site_url('profilSekolah')?>" method="post" autocomplete="off"  id="custom-validation">
-                    <?= csrf_field() ?>
-                                        <h5>SMK TELKOM BANJARBARU</h5>
+                        <h5>SMK TELKOM BANJARBARU</h5>
                     <br>
                     <div class="row mb-3">
                         <label for="kepsek" class="col-sm-3 col-form-label">Nama Kepala Sekolah</label>
@@ -63,6 +62,13 @@
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="npsn" name="npsn"
                                 placeholder="Masukkan NPSN">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="npwp" class="col-sm-3 col-form-label">NPWP</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="npwp" name="npwp"
+                                placeholder="Masukkan NPWP">
                         </div>
                     </div>
                     <div class="row mb-3">

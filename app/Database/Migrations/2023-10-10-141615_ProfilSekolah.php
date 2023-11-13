@@ -35,6 +35,10 @@ class ProfilSekolah extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 18,
             ],
+            'npwp' => [
+                'type' => 'VARCHAR',
+                'constraint' => 18,
+            ],
             'status' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,

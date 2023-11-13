@@ -119,6 +119,13 @@
                         </td>
                     </tr>
                     <tr>
+                        <td style="width: 25%;">NPWP</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                            <?= $value->npwp; ?>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Status</td>
                         <td style="width: 2%;">:</td>
                         <td>
