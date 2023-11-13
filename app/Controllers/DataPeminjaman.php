@@ -262,15 +262,16 @@ class DataPeminjaman extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $data = $this->dataPeminjamanModel->getDataExport($startDate, $endDate);
+        $data = $this->dataPeminjamanModel->getDataExcel($startDate, $endDate);
+
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Peminjaman');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
 
-        $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yang dipinjam', 'Lokasi', 'Jumlah', 'Status', 'Tanggal Pengembalian'];
+        $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal', 'Kondisi Pengembalian', 'Tanggal Pengembalian'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
@@ -279,16 +280,17 @@ class DataPeminjaman extends ResourceController
             $activeWorksheet->setCellValue('D' . ($index + 2), $value->asalPeminjam);
             $activeWorksheet->setCellValue('E' . ($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('F' . ($index + 2), $value->namaLab);
-            $activeWorksheet->setCellValue('G' . ($index + 2), $value->jumlah);
             if ($value->loanStatus == "Peminjaman") {
-                $activeWorksheet->setCellValue('H' . ($index + 2), 'Sedang Dipinjam');
+                $activeWorksheet->setCellValue('G' . ($index + 2), 'Sedang Dipinjam');
             } else {
-                $activeWorksheet->setCellValue('H' . ($index + 2), 'Sudah Dikembalikan');
+                $activeWorksheet->setCellValue('G' . ($index + 2), 'Sudah Dikembalikan');
             }
-            $activeWorksheet->setCellValue('I' . ($index + 2), $value->tanggalPengembalian);
+            $activeWorksheet->setCellValue('H' . ($index + 2), "Bagus");
+            $activeWorksheet->setCellValue('I' . ($index + 2), $value->statusSetelahPengembalian);
+            $activeWorksheet->setCellValue('J' . ($index + 2), $value->tanggalPengembalian);
 
 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -297,12 +299,12 @@ class DataPeminjaman extends ResourceController
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             }
         }
-        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:I' . $activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:J' . $activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
 
-        foreach (range('A', 'I') as $column) {
+        foreach (range('A', 'J') as $column) {
             if ($column === 'K') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(20);
             } else if ($column === 'L') {
