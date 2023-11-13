@@ -39,10 +39,12 @@ class Auth extends BaseController
                 $session->set($session_data);
                 return redirect()->to(site_url('home'));
             } else {
-                return redirect()->back()->with('error', 'Password salah');
+                return redirect()->to(site_url('login'))->with('error', 'Password salah');
+                // return redirect()->back()->with('error', 'Password salah');
             }
         } else {
-            return redirect()->back()->with('error', 'Username tidak ditemukan');
+            return redirect()->to(site_url('login'))->with('error', 'Username tidak ditemukan');
+            // return redirect()->back()->with('error', 'Username tidak ditemukan');
         }
     }
 
@@ -84,8 +86,8 @@ class Auth extends BaseController
         $mode = $request->getJSON('mode');
     
         if ($mode === 'light' || $mode === 'dark') {
-            session()->set('mode', $mode); // Set the session value
-            return $this->response->setJSON(['success' => true, 'mode' => $mode]); // Include the mode in the response
+            session()->set('mode', $mode); 
+            return $this->response->setJSON(['success' => true, 'mode' => $mode]);
         } else {
             return $this->response->setJSON(['success' => false, 'message' => 'Invalid mode value']);
         }
@@ -99,7 +101,6 @@ class Auth extends BaseController
             $session->set('mode', $mode);
         }
         return $this->response->setJSON(['mode' => $mode]);
-        // return $this->response->setJSON(['success' => true, 'mode' => $mode]);
     }
     
     

@@ -61,12 +61,12 @@
                                     <?php endif; ?>
                                     <form action="<?= site_url('loginProcess')?>" method="post" id="custom-validation">
                                         <?= csrf_field() ?>
-                                        <div class="mb-3">
+                                        <div class="mb-3 col-sm-12">
                                             <label for="username" class="form-label">Username</label>
                                             <input id="username" class="form-control" name="username" type="text"
                                                 placeholder="Masukkan username">
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-3 col-sm-12">
                                             <label for="password" class="form-label">Password</label>
                                             <input id="password" class="form-control" name="password" type="password"
                                                 placeholder="Masukkan password">

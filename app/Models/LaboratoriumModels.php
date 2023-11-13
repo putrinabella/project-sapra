@@ -85,6 +85,7 @@ class LaboratoriumModels extends Model
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
         $builder->where('tblIdentitasLab.idIdentitasLab', $idIdentitasLab);
         $builder->where('tblRincianLabAset.deleted_at', null); 
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan'); 
         $query = $builder->get();
     
         return $query->getResult();

@@ -35,6 +35,9 @@ class HomeModels extends Model
         $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
         WHEN tblRincianAset.sectionAset != "dimusnahkan" AND tblRincianAset.sectionAset = "Dipinjam" 
         THEN 1 ELSE 0 END) as saranaDipinjam');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianAset.sectionAset != "dimusnahkan" AND tblRincianAset.sectionAset = "Dimusnahkan" 
+        THEN 1 ELSE 0 END) as saranaDimusnahkan');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
@@ -60,6 +63,9 @@ class HomeModels extends Model
         $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
         WHEN tblRincianLabAset.sectionAset != "dimusnahkan" AND tblRincianLabAset.sectionAset = "Dipinjam" 
         THEN 1 ELSE 0 END) as saranaDipinjam');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianLabAset.sectionAset != "dimusnahkan" AND tblRincianLabAset.sectionAset = "Dimusnahkan" 
+        THEN 1 ELSE 0 END) as saranaDimusnahkan');
         $builder->where('tblRincianLabAset.deleted_at', null);
         $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 

@@ -543,7 +543,14 @@ $(document).ready(function () {
       },
     },
     errorPlacement: function (label, element) {
-      var errorContainer = element.closest('.col-sm-9');
+      // var errorContainer = element.closest('.col-sm-9');
+      if (element.closest('.col-sm-9').length > 0) {
+          errorContainer = element.closest('.col-sm-9');
+      } else if (element.closest('.col-sm-12').length > 0) {
+          errorContainer = element.closest('.col-sm-12');
+      } else {
+          errorContainer = element.closest('.col-sm-9');
+      }
       label.addClass('error mt-1 tx-13 text-danger');
       label.appendTo(errorContainer);
       // var newRow = $("<div class='row mb-2 error-row'></div>").insertAfter(element.closest(".row"));

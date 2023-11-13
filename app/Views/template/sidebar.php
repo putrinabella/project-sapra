@@ -260,53 +260,46 @@
     <?php } ?>
 
     <?php if (session()->get('role') == 'Laboran') { ?>
-        <li class="nav-item nav-category">Laboratorium</li>
+        <li class="nav-item nav-category">Manajemen Aset</li>
         <li class="nav-item">
             <a href="<?= site_url('laboratorium') ?>" class="nav-link">
-                <i class="link-icon" data-feather="bookmark"></i>
-                <span class="link-title">Laboratorium</span>
+                <i class="link-icon" data-feather="home"></i>
+                <span class="link-title">Aset Laboratorium</span>
             </a>
         </li>
         <li class="nav-item">
             <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
                 <i class="link-icon" data-feather="folder"></i>
-                <span class="link-title">Manajemen Aset</span>
+                <span class="link-title">Rincian Aset</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
-                <i class="link-icon" data-feather="user-check"></i>
-                <span class="link-title">Peminjaman</span>
-                <i class="link-arrow" data-feather="chevron-down"></i>
-            </a>
-            <div class="collapse" id="manajemenPeminjaman">
-                <ul class="nav sub-menu">
-                    <li class="nav-item">
-                        <a href="<?= site_url('dataPeminjaman') ?>" class="nav-link">Data Peminjaman </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Manajemen Peminjaman</a>
-                    </li>
 
-                </ul>
-            </div>
+        <li class="nav-item nav-category">Manajemen Peminjaman</li>
+        <li class="nav-item">
+            <a href="<?= site_url('dataPeminjaman') ?>" class="nav-link">
+                <i class="link-icon" data-feather="user-check"></i>
+                <span class="link-title">Data Peminjaman</span>
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLayanan" role="button" aria-expanded="false" aria-controls="manajemenLayanan">
-                <i class="link-icon" data-feather="server"></i>
-                <span class="link-title">Layanan</span>
-                <i class="link-arrow" data-feather="chevron-down"></i>
+            <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">
+                <i class="link-icon" data-feather="edit"></i>
+                <span class="link-title">Input Peminjaman</span>
             </a>
-            <div class="collapse" id="manajemenLayanan">
-                <ul class="nav sub-menu">
-                    <li class="nav-item">
-                        <a href="<?= site_url('layananLabAset') ?>" class="nav-link">Layanan Aset</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">Layanan Non Aset</a>
-                    </li>
-                </ul>
-            </div>
+        </li>
+
+        <li class="nav-item nav-category">Manajemen Layanan</li>
+        <li class="nav-item">
+            <a href="<?= site_url('layananLabAset') ?>" class="nav-link">
+                <i class="link-icon" data-feather="book"></i>
+                <span class="link-title">Layanan Aset</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">
+                <i class="link-icon" data-feather="archive"></i>
+                <span class="link-title">Layanan Non Aset</span>
+            </a>
         </li>
     <?php } ?>
 
