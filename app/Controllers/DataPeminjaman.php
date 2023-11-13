@@ -266,7 +266,7 @@ class DataPeminjaman extends ResourceController
 
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Data Peminjaman');
+        $activeWorksheet->setTitle('Data Pengembalian');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
 
         $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal', 'Kondisi Pengembalian', 'Tanggal Pengembalian'];
@@ -311,6 +311,53 @@ class DataPeminjaman extends ResourceController
                 $activeWorksheet->getColumnDimension($column)->setWidth(40);
             } else {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+
+        $dataPeminjaman = $this->dataPeminjamanModel->getDataExcelPeminjaman($startDate, $endDate);
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Data Peminjaman');
+        $exampleSheet->getTabColor()->setRGB('767870');
+
+        $headerExampleTable = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal'];
+        $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
+        $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
+
+        foreach ($dataPeminjaman as $index => $value) {
+            $exampleSheet->setCellValue('A' . ($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B' . ($index + 2), $value->tanggal);
+            $exampleSheet->setCellValue('C' . ($index + 2), $value->namaPeminjam);
+            $exampleSheet->setCellValue('D' . ($index + 2), $value->asalPeminjam);
+            $exampleSheet->setCellValue('E' . ($index + 2), $value->namaSarana);
+            $exampleSheet->setCellValue('F' . ($index + 2), $value->namaLab);
+            if ($value->loanStatus == "Peminjaman") {
+                $exampleSheet->setCellValue('G' . ($index + 2), 'Sedang Dipinjam');
+            } else {
+                $exampleSheet->setCellValue('G' . ($index + 2), 'Sudah Dikembalikan');
+            }
+            $exampleSheet->setCellValue('H' . ($index + 2), "Bagus");
+
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+            foreach ($columns as $column) {
+                $exampleSheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }
+        }
+        $exampleSheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:H1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:H' . $exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+
+        foreach (range('A', 'H') as $column) {
+            if ($column === 'K') {
+                $exampleSheet->getColumnDimension($column)->setWidth(20);
+            } else if ($column === 'L') {
+                $exampleSheet->getColumnDimension($column)->setWidth(40);
+            } else {
+                $exampleSheet->getColumnDimension($column)->setAutoSize(true);
             }
         }
 
