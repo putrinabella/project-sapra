@@ -30,17 +30,17 @@ class DataInventarisModels extends Model
         return $query->getResult();
     }
 
-    function getData($startYear = null, $endYear = null) {
+    function getData($startDate = null, $endDate = null) {
         $builder = $this->db->table($this->table);
+        $builder->join('tblInventaris', 'tblInventaris.idInventaris = tblDataInventaris.idInventaris');
         $builder->where('tblDataInventaris.deleted_at', null);
     
-        if ($startYear !== null && $endYear !== null) {
-            $builder->where('tblDataInventaris.tahunPemakaianAir >=', $startYear);
-            $builder->where('tblDataInventaris.tahunPemakaianAir <=', $endYear);
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblDataInventaris.tanggalDataInventaris >=', $startDate);
+            $builder->where('tblDataInventaris.tanggalDataInventaris <=', $endDate);
         }
     
-        $builder->orderBy('tblDataInventaris.tahunPemakaianAir', 'asc'); 
-        $builder->orderBy('tblDataInventaris.bulanPemakaianAir', 'asc');
+        $builder->orderBy('tblDataInventaris.tanggalDataInventaris', 'asc'); 
         $query = $builder->get();
         return $query->getResult();
     }
@@ -73,7 +73,7 @@ class DataInventarisModels extends Model
 
     public function getChartData() {
         $builder = $this->db->table($this->table);
-        $builder->select('bulanPemakaianAir, biaya');
+        $builder->select('bulanPemakaianAir, jumlahDataInventaris');
         $query = $builder->get();
         return $query->getResult();
     }

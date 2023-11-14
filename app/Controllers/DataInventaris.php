@@ -19,90 +19,89 @@ class DataInventaris extends ResourceController
         $this->inventarisModel = new InventarisModels();
         $this->db = \Config\Database::connect();
     }
-    public function index() {
-        $data['dataDataInventaris'] = $this->dataInventarisModel->getAll();
-        return view('saranaView/dataInventaris/index', $data);
-    }
 
     // public function index() {
-    //     $startYear = $this->request->getVar('startYear');
-    //     $endYear = $this->request->getVar('endYear');
-    
-    //     $formattedStartYear = !empty($startYear) ? $startYear : '';
-    //     $formattedEndYear = !empty($endYear) ? $endYear : '';
-    
-    //     $tableHeading = "";
-    //     if (!empty($formattedStartYear) && !empty($formattedEndYear)) {
-    //         $tableHeading = "Tahun $formattedStartYear - $formattedEndYear";
-    //     }
-    
-    //     $data['tableHeading'] = $tableHeading;
-
-    //     $dataDataInventaris = $this->dataInventarisModel->getData($startYear, $endYear);
-        
-    //     foreach ($dataDataInventaris as $value) {
-    //         $value->bulanPemakaianAir = $this->dataInventarisModel->convertMonth($value->bulanPemakaianAir);
-    //     }
-        
-    //     $data['dataDataInventaris'] = $dataDataInventaris;
-    
-    //     $chartDataResult = $dataDataInventaris; 
-    //     $chartBiaya = $this->chartBiaya($chartDataResult);
-    //     $chartPemakaian = $this->chartPemakaian($chartDataResult);
-    
-    //     $data = array_merge($data, $chartBiaya, $chartPemakaian);
-    
+    //     $data['dataDataInventaris'] = $this->dataInventarisModel->getAll();
     //     return view('saranaView/dataInventaris/index', $data);
     // }
+
+    public function index() {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
     
-    private function chartBiaya($chartDataResult) {
-        $chartBiaya = [
+        $formattedStartDate = !empty($startDate) ? $startDate : '';
+        $formattedEndDate = !empty($endDate) ? $endDate : '';
+    
+        $tableHeading = "";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = "$formattedStartDate - $formattedEndDate";
+        }
+    
+        $data['tableHeading'] = $tableHeading;
+
+        $dataDataInventaris = $this->dataInventarisModel->getData($startDate, $endDate);
+        
+        $data['dataDataInventaris'] = $dataDataInventaris;
+    
+        // $chartDataResult = $dataDataInventaris; 
+        // $chartPemasukan = $this->chartPemasukan($chartDataResult);
+        // $chartPemakaian = $this->chartPemakaian($chartDataResult);
+    
+        // $data = array_merge($data, $chartPemasukan);
+        // $data = array_merge($data, $chartPemasukan, $chartPemakaian);
+    
+        return view('saranaView/dataInventaris/index', $data);
+    }
+    
+    private function chartPemasukan($chartDataResult) {
+        $chartPemasukan = [
             'categories' => [],
-            'biaya' => [],
+            'jumlah' => [],
         ];
     
         if ($chartDataResult) {
             foreach ($chartDataResult as $row) {
-                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
-                $chartBiaya['categories'][] = $category;
-                $chartBiaya['biaya'][] = (int) $row->biaya;
+                $category = $row->namaInventaris;
+                $chartPemasukan['categories'][] = $category;
+                $chartPemasukan['jumlah'][] =  $row->jumlahDataInventaris;
             }
         }
-        return $chartBiaya;
+        return $chartPemasukan;
     }
 
     private function chartPemakaian($chartDataResult) {
         $chartPemakaian = [
             'categories' => [],
-            'pemakaianAir' => [],
+            'pemakaianInternet' => [],
         ];
     
         if ($chartDataResult) {
             foreach ($chartDataResult as $row) {
-                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
+                $category = $row->bulanPemakaianInternet . ' (' . $row->tahunPemakaianInternet . ')';
                 $chartPemakaian['categories'][] = $category;
-                $chartPemakaian['pemakaianAir'][] = $row->pemakaianAir;
+                $chartPemakaian['pemakaianInternet'][] = $row->pemakaianInternet;
             }
         }
         return $chartPemakaian;
     }
     
+    
         // public function index() {
-    //     $startYear = $this->request->getVar('startYear');
-    //     $endYear = $this->request->getVar('endYear');
+    //     $startDate = $this->request->getVar('startDate');
+    //     $endDate = $this->request->getVar('endDate');
         
-    //     $formattedStartYear = !empty($startYear) ? $startYear : '';
-    //     $formattedEndYear = !empty($endYear) ? $endYear : '';
+    //     $formattedStartDate = !empty($startDate) ? $startDate : '';
+    //     $formattedEndDate = !empty($endDate) ? $endDate : '';
         
     //     $tableHeading = "";
-    //     if (!empty($formattedStartYear) && !empty($formattedEndYear)) {
-    //         $tableHeading = "Tahun $formattedStartYear - $formattedEndYear";
+    //     if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+    //         $tableHeading = "Tahun $formattedStartDate - $formattedEndDate";
     //     }
     
     //     $data['tableHeading'] = $tableHeading;
-    //     $data['dataDataInventaris'] = $this->dataInventarisModel->getData($startYear, $endYear);
+    //     $data['dataDataInventaris'] = $this->dataInventarisModel->getData($startDate, $endDate);
     
-    //     $chartDataResult = $this->dataInventarisModel->getData($startYear, $endYear);
+    //     $chartDataResult = $this->dataInventarisModel->getData($startDate, $endDate);
     //     $chartData = $this->chartPemakaian($chartDataResult);
     
     //     $data = array_merge($data, $chartData);
@@ -239,27 +238,28 @@ class DataInventaris extends ResourceController
     } 
     
     public function export() {
-        $startYear = $this->request->getVar('startYear');
-        $endYear = $this->request->getVar('endYear');
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
 
-        $data = $this->dataInventarisModel->getData($startYear, $endYear);
+        $data = $this->dataInventarisModel->getData($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('DataInventaris');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
+        $headers = ['No.', 'Tanggal', 'Nama', 'Satuan',  'Tipe', 'Jumlah'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->bulanPemakaianAir);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->tahunPemakaianAir);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->pemakaianAir);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->biaya);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggalDataInventaris);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaInventaris);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->satuan);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->tipeDataInventaris);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->jumlahDataInventaris);
 
-            $columns = ['A', 'B', 'C', 'D', 'E'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -269,18 +269,18 @@ class DataInventaris extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:F')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
+        foreach (range('A', 'F') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Tagihan - Tagihan Air.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Data Inventaris.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -293,7 +293,7 @@ class DataInventaris extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
+        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Sarana'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
@@ -333,13 +333,13 @@ class DataInventaris extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
+        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Sarana'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->bulanPemakaianAir);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->tanggalDataInventaris);
             $exampleSheet->setCellValue('C'.($index + 2), $value->tahunPemakaianAir);
             $exampleSheet->setCellValue('D'.($index + 2), $value->pemakaianAir);
             $exampleSheet->setCellValue('E'.($index + 2), $value->biaya);
@@ -367,7 +367,7 @@ class DataInventaris extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Tagihan - Tagihan Air Example.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Data Inventaris Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -390,18 +390,18 @@ class DataInventaris extends ResourceController
                     continue;
                 }
                 $pemakaianAir            = $value[3] ?? null;
-                $bulanPemakaianAir       = $value[1] ?? null;
+                $tanggalDataInventaris       = $value[1] ?? null;
                 $tahunPemakaianAir       = $value[2] ?? null;
                 $biaya                   = $value[4] ?? null;
 
                 $data = [
                     'pemakaianAir'             => $pemakaianAir,
-                    'bulanPemakaianAir'        => $bulanPemakaianAir,
+                    'tanggalDataInventaris'        => $tanggalDataInventaris,
                     'tahunPemakaianAir'        => $tahunPemakaianAir,
                     'biaya'                    => $biaya,
                 ];
 
-                if (!empty($data['pemakaianAir'])  && !empty($data['bulanPemakaianAir'])  && !empty($data['tahunPemakaianAir']) && !empty($data['biaya']) ) {
+                if (!empty($data['pemakaianAir'])  && !empty($data['tanggalDataInventaris'])  && !empty($data['tahunPemakaianAir']) && !empty($data['biaya']) ) {
                         $this->dataInventarisModel->insert($data);
                 } else {
                     return redirect()->to(site_url('dataInventaris'))->with('error', 'Pastikan semua data telah diisi!');
@@ -415,8 +415,8 @@ class DataInventaris extends ResourceController
 
 
     public function generatePDF() {
-        $startYear = $this->request->getVar('startYear');
-        $endYear = $this->request->getVar('endYear');
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
         
 
         $filePath = APPPATH . 'Views/saranaView/dataInventaris/print.php';
@@ -425,7 +425,7 @@ class DataInventaris extends ResourceController
             return view('error/404');
         }
 
-        $data['dataDataInventaris'] = $this->dataInventarisModel->getData($startYear, $endYear);
+        $data['dataDataInventaris'] = $this->dataInventarisModel->getData($startDate, $endDate);
 
         ob_start();
 
@@ -440,7 +440,7 @@ class DataInventaris extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Tagihan - Tagihan Air Report.pdf';
+        $filename = 'Sarana - Data Inventaris Report.pdf';
         $dompdf->stream($filename);
     }
 }

@@ -293,7 +293,7 @@ class LayananLabNonAset extends ResourceController
                 break;
             };
 
-            $currentDate = '=TEXT(DATE(' . date('Y') . ',' . date('m') . ',' . date('d') . '),"yyyy-mm-dd")';
+            $currentDate = date('d F Y');
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
@@ -427,7 +427,7 @@ class LayananLabNonAset extends ResourceController
                 break;
             };
 
-            $currentDate = '=TEXT(DATE(' . date('Y') . ',' . date('m') . ',' . date('d') . '),"yyyy-mm-dd")';
+            $currentDate = date('d F Y');
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $currentDate);
             $exampleSheet->setCellValue('C'.($index + 2), $value->namaLab);
@@ -507,11 +507,7 @@ class LayananLabNonAset extends ResourceController
                     && !empty($data['idStatusLayanan']) && !empty($data['idKategoriMep']) 
                     && !empty($data['idSumberDana']) && !empty($data['biaya'])
                     && !empty($data['bukti']) && !empty($data['spesifikasi']) ) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('layananLabNonAset'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
                         $this->layananLabNonAsetModel->insert($data);
-                    }
                 } else {
                     return redirect()->to(site_url('layananLabNonAset'))->with('error', 'Pastikan semua data telah diisi!');
                 }

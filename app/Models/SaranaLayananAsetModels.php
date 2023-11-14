@@ -26,6 +26,20 @@ class SaranaLayananAsetModels extends Model
         return $query->getResult();
     }
 
+    function getItAll() {
+        $builder = $this->db->table('tblSaranaLayananAset');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
+        $builder->where('tblSaranaLayananAset.deleted_at', null);
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
         
     function getRecycle() {
         $builder = $this->db->table('tblSaranaLayananAset');

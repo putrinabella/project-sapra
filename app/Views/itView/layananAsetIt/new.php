@@ -53,7 +53,7 @@
                                 <option value="" selected disabled hidden>Pilih Kode Aset</option>
                             </select>
                             <input type="text" class="form-control" id="idRincianAset" name="idRincianAset"
-                                placeholder="Menampilkan ID rincian aset" >
+                                placeholder="Menampilkan ID rincian aset" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">

@@ -54,7 +54,7 @@
                             <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true" id="kodeRincianAset" name="kodeRincianAset">
                                 <option value="<?=$dataLayananAsetIt->kodeRincianAset?>"><?=$dataLayananAsetIt->kodeRincianAset?></option>
                             </select>
-                            <input type="text" class="form-control" id="idRincianAset" name="idRincianAset" placeholder="Menampilkan ID rincian aset" value="<?=$dataLayananAsetIt->idRincianAset?>">
+                            <input type="text" class="form-control" id="idRincianAset" name="idRincianAset" placeholder="Menampilkan ID rincian aset" value="<?=$dataLayananAsetIt->idRincianAset?>" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">

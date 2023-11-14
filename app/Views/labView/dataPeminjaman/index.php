@@ -93,7 +93,7 @@
                 <br>
                 <?php endif; ?>
             </div>
-            <h3 class="text-center py-3">Data Peminjaman</h3>
+            <h4 class="text-center py-3">Data Peminjaman</h4>
             <?php if (!empty($tableHeading)) : ?>
             <p class="text-center">
                 <?= $tableHeading ?>

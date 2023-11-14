@@ -14,14 +14,32 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Data Inventaris</h4>
+        <form action="<?= site_url('dataInventaris') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
+                    readonly>
+                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
+                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('dataInventaris') ?>" class="btn btn-success btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('dataInventaris/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
-        <!-- <div class="dropdown">
+        <div class="dropdown">
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
@@ -32,17 +50,6 @@
                 <a class="dropdown-item" href="<?= site_url('dataInventaris/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('dataInventaris/createTemplate') ?>">Download Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
-            </div>
-        </div> -->
         <a href="<?= site_url('dataInventaris/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
@@ -77,6 +84,15 @@
                     </div>
                     <br>
                     <?php endif; ?>
+                </div>
+                <div>
+                    <h4 class="text-center py-3">Data Inventaris</h4>
+                    <?php if (!empty($tableHeading)) : ?>
+                    <p class="text-center">
+                        <?= $tableHeading ?>
+                    </p>
+                    <?php endif; ?>
+                    <br>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover text-center" id="dataTable" style="width: 100%;">
@@ -156,5 +172,26 @@
         </div>
     </div>
 </div>
+<!-- <div class="row">
+    <div class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Grafik Inventaris Masuk</h6>
+                <div id="apexBar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Grafik Inventaris Keluar</h6>
+                <div id="apexPemakaianListrik"></div> 
+            </div>
+        </div>
+    </div>
+</div> -->
+
 
 <?= $this->endSection(); ?>

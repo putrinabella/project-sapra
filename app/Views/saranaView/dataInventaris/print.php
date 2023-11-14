@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Website</title>
+    <title>Data Data Inventaris</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,40 +36,63 @@
 
 <body>
     <div class="container">
-        <h2 class="mt-3 mb-4">Data Website</h2>
+        <h2 class="mt-3 mb-4">Data Inventaris</h2>
+
+        <!-- Table for Pemasukan -->
+        <h3>Pemasukan</h3>
         <table>
             <thead>
                 <tr>
                     <th>No.</th>
+                    <th>Tanggal</th>
                     <th>Nama</th>
-                    <th>Fungsi</th>
-                    <th>Link</th>
-                    <th>PIC</th>
+                    <th>Satuan</th>
+                    <th>Jumlah</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($data['dataWebsite'] as $key => $value) : ?>
+                <?php foreach ($data['dataDataInventaris'] as $key => $value) : ?>
+                    <?php if ($value->tipeDataInventaris == 'Pemasukan') : ?>
+                        <tr>
+                            <td><?= $key + 1 ?></td>
+                            <td><?= $value->tanggalDataInventaris ?></td>
+                            <td><?= $value->namaInventaris ?></td>
+                            <td><?= $value->satuan ?></td>
+                            <td><?= $value->jumlahDataInventaris ?></td>
+                        </tr>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <!-- Table for Pengeluaran -->
+        <h3>Pengeluaran</h3>
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <?= $key + 1 ?>
-                    </td>
-                    <td>
-                        <?= $value->namaWebsite ?>
-                    </td>
-                    <td>
-                        <?= $value->fungsiWebsite ?>
-                    </td>
-                    <td>
-                        <?= $value->linkWebsite ?>
-                    </td>
-                    <td>
-                        <?= $value->picWebsite ?>
-                    </td>
+                    <th>No.</th>
+                    <th>Tanggal</th>
+                    <th>Nama</th>
+                    <th>Satuan</th>
+                    <th>Jumlah</th>
                 </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($data['dataDataInventaris'] as $key => $value) : ?>
+                    <?php if ($value->tipeDataInventaris == 'Pengeluaran') : ?>
+                        <tr>
+                            <td><?= $key + 1 ?></td>
+                            <td><?= $value->tanggalDataInventaris ?></td>
+                            <td><?= $value->namaInventaris ?></td>
+                            <td><?= $value->satuan ?></td>
+                            <td><?= $value->jumlahDataInventaris ?></td>
+                        </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </body>
+
 
 </html>

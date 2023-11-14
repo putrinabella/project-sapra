@@ -200,7 +200,7 @@ class SaranaLayananNonAset extends ResourceController
         $activeWorksheet->setTitle('Layanan Non Aset');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Spesifikasi'];
+        $headers = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori MEP', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Keterangan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -268,7 +268,7 @@ class SaranaLayananNonAset extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Spesifikasi'];
+        $headerInputTable = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori MEP', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Keterangan'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -276,7 +276,7 @@ class SaranaLayananNonAset extends ResourceController
         $activeWorksheet->fromArray([$headerPrasaranaID], NULL, 'K1');
         $activeWorksheet->getStyle('K1:L1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $headerKategoriMepID = ['ID Kategori Manajemen', 'Kategori Manajemen'];
+        $headerKategoriMepID = ['ID Kategori MEP', 'Kategori MEP'];
         $activeWorksheet->fromArray([$headerKategoriMepID], NULL, 'N1');
         $activeWorksheet->getStyle('N1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
@@ -293,7 +293,7 @@ class SaranaLayananNonAset extends ResourceController
                 break;
             };
 
-            $currentDate = '=TEXT(DATE(' . date('Y') . ',' . date('m') . ',' . date('d') . '),"yyyy-mm-dd")';
+            $currentDate = date('d F Y');
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
@@ -417,7 +417,7 @@ class SaranaLayananNonAset extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headerExampleTable = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Spesifikasi'];
+        $headerExampleTable = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori MEP', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Keterangan'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -427,7 +427,7 @@ class SaranaLayananNonAset extends ResourceController
                 break;
             };
 
-            $currentDate = '=TEXT(DATE(' . date('Y') . ',' . date('m') . ',' . date('d') . '),"yyyy-mm-dd")';
+            $currentDate = date('d F Y');
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $currentDate);
             $exampleSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
@@ -483,7 +483,7 @@ class SaranaLayananNonAset extends ResourceController
                 $tanggal                = $value[1] ?? null;
                 $idIdentitasPrasarana   = $value[2] ?? null;
                 $idStatusLayanan        = $value[3] ?? null;
-                $idKategoriMep    = $value[4] ?? null;
+                $idKategoriMep          = $value[4] ?? null;
                 $idSumberDana           = $value[5] ?? null;
                 $biaya                  = $value[6] ?? null;
                 $bukti                  = $value[7] ?? null;
@@ -507,11 +507,7 @@ class SaranaLayananNonAset extends ResourceController
                     && !empty($data['idStatusLayanan']) && !empty($data['idKategoriMep']) 
                     && !empty($data['idSumberDana']) && !empty($data['biaya'])
                     && !empty($data['bukti']) && !empty($data['spesifikasi']) ) {
-                    if ($status == 'ERROR') {
-                        return redirect()->to(site_url('saranaLayananNonAset'))->with('error', 'Pastikan excel sudah benar');
-                    } else {
                         $this->saranaLayananNonAsetModel->insert($data);
-                    }
                 } else {
                     return redirect()->to(site_url('saranaLayananNonAset'))->with('error', 'Pastikan semua data telah diisi!');
                 }
