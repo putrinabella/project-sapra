@@ -295,6 +295,32 @@ $routes->delete('saranaLayananNonAset/deletePermanent/(:any)', 'SaranaLayananNon
 $routes->delete('saranaLayananNonAset/deletePermanent', 'SaranaLayananNonAset::deletePermanent');
 $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 
+// Inventaris
+$routes->get('inventaris/createTemplate', 'Inventaris::createTemplate');
+$routes->get('inventaris/generatePDF', 'Inventaris::generatePDF');
+$routes->get('inventaris/export', 'Inventaris::export');
+$routes->post('inventaris/import', 'Inventaris::import');
+$routes->get('inventaris/edit', 'Inventaris::edit');
+$routes->get('inventaris/trash', 'Inventaris::trash');
+$routes->get('inventaris/restore/(:any)', 'Inventaris::restore/$1');
+$routes->get('inventaris/restore', 'Inventaris::restore');
+$routes->delete('inventaris/deletePermanent/(:any)', 'Inventaris::deletePermanent/$1');
+$routes->delete('inventaris/deletePermanent', 'Inventaris::deletePermanent');
+$routes->resource('inventaris', ['filter' => 'isLoggedIn']);
+
+// Data Inventaris
+$routes->get('dataInventaris/createTemplate', 'DataInventaris::createTemplate');
+$routes->get('dataInventaris/generatePDF', 'DataInventaris::generatePDF');
+$routes->get('dataInventaris/export', 'DataInventaris::export');
+$routes->post('dataInventaris/import', 'DataInventaris::import');
+$routes->get('dataInventaris/edit', 'DataInventaris::edit');
+$routes->get('dataInventaris/trash', 'DataInventaris::trash');
+$routes->get('dataInventaris/restore/(:any)', 'DataInventaris::restore/$1');
+$routes->get('dataInventaris/restore', 'DataInventaris::restore');
+$routes->delete('dataInventaris/deletePermanent/(:any)', 'DataInventaris::deletePermanent/$1');
+$routes->delete('dataInventaris/deletePermanent', 'DataInventaris::deletePermanent');
+$routes->resource('dataInventaris', ['filter' => 'isLoggedIn']);
+
 // PRASARANA
 
 // Ruangan

@@ -32,11 +32,12 @@ class Home extends BaseController
 
     public function index() {
         $dataRincianAset = $this->homeModel->getData();
+        $dataInventaris = $this->homeModel->getDataInventaris();
         $dataRincianItAset = $this->homeModel->getDataIt();
         $dataRincianAsetLab = $this->homeModel->getDataLab();
         $dataProfilSekolah = $this->profilSekolahModel->findAll();
         $dataDokumenSekolah = $this->dokumenSekolahModel->findAll();
-
+        
         $firstRecord = $this->profilSekolahModel->first();
         $firstRecordId = $firstRecord ? $firstRecord->idProfilSekolah : null;
         $rowCount =  $this->profilSekolahModel->getCount();
@@ -48,6 +49,7 @@ class Home extends BaseController
             'firstRecordId'         => $firstRecordId,
             'dataProfilSekolah'     => $dataProfilSekolah,
             'dataDokumenSekolah'    => $dataDokumenSekolah,
+            'dataInventaris'    => $dataInventaris,
         ];
         
         return view('home', $data);

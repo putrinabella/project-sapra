@@ -99,4 +99,17 @@ class HomeModels extends Model
         return $query->getResult();
     }
 
+    function getDataInventaris(){
+        $builder = $this->db->table('tblDataInventaris');
+        $builder->join('tblInventaris', 'tblInventaris.idInventaris = tblDataInventaris.idInventaris');
+        $builder->select('tblDataInventaris.*, tblInventaris.namaInventaris, tblInventaris.satuan'); 
+        $builder->select('SUM(CASE WHEN tblDataInventaris.tipeDataInventaris = "Pemasukan" THEN tblDataInventaris.jumlahDataInventaris ELSE 0 END) as inventarisMasuk');
+        $builder->select('SUM(CASE WHEN tblDataInventaris.tipeDataInventaris = "Pengeluaran" THEN tblDataInventaris.jumlahDataInventaris ELSE 0 END) as inventarisKeluar');
+        $builder->where('tblDataInventaris.deleted_at', null);
+        $builder->groupBy('tblInventaris.idInventaris'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
+
 }

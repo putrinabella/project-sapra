@@ -32,19 +32,23 @@
                     <div class="card-body">
                         <div class="example">
                             <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
-                                <li class="nav-item col-3 text-center">
+                                <li class="nav-item col-2 text-center">
                                     <a class="nav-link active" id="aset-tab" data-bs-toggle="tab" href="#aset"
                                         role="tab" aria-controls="aset" aria-selected="true">Aset Sekolah</a>
                                 </li>
-                                <li class="nav-item col-3 text-center">
+                                <li class="nav-item col-2 text-center">
                                     <a class="nav-link" id="labAset-tab" data-bs-toggle="tab" href="#labAset" role="tab"
                                         aria-controls="labAset" aria-selected="false">Aset Laboratorium</a>
                                 </li>
-                                <li class="nav-item col-3 text-center">
+                                <li class="nav-item col-2 text-center">
                                     <a class="nav-link" id="itAset-tab" data-bs-toggle="tab" href="#itAset" role="tab"
-                                        aria-controls="itAset" aria-selected="false">Aset PERANGKAT IT</a>
+                                        aria-controls="itAset" aria-selected="false">Aset Perangkat IT</a>
                                 </li>
-                                <li class="nav-item col-3 text-center">
+                                <li class="nav-item col-2 text-center">
+                                    <a class="nav-link" id="inventarisAset-tab" data-bs-toggle="tab" href="#inventarisAset" role="tab"
+                                        aria-controls="inventarisAset" aria-selected="false">Inventaris</a>
+                                </li>
+                                <li class="nav-item col-2 text-center">
                                     <a class="nav-link" id="profil-tab" data-bs-toggle="tab" href="#profil" role="tab"
                                         aria-controls="profil" aria-selected="false">Profil Sekolah</a>
                                 </li>
@@ -228,9 +232,65 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaDipinjam; ?>
+                                                                                <?= $value->saranaHilang; ?>
                                                                             </div>
-                                                                            <div class="box-label">Dipinjam</div>
+                                                                            <div class="box-label">Hilang</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="inventarisAset" role="tabpanel" aria-labelledby="inventarisAset-tab">
+                                    <div class="row text-center mb-4">
+                                        <center>
+                                            <h5>DATA INVENTARIS</h5>
+                                        </center>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-xl-12 stretch-card">
+                                            <div class="row flex-grow-1">
+                                                <?php foreach ($dataInventaris as $key => $value) : ?>
+                                                <div class="col-md-4 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <div class="row">
+                                                                        <h6 class="card-title text-center">
+                                                                            <?= $value->namaInventaris; ?>
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="row text-center">
+                                                                        <h1>
+                                                                            <?= $value->inventarisMasuk - $value->inventarisKeluar; ?>
+                                                                        </h1>
+                                                                    </div>
+                                                                    <div class="row text-center">
+                                                                        <p><?= $value->satuan; ?> </p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5">
+                                                                    <div class="row">
+                                                                        <div class="box">
+                                                                            <div class="box-number">
+                                                                                <?= $value->inventarisMasuk; ?>
+                                                                            </div>
+                                                                            <div class="box-label">Masuk</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box">
+                                                                            <div class="box-number">
+                                                                                <?= $value->inventarisKeluar ?>
+                                                                            </div>
+                                                                            <div class="box-label">Keluar</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>

@@ -28,6 +28,12 @@
             </div>
         </li>
         <li class="nav-item">
+            <a href="<?= site_url('dataInventaris') ?>" class="nav-link">
+                <i class="link-icon" data-feather="inbox"></i>
+                <span class="link-title">Inventaris</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#layananSaranaUmum" role="button" aria-expanded="false" aria-controls="layananSaranaUmum">
                 <i class="link-icon" data-feather="server"></i>
                 <span class="link-title">Layanan</span>
@@ -257,6 +263,9 @@
                     </li>
                     <li class="nav-item">
                         <a href="<?= site_url('identitasKelas') ?>" class="nav-link">Identitas Kelas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('inventaris') ?>" class="nav-link">Inventaris</a>
                     </li>
                     <li class="nav-item">
                         <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Barang </a>

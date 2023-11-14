@@ -43,7 +43,9 @@ class DatabaseManagement extends BaseController
             "tbltagihanlistrik", 
             "tbluser", 
             "tbluserlogs", 
-            "tblwebsite"
+            "tblwebsite",
+            "tblInventaris",
+            "tblDataInventaris",
         );
 
         $this->exportDatabase($dbhost, $dbuser, $dbpass, $dbname, $tables, $backup_name);
