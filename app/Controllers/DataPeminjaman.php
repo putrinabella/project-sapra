@@ -46,6 +46,24 @@ class DataPeminjaman extends ResourceController
         $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
         return view('labView/dataPeminjaman/index', $data);
     }
+    
+    public function user()
+    {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+
+        $tableHeading = "";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = " $formattedStartDate - $formattedEndDate";
+        }
+
+        $data['tableHeading'] = $tableHeading;
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
+        return view('labView/dataPeminjaman/user', $data);
+    }
 
     public function index2() {
         $startDate = $this->request->getVar('startDate');

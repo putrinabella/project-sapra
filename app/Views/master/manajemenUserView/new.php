@@ -57,6 +57,7 @@
                                 <option value="Admin IT">Admin IT</option>
                                 <option value="Admin Sarpra">Admin Sarpra</option>
                                 <option value="Laboran">Laboran</option>
+                                <option value="User">User</option>
                             </select>
                         </div>
                     </div>

@@ -41,6 +41,16 @@ class ManajemenPeminjaman extends ResourceController
         return view('labView/manajemenPeminjaman/index', $data);
     }
 
+    public function user()
+    {
+        $data = [
+            'dataManajemenPeminjaman' => $this->manajemenPeminjamanModel->getAll(),
+            'dataLaboratorium' => $this->laboratoriumModel->getRuangan(),
+        ];
+
+        return view('labView/manajemenPeminjaman/user', $data);
+    }
+
     public function newOLD()
     {
         $data = [
@@ -81,6 +91,19 @@ class ManajemenPeminjaman extends ResourceController
         ];
 
         return view('labView/manajemenPeminjaman/new', $data);
+    }
+    public function loanUser($id)
+    {
+        $data = [
+            'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+            'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
+            'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
+            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+            'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+            'dataRincianLabAset' => $this->manajemenPeminjamanModel->getDataLoan($id)
+        ];
+
+        return view('labView/manajemenPeminjaman/newUser', $data);
     }
 
     public function getPeminjamanTabel()
@@ -227,6 +250,33 @@ class ManajemenPeminjaman extends ResourceController
             return view('error/404');
         }
     }
+    public function showUser($id = null)
+    {
+        if ($id != null) {
+            $dataLaboratorium = $this->laboratoriumModel->find($id);
+
+            if (is_object($dataLaboratorium)) {
+                $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLaboratorium->idIdentitasLab);
+                $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLaboratorium->idIdentitasLab)->namaLantai;
+                $dataSemuaSarana = $this->laboratoriumModel->getSaranaByLabId($dataLaboratorium->idIdentitasLab);
+                $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
+                $asetBagus = $this->laboratoriumModel->getSaranaLayakCount($dataLaboratorium->idIdentitasLab);
+                $data = [
+                    'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+                    'dataLaboratorium'  => $dataLaboratorium,
+                    'dataInfoLab'       => $dataInfoLab,
+                    'dataSemuaSarana'   => $dataSemuaSarana,
+                    'dataSarana'        => $dataSarana,
+                    'asetBagus'         => $asetBagus,
+                ];
+                return view('labView/manajemenPeminjaman/showUser', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
 
     function print($id = null)
     {
@@ -348,24 +398,36 @@ class ManajemenPeminjaman extends ResourceController
                 $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
                 $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
             }
-            // foreach ($idRincianLabAset as $idRincianAset) {
-            //     $detailData = [
-            //         'idRincianLabAset' => $idRincianAset,
-            //         'idManajemenPeminjaman' => $idManajemenPeminjaman,
-            //     ];
-            //     $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
-            //     // $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
-            // }
-
-            // $this->manajemenPeminjamanModel->updateSectionAset($idRincianLabAset, $sectionAsetValue);
-
-            // $assetsToBorrow = $this->manajemenPeminjamanModel->getBorrowItems($idIdentitasSarana, $jumlah, $idIdentitasLab);
-            // foreach ($assetsToBorrow as $asset) {
-            //     $this->manajemenPeminjamanModel->updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman);
-            // }    
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
+        }
+    }
+    public function addLoanUser()
+    {
+        $data = $this->request->getPost();
+        $idRincianLabAset = $_POST['selectedRows'];
+        $sectionAsetValue = 'Dipinjam';
+
+
+        if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam'])) {
+            // DIE THE INSERT FIRST
+            $this->manajemenPeminjamanModel->insert($data);
+            $idManajemenPeminjaman = $this->db->insertID();
+
+            // print_r($idManajemenPeminjaman);
+            // die;
+            foreach ($idRincianLabAset as $idRincianAset) {
+                $detailData = [
+                    'idRincianLabAset' => $idRincianAset,
+                    'idManajemenPeminjaman' => $idManajemenPeminjaman,
+                ];
+                $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
+                $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
+            }
+            return redirect()->to(site_url('peminjamanDataUser'))->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->to(site_url('peminjamanUser'))->with('error', 'Semua field harus terisi');
         }
     }
 
@@ -391,9 +453,9 @@ class ManajemenPeminjaman extends ResourceController
             foreach ($assetsToBorrow as $asset) {
                 $this->manajemenPeminjamanModel->updateSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman);
             }
-            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
+            return redirect()->to(site_url('peminjamanUser'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('peminjamanUser'))->with('error', 'Semua field harus terisi');
         }
     }
 

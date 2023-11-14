@@ -1,5 +1,4 @@
 <ul class="nav">
-    <!-- <li class="nav-item nav-category">Main</li> -->
     <li class="nav-item">
         <a href="<?= site_url('home') ?>" class="nav-link">
             <i class="link-icon" data-feather="box"></i>
@@ -116,6 +115,26 @@
         </li>
 
         <li class="nav-item nav-category">IT</li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#itAsetIt" role="button" aria-expanded="false" aria-controls="itAsetIt">
+                <i class="link-icon" data-feather="folder"></i>
+                <span class="link-title">Manajemen Aset </span>
+                <i class="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div class="collapse" id="itAsetIt">
+                <ul class="nav sub-menu">
+                    <li class="nav-item">
+                        <a href="<?= site_url('dataItSarana') ?>" class="nav-link">Data General</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('dataRincianItSarana') ?>" class="nav-link">Data Rincian Aset</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('pemusnahanAsetIt') ?>" class="nav-link">Pemusnahan Aset</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
         <li class="nav-item">
             <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
                 <i class="link-icon" data-feather="wifi"></i>
@@ -303,6 +322,22 @@
         </li>
     <?php } ?>
 
+    <?php if (session()->get('role') == 'User') { ?>
+        <li class="nav-item nav-category">Manajemen Peminjaman</li>
+        <li class="nav-item">
+            <a href="<?= site_url('peminjamanUser') ?>" class="nav-link">
+                <i class="link-icon" data-feather="edit"></i>
+                <span class="link-title">Input Peminjaman</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('peminjamanDataUser') ?>" class="nav-link">
+                <i class="link-icon" data-feather="file-text"></i>
+                <span class="link-title">Daftar Peminjaman</span>
+            </a>
+        </li>
+    <?php } ?>
+
     <?php if (session()->get('role') == 'Admin Sarpra') { ?>
         <li class="nav-item nav-category">Sarana</li>
         <li class="nav-item">
@@ -319,17 +354,6 @@
                     <li class="nav-item">
                         <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian Aset</a>
                     </li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#pemusnahanAsetUmum" role="button" aria-expanded="false" aria-controls="pemusnahanAsetUmum">
-                <i class="link-icon" data-feather="trash"></i>
-                <span class="link-title">Pemusnahan Aset</span>
-                <i class="link-arrow" data-feather="chevron-down"></i>
-            </a>
-            <div class="collapse" id="pemusnahanAsetUmum">
-                <ul class="nav sub-menu">
                     <li class="nav-item">
                         <a href="<?= site_url('pemusnahanAset') ?>" class="nav-link">Pemusnahan Aset</a>
                     </li>
@@ -369,6 +393,25 @@
     <?php } ?>
 
     <?php if (session()->get('role') == 'Admin IT') { ?>
+        <li class="nav-item nav-category">MANAJEMEN ASET</li>
+        <li class="nav-item">
+            <a href="<?= site_url('dataItSarana') ?>" class="nav-link">
+                <i class="link-icon" data-feather="bookmark"></i>
+                <span class="link-title">Data General</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('dataRincianItSarana') ?>" class="nav-link">
+                <i class="link-icon" data-feather="folder"></i>
+                <span class="link-title">Data Rincian Aset</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('pemusnahanAsetIt') ?>" class="nav-link">
+                <i class="link-icon" data-feather="trash"></i>
+                <span class="link-title">Pemusnahan Aset</span>
+            </a>
+        </li>
         <li class="nav-item nav-category">IT</li>
         <li class="nav-item">
             <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
@@ -382,27 +425,25 @@
                 <span class="link-title">Layanan Perangkat IT</span>
             </a>
         </li>
+        <li class="nav-item nav-category">PLATFORM DIGITAL</li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#aplikasiIT" role="button" aria-expanded="false" aria-controls="aplikasiIT">
-                <i class="link-icon" data-feather="folder"></i>
-                <span class="link-title">Platform Digital </span>
-                <i class="link-arrow" data-feather="chevron-down"></i>
+            <a href="<?= site_url('aplikasi') ?>" class="nav-link">
+                <i class="link-icon" data-feather="monitor"></i>
+                <span class="link-title">Aplikasi</span>
             </a>
-            <div class="collapse" id="aplikasiIT">
-                <ul class="nav sub-menu">
-                    <li class="nav-item">
-                        <a href="<?= site_url('aplikasi') ?>" class="nav-link">Aplikasi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?= site_url('sosialMedia') ?>" class="nav-link">Sosial Media</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?= site_url('website') ?>" class="nav-link">Website</a>
-                    </li>
-                </ul>
-            </div>
         </li>
-
+        <li class="nav-item">
+            <a href="<?= site_url('sosialMedia') ?>" class="nav-link">
+                <i class="link-icon" data-feather="instagram"></i>
+                <span class="link-title">Sosial Media</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('website') ?>" class="nav-link">
+                <i class="link-icon" data-feather="globe"></i>
+                <span class="link-title">Website</span>
+            </a>
+        </li>
     <?php } ?>
 
 </ul>

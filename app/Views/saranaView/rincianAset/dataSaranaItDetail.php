@@ -15,13 +15,13 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-    <a href="<?= site_url('dataSarana') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
+    <a href="<?= site_url('dataItSarana') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="arrow-left"></i>
             Back
         </a>
     </div>
     <!-- <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('dataItSarana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -32,8 +32,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('rincianAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('rincianAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('dataItSarana/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('dataItSarana/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -43,11 +43,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('rincianAset/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('dataItSarana/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('rincianAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('dataItSarana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -117,11 +117,11 @@
                                 <td class="text-center"><?=$value->merk?></td>
                                 <td class="text-center"><?=$value->warna?></td>
                                 <!-- <td class="text-center">
-                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>"
+                                    <a href="<?=site_url('dataItSarana/'.$value->idRincianAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>"
+                                    <a href="<?=site_url('dataItSarana/'.$value->idRincianAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>" method="post"
+                                    <form action="<?=site_url('dataItSarana/'.$value->idRincianAset)?>" method="post"
                                         class="d-inline" id="del-<?= $value->idRincianAset;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
@@ -133,8 +133,8 @@
                                     <a href="<?= site_url('QRCode/' . $value->kodeRincianAset) ?>" target="_blank" class="btn btn-success  mdi mdi-qrcode-scan"
                                         data-kode="<?= $value->kodeRincianAset ?>">
                                     </a> 
-                                </td> -->
-                            </tr>
+                                </td>
+                            </tr> -->
                             <?php endforeach; ?>
                         </tbody>
                     </table>
@@ -151,7 +151,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url(" rincianAset/import")?>" method="POST" enctype="multipart/form-data"
+            <form action="<?=site_url("dataItSarana/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>

@@ -34,4 +34,11 @@ class IdentitasSaranaModels extends Model
             return null; 
         }
     }
+
+    public function findAsetIT() {
+        $builder = $this->db->table($this->table);
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
 }

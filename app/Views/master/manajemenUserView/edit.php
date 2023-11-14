@@ -58,6 +58,7 @@
                                 <option value="Admin IT" <?= $dataManajemenUser->role == 'Admin IT' ? 'selected' : '' ?>>Admin IT</option>
                                 <option value="Admin Sarpra" <?= $dataManajemenUser->role == 'Admin Sarpra' ? 'selected' : '' ?>>Admin Sarpra</option>
                                 <option value="Laboran" <?= $dataManajemenUser->role == 'Laboran' ? 'selected' : '' ?>>Laboran</option>
+                                <option value="User" <?= $dataManajemenUser->role == 'User' ? 'selected' : '' ?>>User</option>
                             </select>
                         </div>
                     </div>

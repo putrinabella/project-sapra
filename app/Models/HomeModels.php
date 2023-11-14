@@ -17,9 +17,6 @@ class HomeModels extends Model
     function getData() {
         $builder = $this->db->table('tblRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
-        // $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
-        // $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
-        // $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
         WHEN tblRincianAset.sectionAset != "dimusnahkan" AND (tblRincianAset.status = "Bagus" OR tblRincianAset.status = "Rusak" OR tblRincianAset.status = "Hilang")
         THEN 1 ELSE 0 END) as totalSarana');
@@ -40,6 +37,35 @@ class HomeModels extends Model
         THEN 1 ELSE 0 END) as saranaDimusnahkan');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataIt() {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianAset.sectionAset != "dimusnahkan" AND (tblRincianAset.status = "Bagus" OR tblRincianAset.status = "Rusak" OR tblRincianAset.status = "Hilang")
+        THEN 1 ELSE 0 END) as totalSarana');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianAset.sectionAset != "dimusnahkan" AND tblRincianAset.status = "Bagus" 
+        THEN 1 ELSE 0 END) as saranaLayak');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianAset.sectionAset != "dimusnahkan" AND tblRincianAset.status = "Rusak" 
+        THEN 1 ELSE 0 END) as saranaRusak');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianAset.sectionAset != "dimusnahkan" AND tblRincianAset.status = "Hilang" 
+        THEN 1 ELSE 0 END) as saranaHilang');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianAset.sectionAset != "dimusnahkan" AND tblRincianAset.sectionAset = "Dipinjam" 
+        THEN 1 ELSE 0 END) as saranaDipinjam');
+        $builder->select('tblIdentitasSarana.idIdentitasSarana, tblIdentitasSarana.namaSarana, SUM(CASE 
+        WHEN tblRincianAset.sectionAset != "dimusnahkan" AND tblRincianAset.sectionAset = "Dimusnahkan" 
+        THEN 1 ELSE 0 END) as saranaDimusnahkan');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
         $query = $builder->get();
         return $query->getResult();

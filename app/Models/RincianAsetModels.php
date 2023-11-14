@@ -45,6 +45,19 @@ class RincianAsetModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+    
+    function getItAll() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
 
     function getDestroy() {
         $builder = $this->db->table($this->table);
@@ -57,6 +70,18 @@ class RincianAsetModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+    function getDestroyIt() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset =', 'Dimusnahkan');
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
 
     function getRecycle() {
         $builder = $this->db->table($this->table);
@@ -65,6 +90,18 @@ class RincianAsetModels extends Model
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblRincianAset.deleted_at IS NOT NULL');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getItRecycle() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at IS NOT NULL');
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
         $query = $builder->get();
         return $query->getResult();
     }
@@ -149,6 +186,24 @@ class RincianAsetModels extends Model
         return $query->getResult();
     }
 
+    function getDataItBySarana() {
+        $builder = $this->db->table($this->table);
+        $builder->select('tblIdentitasSarana.*');
+        $builder->select('COUNT(*) AS jumlahTotal', false);
+        $builder->select('SUM(1) AS jumlahAset', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Bagus" THEN 1 ELSE 0 END) AS jumlahBagus', false);
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Rusak" THEN 1 ELSE 0 END) AS jumlahRusak', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Hilang" THEN 1 ELSE 0 END) AS jumlahHilang', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.sectionAset = "Dipinjam" THEN 1 ELSE 0 END) AS jumlahDipinjam', false); 
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
     function getDataBySaranaDetail($id = null) {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -158,6 +213,20 @@ class RincianAsetModels extends Model
         $builder->where('tblIdentitasSarana.idIdentitasSarana', $id);
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->where('tblRincianAset.deleted_at', null);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataItBySaranaDetail($id = null) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblIdentitasSarana.idIdentitasSarana', $id);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblIdentitasSarana.perangkatIT', 1);
         $query = $builder->get();
         return $query->getResult();
     }

@@ -32,6 +32,7 @@ class Home extends BaseController
 
     public function index() {
         $dataRincianAset = $this->homeModel->getData();
+        $dataRincianItAset = $this->homeModel->getDataIt();
         $dataRincianAsetLab = $this->homeModel->getDataLab();
         $dataProfilSekolah = $this->profilSekolahModel->findAll();
         $dataDokumenSekolah = $this->dokumenSekolahModel->findAll();
@@ -41,6 +42,7 @@ class Home extends BaseController
         $rowCount =  $this->profilSekolahModel->getCount();
         $data = [
             'dataRincianAset' => $dataRincianAset,
+            'dataRincianItAset' => $dataRincianItAset,
             'dataRincianAsetLab' => $dataRincianAsetLab,
             'rowCount'              => $rowCount,
             'firstRecordId'         => $firstRecordId,
