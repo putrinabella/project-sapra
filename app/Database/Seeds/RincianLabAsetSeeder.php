@@ -13,19 +13,19 @@ class RincianLabAsetSeeder extends Seeder
         for ($i = 1; $i <= 50; $i++) {
             $data = [
                 'kodeRincianLabAset' =>  $faker->unique()->uuid,
-                'idIdentitasSarana' => $faker->numberBetween(1, 20),
-                'idSumberDana' => $faker->numberBetween(1, 2),
-                'idKategoriManajemen' => $faker->numberBetween(1, 3),
+                'idIdentitasSarana' => random_int(10, 200),
+                'idSumberDana' => random_int(1,2),
+                'idKategoriManajemen' => random_int(1, 5),
                 'idIdentitasLab' => $faker->numberBetween(1, 3),
-                'tahunPengadaan' => $faker->numberBetween(2000, 2022),
-                'noSeri' => $faker->word,
+                'tahunPengadaan' => $faker->date('Y'),
+                'noSeri' => $faker->unique()->uuid,
                 'merk' => $faker->word,
                 'warna' => $faker->colorName,
-                'nomorBarang' => $faker->numberBetween(1000, 9999),
-                'spesifikasi' => $faker->text(200),
+                'nomorBarang' => random_int(1, 99),
+                'spesifikasi' => $faker->sentence(15),
                 'bukti' => 'https://drive.google.com/file/d/1mmJMU9QSvHS0MGRL9gNU1yw8yLyZlYCy/view?usp=sharing',
-                'hargaBeli' => $faker->numberBetween(1000, 50000),
-                'status' => $faker->randomElement(['Bagus']),
+                'hargaBeli' => random_int(1000000, 10000000),
+                'status' => $faker->randomElement(['Bagus', 'Rusak', 'Hilang']),
                 'sectionAset' => $faker->randomElement(['None']),
             ];
             $this->db->table('tblRincianLabAset')->insert($data);

@@ -41,11 +41,10 @@ class DatabaseManagement extends BaseController
             "tbltagihanair", 
             "tbltagihaninternet",
             "tbltagihanlistrik", 
-            "tbluser", 
             "tbluserlogs", 
-            "tblwebsite",
-            "tblInventaris",
-            "tblDataInventaris",
+            "tblwebsite", 
+            "tblinventaris", 
+            "tbldatainventaris"
         );
 
         $this->exportDatabase($dbhost, $dbuser, $dbpass, $dbname, $tables, $backup_name);
@@ -57,8 +56,7 @@ class DatabaseManagement extends BaseController
     $mysqli->select_db($name);
     $mysqli->query("SET NAMES 'utf8'");
 
-    // Add CREATE DATABASE statement
-    $content = "CREATE DATABASE IF NOT EXISTS `" . $name . "`;\n\n";
+    $content = "";
 
     $queryTables = $mysqli->query('SHOW TABLES');
     while ($row = $queryTables->fetch_row()) {
@@ -84,15 +82,18 @@ class DatabaseManagement extends BaseController
                 $content .= "\n(";
                 for ($j = 0; $j < $fields_amount; $j++) {
                     $row[$j] = str_replace("\n", "\\n", addslashes($row[$j]));
-                    if (isset($row[$j])) {
-                        $content .= '"' . $row[$j] . '"';
+                
+                    if ($row[$j] === "") {
+                        $content .= 'NULL';
                     } else {
-                        $content .= '""';
+                        $content .= '"' . $row[$j] . '"';
                     }
+                
                     if ($j < ($fields_amount - 1)) {
                         $content .= ',';
                     }
                 }
+                
                 $content .= ")";
                 if ((($st_counter + 1) % 100 == 0 && $st_counter != 0) || $st_counter + 1 == $rows_num) {
                     $content .= ";";

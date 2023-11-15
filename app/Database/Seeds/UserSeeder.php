@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
                 'role' => 'Admin Sarpra',
             ],
             [
-                'username' => 'aida',
+                'username' => 'salsa',
                 'password' => password_hash('nabella', PASSWORD_BCRYPT),
                 'nama' => 'Nabella',
                 'role' => 'User',

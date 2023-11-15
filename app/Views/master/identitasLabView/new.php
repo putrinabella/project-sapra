@@ -41,14 +41,14 @@
                         <label for="kodeLab" class="col-sm-3 col-form-label">Kode Lab</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="kodeLab" name="kodeLab"
-                                placeholder="Masukkan kode prasarana">
+                                placeholder="Masukkan kode laboratorium">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="namaLab" class="col-sm-3 col-form-label">Identitas Lab</label>
+                        <label for="namaLab" class="col-sm-3 col-form-label">Nama Laboratorium</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaLab" name="namaLab"
-                                placeholder="Masukkan identitas prasarana">
+                                placeholder="Masukkan nama laboratorium">
                         </div>
                     </div>
                     <div class="row mb-3">

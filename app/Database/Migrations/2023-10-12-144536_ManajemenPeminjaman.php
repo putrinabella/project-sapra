@@ -31,37 +31,13 @@ class ManajemenPeminjaman extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'status' => [
+            'loanStatus' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
             'tanggalPengembalian' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-            ],
-            'idIdentitasSarana' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'idIdentitasLab' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'jumlah' => [
-                'type' => 'INT',
-                'constraint' => 4,
-            ],
-            'jumlahBarangDikembalikan' => [
-                'type' => 'INT',
-                'constraint' => 4,
-            ],
-            'jumlahBarangRusak' => [
-                'type' => 'INT',
-                'constraint' => 4,
-            ],
-            'jumlahBarangHilang' => [
-                'type' => 'INT',
-                'constraint' => 4,
             ],
             'namaPenerima' => [
                 'type' => 'VARCHAR',

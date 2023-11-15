@@ -24,8 +24,9 @@ class IdentitasSarana extends Migration
                 'constraint' => 255,
             ],
             'perangkatIT' => [
-                'type' => 'BOOLEAN',
-                'default' => false, 
+                'type' => 'INT',
+                'constraint' => 1,
+                'default' => 0, 
             ],
             'created_at' => [
                 'type' => 'DATETIME',
