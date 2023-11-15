@@ -11,15 +11,9 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div>
-                        <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
-                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
-                        <a href="<?= site_url('dataPeminjaman/print/' . $dataDataPeminjaman->idDetailManajemenPeminjaman) ?>"
-                            class="btn btn-icon-text btn-primary me-2" target="_blank">
-                            <i class="btn-icon-prepend" data-feather="file"></i>Generate PDF</a>
-                    </div>
+                    <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i
+                            class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Histori Peminjaman</h4>
-                    <div></div>
                     <div></div>
                 </div>
             </div>
@@ -50,7 +44,7 @@
                         <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam"
                             value="<?= $dataDataPeminjaman->namaPeminjam ?>" readonly>
                         <input type="text" class="form-control" id="idManajemenPeminjaman" name="idManajemenPeminjaman"
-                            value="<?= $dataDataPeminjaman->idDetailManajemenPeminjaman ?>" hidden>
+                            value="<?= $dataDataPeminjaman->idManajemenPeminjaman ?>" hidden>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -145,5 +139,9 @@
         </div>
     </div>
 </div>
+
+
+
+
 
 <?= $this->endSection(); ?>

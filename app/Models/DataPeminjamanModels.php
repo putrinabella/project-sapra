@@ -60,6 +60,26 @@ class DataPeminjamanModels extends Model
         return $query->getRow();
     }
 
+
+    
+    function getDataBySarana() {
+        $builder = $this->db->table($this->table);
+        $builder->select('tblIdentitasSarana.*');
+        $builder->select('COUNT(*) AS jumlahTotal', false);
+        $builder->select('SUM(1) AS jumlahAset', false); 
+        $builder->select('SUM(CASE WHEN tblRincianLabAset.status = "Bagus" THEN 1 ELSE 0 END) AS jumlahBagus', false);
+        $builder->select('SUM(CASE WHEN tblRincianLabAset.status = "Rusak" THEN 1 ELSE 0 END) AS jumlahRusak', false); 
+        $builder->select('SUM(CASE WHEN tblRincianLabAset.status = "Hilang" THEN 1 ELSE 0 END) AS jumlahHilang', false); 
+        $builder->select('SUM(CASE WHEN tblRincianLabAset.sectionAset = "Dipinjam" THEN 1 ELSE 0 END) AS jumlahDipinjam', false); 
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
+
     public function getRincianLabAset($idManajemenPeminjaman)
     {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
@@ -67,6 +87,20 @@ class DataPeminjamanModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
         $builder->where('tblDetailManajemenPeminjaman.idManajemenPeminjaman', $idManajemenPeminjaman);
+        $query = $builder->get();
+
+        return $query->getResult();
+    }
+
+    public function getRincianItem($idManajemenPeminjaman)
+    {
+        $builder = $this->db->table('tblDetailManajemenPeminjaman');
+        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->select('tblIdentitasSarana.*, COUNT(tblIdentitasSarana.idIdentitasSarana) as totalAset');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+        $builder->where('tblDetailManajemenPeminjaman.idManajemenPeminjaman', $idManajemenPeminjaman);
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
         $query = $builder->get();
 
         return $query->getResult();

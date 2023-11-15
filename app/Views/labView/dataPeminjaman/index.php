@@ -151,6 +151,8 @@
                                 <?php if ($value->loanStatus == "Pengembalian"): ?>
                                 <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
+                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>" target="_blank"
+                                    class="btn btn-primary btn-icon"> <i data-feather="printer"></i></a>
                                 <?php endif; ?>
                                 <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
                                     method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
