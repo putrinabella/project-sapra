@@ -191,6 +191,18 @@ $routes->delete('kategoriPegawai/deletePermanent/(:any)', 'KategoriPegawai::dele
 $routes->delete('kategoriPegawai/deletePermanent', 'KategoriPegawai::deletePermanent');
 $routes->presenter('kategoriPegawai', ['filter' => 'isLoggedIn']);
 
+// Data Siswa
+$routes->get('dataSiswa/createTemplate', 'DataSiswa::createTemplate');
+$routes->get('dataSiswa/generatePDF', 'DataSiswa::generatePDF');
+$routes->get('dataSiswa/export', 'DataSiswa::export');
+$routes->post('dataSiswa/import', 'DataSiswa::import');
+$routes->get('dataSiswa/edit', 'DataSiswa::edit');
+$routes->get('dataSiswa/trash', 'DataSiswa::trash');
+$routes->get('dataSiswa/restore/(:any)', 'DataSiswa::restore/$1');
+$routes->get('dataSiswa/restore', 'DataSiswa::restore');
+$routes->delete('dataSiswa/deletePermanent/(:any)', 'DataSiswa::deletePermanent/$1');
+$routes->delete('dataSiswa/deletePermanent', 'DataSiswa::deletePermanent');
+$routes->resource('dataSiswa', ['filter' => 'isLoggedIn']);
 // SARANA
 
 // Rincian Aset
@@ -534,6 +546,7 @@ $routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
 // MANAJEMEN PEMINJAMAN
 
 // Data Peminjaman
+$routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
 $routes->get('dataPeminjaman/generatePDF', 'DataPeminjaman::generatePDF');
 $routes->get('dataPeminjaman/export', 'DataPeminjaman::export');
 $routes->get('dataPeminjaman/trash', 'DataPeminjaman::trash');

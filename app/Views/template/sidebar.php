@@ -247,6 +247,9 @@
             <div class="collapse" id="identitas">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
+                        <a href="<?= site_url('dataSiswa') ?>" class="nav-link">Data Siswa</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?= site_url('identitasGedung') ?>" class="nav-link">Identitas Gedung</a>
                     </li>
                     <li class="nav-item">

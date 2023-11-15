@@ -23,7 +23,7 @@
         th,
         td {
             border: 1px solid black;
-            padding: 8px;
+            padding: 7px;
             text-align: center;
         }
 
