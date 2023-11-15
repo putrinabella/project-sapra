@@ -102,16 +102,16 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?=$value->tanggal?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
+                                <td><?=$value->namaSarana?></td>
+                                <td><?=$value->namaPrasarana?></td>
+                                <td><?=$value->namaStatusLayanan?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSumberDana?></td>
+                                <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <?=$value->keterangan?>
                                 </td>
                                 <td class="text-center">

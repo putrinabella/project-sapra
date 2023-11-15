@@ -37,7 +37,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?> 
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <?=$value->namaSarana?> 
                                 </td>
                                 <td class="text-center">

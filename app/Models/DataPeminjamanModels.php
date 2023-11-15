@@ -43,6 +43,27 @@ class DataPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
+    function getDataSiswa($startDate = null, $endDate = null)
+    {
+        $builder = $this->db->table('tblManajemenPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
+        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->where('tblManajemenPeminjaman.deleted_at', null);
+        $builder->where('tblManajemenPeminjaman.loanStatus', "Peminjaman");
+    
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
+            $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
+        }
+    
+        $builder->where('tblManajemenPeminjaman.loanStatus', 'Peminjaman');
+        $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
+        $query = $builder->get();
+        return $query->getResult();
+    }
     
 
     function findHistory($id = null, $columns = '*')

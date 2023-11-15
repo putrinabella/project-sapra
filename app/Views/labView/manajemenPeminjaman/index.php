@@ -47,7 +47,7 @@
                 <div class="table-responsive">
                     <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
-                            <tr class="text-center">
+                            <tr>
                                 <th style="width: 10%;">No.</th>
                                 <th style="width: 30%;">Kode Laboratorium</th>
                                 <th>Nama</th>
@@ -57,13 +57,12 @@
                         <tbody class="py-2">
                             <?php foreach ($dataLaboratorium as $key => $value) : ?>
                                 <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                    <td class="text-center">
+                                    <td>
                                         <?= $key + 1 ?>
                                     </td>
                                     <td class="text-center"><?= $value->kodeLab ?></td>
                                     <td class="text-left"><?= $value->namaLab ?></td>
                                     <td class="text-center">
-                                        <!-- <a href="<?= site_url('manajemenPeminjaman/' . $value->idIdentitasLab) ?>" -->
                                         <a href="<?= site_url('manajemenPeminjaman/loan/' . $value->idIdentitasLab) ?>" class="btn btn-outline-success">Ajukan Peminjaman</a>
                                     </td>
                                 </tr>

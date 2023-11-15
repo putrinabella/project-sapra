@@ -95,7 +95,7 @@
             </div>
             <h4 class="text-center py-3">Data Peminjaman</h4>
             <?php if (!empty($tableHeading)) : ?>
-            <p class="text-center">
+            <p>
                 <?= $tableHeading ?>
             </p>
             <?php endif; ?>
@@ -103,7 +103,7 @@
             <div class="table-responsive">
                 <table class="table table-hover" id="dataTable" style="width: 100%;">
                     <thead>
-                        <tr class="text-center">
+                        <tr>
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
                             <th>Nama Peminjam</th>
@@ -118,7 +118,7 @@
                         <?php foreach ($dataDataPeminjaman as $key => $value) : ?>
 
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                            <td class="text-center">
+                            <td>
                                 <?= $key + 1 ?>
                             </td>
                             <td class="text-left">
@@ -130,7 +130,7 @@
                             <td class="text-left">
                                 <?= $value->asalPeminjam ?>
                             </td>
-                            <td class="text-center">
+                            <td>
                                 <?= $value->namaLab ?>
                             </td>
                             <td class="text-center">
@@ -145,14 +145,14 @@
                             </td>
                             <td class="text-center">
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
+                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>" target="_blank"
+                                    class="btn btn-secondary btn-icon"> <i data-feather="printer"></i></a>
                                 <a href="<?= site_url('dataPeminjaman/' . $value->idManajemenPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <?php endif; ?>
                                 <?php if ($value->loanStatus == "Pengembalian"): ?>
                                 <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
-                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>" target="_blank"
-                                    class="btn btn-primary btn-icon"> <i data-feather="printer"></i></a>
                                 <?php endif; ?>
                                 <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
                                     method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">

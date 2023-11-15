@@ -55,6 +55,7 @@
                             <th>Lokasi</th>
                             <th>Jumlah Aset Dipinjam</th>
                             <th>Status</th>
+                            <th>Dokumen Peminjaman</th>
                         </tr>
                     </thead>
                     <tbody class="py-2">
@@ -86,7 +87,12 @@
                                 <span class="badge bg-success">Sudah Dikembalikan</span>
                                 <?php endif; ?>
                             </td>
-
+                            <th class="text-center">
+                            <?php if ($value->loanStatus == "Peminjaman") : ?>
+                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>" target="_blank"
+                                    class="btn btn-primary btn-icon"> <i data-feather="printer"></i></a>
+                                <?php endif; ?>
+                            </th>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

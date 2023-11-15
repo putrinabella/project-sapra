@@ -120,9 +120,9 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?=$value->kodeRincianLabAset?></td>
-                                <td class="text-center"><?=$value->namaLab?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td><?=$value->namaLab?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSarana?></td>
                                 <td class="text-center">
                                     <?php if ($value->status == "Rusak") : ?>
                                     <span class="badge bg-warning">
@@ -145,8 +145,8 @@
                                     </span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center">
+                                <td><?=$value->namaSumberDana?></td>
+                                <td>
                                     <?php 
                                         if($value->tahunPengadaan == 0 || 0000) {
                                             echo "Tidak diketahui"; 
@@ -155,9 +155,9 @@
                                         };
                                     ?>
                                 </td>
-                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
-                                <td class="text-center"><?=$value->merk?></td>
-                                <td class="text-center"><?=$value->warna?></td>
+                                <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td><?=$value->merk?></td>
+                                <td><?=$value->warna?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>

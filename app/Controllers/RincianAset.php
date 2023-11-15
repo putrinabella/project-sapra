@@ -90,7 +90,7 @@ class RincianAset extends ResourceController
         }
 
         $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
-        // $kodePrasarana = substr($kodePrasarana, -2);
+        $kodePrasarana = substr($kodePrasarana, -2);
 
         $kodeRincianAset = 'TS-BJB ' . $kodeKategoriManajemen . ' ' . $kodePrasarana . ' ' . $kodeSumberDana . ' ' . $tahunPengadaan . ' ' . $kodeSarana . ' ' . $nomorBarang;
 
@@ -115,7 +115,7 @@ class RincianAset extends ResourceController
         } else {
             $tahunPengadaan = substr($tahunPengadaan, -2);
         }
-        // $kodePrasarana = substr($kodePrasarana, -2);
+        $kodePrasarana = substr($kodePrasarana, -2);
         $nomorBarang = str_pad($nomorBarang, 3, '0', STR_PAD_LEFT);
 
         

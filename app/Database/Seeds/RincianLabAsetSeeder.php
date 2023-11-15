@@ -16,7 +16,7 @@ class RincianLabAsetSeeder extends Seeder
                 'idIdentitasSarana' => random_int(10, 200),
                 'idSumberDana' => random_int(1,2),
                 'idKategoriManajemen' => random_int(1, 5),
-                'idIdentitasLab' => $faker->numberBetween(1, 3),
+                'idIdentitasLab' => 1,
                 'tahunPengadaan' => $faker->date('Y'),
                 'noSeri' => $faker->unique()->uuid,
                 'merk' => $faker->word,
@@ -25,7 +25,7 @@ class RincianLabAsetSeeder extends Seeder
                 'spesifikasi' => $faker->sentence(15),
                 'bukti' => 'https://drive.google.com/file/d/1mmJMU9QSvHS0MGRL9gNU1yw8yLyZlYCy/view?usp=sharing',
                 'hargaBeli' => random_int(1000000, 10000000),
-                'status' => $faker->randomElement(['Bagus', 'Rusak', 'Hilang']),
+                'status' => $faker->randomElement(['Bagus']),
                 'sectionAset' => $faker->randomElement(['None']),
             ];
             $this->db->table('tblRincianLabAset')->insert($data);

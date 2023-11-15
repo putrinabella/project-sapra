@@ -17,6 +17,7 @@ class KategoriManajemen extends ResourcePresenter
 
     public function index()
     {
+        // Line 21 katalog 1
         $data['dataKategoriManajemen'] = $this->kategoriManajemenModel->findAll();
         return view('master/kategoriManajemenView/index', $data);
     }

@@ -1,20 +1,20 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Inventaris &verbar; SARPRA </title>
+<title>Non Inventaris &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Master</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Inventaris</li>
+        <li class="breadcrumb-item active" aria-current="page">Non Inventaris</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Inventaris</h4>
+        <h4 class="mb-3 mb-md-0">Non Inventaris</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('inventaris/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">

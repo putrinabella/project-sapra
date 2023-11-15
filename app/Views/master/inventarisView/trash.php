@@ -1,12 +1,12 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Inventaris &verbar; SARPRA </title>
+<title>Recycle Bin Non Inventaris &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Inventaris</h4>
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Non Inventaris</h4>
 <br>
 
 <div class="row">
@@ -64,7 +64,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
+                   <table class="table table-hover" id="dataTable">
                         <thead>
                         <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -81,7 +81,6 @@
                                 </td>
                                 <td class="text-center"> <?= $value->namaInventaris; ?> </td>
                                 <td class="text-center"> <?= $value->satuan; ?> </td>
-                               
                                 <td class="text-center">
                                     <a href="<?=site_url('inventaris/restore/'.$value->idInventaris) ?>"
                                         class="btn btn-primary"> Restore</a>

@@ -15,6 +15,18 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 use TCPDF;
+use App\Helpers\PdfHelper;
+
+class CustomTCPDF extends TCPDF {
+    public function Header() {
+        $baseURL = base_url();
+
+        $imagePath = $baseURL . '/assets/images/header-letter.jpg';
+        $this->Image($imagePath, 10, 10, 30);
+        $this->SetFont('helvetica', 'B', 12);
+        $this->Cell(0, 10, 'SKATEL', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+    }
+}
 
 class DataPeminjaman extends ResourceController
 {
@@ -62,7 +74,7 @@ class DataPeminjaman extends ResourceController
         }
 
         $data['tableHeading'] = $tableHeading;
-        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate);
         return view('labView/dataPeminjaman/user', $data);
     }
 
@@ -153,7 +165,6 @@ class DataPeminjaman extends ResourceController
         }
     }
 
-
     public function print($id = null) {
         $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($id);
         $dataRincianLabAset = $this->dataPeminjamanModel->getRincianItem($id);
@@ -169,18 +180,19 @@ class DataPeminjaman extends ResourceController
         ];
     
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
+        // $pdf = new CustomTCPDF();
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Putri Nabella');
         $pdf->SetTitle('Histori Peminjaman');
         $pdf->SetSubject('Histori Peminjaman');
         $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
-        
-        // set default header data
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
-        $pdf->setFooterData(array(0,64,0), array(0,64,128));
 
-        // set header and footer fonts
+        // Set default header data
+        // $pdf->SetHeaderData('', 0, 'SMK TELKOM BANJARBARU');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        // Set header and footer fonts
         $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
@@ -188,9 +200,10 @@ class DataPeminjaman extends ResourceController
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
         // set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        
 
         // set auto page breaks
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -228,7 +241,7 @@ class DataPeminjaman extends ResourceController
             <tr>
                 <th style="width: 200px;">NIS/NIK</th>
                 <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->namaPeminjam</th>
+                <th>543221166</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Kelas/Karyawan</th>
@@ -238,7 +251,7 @@ class DataPeminjaman extends ResourceController
             <tr>
                 <th style="width: 200px;">Keperluan Alat</th>
                 <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->namaPeminjam</th>
+                <th>Lorem Ipsum</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Hari, Tanggal Pinjam</th>
@@ -248,21 +261,21 @@ class DataPeminjaman extends ResourceController
             <tr>
                 <th style="width: 200px;">Lama Pinjam</th>
                 <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->namaPeminjam</th>
+                <th>31 Hari</th>
             </tr>
         </table>
 
         <p style="padding-top: 10px;">Dengan memohon untuk dipinjamkan alat sebagai berikut:</p>
 
         <table border="1" style="text-align: center; width: 100%; padding:5px;">
-        <thead>
-            <tr>
-                <th style="width: 10%;">No.</th>
-                <th style="width: 50%;">Nama Alat</th>
-                <th style="width: 10%;">Jumlah</th>
-                <th style="width: 30%;">Keadaan Alat Saat Dipinjam</th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No.</b></th>
+                    <th style="width: 45%;"><b>Nama Alat</b></th>
+                    <th style="width: 10%;"><b>Jumlah</b></th>
+                    <th style="width: 35%;"><b>Keadaan Alat Saat Dipinjam</b></th>
+                </tr>
+            </thead>
         <tbody>
     EOD;
     
@@ -270,9 +283,9 @@ class DataPeminjaman extends ResourceController
 
         $html .= '<tr>';
         $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
-        $html .= '<td style="width: 50%; text-align: left;">' . $value->namaSarana . '</td>';
+        $html .= '<td style="width: 45%; text-align: left;">' . $value->namaSarana . '</td>';
         $html .= '<td style="width: 10%;">' . $value->totalAset . '</td>';
-        $html .= '<td style="width: 30%;">Baik</td>';
+        $html .= '<td style="width: 35%;">Baik</td>';
         $html .= '</tr>';
     }
     
@@ -280,7 +293,7 @@ class DataPeminjaman extends ResourceController
         </tbody>
     </table>
 
-    <p style="padding-top: 10px; text-align: justify;">Dan bertanggungjawab atas alat tersebut di atas, bila terjadi sesuatu yang menyebabkan alat tersebut dikembalikan dalam keadaan tidak seperti sebelumnya, dan bersedia menggantinya</p>
+    <p style="padding-top: 10px; text-align: justify;">Dan bertanggungjawab atas alat tersebut di atas, bila terjadi sesuatu yang menyebabkan alat tersebut dikembalikan dalam keadaan tidak seperti sebelumnya, dan bersedia menggantinya.</p>
 
     <table style="padding-top: 10px;">
         <tr>
@@ -307,22 +320,21 @@ class DataPeminjaman extends ResourceController
 
     EOD;
         
-        
-        // Print text using writeHTMLCell()
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
         
         $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+        $namaPeminjam = $dataDataPeminjaman->namaPeminjam;
+        $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal)); 
+
+        $filename = 'Formulir Peminjaman Aset - ' . preg_replace('/\s+/', '_', $namaPeminjam) . " ($tanggal).pdf";
+
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');
-        $response->setHeader('Content-Disposition', 'inline; filename="Formulir Peminjaman Aset.pdf"');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
         $response->setBody($pdfData);
         $response->send();
     }
-    
-
-    
-
-
 
     public function update($id = null)
     {

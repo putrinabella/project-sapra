@@ -99,9 +99,9 @@
                                 <td class="text-center"><?=$value->kodePrasarana?></td>
                                 <td class="text-left"><?=$value->namaPrasarana?></td>
                                 <td class="text-left"><?=$value->tipe?></td>
-                                <td class="text-center"><?=$value->namaGedung?></td>
-                                <td class="text-center"><?=$value->namaLantai?></td>
-                                <td class="text-center"><?=$value->luas?> m&sup2;</td>
+                                <td><?=$value->namaGedung?></td>
+                                <td><?=$value->namaLantai?></td>
+                                <td><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
                                     <a href="<?=site_url('identitasPrasarana/'.$value->idIdentitasPrasarana.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
