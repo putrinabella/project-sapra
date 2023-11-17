@@ -102,7 +102,6 @@
                   <div class="text-center">
                     <div class="tx-16 fw-bolder">
                       <?= session('nama'); ?>
-                      <!-- <?=userLogin()->nama?> -->
                     </div>
                     <div class="tx-12 text-muted">
                       <?= session('role'); ?>

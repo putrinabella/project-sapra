@@ -103,7 +103,7 @@
             <div class="table-responsive">
                 <table class="table table-hover" id="dataTable" style="width: 100%;">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
                             <th>Nama Peminjam</th>
