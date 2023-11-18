@@ -62,7 +62,8 @@ class LayananLabAsetModels extends Model
         $builder->select('DISTINCT(tblRincianLabAset.idIdentitasSarana), tblIdentitasSarana.namaSarana');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->where('tblRincianLabAset.deleted_at', null);
-        $builder->where('tblRincianLabAset.sectionAset', "None");  
+        $builder->where('tblRincianLabAset.sectionAset', "None"); 
+        $builder->where('tblRincianLabAset.status', "Bagus");   
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
         $query = $builder->get();
         return $query->getResult();

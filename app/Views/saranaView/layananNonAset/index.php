@@ -100,7 +100,11 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
+                                <?php
+                                $originalDate = $value->tanggal;
+                                $formattedDate = date('d F Y', strtotime($originalDate));
+                                ?>
+                                <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
                                 <td><?=$value->namaPrasarana?></td>
                                 <td><?=$value->namaStatusLayanan?></td>
                                 <td><?=$value->namaKategoriMep?></td>

@@ -16,7 +16,7 @@
         <div class="input-group date datepicker wd-200  mb-2 mb-md-0" id="dashboardDate">
             <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"
                     class=" text-primary"></i></span>
-            <input type="text" class="form-control border-primary bg-transparent">
+            <input type="text" class="form-control border-primary bg-transparent" readonly>
         </div>
     </div>
 
@@ -31,24 +31,25 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="example">
-                            <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
-                                <li class="nav-item col-2 text-center">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item  text-center">
                                     <a class="nav-link active" id="aset-tab" data-bs-toggle="tab" href="#aset"
                                         role="tab" aria-controls="aset" aria-selected="true">Aset Sekolah</a>
                                 </li>
-                                <li class="nav-item col-2 text-center">
+                                <li class="nav-item  text-center">
                                     <a class="nav-link" id="labAset-tab" data-bs-toggle="tab" href="#labAset" role="tab"
                                         aria-controls="labAset" aria-selected="false">Aset Laboratorium</a>
                                 </li>
-                                <li class="nav-item col-2 text-center">
+                                <li class="nav-item  text-center">
                                     <a class="nav-link" id="itAset-tab" data-bs-toggle="tab" href="#itAset" role="tab"
                                         aria-controls="itAset" aria-selected="false">Aset Perangkat IT</a>
                                 </li>
-                                <li class="nav-item col-2 text-center">
-                                    <a class="nav-link" id="inventarisAset-tab" data-bs-toggle="tab" href="#inventarisAset" role="tab"
-                                        aria-controls="inventarisAset" aria-selected="false">Inventaris</a>
+                                <li class="nav-item  text-center">
+                                    <a class="nav-link" id="inventarisAset-tab" data-bs-toggle="tab"
+                                        href="#inventarisAset" role="tab" aria-controls="inventarisAset"
+                                        aria-selected="false">Non-Inventaris</a>
                                 </li>
-                                <li class="nav-item col-2 text-center">
+                                <li class="nav-item  text-center">
                                     <a class="nav-link" id="profil-tab" data-bs-toggle="tab" href="#profil" role="tab"
                                         aria-controls="profil" aria-selected="false">Profil Sekolah</a>
                                 </li>
@@ -247,7 +248,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="inventarisAset" role="tabpanel" aria-labelledby="inventarisAset-tab">
+                                <div class="tab-pane fade" id="inventarisAset" role="tabpanel"
+                                    aria-labelledby="inventarisAset-tab">
                                     <div class="row text-center mb-4">
                                         <center>
                                             <h5>DATA INVENTARIS</h5>
@@ -273,7 +275,9 @@
                                                                         </h1>
                                                                     </div>
                                                                     <div class="row text-center">
-                                                                        <p><?= $value->satuan; ?> </p>
+                                                                        <p>
+                                                                            <?= $value->satuan; ?>
+                                                                        </p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-5">
@@ -544,12 +548,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="example">
-                            <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
-                                <li class="nav-item col-6 text-center">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item text-center">
                                     <a class="nav-link active" id="labAset-tab" data-bs-toggle="tab" href="#labAset"
                                         role="tab" aria-controls="labAset" aria-selected="true">Aset Laboratorium</a>
                                 </li>
-                                <li class="nav-item col-6 text-center">
+                                <li class="nav-item text-center">
                                     <a class="nav-link" id="profil-tab" data-bs-toggle="tab" href="#profil" role="tab"
                                         aria-controls="profil" aria-selected="false">Profil Sekolah</a>
                                 </li>
@@ -861,16 +865,17 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="example">
-                            <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
-                                <li class="nav-item col-4 text-center">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item text-center">
                                     <a class="nav-link active" id="aset-tab" data-bs-toggle="tab" href="#aset"
                                         role="tab" aria-controls="aset" aria-selected="true">Aset Sekolah</a>
                                 </li>
-                                <li class="nav-item col-4 text-center">
-                                    <a class="nav-link" id="inventarisAset-tab" data-bs-toggle="tab" href="#inventarisAset" role="tab"
-                                        aria-controls="inventarisAset" aria-selected="false">Inventaris</a>
+                                <li class="nav-item text-center">
+                                    <a class="nav-link" id="inventarisAset-tab" data-bs-toggle="tab"
+                                        href="#inventarisAset" role="tab" aria-controls="inventarisAset"
+                                        aria-selected="false">Non-Inventaris</a>
                                 </li>
-                                <li class="nav-item col-4 text-center">
+                                <li class="nav-item text-center">
                                     <a class="nav-link" id="profil-tab" data-bs-toggle="tab" href="#profil" role="tab"
                                         aria-controls="profil" aria-selected="false">Profil Sekolah</a>
                                 </li>
@@ -941,7 +946,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="inventarisAset" role="tabpanel" aria-labelledby="inventarisAset-tab">
+                                <div class="tab-pane fade" id="inventarisAset" role="tabpanel"
+                                    aria-labelledby="inventarisAset-tab">
                                     <div class="row text-center mb-4">
                                         <center>
                                             <h5>DATA INVENTARIS</h5>
@@ -967,7 +973,9 @@
                                                                         </h1>
                                                                     </div>
                                                                     <div class="row text-center">
-                                                                        <p><?= $value->satuan; ?> </p>
+                                                                        <p>
+                                                                            <?= $value->satuan; ?>
+                                                                        </p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-5">
@@ -1238,12 +1246,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="example">
-                            <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
-                                <li class="nav-item col-6 text-center">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item text-center">
                                     <a class="nav-link active" id="labAset-tab" data-bs-toggle="tab" href="#labAset"
                                         role="tab" aria-controls="labAset" aria-selected="true">Aset Perangkat IT</a>
                                 </li>
-                                <li class="nav-item col-6 text-center">
+                                <li class="nav-item text-center">
                                     <a class="nav-link" id="profil-tab" data-bs-toggle="tab" href="#profil" role="tab"
                                         aria-controls="profil" aria-selected="false">Profil Sekolah</a>
                                 </li>
@@ -1554,12 +1562,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="example">
-                            <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
-                                <li class="nav-item col-6 text-center">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item text-center">
                                     <a class="nav-link active" id="labAset-tab" data-bs-toggle="tab" href="#labAset"
                                         role="tab" aria-controls="labAset" aria-selected="true">Aset Laboratorium</a>
                                 </li>
-                                <li class="nav-item col-6 text-center">
+                                <li class="nav-item text-center">
                                     <a class="nav-link" id="profil-tab" data-bs-toggle="tab" href="#profil" role="tab"
                                         aria-controls="profil" aria-selected="false">Profil Sekolah</a>
                                 </li>

@@ -16,6 +16,8 @@ class PrasaranaNonRuanganModels extends Model
     function getRuangan() {
         $builder = $this->db->table($this->table);
         $builder->where('tblIdentitasPrasarana.tipe', 'Non Ruangan'); 
+        $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
+        $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
         $query = $builder->get();
         return $query->getResult();
     }

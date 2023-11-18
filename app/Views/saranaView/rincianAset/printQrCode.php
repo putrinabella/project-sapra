@@ -33,8 +33,10 @@
                                     <br>
                                     <?= $value->namaSarana ?>
                                     <br>
+                                    Tahun Pengadaan:
                                     <?= $value->tahunPengadaan ?>
                                     <br>
+                                    Sumber Dana:
                                     <?= $value->namaSumberDana ?>
                                 </td>
                             </tr>

@@ -60,6 +60,7 @@ class LayananAsetItModels extends Model
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblIdentitasSarana.perangkatIt', 1);
         $builder->where('tblRincianAset.sectionAset', "None");  
+        $builder->where('tblRincianAset.status', "Bagus");  
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
         $query = $builder->get();
         return $query->getResult();

@@ -97,7 +97,7 @@
                         <a href="<?= site_url('dataPeminjaman') ?>" class="nav-link">Data Peminjaman </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Manajemen Peminjaman</a>
+                        <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">Pengajuan Peminjaman</a>
                     </li>
                 </ul>
             </div>
@@ -305,7 +305,7 @@
             </a>
         </li>
 
-        <li class="nav-item nav-category">Manajemen Peminjaman</li>
+        <li class="nav-item nav-category">Pengajuan Peminjaman</li>
         <li class="nav-item">
             <a href="<?= site_url('dataPeminjaman') ?>" class="nav-link">
                 <i class="link-icon" data-feather="user-check"></i>
@@ -335,7 +335,7 @@
     <?php } ?>
 
     <?php if (session()->get('role') == 'User') { ?>
-        <li class="nav-item nav-category">Manajemen Peminjaman</li>
+        <li class="nav-item nav-category">Pengajuan Peminjaman</li>
         <li class="nav-item">
             <a href="<?= site_url('peminjamanUser') ?>" class="nav-link">
                 <i class="link-icon" data-feather="edit"></i>

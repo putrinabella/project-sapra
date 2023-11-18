@@ -87,6 +87,7 @@ class SaranaLayananAsetModels extends Model
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset', "None");  
+        $builder->where('tblRincianAset.status', "Bagus");  
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana'); 
         $query = $builder->get();
         return $query->getResult();

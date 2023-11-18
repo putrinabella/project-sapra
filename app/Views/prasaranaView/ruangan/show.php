@@ -27,7 +27,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                        <h5 class="p-2">Nama Prasarana</h5>
+                        <h5 class="p-2">Nama Lokasi</h5>
                         <div class="border rounded-2 p-2">
                             <?= $dataPrasaranaRuangan->namaPrasarana; ?>
                         </div>

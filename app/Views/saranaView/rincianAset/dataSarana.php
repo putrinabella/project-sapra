@@ -54,7 +54,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
+                                <td><?=$value->namaSarana?></td>
                                 <td class="text-center"><?=$value->jumlahAset?></td>
                                 <td class="text-center"><?=$value->jumlahBagus?></td>
                                 <td class="text-center"><?=$value->jumlahRusak?></td>

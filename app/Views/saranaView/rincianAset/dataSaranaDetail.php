@@ -106,34 +106,16 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->kodeRincianAset?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->status?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
+                                <td><?=$value->kodeRincianAset?></td>
+                                <td><?=$value->namaPrasarana?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSarana?></td>
+                                <td><?=$value->status?></td>
+                                <td><?=$value->namaSumberDana?></td>
                                 <td class="text-center"><?=$value->tahunPengadaan?></td>
-                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
-                                <td class="text-center"><?=$value->merk?></td>
-                                <td class="text-center"><?=$value->warna?></td>
-                                <!-- <td class="text-center">
-                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>"
-                                        class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>"
-                                        class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>" method="post"
-                                        class="d-inline" id="del-<?= $value->idRincianAset;?>">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon"
-                                            data-confirm="Apakah anda yakin menghapus data ini?">
-                                            <i data-feather="trash"></i>
-                                        </button>
-                                    </form>
-                                    <a href="<?= site_url('QRCode/' . $value->kodeRincianAset) ?>" target="_blank" class="btn btn-success  mdi mdi-qrcode-scan"
-                                        data-kode="<?= $value->kodeRincianAset ?>">
-                                    </a> 
-                                </td> -->
+                                <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td><?=$value->merk?></td>
+                                <td><?=$value->warna?></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

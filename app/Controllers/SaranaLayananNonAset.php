@@ -8,6 +8,7 @@ use App\Models\IdentitasSaranaModels;
 use App\Models\StatusLayananModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriMepModels; 
+use App\Models\GeneralModels; 
 use App\Models\IdentitasPrasaranaModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -24,6 +25,7 @@ class SaranaLayananNonAset extends ResourceController
         $this->statusLayananModel = new StatusLayananModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriMepModel = new KategoriMepModels();
+        $this->generalModel = new GeneralModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -76,6 +78,11 @@ class SaranaLayananNonAset extends ResourceController
     
     public function create() {
         $data = $this->request->getPost();
+        $inputDate = $data['tanggal'];
+        $sqlDate = $this->generalModel->convertDateFormat($inputDate);
+        $data['tanggal'] =  $this->generalModel->convertDateFormat($inputDate);
+        // var_dump($data);
+        // die;
         if (!empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['idKategoriMep'])) {
             $this->saranaLayananNonAsetModel->insert($data);
             return redirect()->to(site_url('saranaLayananNonAset'))->with('success', 'Data berhasil disimpan');
@@ -113,6 +120,9 @@ class SaranaLayananNonAset extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
+            $inputDate = $data['tanggal'];
+            $sqlDate = $this->generalModel->convertDateFormat($inputDate);
+            $data['tanggal'] =  $this->generalModel->convertDateFormat($inputDate);
             $this->saranaLayananNonAsetModel->update($id, $data);
             return redirect()->to(site_url('saranaLayananNonAset'))->with('success', 'Data berhasil diupdate');
         } else {

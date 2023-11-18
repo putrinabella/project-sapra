@@ -16,13 +16,16 @@
     <div>
         <form action="<?= site_url('dataInventaris') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
-                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
-                    readonly>
-                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i
+                        data-feather="calendar" class=" text-primary"></i></span>
+                <input type="text" class="form-control border-primary bg-transparent" id="startDate" name="startDate"
+                    placeholder="Start Date" readonly>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
-                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
-                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i
+                        data-feather="calendar" class=" text-primary"></i></span>
+                <input type="text" class="form-control border-primary bg-transparent" id="endDate" name="endDate"
+                    placeholder="End Date" readonly>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary btn-icon me-1">
@@ -95,7 +98,7 @@
                     <br>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover text-center" id="dataTable" style="width: 100%;">
+                    <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -125,7 +128,7 @@
                                 <td>
                                     <?= $value->tipeDataInventaris; ?>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <?= $value->jumlahDataInventaris; ?>
                                 </td>
                                 <td class="text-center">

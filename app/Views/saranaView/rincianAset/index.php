@@ -125,7 +125,7 @@
                                 <td><?=$value->namaSarana?></td>
                                 <td><?=$value->status?></td>
                                 <td><?=$value->namaSumberDana?></td>
-                                <td>
+                                <td class="text-center">
                                     <?php 
                                         if($value->tahunPengadaan == 0 || 0000) {
                                             echo "Tidak diketahui"; 
