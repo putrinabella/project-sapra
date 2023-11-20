@@ -225,7 +225,7 @@ $routes->get('dataSarana/export', 'RincianAset::dataSaranaExport');
 $routes->get('rincianItAset/generatePDF', 'RincianAset::generateItPDF');
 $routes->get('rincianItAset/export', 'RincianAset::exportIt');
 $routes->get('dataItSarana', 'RincianAset::dataItSarana');
-$routes->get('dataItSaranaDetail/(:num)', 'RincianAset::dataItSaranaDetail/$1');
+$routes->get('dataItSaranaDetail/(:num)', 'PerangkatIt::show/$1');
 $routes->get('dataItSarana/generatePDF', 'RincianAset::dataItSaranaGeneratePDF');
 $routes->get('dataItSarana/export', 'RincianAset::dataItSaranaExport');
 $routes->get('dataItSarana/trash', 'RincianAset::trashIt');
@@ -568,7 +568,6 @@ $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1'
 $routes->get('manajemenPeminjaman/showUser/(:num)', 'ManajemenPeminjaman::showUser/$1');
 $routes->get('peminjamanUser', 'ManajemenPeminjaman::user');
 $routes->get('manajemenPeminjaman/getKodeLab/(:num)', 'ManajemenPeminjaman::getKodeLab/$1');
-$routes->post('manajemenPeminjaman/getPeminjamanTabel', 'ManajemenPeminjaman::getPeminjamanTabel');
 $routes->post('manajemenPeminjaman/getRincianLabAsetByLab', 'ManajemenPeminjaman::getRincianLabAsetByLab');
 $routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
 $routes->post('peminjamanUser/addLoan', 'ManajemenPeminjaman::addLoanUser');

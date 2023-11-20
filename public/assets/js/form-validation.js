@@ -108,6 +108,10 @@ $(document).ready(function () {
         required: true,
         maxlength: 255,
       },
+      nomorBarang: {
+        required: true,
+        maxlength: 255,
+      },
       namaStatusLayanan: {
         required: true,
         maxlength: 255,
@@ -353,6 +357,10 @@ $(document).ready(function () {
       luas: {
         required: "Silahkan masukkan luas",
         maxlength: "Luas tidak boleh melebihi 255 karakter",
+      },
+      nomorBarang: {
+        required: "Silahkan masukkan nomor barang",
+        maxlength: "Nomor barang tidak boleh melebihi 255 karakter",
       },
       namaStatusLayanan: {
         required: "Silahkan masukkan nama status layanan",

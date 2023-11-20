@@ -26,17 +26,6 @@ class LaboratoriumModels extends Model
         return $result->jumlahTotal ?? 0;
     }
     
-    function getAll3() {
-        $builder = $this->db->table($this->table);
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
-        $builder->where('tblRincianLabAset.deleted_at', null);
-        $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
-        $query = $builder->get();
-        return $query->getResult();
-    }
     
     function getData() {
         $builder = $this->db->table($this->table);
@@ -52,6 +41,8 @@ class LaboratoriumModels extends Model
 
     function getRuangan() {
         $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasLab.idIdentitasGedung');
+        $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasLab.idIdentitasLantai');
         $query = $builder->get();
         return $query->getResult();
     }

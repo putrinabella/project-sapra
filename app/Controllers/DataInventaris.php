@@ -288,21 +288,42 @@ class DataInventaris extends ResourceController
     
     public function createTemplate() {
         $data = $this->dataInventarisModel->findAll();
+        $keyAset = $this->inventarisModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Sarana'];
+        $headers = ['No.', 'Tanggal', 'ID Aset Non Invetaris', 'Tipe',  'Jumlah'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $headerAsetID = ['ID', 'Nama', 'Satuan'];
+        $activeWorksheet->fromArray([$headerAsetID], NULL, 'G1');
+        $activeWorksheet->getStyle('G1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $enumValues = ['Pemasukan', 'Pengeluaran'];
+
+        $validation = $activeWorksheet->getCell('D2')->getDataValidation();
+        $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
+        $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION);
+        $validation->setAllowBlank(false);
+        $validation->setShowInputMessage(true);
+        $validation->setShowErrorMessage(true);
+        $validation->setShowDropDown(true);
+        $validation->setErrorTitle('Input error');
+        $validation->setError('Value is not in list.');
+        $validation->setPromptTitle('Pick from list');
+        $validation->setPrompt('Please pick a value from the drop-down list.');
+        $validation->setFormula1('"'.implode(',', $enumValues).'"');
 
         foreach ($data as $index => $value) {
             if ($index >= 3) {
                 break;
             }
+            $currentDate = date('d F Y');
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), '');
+            $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
@@ -329,20 +350,45 @@ class DataInventaris extends ResourceController
             $activeWorksheet->getColumnDimension($column)->setWidth(30);
         }
 
+        foreach ($keyAset as $index => $value) {
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->idInventaris);
+            $activeWorksheet->setCellValue('H'.($index + 2), $value->namaInventaris);
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->satuan);
+    
+            $columns = ['G', 'I'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('G1:I1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('G1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('G1:I'.(count($keyAset) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('G:I')->getAlignment()->setWrapText(true);
+    
+        foreach (range('G', 'I') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Sarana'];
+        $headers =  ['No.', 'Tanggal', 'ID Aset Non Invetaris', 'Tipe',  'Jumlah'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
+            if ($index >= 3) {
+                break;
+            }
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $value->tanggalDataInventaris);
-            $exampleSheet->setCellValue('C'.($index + 2), $value->tahunPemakaianAir);
-            $exampleSheet->setCellValue('D'.($index + 2), $value->pemakaianAir);
-            $exampleSheet->setCellValue('E'.($index + 2), $value->biaya);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->idInventaris);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->tipeDataInventaris);
+            $exampleSheet->setCellValue('E'.($index + 2), $value->jumlahDataInventaris);
 
             $columns = ['A', 'B', 'C', 'D', 'E'];
             
@@ -389,19 +435,21 @@ class DataInventaris extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $pemakaianAir            = $value[3] ?? null;
-                $tanggalDataInventaris       = $value[1] ?? null;
-                $tahunPemakaianAir       = $value[2] ?? null;
-                $biaya                   = $value[4] ?? null;
-
+                $tanggalDataInventaris              = $value[1] ?? null;
+                $idInventaris                       = $value[2] ?? null;
+                $tipeDataInventaris                 = $value[3] ?? null;
+                $jumlahDataInventaris               = $value[4] ?? null;
+                if ($idInventaris === null || $idInventaris === '') {
+                    continue; 
+                }
                 $data = [
-                    'pemakaianAir'             => $pemakaianAir,
-                    'tanggalDataInventaris'        => $tanggalDataInventaris,
-                    'tahunPemakaianAir'        => $tahunPemakaianAir,
-                    'biaya'                    => $biaya,
+                    'idInventaris'              => $idInventaris,
+                    'tanggalDataInventaris'     => $tanggalDataInventaris,
+                    'tipeDataInventaris'        => $tipeDataInventaris,
+                    'jumlahDataInventaris'      => $jumlahDataInventaris,
                 ];
 
-                if (!empty($data['pemakaianAir'])  && !empty($data['tanggalDataInventaris'])  && !empty($data['tahunPemakaianAir']) && !empty($data['biaya']) ) {
+                if (!empty($data['idInventaris'])  && !empty($data['tanggalDataInventaris'])  && !empty($data['tipeDataInventaris']) && !empty($data['jumlahDataInventaris']) ) {
                         $this->dataInventarisModel->insert($data);
                 } else {
                     return redirect()->to(site_url('dataInventaris'))->with('error', 'Pastikan semua data telah diisi!');

@@ -14,9 +14,9 @@ class GeneralModels extends Model
     protected $useSoftDeletes   = true;
 
 
-    public function convertDateFormat($inputDate)
+    public function convertDateSqlFormat($inputDate)
     {
-        $dateTime = date_create_from_format('d M Y', $inputDate);
+        $dateTime = date_create_from_format('d F Y', $inputDate);
 
         if ($dateTime === false) {
             throw new \Exception("Invalid date format: $inputDate");
@@ -26,4 +26,17 @@ class GeneralModels extends Model
 
         return $sqlDateFormat;
     }
+
+    public function converDateDisplayFormat($inputDate) {
+    $dateTime = date_create_from_format('Y-m-d', $inputDate);
+
+    if ($dateTime === false) {
+        throw new \Exception("Invalid date format: $inputDate");
+    }
+
+    $displayDateFormat = $dateTime->format('d F Y');
+
+    return $displayDateFormat;
+}
+
 }

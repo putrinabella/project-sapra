@@ -79,10 +79,8 @@ class SaranaLayananNonAset extends ResourceController
     public function create() {
         $data = $this->request->getPost();
         $inputDate = $data['tanggal'];
-        $sqlDate = $this->generalModel->convertDateFormat($inputDate);
-        $data['tanggal'] =  $this->generalModel->convertDateFormat($inputDate);
-        // var_dump($data);
-        // die;
+        $sqlDate = $this->generalModel->convertDateSqlFormat($inputDate);
+        $data['tanggal'] =  $this->generalModel->convertDateSqlFormat($inputDate);
         if (!empty($data['idIdentitasPrasarana']) && !empty($data['idStatusLayanan']) && !empty($data['idSumberDana']) && !empty($data['idKategoriMep'])) {
             $this->saranaLayananNonAsetModel->insert($data);
             return redirect()->to(site_url('saranaLayananNonAset'))->with('success', 'Data berhasil disimpan');
@@ -121,8 +119,8 @@ class SaranaLayananNonAset extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
             $inputDate = $data['tanggal'];
-            $sqlDate = $this->generalModel->convertDateFormat($inputDate);
-            $data['tanggal'] =  $this->generalModel->convertDateFormat($inputDate);
+            $sqlDate = $this->generalModel->convertDateSqlFormat($inputDate);
+            $data['tanggal'] =  $this->generalModel->convertDateSqlFormat($inputDate);
             $this->saranaLayananNonAsetModel->update($id, $data);
             return redirect()->to(site_url('saranaLayananNonAset'))->with('success', 'Data berhasil diupdate');
         } else {
@@ -130,19 +128,22 @@ class SaranaLayananNonAset extends ResourceController
         }
     }
 
-    
-    public function edit($id = null) {
+    public function edit($id = null)
+    {
         if ($id != null) {
             $dataSaranaLayananNonAset = $this->saranaLayananNonAsetModel->find($id);
     
             if (is_object($dataSaranaLayananNonAset)) {
+                $dataSaranaLayananNonAset->tanggal = $this->generalModel->converDateDisplayFormat($dataSaranaLayananNonAset->tanggal);
+    
                 $data = [
-                    'dataSaranaLayananNonAset'     => $dataSaranaLayananNonAset,
-                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriMep'     => $this->kategoriMepModel->findAll(),
-                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
-                    'dataStatusLayanan'         => $this->statusLayananModel->findAll(),
+                    'dataSaranaLayananNonAset'      => $dataSaranaLayananNonAset,
+                    'dataSumberDana'                => $this->sumberDanaModel->findAll(),
+                    'dataKategoriMep'               => $this->kategoriMepModel->findAll(),
+                    'dataIdentitasPrasarana'        => $this->identitasPrasaranaModel->findAll(),
+                    'dataStatusLayanan'             => $this->statusLayananModel->findAll(),
                 ];
+    
                 return view('saranaView/layananNonAset/edit', $data);
             } else {
                 return view('error/404');
@@ -151,7 +152,7 @@ class SaranaLayananNonAset extends ResourceController
             return view('error/404');
         }
     }
-
+    
     public function delete($id = null) {
         $this->saranaLayananNonAsetModel->delete($id);
         return redirect()->to(site_url('saranaLayananNonAset'));

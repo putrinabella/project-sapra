@@ -103,7 +103,7 @@
                             </thead>
                             <tbody class="py-2">
                                 <?php foreach ($dataRincianLabAset  as $key => $value) : ?>
-                                <tr class="text-center" style=" vertical-align: middle;">
+                                <tr style=" vertical-align: middle;">
                                     <td class="text-center">
                                         <?= $key + 1 ?>
                                     </td>
@@ -125,10 +125,20 @@
                                     <td>
                                         <?= $value->warna; ?>
                                     </td>
-                                    <td> Bagus </td>
-                                    <td>
-                                        <?= $value->statusSetelahPengembalian; ?>
-                                    </td>
+                                    <td  class="text-center"> Bagus </td>
+                                    <td class="text-center">
+                                    <?php if ($value->statusSetelahPengembalian == "Rusak") : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->statusSetelahPengembalian; ?> 
+                                    </span>
+                                    <?php elseif ($value->statusSetelahPengembalian == "Hilang"): ?>
+                                    <span class="badge bg-danger">
+                                    <?= $value->statusSetelahPengembalian; ?> 
+                                    </span>
+                                    <?php elseif ($value->statusSetelahPengembalian == "Bagus"): ?>
+                                    <?= $value->statusSetelahPengembalian; ?> 
+                                    <?php endif; ?>
+                                </td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>

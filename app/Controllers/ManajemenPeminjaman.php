@@ -82,16 +82,18 @@ class ManajemenPeminjaman extends ResourceController
     public function loan($id)
     {
         $data = [
+            'dataRincianLabAset' => $this->manajemenPeminjamanModel->getDataLoan($id),
             'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
             'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
             'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-            'dataRincianLabAset' => $this->manajemenPeminjamanModel->getDataLoan($id)
+            'namaLaboratorium' => $this->manajemenPeminjamanModel->getLabName($id),
         ];
 
         return view('labView/manajemenPeminjaman/new', $data);
     }
+    
     public function loanUser($id)
     {
         $data = [
@@ -105,57 +107,6 @@ class ManajemenPeminjaman extends ResourceController
 
         return view('labView/manajemenPeminjaman/newUser', $data);
     }
-
-    public function getPeminjamanTabel()
-    {
-        $params['draw'] = $_REQUEST['draw'];
-        $start = $_REQUEST['start'];
-        $length = $_REQUEST['length'];
-        $search_value = $_REQUEST['search']['value'];
-        $orders = $_REQUEST['order'];
-        $columns = $_REQUEST['columns'];
-
-        $dataKategori = new ManajemenPeminjamanModels();
-
-        // Check if sortingData is set
-        $sortingData = isset($_REQUEST['sortingData']) ? $_REQUEST['sortingData'] : '';
-
-        $data = $dataKategori->kategoriDisplay($search_value, $start, $length, $columns, $orders, $sortingData);
-        $total_count = $dataKategori->kategoriDisplay($search_value);
-
-        $result = array(
-            'draw' => intval($params['draw']),
-            'recordsTotal' => count($total_count),
-            'recordsFiltered' => count($total_count),
-            'data' => $data
-        );
-
-        header('Content-Type: application/json');
-        echo json_encode($result);
-        exit();
-    }
-
-
-    // public function getPeminjamanTabel() {
-    //     $params['draw'] = $_REQUEST['draw'];
-    //     $start = $_REQUEST['start'];
-    //     $length = $_REQUEST['length'];
-    //     $search_value = $_REQUEST['search']['value'];
-    //     $orders = $_REQUEST['order'];
-    //     $columns = $_REQUEST['columns'];
-
-    //     $dataKategori = new ManajemenPeminjamanModels();
-    //     $data = $dataKategori->kategoriDisplay($search_value, $start, $length, $columns, $orders);
-    //     $total_count = $dataKategori->kategoriDisplay($search_value);
-
-    //     $json_data = array(
-    //         'draw' => intval($params['draw']),
-    //         'recordsTotal' => count($total_count),
-    //         'recordsFiltered' => count($total_count),
-    //         'data' => $data
-    //     );
-    //     echo json_encode($json_data);
-    // }
 
 
     public function getKodeLab($idIdentitasSarana)

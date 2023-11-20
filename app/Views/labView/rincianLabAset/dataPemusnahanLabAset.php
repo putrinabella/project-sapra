@@ -86,13 +86,13 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggalPemusnahan)) ?></td>
-                                <td class="text-center"><?=$value->kodeRincianLabAset?></td>
-                                <td class="text-center"><?=$value->namaLab?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center">
+                                <td><?= date('d F Y', strtotime($value->tanggalPemusnahan)) ?></td>
+                                <td><?=$value->kodeRincianLabAset?></td>
+                                <td><?=$value->namaLab?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSarana?></td>
+                                <td><?=$value->namaSumberDana?></td>
+                                <td>
                                     <?php 
                                         if($value->tahunPengadaan == 0 || 0000) {
                                             echo "Tidak diketahui"; 
@@ -101,10 +101,10 @@
                                         };
                                     ?>
                                 </td>
-                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
-                                <td class="text-center"><?=$value->merk?></td>
-                                <td class="text-center"><?= $value->namaAkun; ?> </td>
-                                <td class="text-center"><?= $value->kodeAkun; ?> </td>
+                                <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td><?=$value->merk?></td>
+                                <td><?= $value->namaAkun; ?> </td>
+                                <td><?= $value->kodeAkun; ?> </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>

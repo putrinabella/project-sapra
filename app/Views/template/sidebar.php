@@ -141,12 +141,12 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
                 <i class="link-icon" data-feather="wifi"></i>
                 <span class="link-title">Perangkat IT</span>
             </a>
-        </li>
+        </li> -->
         <li class="nav-item">
             <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">
                 <i class="link-icon" data-feather="list"></i>
@@ -430,13 +430,13 @@
                 <span class="link-title">Pemusnahan Aset</span>
             </a>
         </li>
-        <li class="nav-item nav-category">IT</li>
-        <li class="nav-item">
+        <li class="nav-item nav-category">Layanan</li>
+        <!-- <li class="nav-item">
             <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
                 <i class="link-icon" data-feather="wifi"></i>
                 <span class="link-title">Perangkat IT</span>
             </a>
-        </li>
+        </li> -->
         <li class="nav-item">
             <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">
                 <i class="link-icon" data-feather="list"></i>

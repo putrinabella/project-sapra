@@ -16,11 +16,11 @@
     <div>
         <form action="<?=site_url('tagihanAir')?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
-                <input type="text" class="form-control" id="startYear" name="startYear" placeholder="Start Year" readonly>
+                <input type="text" class="form-control border-primary bg-transparent" id="startYear" name="startYear" placeholder="Start Year" readonly>
                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endYearPicker">
-                <input type="text" class="form-control" id="endYear" name="endYear" placeholder="End Year" readonly>
+                <input type="text" class="form-control border-primary bg-transparent" id="endYear" name="endYear" placeholder="End Year" readonly>
                 <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">

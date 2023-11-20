@@ -53,6 +53,17 @@
                 <a class="dropdown-item" href="<?= site_url('dataInventaris/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
+        <div class="dropdown">
+            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="upload"></i>
+                Import File
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= site_url('dataInventaris/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
+            </div>
+        </div>
         <a href="<?= site_url('dataInventaris/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
@@ -175,26 +186,6 @@
         </div>
     </div>
 </div>
-<!-- <div class="row">
-    <div class="grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h6 class="card-title">Grafik Inventaris Masuk</h6>
-                <div id="apexBar"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h6 class="card-title">Grafik Inventaris Keluar</h6>
-                <div id="apexPemakaianListrik"></div> 
-            </div>
-        </div>
-    </div>
-</div> -->
 
 
 <?= $this->endSection(); ?>

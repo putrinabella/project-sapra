@@ -88,7 +88,7 @@
                                 </thead>
                                 <tbody class="py-2">
                                     <?php foreach ($dataItemDipinjam as $key => $value) : ?>
-                                        <tr class="text-center" style=" vertical-align: middle;">
+                                        <tr style=" vertical-align: middle;">
                                             <td class="text-center">
                                                 <?= $key + 1 ?>
                                             </td>
@@ -112,8 +112,6 @@
                                             </td>
                                             <td>
                                                 <select name="status[]" id="status" class="form-select me-2" style="width: 130px">
-                                                    <!-- <select name="status" id="status" class="form-select me-2"
-                                                style="width: 130px"> -->
                                                     <option value="Bagus">Bagus</option>
                                                     <option value="Rusak">Rusak</option>
                                                     <option value="Hilang">Hilang</option>

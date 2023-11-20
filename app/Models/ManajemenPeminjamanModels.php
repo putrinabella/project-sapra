@@ -13,57 +13,8 @@ class ManajemenPeminjamanModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    protected $column_order = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'loanStatus', 'tanggalPengembalian'];
-    protected $column_search = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'loanStatus', 'tanggalPengembalian'];
-    protected $order = ['idOperator' => 'DESC'];
-    protected $request;
-    protected $db;
-    protected $dt;
-
     protected $tableRincianLabAset  = 'tblRincianLabAset';
 
-    public function kategoriDisplay($katakunci = null, $start = 0, $length = 0, $columns = NULL, $orders = NULL, $sortingData = '')
-    {
-        $db = \Config\Database::connect();
-        $builder = $db->table('tblRincianLabAset');
-        $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
-        if ($katakunci) {
-            $arr_katakunci = explode(" ", $katakunci);
-            for ($x = 0; $x < count($arr_katakunci); $x++) {
-                $builder = $builder->orLike('idRincianLabAset', $arr_katakunci[$x]);
-                $builder = $builder->orLike('kodeRincianLabAset', $arr_katakunci[$x]);
-                $builder = $builder->orLike('namaLab', $arr_katakunci[$x]);
-                $builder = $builder->orLike('namaKategoriManajemen', $arr_katakunci[$x]);
-                $builder = $builder->orLike('namaSarana', $arr_katakunci[$x]);
-                $builder = $builder->orLike('status', $arr_katakunci[$x]);
-                $builder = $builder->orLike('sectionAset', $arr_katakunci[$x]);
-                $builder = $builder->orLike('merk', $arr_katakunci[$x]);
-                $builder = $builder->orLike('warna', $arr_katakunci[$x]);
-            }
-        }
-
-        $builder->where('status', 'Bagus');
-        $builder->where('sectionAset', 'None');
-
-        if (!empty($sortingData)) {
-            $builder->where('idIdentitasLab', $sortingData);
-        }
-
-        if ($start != 0 or $length != 0) {
-            $builder = $builder->limit($length, $start);
-        }
-
-        if ($orders && $columns) {
-            for ($i = 0; $i < count($orders); $i++) {
-                $builder = $builder->orderBy($columns[$orders[$i]['column']]['data'], $orders[$i]['dir']);
-            }
-        }
-
-        return $builder->get()->getResult();
-    }
 
     public function getBorrowItems($idIdentitasSarana, $jumlah, $idIdentitasLab)
     {
@@ -89,17 +40,6 @@ class ManajemenPeminjamanModels extends Model
             ->set($data)
             ->update();
     }
-
-    // public function updateSectionAset($idRincianLabAset, $sectionAsetValue) {
-    //     $builder = $this->db->table($this->tableRincianLabAset);
-    //     $data = [
-    //         'sectionAset' => $sectionAsetValue,
-    //         'idManajemenPeminjaman' =>$idManajemenPeminjaman,
-    //     ];
-
-    //     $builder->where('idRincianLabAset', $idRincianLabAset)
-    //             ->update($data);
-    // }
 
     public function updateSectionAset($detailData, $sectionAsetValue)
     {
@@ -328,7 +268,7 @@ class ManajemenPeminjamanModels extends Model
     {
         $builder = $this->db->table('tblRincianLabAset');
         $builder->distinct();
-        $builder->select('tblRincianLabAset.idIdentitasLab, tblIdentitasLab.namaLab'); // Adjust the columns as needed
+        $builder->select('tblRincianLabAset.idIdentitasLab, tblIdentitasLab.namaLab');
         $builder->join('tblIdentitasLab', 'tblRincianLabAset.idIdentitasLab = tblIdentitasLab.idIdentitasLab');
         $builder->where('tblRincianLabAset.deleted_at', null);
 
@@ -340,7 +280,7 @@ class ManajemenPeminjamanModels extends Model
     {
         $builder = $this->db->table('tblRincianLabAset');
         $builder->distinct();
-        $builder->select('tblRincianLabAset.idIdentitasSarana, tblIdentitasSarana.namaSarana'); // Adjust the columns as needed
+        $builder->select('tblRincianLabAset.idIdentitasSarana, tblIdentitasSarana.namaSarana');
         $builder->join('tblIdentitasSarana', 'tblRincianLabAset.idIdentitasSarana = tblIdentitasSarana.idIdentitasSarana');
         $builder->where('tblRincianLabAset.deleted_at', null);
 
@@ -375,5 +315,12 @@ class ManajemenPeminjamanModels extends Model
         $builder->where('tblRincianLabAset.idIdentitasLab =', $idIdentitasLab);
         $query = $builder->get();
         return $query->getResult();
+    }
+
+    function getLabName($idIdentitasLab) {
+        $builder = $this->db->table('tblIdentitasLab');
+        $builder->where('idIdentitasLab', $idIdentitasLab);
+        $query = $builder->get();
+        return $query->getRow();
     }
 }

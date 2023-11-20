@@ -27,9 +27,15 @@
                                 <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                                 <div class="col-sm-9">
                                     <div class="input-group date datepicker m-0" id="tanggal">
-                                        <input type="text" class="form-control" name="tanggal" placeholder="Masukkan tanggal" readonly>
+                                        <input type="text" class="form-control bg-transparent" name="tanggal" placeholder="Masukkan tanggal" readonly>
                                         <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="namaLab" class="col-sm-3 col-form-label">Lokasi</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab" value="<?= $namaLaboratorium->namaLab; ?>" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -72,7 +78,6 @@
                                         <tr class="text-center">
                                             <th></th>
                                             <th style="width: 12%;">Kode Aset</th>
-                                            <th>Lokasi</th>
                                             <th>Kategori Aset</th>
                                             <th>Nama Aset</th>
                                             <th>Merek</th>
@@ -85,12 +90,11 @@
                                                 <td>
                                                     <input type="checkbox" class="form-check-input row-select" name="selectedRows[]" value="<?= $value->idRincianLabAset ?>">
                                                 </td>
-                                                <td class="text-center"><?= $value->kodeRincianLabAset ?></td>
-                                                <td class="text-center"><?= $value->namaLab ?></td>
-                                                <td class="text-center"><?= $value->namaKategoriManajemen ?></td>
-                                                <td class="text-center"><?= $value->namaSarana ?></td>
-                                                <td class="text-center"><?= $value->merk ?></td>
-                                                <td class="text-center"><?= $value->warna ?></td>
+                                                <td><?= $value->kodeRincianLabAset ?></td>
+                                                <td><?= $value->namaKategoriManajemen ?></td>
+                                                <td><?= $value->namaSarana ?></td>
+                                                <td><?= $value->merk ?></td>
+                                                <td><?= $value->warna ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

@@ -190,7 +190,7 @@ class RincianAset extends ResourceController
                 if ($newSectionAset === 'Dimusnahkan') {
                     return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('rincianAset'))->with('success', 'Sarana berhasil dikembalikan');
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
                 }
             } else {
                 return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
@@ -207,7 +207,7 @@ class RincianAset extends ResourceController
                 if ($newSectionAset === 'Dimusnahkan') {
                     return redirect()->to(site_url('dataRincianItSarana'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('dataRincianItSarana'))->with('success', 'Sarana berhasil dikembalikan');
+                    return redirect()->to(site_url('dataRincianItSarana'))->with('success', 'Aset berhasil dikembalikan');
                 }
             } else {
                 return redirect()->to(site_url('dataRincianItSarana'))->with('error', 'Aset batal dimusnahkan');

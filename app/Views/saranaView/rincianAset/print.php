@@ -40,11 +40,10 @@
 
 <body>
     <div class="table-responsive">
-    <!-- <h2 class="mt-3 mb-4">Rincian Aset Report</h2> -->
-        <table class="table table-hover" id="dataTable">
+        <table class="table table-hover" id="dataTable" style="width: 100%;">
             <thead>
                 <tr class="text-center">
-                    <th>No.</th>
+                    <td style="width: 5%;">No.</th>
                     <th>Lokasi</th>
                     <th>Kategori Barang</th>
                     <th>Spesifikasi Barang</th>
@@ -52,8 +51,7 @@
                     <th>Sumber Dana</th>
                     <th>Tahun Pengadaan</th>
                     <th>Harga Beli</th>
-                    <th>Merek</th>
-                    <th>Warna</th>
+                    <th>Merk</th>
                     <th>QR</th>
             </tr>
             </thead>
@@ -63,7 +61,7 @@
                         <td rowspan="2" >
                             <?= $key + 1 ?>
                         </td>
-                        <td colspan="10">  
+                        <td colspan="9">  
                             <?= $value->kodeRincianAset ?>
                         </td>
                     </tr>
@@ -76,7 +74,6 @@
                         <td><?=$value->tahunPengadaan?></td>
                         <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                         <td><?=$value->merk?></td>
-                        <td><?=$value->warna?></td>
                         <td>      
                             <?php
                                 if (!empty($value->qrCodeData)) {

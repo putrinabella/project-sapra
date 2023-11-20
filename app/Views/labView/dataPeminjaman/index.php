@@ -136,7 +136,7 @@
                             <td class="text-center">
                                 <?= $value->jumlahPeminjaman ?>
                             </td>
-                            <td class="text-center">
+                            <td>
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
                                 <span class="badge bg-warning">Sedang Dipinjam</span>
                                 <?php else : ?>

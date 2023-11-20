@@ -34,7 +34,7 @@
                         <tbody class="py-2">
                         <?php foreach ($dataPerangkatIt as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td class="text-center">
+                                <td>
                                     <?=$key + 1?> 
                                 </td>
                                 <td>

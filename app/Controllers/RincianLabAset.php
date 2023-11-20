@@ -145,7 +145,7 @@ class RincianLabAset extends ResourceController
                 if ($newSectionAset === 'Dimusnahkan') {
                     return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('rincianLabAset'))->with('success', 'Sarana berhasil dikembalikan');
+                    return redirect()->to(site_url('rincianLabAset'))->with('success', 'Aset berhasil dikembalikan');
                 }
             } else {
                 return redirect()->to(site_url('rincianLabAset'))->with('error', 'Aset batal dimusnahkan');

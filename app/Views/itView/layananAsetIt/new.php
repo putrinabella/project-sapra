@@ -107,7 +107,7 @@
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="bukti" name="bukti"
-                                placeholder="Masukkan link dokumentasi">
+                                placeholder="Masukkan link dokumentasi (Link Google Drive)">
                         </div>
                     </div>
                     <div class="row mb-3">

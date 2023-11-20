@@ -125,7 +125,7 @@
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="bukti" name="bukti"
-                                placeholder="Masukkan link dokumentasi" value="<?=$dataSaranaLayananAset->bukti?>">
+                                placeholder="Masukkan link dokumentasi (Link Google Drive)" value="<?=$dataSaranaLayananAset->bukti?>">
                         </div>
                     </div>
                     <div class="row mb-3">
