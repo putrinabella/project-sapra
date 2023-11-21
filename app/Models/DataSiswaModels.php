@@ -13,7 +13,7 @@ class DataSiswaModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    function getData() {
+    function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
         $builder->where('tblDataSiswa.deleted_at', NULL);
@@ -23,6 +23,7 @@ class DataSiswaModels extends Model
 
     function getRecycle() {
         $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblDataSiswa.deleted_at IS NOT NULL');
         $query = $builder->get();
         return $query->getResult();
@@ -35,5 +36,11 @@ class DataSiswaModels extends Model
 
         $query = $builder->get();
         return $query->getRow();
+    }
+
+    public function isDuplicate($nis) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('nis', $nis)
+            ->countAllResults() > 0;
     }
 }

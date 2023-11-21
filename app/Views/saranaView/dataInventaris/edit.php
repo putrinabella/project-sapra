@@ -40,9 +40,9 @@
                         <label for="idInventaris" class="col-sm-3 col-form-label">Nama Inventaris</label>
                         <div class="col-sm-9">
                             <select class="js-example-basic-single form-select select2-hidden-accessible"
-                                data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="idInventaris"
+                                data-width="100%" data-select2-id="1" aria-hidden="true" id="idInventaris"
                                 name="idInventaris">
-                                <option value="" selected disabled hidden>Pilih lokasi</option>
+                                <option value="" selected disabled hidden>Pilih nama</option>
                                 <?php foreach($dataInventaris as $value): ?>
                                 <option value="<?= $value->idInventaris ?>" <?=$dataDataInventaris->idInventaris ==
                                     $value->idInventaris ? 'selected' : '' ?>>

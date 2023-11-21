@@ -1,14 +1,14 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Edit Website &verbar; SARPRA </title>
+<title>Edit Data Siswa &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Website</h4>
+        <h4 class="mb-3 mb-md-0">Data Siswa</h4>
     </div>
 </div>
 
@@ -22,40 +22,48 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('website/'.$dataWebsite->idWebsite)?>" method="post" autocomplete="off"  id="custom-validation">
+                <form action="<?= site_url('dataSiswa/'.$dataDataSiswa->idDataSiswa)?>" method="post" autocomplete="off"
+                    id="custom-validation">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
-                        <label for="namaWebsite" class="col-sm-3 col-form-label">Nama</label>
+                        <label for="nis" class="col-sm-3 col-form-label">NIS</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaWebsite" name="namaWebsite" value="<?=$dataWebsite->namaWebsite?>" placeholder="Masukkan Nama Sarana" >
+                            <input type="text" class="form-control" id="nis" name="nis" value="<?=$dataDataSiswa->nis?>"
+                                placeholder="Masukkan Nama Sarana">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="fungsiWebsite" class="col-sm-3 col-form-label">Fungsi</label>
+                        <label for="namaSiswa" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="fungsiWebsite" name="fungsiWebsite" value="<?=$dataWebsite->fungsiWebsite?>" placeholder="Masukkan Nama Sarana" >
+                            <input type="text" class="form-control" id="namaSiswa" name="namaSiswa"
+                                value="<?=$dataDataSiswa->namaSiswa?>" placeholder="Masukkan Nama Sarana">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="linkWebsite" class="col-sm-3 col-form-label">Link</label>
-                        <div class="col-sm-9">
-                        <input type="text" class="form-control" id="linkWebsite" name="linkWebsite" value="<?=$dataWebsite->linkWebsite?>" placeholder="Masukkan Nama Sarana" >
+                        <div class="row mb-3">
+                            <label for="idIdentitasKelas" class="col-sm-3 col-form-label">Kelas</label>
+                            <div class="col-sm-9">
+                                <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                    data-width="100%" data-select2-id="1" aria-hidden="true" id="idIdentitasKelas"
+                                    name="idIdentitasKelas">
+                                    <option value="" selected disabled hidden>Pilih kelas</option>
+                                    <?php foreach($dataIdentitasKelas as $value): ?>
+                                    <option value="<?= $value->idIdentitasKelas ?>" <?=$dataDataSiswa->idIdentitasKelas == $value->idIdentitasKelas ? 'selected' : '' ?>>
+                                        <?= $value->namaKelas ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="picWebsite" class="col-sm-3 col-form-label">PIC</label>
-                        <div class="col-sm-9">
-                        <input type="text" class="form-control" id="picWebsite" name="picWebsite" value="<?=$dataWebsite->picWebsite?>" placeholder="Masukkan Nama Sarana" >
+
+                        <div class="row mb-3">
+                            <div class="col-sm-12 text-end">
+                                <a href="<?= site_url('dataSiswa') ?>" class="btn btn-secondary me-2">Cancel</a>
+                                <button type="reset" class="btn btn-danger me-2">Reset</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('website') ?>" class="btn btn-secondary me-2">Cancel</a>
-                            <button type="reset" class="btn btn-danger me-2">Reset</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>

@@ -24,7 +24,7 @@ class DataSiswa extends ResourceController
     }
 
     public function index() {
-        $data['dataDataSiswa'] = $this->dataSiswaModel->getData();
+        $data['dataDataSiswa'] = $this->dataSiswaModel->getAll();
         return view('master/dataSiswaView/index', $data);
     }
 
@@ -66,17 +66,20 @@ class DataSiswa extends ResourceController
         return view('master/dataSiswaView/new', $data);       
     }
 
-    
     public function create() {
-        $data = $this->request->getPost(); 
-        if (!empty($data['namaSiswa']) && !empty($data['idIdentitasKelas']) && !empty($data['nis'])) {
+        $data = $this->request->getPost();
+    
+        $nis = $data['nis'];
+    
+        if ($this->dataSiswaModel->isDuplicate($nis)) {
+            return redirect()->to(site_url('dataSiswa'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
+        } else {
+            unset($data['idIdentitasPrasarana']);
             $this->dataSiswaModel->insert($data);
             return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil disimpan');
-        } else {
-            return redirect()->to(site_url('dataSiswa'))->with('error', 'Semua field harus terisi');
         }
     }
-
+    
     public function edit($id = null) {
         if ($id != null) {
             $dataDataSiswa = $this->dataSiswaModel->find($id);
@@ -84,6 +87,7 @@ class DataSiswa extends ResourceController
             if (is_object($dataDataSiswa)) {
                 $data = [
                     'dataDataSiswa' => $dataDataSiswa,
+                    'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
                 ];
                 return view('master/dataSiswaView/edit', $data);
             } else {
@@ -97,12 +101,12 @@ class DataSiswa extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            if (!empty($data['namaDataSiswa']) && !empty($data['fungsiDataSiswa']) && !empty($data['linkDataSiswa']) && !empty($data['picDataSiswa'])) {
+            $nis = $data['nis'];
+            if ($this->dataSiswaModel->isDuplicate($nis)) {
+                return redirect()->to(site_url('dataSiswa'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+            } else {
                 $this->dataSiswaModel->update($id, $data);
                 return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil diupdate');
-            } else {
-                return redirect()->to
-                (site_url('dataSiswa'))->with('error', 'Semua data harus diisi');
             }
         } else {
             return view('error/404');
@@ -116,6 +120,7 @@ class DataSiswa extends ResourceController
 
     public function trash() {
         $data['dataDataSiswa'] = $this->dataSiswaModel->onlyDeleted()->getRecycle();
+        
         return view('master/dataSiswaView/trash', $data);
     } 
 
@@ -155,29 +160,28 @@ class DataSiswa extends ResourceController
     } 
     
     public function export() {
-        $data = $this->dataSiswaModel->findAll();
+        $data = $this->dataSiswaModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('DataSiswa');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Nama', 'Fungsi', 'Kelas','PIC'];
+        $headers = ['No.', 'NIS', 'Nama', 'Kelas'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->namaDataSiswa);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->fungsiDataSiswa);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->linkDataSiswa);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->picDataSiswa);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->nis);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSiswa);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaKelas);
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C', 'D', 'E'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -187,95 +191,114 @@ class DataSiswa extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
+        foreach (range('A', 'D') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - DataSiswa.xlsx');
+        header('Content-Disposition: attachment;filename=Profil - Data Siswa.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
     
     public function createTemplate() {
-        $data = $this->dataSiswaModel->findAll();
+        $data = $this->dataSiswaModel->getAll();
+        $keyKelas = $this->identitasKelasModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('DataSiswa');
+        $activeWorksheet->setTitle('Data Siswa');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Nama', 'Fungsi', 'Kelas','PIC'];
+        $headers = ['No.', 'NIS', 'Nama', 'Id Identitas Kelas'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
+        $headerKelasID = ['ID Identitas Kelas', 'Nama Kelas'];
+        $activeWorksheet->fromArray([$headerKelasID], NULL, 'F1');
+        $activeWorksheet->getStyle('F1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         foreach ($data as $index => $value) {
-            if ($index >= 3) {
-                break;
-            }
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
-            $activeWorksheet->setCellValue('E'.($index + 2), '');
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            
-            $columns = ['B', 'C', 'D', 'E'];
+
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                 ->getAlignment()
                 ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-            }           
+            }            
         }
         
-        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
-            if ($column === 'A') {
-                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
-            }
-            $activeWorksheet->getColumnDimension($column)->setWidth(30);
+        foreach (range('A', 'D') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
+
+        foreach ($keyKelas as $index => $value) {
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->idIdentitasKelas);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaKelas);
+    
+            $columns = ['F', 'G'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('F1:G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('F1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('F1:G'.(count($keyKelas) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('F:G')->getAlignment()->setWrapText(true);
+    
+        foreach (range('F', 'G') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
 
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Nama', 'Fungsi', 'Kelas','PIC'];
+        $headers = ['No.', 'NIS', 'Nama', 'ID Identitas Kelas'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
-        $exampleSheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $exampleSheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             if ($index >= 3) {
                 break;
             }
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->namaDataSiswa);
-            $exampleSheet->setCellValue('C'.($index + 2), $value->fungsiDataSiswa);
-            $exampleSheet->setCellValue('D'.($index + 2), $value->linkDataSiswa);
-            $exampleSheet->setCellValue('E'.($index + 2), $value->picDataSiswa);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->nis);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->namaSiswa);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->idIdentitasKelas);
 
             $exampleSheet->getStyle('A'.($index + 2))
                             ->getAlignment()
                             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C', 'D', 'E'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $exampleSheet->getStyle($column . ($index + 2))
@@ -285,19 +308,19 @@ class DataSiswa extends ResourceController
             }            
         }
         
-        $exampleSheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:E'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:D'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
+        foreach (range('A', 'D') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - DataSiswa Example.xlsx');
+        header('Content-Disposition: attachment;filename=Profil - Data Siswa Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -319,23 +342,25 @@ class DataSiswa extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $namaDataSiswa            = $value[1] ?? null;
-                $fungsiDataSiswa          = $value[2] ?? null;
-                $linkDataSiswa            = $value[3] ?? null;
-                $picDataSiswa             = $value[4] ?? null;
-
+                $nis            = $value[1] ?? null;
+                $namaSiswa          = $value[2] ?? null;
+                $idIdentitasKelas            = $value[3] ?? null;
+                if ($nis === null || $nis === '') {
+                    continue; 
+                }
                 $data = [
-                    'namaDataSiswa'   => $namaDataSiswa,
-                    'fungsiDataSiswa' => $fungsiDataSiswa,
-                    'linkDataSiswa'   => $linkDataSiswa,
-                    'picDataSiswa'    => $picDataSiswa,
+                    'nis'   => $nis,
+                    'namaSiswa' => $namaSiswa,
+                    'idIdentitasKelas'   => $idIdentitasKelas,
                 ];
 
-                if (!empty($data['namaDataSiswa']) && !empty($data['fungsiDataSiswa'])
-                    && !empty($data['linkDataSiswa']) && !empty($data['picDataSiswa'])) {
-                        $this->dataSiswaModel->insert($data);
+                // var_dump($data);
+                // die;
+                $this->dataSiswaModel->insert($data);
+                if (!empty($data['nis']) && !empty($data['namaSiswa'])
+                    && !empty($data['idIdentitasKelas'])) {
                 } else {
-                    return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan semua data telah diisi!');
+                    return redirect()->to(site_url('dataSiswa'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil diimport');
@@ -352,7 +377,7 @@ class DataSiswa extends ResourceController
             return view('error/404');
         }
 
-        $data['dataDataSiswa'] = $this->dataSiswaModel->findAll();
+        $data['dataDataSiswa'] = $this->dataSiswaModel->getAll();
 
         ob_start();
 

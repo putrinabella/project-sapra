@@ -331,7 +331,7 @@ class Website extends ResourceController
                     && !empty($data['linkWebsite']) && !empty($data['picWebsite'])) {
                         $this->websiteModel->insert($data);
                 } else {
-                    return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastikan semua data telah diisi!');
+                    return redirect()->to(site_url('website'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
             return redirect()->to(site_url('website'))->with('success', 'Data berhasil diimport');

@@ -1,12 +1,12 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Website &verbar; SARPRA </title>
+<title>Recycle Bin Data Siswa &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Website</h4>
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Siswa</h4>
 <br>
 
 <div class="row">
@@ -15,19 +15,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('website')?>"
+                        <a href="<?= site_url('dataSiswa')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('website/restore')?>"
+                        <a href="<?= site_url('dataSiswa/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('website/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('dataSiswa/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
@@ -65,31 +65,28 @@
                 </div>
                 <div class="table-responsive">
                    <table class="table table-hover" id="dataTable">
-                        <thead>
-                        <tr class="text-center">
+                   <thead>
+                            <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
+                                <th>NIS</th>
                                 <th>Nama</th>
-                                <th>Fungsi</th>
-                                <th>Link</th>
-                                <th>PIC</th>
+                                <th>Kelas</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataWebsite as $key => $value) : ?>
+                        <?php foreach ($dataDataSiswa as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"> <?= $value->namaWebsite; ?> </td>
-                                <td class="text-center"> <?= $value->fungsiWebsite; ?> </td>
+                                <td> <?= $value->nis; ?> </td>
+                                <td> <?= $value->namaSiswa; ?> </td>
+                                <td> <?= $value->namaKelas; ?> </td>
                                 <td class="text-center">
-                                <a href="<?= $value->linkWebsite; ?>" target="_blank"><?= $value->linkWebsite; ?></a>
-                                <td class="text-center"> <?= $value->picWebsite; ?> </td>
-                                <td class="text-center">
-                                    <a href="<?=site_url('website/restore/'.$value->idWebsite) ?>"
+                                    <a href="<?=site_url('dataSiswa/restore/'.$value->idDataSiswa) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('website/deletePermanent/'.$value->idWebsite) ?>"
+                                    <form action="<?= site_url('dataSiswa/deletePermanent/'.$value->idDataSiswa) ?>"
                                         method="POST" class="d-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
