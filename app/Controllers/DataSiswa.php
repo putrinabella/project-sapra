@@ -98,20 +98,41 @@ class DataSiswa extends ResourceController
         }
     }
 
-    public function update($id = null) {
+    public function update2($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            $nis = $data['nis'];
-            if ($this->dataSiswaModel->isDuplicate($nis)) {
-                return redirect()->to(site_url('dataSiswa'))->with('error', 'Gagal update karena ditemukan duplikat data!');
-            } else {
-                $this->dataSiswaModel->update($id, $data);
-                return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil diupdate');
+            if (!empty($data['nis'])) {
+                $nis = $data['nis'];
+                if ($this->dataSiswaModel->isDuplicate($nis, $id)) {
+                    return redirect()->to(site_url('dataSiswa'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+                }
             }
+            $this->dataSiswaModel->update($id, $data);
+            return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
     }
+
+    public function update($id = null) {
+        if ($id != null) {
+            $data = $this->request->getPost();
+            $nis = $data['nis'];
+    
+            $existingData = $this->dataSiswaModel->find($id);
+            if ($existingData->nis != $nis) {
+                if ($this->dataSiswaModel->isDuplicate($nis)) {
+                    return redirect()->to(site_url('dataSiswa'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+                }
+            }
+            $this->dataSiswaModel->update($id, $data);
+            return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
+        }
+    }
+    
+
 
     public function delete($id = null) {
         $this->dataSiswaModel->delete($id);
@@ -342,8 +363,8 @@ class DataSiswa extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $nis            = $value[1] ?? null;
-                $namaSiswa          = $value[2] ?? null;
+                $nis                    = $value[1] ?? null;
+                $namaSiswa              = $value[2] ?? null;
                 $idIdentitasKelas            = $value[3] ?? null;
                 if ($nis === null || $nis === '') {
                     continue; 
@@ -354,11 +375,9 @@ class DataSiswa extends ResourceController
                     'idIdentitasKelas'   => $idIdentitasKelas,
                 ];
 
-                // var_dump($data);
-                // die;
-                $this->dataSiswaModel->insert($data);
                 if (!empty($data['nis']) && !empty($data['namaSiswa'])
-                    && !empty($data['idIdentitasKelas'])) {
+                && !empty($data['idIdentitasKelas'])) {
+                        $this->dataSiswaModel->insert($data);
                 } else {
                     return redirect()->to(site_url('dataSiswa'))->with('error', 'Pastikan semua data telah diisi!');
                 }

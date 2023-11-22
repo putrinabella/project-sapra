@@ -38,6 +38,18 @@ class IdentitasLabModels extends Model
             ->countAllResults() > 0;
     }
 
+    public function kodeLabDuplicate($kodeLab) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodeLab', $kodeLab)
+            ->countAllResults() > 0;
+    }
+
+    public function namaLabDuplicate($namaLab) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('namaLab', $namaLab)
+            ->countAllResults() > 0;
+    }
+
     public function getKodeLabById($idIdentitasLab) {
         $builder = $this->db->table($this->table);
         $builder->select('kodeLab');

@@ -79,17 +79,29 @@ class IdentitasLab extends ResourceController
             $data = $this->request->getPost();
             $kodeLab = $data['kodeLab'];
             $namaLab = $data['namaLab'];
-             
-            if ($this->identitasLabModel->isDuplicate($kodeLab, $namaLab)) {
-                return redirect()->to(site_url('identitasLab'))->with('error', 'Gagal update karena ditemukan duplikat data!');
-            } else {
-                $this->identitasLabModel->update($id, $data);
-                return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diupdate');
+    
+            $existingData = $this->identitasLabModel->find($id);
+            if ($existingData->kodeLab != $kodeLab && $existingData->namaLab != $namaLab ) {
+                if ($this->identitasLabModel->isDuplicate($kodeLab, $namaLab)) {
+                    return redirect()->to(site_url('identitasLab'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+                }
+            } else if ($existingData->kodeLab != $kodeLab) {
+                if ($this->identitasLabModel->kodeLabDuplicate($kodeLab)) {
+                    return redirect()->to(site_url('identitasLab'))->with('error', 'Gagal update karena kode lab duplikat!');
+                }
+            } else if ($existingData->namaLab != $namaLab) {
+                if ($this->identitasLabModel->namaLabDuplicate($namaLab)) {
+                    return redirect()->to(site_url('identitasLab'))->with('error', 'Gagal update karena nama lab duplikat!');
+                }
             }
+            $this->identitasLabModel->update($id, $data);
+            return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
     }
+    
+
 
     public function delete($id = null) {
         $this->identitasLabModel->delete($id);
