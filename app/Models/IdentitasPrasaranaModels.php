@@ -38,6 +38,18 @@ class IdentitasPrasaranaModels extends Model
             ->countAllResults() > 0;
     }
     
+    public function kodePrasaranaDuplicate($kodePrasarana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodePrasarana', $kodePrasarana)
+            ->countAllResults() > 0;
+    }
+
+    public function namaPrasaranaDuplicate($namaPrasarana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('namaPrasarana', $namaPrasarana)
+            ->countAllResults() > 0;
+    }
+    
     public function getKodePrasaranaById($idIdentitasPrasarana) {
         $builder = $this->db->table($this->table);
         $builder->select('kodePrasarana');

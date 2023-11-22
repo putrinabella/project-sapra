@@ -21,6 +21,17 @@ class IdentitasSaranaModels extends Model
             ->countAllResults() > 0;
     }
 
+    public function kodeSaranaDuplicate($kodeSarana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodeSarana', $kodeSarana)
+            ->countAllResults() > 0;
+    }
+
+    public function namaSaranaDuplicate($namaSarana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('namaSarana', $namaSarana)
+            ->countAllResults() > 0;
+    }
     public function getKodeSaranaById($idIdentitasSarana) {
         $builder = $this->db->table($this->table);
         $builder->select('kodeSarana');

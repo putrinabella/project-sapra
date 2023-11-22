@@ -73,23 +73,35 @@ class IdentitasPrasarana extends ResourceController
             return view('error/404');
         }
     }
-    
+
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
             $kodePrasarana = $data['kodePrasarana'];
             $namaPrasarana = $data['namaPrasarana'];
-             
-            if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
-                return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Gagal update karena ditemukan duplikat data!');
-            } else {
-                $this->identitasPrasaranaModel->update($id, $data);
-                return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
+    
+            $existingData = $this->identitasPrasaranaModel->find($id);
+            if ($existingData->kodePrasarana != $kodePrasarana && $existingData->namaPrasarana != $namaPrasarana ) {
+                if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
+                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+                }
+            } else if ($existingData->kodePrasarana != $kodePrasarana) {
+                if ($this->identitasPrasaranaModel->kodePrasaranaDuplicate($kodePrasarana)) {
+                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Gagal update karena kode prasarana duplikat!');
+                }
+            } else if ($existingData->namaPrasarana != $namaPrasarana) {
+                if ($this->identitasPrasaranaModel->namaPrasaranaDuplicate($namaPrasarana)) {
+                    return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Gagal update karena nama prasarana duplikat!');
+                }
             }
+            $this->identitasPrasaranaModel->update($id, $data);
+            return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
     }
+    
+
 
     public function delete($id = null) {
         $this->identitasPrasaranaModel->delete($id);

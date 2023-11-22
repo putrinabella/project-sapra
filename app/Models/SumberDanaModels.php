@@ -20,6 +20,18 @@ class SumberDanaModels extends Model
             ->countAllResults() > 0;
     }
 
+    public function kodeSumberDanaDuplicate($kodeSumberDana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('kodeSumberDana', $kodeSumberDana)
+            ->countAllResults() > 0;
+    }
+
+    public function namaSumberDanaDuplicate($namaSumberDana) {
+        $builder = $this->db->table($this->table);
+        return $builder->where('namaSumberDana', $namaSumberDana)
+            ->countAllResults() > 0;
+    }
+
     public function getKodeSumberDanaById($idSumberDana) {
         $builder = $this->db->table($this->table);
         $builder->select('kodeSumberDana');

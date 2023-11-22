@@ -14,19 +14,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
-use TCPDF;
 use App\Helpers\PdfHelper;
-
-class CustomTCPDF extends TCPDF {
-    public function Header() {
-        $baseURL = base_url();
-
-        $imagePath = $baseURL . '/assets/images/header-letter.jpg';
-        $this->Image($imagePath, 10, 10, 30);
-        $this->SetFont('helvetica', 'B', 12);
-        $this->Cell(0, 10, 'SKATEL', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-    }
-}
 
 class DataPeminjaman extends ResourceController
 {
@@ -40,6 +28,7 @@ class DataPeminjaman extends ResourceController
         $this->kategoriManajemenModel = new KategoriManajemenModels();
         $this->identitasLabModel = new IdentitasLabModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf']);
     }
 
     public function index()
@@ -126,25 +115,6 @@ class DataPeminjaman extends ResourceController
         }
     }
 
-    // public function getLoanHistory($id = null)
-    // {
-    //     if ($id != null) {
-    //         $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($id);
-    //         $dataItemDipinjam = $this->dataPeminjamanModel->getReturnItem($dataDataPeminjaman->idManajemenPeminjaman);
-    //         if (is_object($dataDataPeminjaman)) {
-    //             $data = [
-    //                 'dataDataPeminjaman' => $dataDataPeminjaman,
-    //                 'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-    //                 'dataItemDipinjam' => $dataItemDipinjam,
-    //             ];
-    //             return view('labView/dataPeminjaman/show', $data);
-    //         } else {
-    //             return view('error/404');
-    //         }
-    //     } else {
-    //         return view('error/404');
-    //     }
-    // }
 
     public function getLoanHistory($id = null) {
         if ($id != null) {
@@ -179,163 +149,24 @@ class DataPeminjaman extends ResourceController
             'dataRincianLabAset' => $dataRincianLabAset,
         ];
     
-        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        // $pdf = new CustomTCPDF();
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Putri Nabella');
-        $pdf->SetTitle('Histori Peminjaman');
-        $pdf->SetSubject('Histori Peminjaman');
-        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
-
-        // Set default header data
-        // $pdf->SetHeaderData('', 0, 'SMK TELKOM BANJARBARU');
-
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
-
-        // Set header and footer fonts
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-        // set default monospaced font
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-        // set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-        
-
-        // set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-        // set image scale factor
-        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-        // set default font subsetting mode
-        $pdf->setFontSubsetting(true);
-
-        $pdf->SetFont('times', '', 12, '', true);
-
-        // Add a page
-        // This method has several options, check the source code documentation for more information.
-        $pdf->AddPage();
-
-        // set text shadow effect
-        // $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
-
-        // Set some content to print
-        $html = <<<EOD
-        <style>
-
-        </style>
-        
-        <p style="text-align: right;">No Peminjaman: $id</p>
-        <h3 style="text-align: center;">SURAT PERMOHONAN PEMINJAMAN ALAT LAB 2023/2024</h3>
-        <p style="padding-top: 10px;">Saya yang bertanda tangan di bawah ini: </p>
-        <table style="padding-top: 10px;">
-            <tr>
-                <th style="width: 200px;">Nama</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->namaPeminjam</th>
-            </tr>
-            <tr>
-                <th style="width: 200px;">NIS/NIK</th>
-                <th style="width: 20px;">:</th>
-                <th>543221166</th>
-            </tr>
-            <tr>
-                <th style="width: 200px;">Kelas/Karyawan</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->asalPeminjam</th>
-            </tr>
-            <tr>
-                <th style="width: 200px;">Keperluan Alat</th>
-                <th style="width: 20px;">:</th>
-                <th>Lorem Ipsum</th>
-            </tr>
-            <tr>
-                <th style="width: 200px;">Hari, Tanggal Pinjam</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->tanggal</th>
-            </tr>
-            <tr>
-                <th style="width: 200px;">Lama Pinjam</th>
-                <th style="width: 20px;">:</th>
-                <th>31 Hari</th>
-            </tr>
-        </table>
-
-        <p style="padding-top: 10px;">Dengan memohon untuk dipinjamkan alat sebagai berikut:</p>
-
-        <table border="1" style="text-align: center; width: 100%; padding:5px;">
-            <thead>
-                <tr>
-                    <th style="width: 10%;"><b>No.</b></th>
-                    <th style="width: 45%;"><b>Nama Alat</b></th>
-                    <th style="width: 10%;"><b>Jumlah</b></th>
-                    <th style="width: 35%;"><b>Keadaan Alat Saat Dipinjam</b></th>
-                </tr>
-            </thead>
-        <tbody>
-    EOD;
     
-    foreach ($dataRincianLabAset as $key => $value) {
-
-        $html .= '<tr>';
-        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
-        $html .= '<td style="width: 45%; text-align: left;">' . $value->namaSarana . '</td>';
-        $html .= '<td style="width: 10%;">' . $value->totalAset . '</td>';
-        $html .= '<td style="width: 35%;">Baik</td>';
-        $html .= '</tr>';
-    }
+        $pdfData = pdf_suratpeminjaman($dataDataPeminjaman, $dataRincianLabAset);
     
-    $html .= <<<EOD
-        </tbody>
-    </table>
-
-    <p style="padding-top: 10px; text-align: justify;">Dan bertanggungjawab atas alat tersebut di atas, bila terjadi sesuatu yang menyebabkan alat tersebut dikembalikan dalam keadaan tidak seperti sebelumnya, dan bersedia menggantinya.</p>
-
-    <table style="padding-top: 10px;">
-        <tr>
-            <th style="width: 60%;"></th>
-            <th style="width: 40%;">Banjarbaru, $dataDataPeminjaman->tanggal</th>
-        </tr>
-        <tr>
-            <th style="width: 60%;"></th>
-            <th style="width: 40%;">Peminjam</th>
-        </tr>
-        <tr>
-            <th style="width: 60%;"></th>
-            <th style="width: 40%;"></th>
-        </tr>
-        <tr>
-            <th style="width: 60%;"></th>
-            <th style="width: 40%;"></th>
-        </tr>
-        <tr>
-            <th style="width: 60%;"></th>
-            <th style="width: 40%;"> ($dataDataPeminjaman->namaPeminjam)</th>
-        </tr>
-    </table>
-
-    EOD;
-        
-        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
-        
-        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
-
         $namaPeminjam = $dataDataPeminjaman->namaPeminjam;
-        $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal)); 
-
-        $filename = 'Formulir Peminjaman Aset - ' . preg_replace('/\s+/', '_', $namaPeminjam) . " ($tanggal).pdf";
+        $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal));
+    
+        $filename = 'Formulir Peminjaman Aset - ' . $namaPeminjam . " (" . $tanggal .")" . ".pdf";
+    
 
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');
         $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
         $response->setBody($pdfData);
         $response->send();
-    }
 
+    }
+    
+  
     public function update($id = null)
     {
         if ($id != null) {

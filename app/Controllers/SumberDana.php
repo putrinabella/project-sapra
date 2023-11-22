@@ -58,7 +58,7 @@ class SumberDana extends ResourcePresenter
     }
     
 
-    public function update($id = null) {
+    public function update1($id = null) {
         $data = $this->request->getPost();
     
         $kodeSumberDana = $data['kodeSumberDana'];
@@ -71,6 +71,34 @@ class SumberDana extends ResourcePresenter
             return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil update');
         }
     }
+
+    public function update($id = null) {
+        if ($id != null) {
+            $data = $this->request->getPost();
+            $kodeSumberDana = $data['kodeSumberDana'];
+            $namaSumberDana = $data['namaSumberDana'];
+    
+            $existingData = $this->sumberDanaModel->find($id);
+            if ($existingData->kodeSumberDana != $kodeSumberDana && $existingData->namaSumberDana != $namaSumberDana ) {
+                if ($this->sumberDanaModel->isDuplicate($kodeSumberDana, $namaSumberDana)) {
+                    return redirect()->to(site_url('sumberDana'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+                }
+            } else if ($existingData->kodeSumberDana != $kodeSumberDana) {
+                if ($this->sumberDanaModel->kodeSumberDanaDuplicate($kodeSumberDana)) {
+                    return redirect()->to(site_url('sumberDana'))->with('error', 'Gagal update karena kode prasarana duplikat!');
+                }
+            } else if ($existingData->namaSumberDana != $namaSumberDana) {
+                if ($this->sumberDanaModel->namaSumberDanaDuplicate($namaSumberDana)) {
+                    return redirect()->to(site_url('sumberDana'))->with('error', 'Gagal update karena nama prasarana duplikat!');
+                }
+            }
+            $this->sumberDanaModel->update($id, $data);
+            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
+        }
+    }
+    
 
         public function remove($id = null)
     {

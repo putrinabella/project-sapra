@@ -66,25 +66,38 @@ class IdentitasSarana extends ResourcePresenter
             return view('error/404');
         }
     }
-
     public function update($id = null) {
-        $data = $this->request->getPost();
-        
-        $kodeSarana = $data['kodeSarana'];
-        $namaSarana = $data['namaSarana'];
-        $perangkatIT = isset($data['perangkatIT']) ? 1 : 0;
+        if ($id != null) {
+            $data = $this->request->getPost();
+            $kodeSarana = $data['kodeSarana'];
+            $namaSarana = $data['namaSarana'];
+            $perangkatIT = isset($data['perangkatIT']) ? 1 : 0;
     
-        if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana, $id)) {
-            return redirect()->to(site_url('identitasSarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
-        } else {
+            $existingData = $this->identitasSaranaModel->find($id);
+            if ($existingData->kodeSarana != $kodeSarana && $existingData->namaSarana != $namaSarana) {
+                if ($this->identitasSaranaModel->isDuplicate($kodeSarana, $namaSarana)) {
+                    return redirect()->to(site_url('identitasSarana'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+                }
+            } else if ($existingData->kodeSarana != $kodeSarana) {
+                if ($this->identitasSaranaModel->kodeSaranaDuplicate($kodeSarana)) {
+                    return redirect()->to(site_url('identitasSarana'))->with('error', 'Gagal update karena kode sarana duplikat!');
+                }
+            } else if ($existingData->namaSarana != $namaSarana) {
+                if ($this->identitasSaranaModel->namaSaranaDuplicate($namaSarana)) {
+                    return redirect()->to(site_url('identitasSarana'))->with('error', 'Gagal update karena nama sarana duplikat!');
+                }
+            }
             $dataToUpdate = [
                 'kodeSarana' => $kodeSarana,
                 'namaSarana' => $namaSarana,
                 'perangkatIT' => $perangkatIT,
             ];
     
+    
             $this->identitasSaranaModel->update($id, $dataToUpdate);
-            return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil update');
+            return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
         }
     }
     
