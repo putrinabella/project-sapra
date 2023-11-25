@@ -41,15 +41,11 @@
         </a>
         <div class="dropdown">
             <?php
-            if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
-                $exportLink = site_url('dataPeminjaman/export');
-                $printAllLink = site_url('dataPeminjaman/printAll');
-            } else {
                 $startDate = $_GET['startDate'] ?? '';
                 $endDate = $_GET['endDate'] ?? '';
+                
                 $exportLink = site_url("dataPeminjaman/export?startDate=$startDate&endDate=$endDate");
                 $printAllLink = site_url("dataPeminjaman/printAll?startDate=$startDate&endDate=$endDate");
-            }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,9 +54,10 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= $printAllLink ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $printAllLink ?>">Download as ZIP</a>
             </div>
         </div>
+
         <a href="<?= site_url('manajemenPeminjaman') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Ajukan Peminjaman
@@ -144,7 +141,7 @@
                                 ?>
                             </td>
                             <td class="text-left">
-                            <?php
+                                <?php
                                     if ($value->kategoriPeminjam == "siswa") {
                                         echo $value->namaKelas;
                                     } elseif ($value->kategoriPeminjam == "karyawan") {

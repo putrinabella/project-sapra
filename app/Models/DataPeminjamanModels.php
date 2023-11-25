@@ -90,9 +90,7 @@ class DataPeminjamanModels extends Model
         return $query->getRow();
     }
 
-    function findAllHistory($columns = '*')
-    
-    {
+    function findAllHistory($startDate = null, $endDate = null, $columns = '*') {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
         $builder->select($columns);;
         $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.namaPegawai,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
@@ -106,13 +104,14 @@ class DataPeminjamanModels extends Model
         $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.loanStatus =', 'Pengembalian');
         $builder->groupBy('tblDetailManajemenPeminjaman.idManajemenPeminjaman');
-        
+        if ($startDate && $endDate) {
+            $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
+            $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
+        }
         $query = $builder->get();
         return $query->getResult();
     }
 
-
-    
     function getDataBySarana() {
         $builder = $this->db->table($this->table);
         $builder->select('tblIdentitasSarana.*');

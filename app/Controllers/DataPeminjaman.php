@@ -165,7 +165,11 @@ class DataPeminjaman extends ResourceController
     }
 
     public function printAll() {
-        $dataPeminjaman = $this->dataPeminjamanModel->findAllHistory();
+        $startDate = $this->request->getGet('startDate');
+        $endDate = $this->request->getGet('endDate');
+    
+        $dataPeminjaman = $this->dataPeminjamanModel->findAllHistory($startDate, $endDate);
+    
     
         if (empty($dataPeminjaman)) {
             return view('error/404');
