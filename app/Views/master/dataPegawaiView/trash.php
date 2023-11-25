@@ -64,12 +64,13 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                   <table class="table table-hover" id="dataTable" style="width: 100%;">
+                   <table class="table table-hover" id="dataTable" style="width: 100%;>
                    <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
                                 <th>NIP</th>
                                 <th>Nama</th>
+                                <th>Kelas</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -81,6 +82,7 @@
                                 </td>
                                 <td> <?= $value->nip; ?> </td>
                                 <td> <?= $value->namaPegawai; ?> </td>
+                                <td> <?= $value->namaKategoriPegawai; ?> </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('dataPegawai/restore/'.$value->idDataPegawai) ?>"
                                         class="btn btn-primary"> Restore</a>

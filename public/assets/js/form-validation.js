@@ -265,7 +265,7 @@ $(document).ready(function () {
       kurikulum: {
         required: true,
       }, 
-      namaPeminjam: {
+      namaPeminjam2: {
         required: true,
       }, 
       asalPeminjam: {
@@ -518,7 +518,7 @@ $(document).ready(function () {
       kurikulum: {
         required: "Silahkan masukkan kurikulum",
       }, 
-      namaPeminjam: {
+      namaPeminjam2: {
         required: "Silahkan masukkan nama peminjam",
       }, 
       asalPeminjam: {

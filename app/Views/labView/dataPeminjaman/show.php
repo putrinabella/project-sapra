@@ -22,7 +22,7 @@
                 <div class="row mb-3">
                     <label for="tanggal" class="col-sm-3 col-form-label" id="tanggal">Tanggal Peminjaman</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="tanggal" name="tanggal"
+                        <input type="text" class="form-control bg-transparent" id="tanggal" name="tanggal"
                             value="<?= date('d F Y', strtotime($dataDataPeminjaman->tanggal)) ?>" readonly>
                     </div>
                 </div>
@@ -33,43 +33,71 @@
                         <?php
                         $tanggalPengembalian = !empty($dataDataPeminjaman->tanggalPengembalian) ? date('d F Y', strtotime($dataDataPeminjaman->tanggalPengembalian)) : "Belum dikembalikan";
                         ?>
-                        <input type="text" class="form-control" id="tanggalPengembalian" name="tanggalPengembalian"
+                        <input type="text" class="form-control bg-transparent" id="tanggalPengembalian" name="tanggalPengembalian"
                             value="<?= $tanggalPengembalian ?>" readonly>
                     </div>
                 </div>
-
+                <div class="row mb-3">
+                    <label for="idPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
+                    <div class="col-sm-9">
+                    <?php
+                        $idPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->nis : $dataDataPeminjaman->nip;
+                    ?>
+                        <input type="text" class="form-control bg-transparent" id="idPeminjam" name="idPeminjam"
+                            value="<?= $idPeminjam ?>" readonly>
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <label for="namaPeminjam" class="col-sm-3 col-form-label">Nama Peminjam</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam"
-                            value="<?= $dataDataPeminjaman->namaPeminjam ?>" readonly>
-                        <input type="text" class="form-control" id="idManajemenPeminjaman" name="idManajemenPeminjaman"
+                    <?php
+                        $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
+                    ?>
+                        <input type="text" class="form-control bg-transparent" id="namaPeminjam" name="namaPeminjam" value="<?= $namaPeminjam ?>" readonly>
+                        <input type="text" class="form-control bg-transparent" id="idManajemenPeminjaman" name="idManajemenPeminjaman"
                             value="<?= $dataDataPeminjaman->idManajemenPeminjaman ?>" hidden>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="asalPeminjam" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="asalPeminjam" name="asalPeminjam"
-                            value="<?= $dataDataPeminjaman->asalPeminjam ?>" readonly>
+                    <?php
+                        $asalPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaKelas : $dataDataPeminjaman->namaKategoriPegawai;
+                    ?>
+                        <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
+                            value="<?= $asalPeminjam ?>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="namaLab" name="namaLab"
+                        <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab"
                             value="<?= $dataDataPeminjaman->namaLab ?>" readonly>
-                        <input type="text" class="form-control" id="idIdentitasLab" name="idIdentitasLab"
+                        <input type="text" class="form-control bg-transparent" id="idIdentitasLab" name="idIdentitasLab"
                             value="<?= $dataDataPeminjaman->idIdentitasLab ?>" hidden>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Jumlah Aset Dipinjam</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="jumlahPeminjaman" name="jumlahPeminjaman"
-                            value="<?= $dataDataPeminjaman->jumlahPeminjaman ?>" readonly>
-                        <input type="text" class="form-control" id="loanStatus" name="loanStatus" value="Pengembalian"
+                        <input type="text" class="form-control bg-transparent" id="jumlahPeminjaman" name="jumlahPeminjaman"
+                            value="<?= $dataDataPeminjaman->jumlahPeminjaman ?> Aset" readonly>
+                        <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus" value="Pengembalian"
                             hidden>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="keperluanAlat" class="col-sm-3 col-form-label">Keperluan Alat</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control bg-transparent" id="keperluanAlat" name="keperluanAlat"
+                            value="<?= $dataDataPeminjaman->keperluanAlat ?>" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="lamaPinjam" class="col-sm-3 col-form-label">Lama Pinjam</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control bg-transparent" id="lamaPinjam" name="lamaPinjam"
+                            value="<?= $dataDataPeminjaman->lamaPinjam ?> Hari" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -79,7 +107,7 @@
                         <?php
                         $namaPenerima = !empty($dataDataPeminjaman->namaPenerima) ? $dataDataPeminjaman->namaPenerima : "-";
                         ?>
-                        <input type="text" class="form-control" id="namaPenerima" name="namaPenerima"
+                        <input type="text" class="form-control bg-transparent" id="namaPenerima" name="namaPenerima"
                             value="<?= $namaPenerima ?>" readonly>
                     </div>
                 </div>

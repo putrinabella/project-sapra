@@ -27,10 +27,10 @@
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
-                        <label for="nip" class="col-sm-3 col-form-label">NIS</label>
+                        <label for="nip" class="col-sm-3 col-form-label">NIP</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="nip" name="nip" value="<?=$dataDataPegawai->nip?>"
-                                placeholder="Masukkan NIS">
+                                placeholder="Masukkan NIP">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -38,6 +38,23 @@
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaPegawai" name="namaPegawai"
                                 value="<?=$dataDataPegawai->namaPegawai?>" placeholder="Masukkan Nama Sarana">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="idKategoriPegawai" class="col-sm-3 col-form-label">Kelas</label>
+                        <div class="col-sm-9">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="1" aria-hidden="true" id="idKategoriPegawai"
+                                name="idKategoriPegawai">
+                                <option value="" selected disabled hidden>Pilih kategori pegawai</option>
+                                <?php foreach($dataKategoriPegawai as $value): ?>
+                                <option value="<?= $value->idKategoriPegawai ?>" <?=$dataDataPegawai->idKategoriPegawai
+                                    == $value->idKategoriPegawai ? 'selected' : '' ?>>
+                                    <?= $value->namaKategoriPegawai ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">

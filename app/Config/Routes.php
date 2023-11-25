@@ -558,6 +558,7 @@ $routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
 
 // Data Peminjaman
 $routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
+$routes->get('dataPeminjaman/printAll', 'DataPeminjaman::printAll');
 $routes->get('dataPeminjaman/generatePDF', 'DataPeminjaman::generatePDF');
 $routes->get('dataPeminjaman/export', 'DataPeminjaman::export');
 $routes->get('dataPeminjaman/trash', 'DataPeminjaman::trash');
@@ -572,7 +573,7 @@ $routes->delete('dataPeminjaman/deletePermanent', 'DataPeminjaman::deletePermane
 $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 // Manajemen Peminjaman
-
+$routes->post('getNama', 'ManajemenPeminjaman::getNama');
 $routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
 $routes->get('peminjamanUser/loanUser/(:num)', 'ManajemenPeminjaman::loanUser/$1');
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');

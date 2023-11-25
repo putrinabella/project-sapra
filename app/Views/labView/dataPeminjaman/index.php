@@ -18,11 +18,11 @@
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
-                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
                 <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
-                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary btn-icon me-1">
@@ -43,12 +43,12 @@
             <?php
             if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
                 $exportLink = site_url('dataPeminjaman/export');
-                $generatePDFLink = site_url('dataPeminjaman/generatePDF');
+                $printAllLink = site_url('dataPeminjaman/printAll');
             } else {
                 $startDate = $_GET['startDate'] ?? '';
                 $endDate = $_GET['endDate'] ?? '';
                 $exportLink = site_url("dataPeminjaman/export?startDate=$startDate&endDate=$endDate");
-                $generatePDFLink = site_url("dataPeminjaman/generatePDF?startDate=$startDate&endDate=$endDate");
+                $printAllLink = site_url("dataPeminjaman/printAll?startDate=$startDate&endDate=$endDate");
             }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
@@ -58,7 +58,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= $generatePDFLink ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $printAllLink ?>">Download as PDF</a>
             </div>
         </div>
         <a href="<?= site_url('manajemenPeminjaman') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
@@ -95,7 +95,7 @@
             </div>
             <h4 class="text-center py-3">Data Peminjaman</h4>
             <?php if (!empty($tableHeading)) : ?>
-            <p>
+            <p class="text-center">
                 <?= $tableHeading ?>
             </p>
             <?php endif; ?>
@@ -106,6 +106,7 @@
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
+                            <th>NIS/NIP</th>
                             <th>Nama Peminjam</th>
                             <th>Karwayan/Siswa</th>
                             <th>Lokasi</th>
@@ -125,10 +126,31 @@
                                 <?= date('d F Y', strtotime($value->tanggal)) ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->namaPeminjam ?>
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->nis;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->nip;
+                                    }
+                                ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->asalPeminjam ?>
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->namaSiswa;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->namaPegawai;
+                                    }
+                                ?>
+                            </td>
+                            <td class="text-left">
+                            <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->namaKelas;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->namaKategoriPegawai;
+                                    }
+                                ?>
                             </td>
                             <td>
                                 <?= $value->namaLab ?>
@@ -145,8 +167,9 @@
                             </td>
                             <td class="text-center">
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>" target="_blank"
-                                    class="btn btn-secondary btn-icon"> <i data-feather="printer"></i></a>
+                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
+                                    target="_blank" class="btn btn-secondary btn-icon"> <i
+                                        data-feather="printer"></i></a>
                                 <a href="<?= site_url('dataPeminjaman/' . $value->idManajemenPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <?php endif; ?>

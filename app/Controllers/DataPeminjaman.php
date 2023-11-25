@@ -102,7 +102,6 @@ class DataPeminjaman extends ResourceController
             if (is_object($dataDataPeminjaman)) {
                 $data = [
                     'dataDataPeminjaman' => $dataDataPeminjaman,
-                    // 'dataIdentitasSarana' => $this->dataPeminjamanModel->getPerangkatIT(),
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                     'dataItemDipinjam' => $dataItemDipinjam,
                 ];
@@ -152,12 +151,11 @@ class DataPeminjaman extends ResourceController
     
         $pdfData = pdf_suratpeminjaman($dataDataPeminjaman, $dataRincianLabAset);
     
-        $namaPeminjam = $dataDataPeminjaman->namaPeminjam;
+        $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
         $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal));
-    
-        $filename = 'Formulir Peminjaman Aset - ' . $namaPeminjam . " (" . $tanggal .")" . ".pdf";
-    
-
+        
+        $filename = 'Formulir Peminjaman Aset - ' . $namaPeminjam . " (" . $tanggal . ")" . ".pdf";
+        
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');
         $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
@@ -165,6 +163,56 @@ class DataPeminjaman extends ResourceController
         $response->send();
 
     }
+
+    public function printAll() {
+        $dataPeminjaman = $this->dataPeminjamanModel->findAllHistory();
+    
+        if (empty($dataPeminjaman)) {
+            return view('error/404');
+        }
+    
+        $zip = new \ZipArchive();
+        $zipFilename = 'Formulir Pengembalian.zip';
+    
+        if ($zip->open($zipFilename, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+            return view('error/500'); 
+        }
+    
+        foreach ($dataPeminjaman as $peminjaman) {
+            $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($peminjaman->idManajemenPeminjaman);
+            $dataRincianLabAset = $this->dataPeminjamanModel->getRincianItem($peminjaman->idManajemenPeminjaman);
+    
+            if (!$dataDataPeminjaman || empty($dataRincianLabAset)) {
+                continue;
+            }
+    
+            $data = [
+                'dataDataPeminjaman' => $dataDataPeminjaman,
+                'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+                'dataRincianLabAset' => $dataRincianLabAset,
+            ];
+    
+            $pdfData = pdf_suratpeminjaman($dataDataPeminjaman, $dataRincianLabAset);
+    
+            $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
+            $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal));
+            
+            $filename = 'Formulir Peminjaman Aset - ' . $namaPeminjam . " (" . $tanggal . ")" . ".pdf";
+    
+            $zip->addFromString($filename, $pdfData);
+        }
+    
+        $zip->close();
+    
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/zip');
+        $response->setHeader('Content-Disposition', 'attachment; filename="' . $zipFilename . '"');
+        $response->setBody(file_get_contents($zipFilename));
+        $response->send();
+    
+        unlink($zipFilename);
+    }
+    
     
   
     public function update($id = null)
@@ -301,96 +349,91 @@ class DataPeminjaman extends ResourceController
         $activeWorksheet->setTitle('Data Pengembalian');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
 
-        $headers = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal', 'Kondisi Pengembalian', 'Tanggal Pengembalian'];
+        $headers = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal', 'Kondisi Pengembalian', 'Tanggal Pengembalian'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:K1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         foreach ($data as $index => $value) {
+            $namaPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaSiswa : $value->namaPegawai;
+            $idPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->nis : $value->nip;
+            $asalPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaKelas : $value->namaKategoriPegawai;
+
             $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B' . ($index + 2), $value->tanggal);
-            $activeWorksheet->setCellValue('C' . ($index + 2), $value->namaPeminjam);
-            $activeWorksheet->setCellValue('D' . ($index + 2), $value->asalPeminjam);
-            $activeWorksheet->setCellValue('E' . ($index + 2), $value->namaSarana);
-            $activeWorksheet->setCellValue('F' . ($index + 2), $value->namaLab);
+            $activeWorksheet->setCellValue('C' . ($index + 2), $idPeminjam);
+            $activeWorksheet->setCellValue('D' . ($index + 2), $namaPeminjam);
+            $activeWorksheet->setCellValue('E' . ($index + 2), $asalPeminjam);
+            $activeWorksheet->setCellValue('F' . ($index + 2), $value->namaSarana);
+            $activeWorksheet->setCellValue('G' . ($index + 2), $value->namaLab);
             if ($value->loanStatus == "Peminjaman") {
-                $activeWorksheet->setCellValue('G' . ($index + 2), 'Sedang Dipinjam');
+                $activeWorksheet->setCellValue('H' . ($index + 2), 'Sedang Dipinjam');
             } else {
-                $activeWorksheet->setCellValue('G' . ($index + 2), 'Sudah Dikembalikan');
+                $activeWorksheet->setCellValue('H' . ($index + 2), 'Sudah Dikembalikan');
             }
-            $activeWorksheet->setCellValue('H' . ($index + 2), "Bagus");
-            $activeWorksheet->setCellValue('I' . ($index + 2), $value->statusSetelahPengembalian);
-            $activeWorksheet->setCellValue('J' . ($index + 2), $value->tanggalPengembalian);
+            $activeWorksheet->setCellValue('I' . ($index + 2), "Bagus");
+            $activeWorksheet->setCellValue('J' . ($index + 2), $value->statusSetelahPengembalian);
+            $activeWorksheet->setCellValue('K' . ($index + 2), $value->tanggalPengembalian);
 
 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
                     ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
             }
         }
-        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:J' . $activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:K1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:K' . $activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:K')->getAlignment()->setWrapText(true);
 
-        foreach (range('A', 'J') as $column) {
-            if ($column === 'K') {
-                $activeWorksheet->getColumnDimension($column)->setWidth(20);
-            } else if ($column === 'L') {
-                $activeWorksheet->getColumnDimension($column)->setWidth(40);
-            } else {
-                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
-            }
+        foreach (range('A', 'K') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
 
         $dataPeminjaman = $this->dataPeminjamanModel->getDataExcelPeminjaman($startDate, $endDate);
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Data Peminjaman');
         $exampleSheet->getTabColor()->setRGB('767870');
-
-        $headerExampleTable = ['No.', 'Tanggal', 'Nama', 'Asal', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal'];
+        $headerExampleTable = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal'];
+     
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
-        $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
+        $exampleSheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
         foreach ($dataPeminjaman as $index => $value) {
+
             $exampleSheet->setCellValue('A' . ($index + 2), $index + 1);
             $exampleSheet->setCellValue('B' . ($index + 2), $value->tanggal);
-            $exampleSheet->setCellValue('C' . ($index + 2), $value->namaPeminjam);
-            $exampleSheet->setCellValue('D' . ($index + 2), $value->asalPeminjam);
-            $exampleSheet->setCellValue('E' . ($index + 2), $value->namaSarana);
-            $exampleSheet->setCellValue('F' . ($index + 2), $value->namaLab);
+            $exampleSheet->setCellValue('C' . ($index + 2), $idPeminjam);
+            $exampleSheet->setCellValue('D' . ($index + 2), $namaPeminjam);
+            $exampleSheet->setCellValue('E' . ($index + 2), $asalPeminjam);
+            $exampleSheet->setCellValue('F' . ($index + 2), $value->namaSarana);
+            $exampleSheet->setCellValue('G' . ($index + 2), $value->namaLab);
             if ($value->loanStatus == "Peminjaman") {
-                $exampleSheet->setCellValue('G' . ($index + 2), 'Sedang Dipinjam');
+                $exampleSheet->setCellValue('H' . ($index + 2), 'Sedang Dipinjam');
             } else {
-                $exampleSheet->setCellValue('G' . ($index + 2), 'Sudah Dikembalikan');
+                $exampleSheet->setCellValue('H' . ($index + 2), 'Sudah Dikembalikan');
             }
-            $exampleSheet->setCellValue('H' . ($index + 2), "Bagus");
+            $exampleSheet->setCellValue('I' . ($index + 2), "Bagus");
 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
             foreach ($columns as $column) {
                 $exampleSheet->getStyle($column . ($index + 2))
                     ->getAlignment()
                     ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
             }
         }
-        $exampleSheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:H1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:H' . $exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:I1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:I' . $exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:I')->getAlignment()->setWrapText(true);
 
-        foreach (range('A', 'H') as $column) {
-            if ($column === 'K') {
-                $exampleSheet->getColumnDimension($column)->setWidth(20);
-            } else if ($column === 'L') {
-                $exampleSheet->getColumnDimension($column)->setWidth(40);
-            } else {
+        foreach (range('A', 'I') as $column) {
                 $exampleSheet->getColumnDimension($column)->setAutoSize(true);
-            }
         }
 
         $writer = new Xlsx($spreadsheet);
@@ -401,37 +444,7 @@ class DataPeminjaman extends ResourceController
         exit();
     }
 
-    public function generatePDF()
-    {
-        $startDate = $this->request->getVar('startDate');
-        $endDate = $this->request->getVar('endDate');
-        $filePath = APPPATH . 'Views/labView/dataPeminjaman/print.php';
 
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getDataExport($startDate, $endDate);
-        foreach ($data['dataDataPeminjaman'] as $key => $value) {
-            $idManajemenPeminjaman = $value->idManajemenPeminjaman;
-            $data['dataRincianLabAset'] =$this->dataPeminjamanModel->getRincianLabAset($idManajemenPeminjaman);
-        }
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-
-        $includeFile($filePath, $data);
-
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = "Laboratorium - Data Peminjaman.pdf";
-        $dompdf->stream($filename);
-    }
 
     public function changeStatus($idRicianLabAset)
     {

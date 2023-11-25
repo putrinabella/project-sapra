@@ -30,8 +30,8 @@
                         <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
-                                <input type="text" class="form-control" name="tanggal"  value="<?=$dataLayananAsetIt->tanggal?>">
-                                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                                <input type="text" class="form-control bg-transparent" name="tanggal"  value="<?=$dataLayananAsetIt->tanggal?>">
+                                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
                     </div>

@@ -45,35 +45,39 @@ if (!function_exists('pdf_suratpeminjaman')) {
 
         $pdf->SetFont('times', '', 12, '', true);
         $pdf->AddPage();
-
+        $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
+        $idPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->nis : $dataDataPeminjaman->nip;
+        $asalPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaKelas : $dataDataPeminjaman->namaKategoriPegawai;
+        $yearNow = date('Y');
+        $yearNext = date('Y', strtotime('+1 year'));
         $html = <<<EOD
         <style>
 
         </style>
         
         <p style="text-align: right;">No Peminjaman: $dataDataPeminjaman->idManajemenPeminjaman </p>
-        <h3 style="text-align: center;">SURAT PERMOHONAN PEMINJAMAN ALAT LAB 2023/2024</h3>
+        <h3 style="text-align: center;">SURAT PERMOHONAN PEMINJAMAN ALAT LAB $yearNow/$yearNext</h3>
         <p style="padding-top: 10px;">Saya yang bertanda tangan di bawah ini: </p>
         <table style="padding-top: 10px;">
             <tr>
                 <th style="width: 200px;">Nama</th>
                 <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->namaPeminjam</th>
+                <th>$namaPeminjam</th>
             </tr>
             <tr>
                 <th style="width: 200px;">NIS/NIK</th>
                 <th style="width: 20px;">:</th>
-                <th>543221166</th>
+                <th>$idPeminjam</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Kelas/Karyawan</th>
                 <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->asalPeminjam</th>
+                <th>$asalPeminjam</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Keperluan Alat</th>
                 <th style="width: 20px;">:</th>
-                <th>Lorem Ipsum</th>
+                <th>$dataDataPeminjaman->keperluanAlat</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Hari, Tanggal Pinjam</th>
@@ -83,7 +87,7 @@ if (!function_exists('pdf_suratpeminjaman')) {
             <tr>
                 <th style="width: 200px;">Lama Pinjam</th>
                 <th style="width: 20px;">:</th>
-                <th>31 Hari</th>
+                <th>$dataDataPeminjaman->lamaPinjam Hari</th>
             </tr>
         </table>
 
@@ -136,7 +140,7 @@ if (!function_exists('pdf_suratpeminjaman')) {
         </tr>
         <tr>
             <th style="width: 60%;"></th>
-            <th style="width: 40%;"> ($dataDataPeminjaman->namaPeminjam)</th>
+            <th style="width: 40%;"> ($namaPeminjam)</th>
         </tr>
     </table>
 

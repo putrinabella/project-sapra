@@ -43,6 +43,7 @@
                     <th>No.</th>
                     <th>Nama</th>
                     <th>NIP</th>
+                    <th>Kategori Pegawai</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,6 +57,9 @@
                     </td>
                     <td>
                         <?= $value->nip ?>
+                    </td>
+                    <td>
+                        <?= $value->namaKategoriPegawai ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

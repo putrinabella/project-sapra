@@ -85,6 +85,7 @@
                                 <th style="width: 5%;">No.</th>
                                 <th>NIP</th>
                                 <th>Nama</th>
+                                <th>Kelas</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -96,6 +97,7 @@
                                 </td>
                                 <td> <?= $value->nip; ?> </td>
                                 <td> <?= $value->namaPegawai; ?> </td>
+                                <td> <?= $value->namaKategoriPegawai; ?> </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('dataPegawai/'.$value->idDataPegawai.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>

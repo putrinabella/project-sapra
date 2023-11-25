@@ -14,6 +14,7 @@ class PegawaiSeeder extends Seeder
             $data = [
                 'namaPegawai' => $faker->name(),
                 'nip' => $faker->unique()->uuid,
+                'idKategoriPegawai' => random_int(1,2),
                 'created_at' => \CodeIgniter\I18n\Time::now(),
             ];
             $this->db->table('tblDataPegawai')->insert($data);

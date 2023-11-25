@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\DataPegawaiModels; 
+use App\Models\KategoriPegawaiModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -15,6 +16,7 @@ class DataPegawai extends ResourceController
     
      function __construct() {
         $this->dataPegawaiModel = new DataPegawaiModels();
+        $this->kategoriPegawaiModel = new KategoriPegawaiModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -36,6 +38,7 @@ class DataPegawai extends ResourceController
                 $buktiUrl = $this->generateFileId($dataDataPegawai->bukti);
                 $data = [
                     'dataDataPegawai'           => $dataDataPegawai,
+                    'dataKategoriPegawai'       => $this->kategoriPegawaiModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
@@ -51,6 +54,7 @@ class DataPegawai extends ResourceController
     public function new() {
         $data = [
             'dataDataPegawai' =>  $this->dataPegawaiModel->findAll(),
+            'dataKategoriPegawai' => $this->kategoriPegawaiModel->findAll(),
         ];
         
         return view('master/dataPegawaiView/new', $data);       
@@ -77,6 +81,7 @@ class DataPegawai extends ResourceController
             if (is_object($dataDataPegawai)) {
                 $data = [
                     'dataDataPegawai' => $dataDataPegawai,
+                    'dataKategoriPegawai' => $this->kategoriPegawaiModel->findAll(),
                 ];
                 return view('master/dataPegawaiView/edit', $data);
             } else {
@@ -160,21 +165,22 @@ class DataPegawai extends ResourceController
         $activeWorksheet->setTitle('DataPegawai');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'NIP', 'Nama'];
+        $headers = ['No.', 'NIS', 'Nama', 'Kategori Pegawai'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->nip);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPegawai);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaKategoriPegawai);
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -184,12 +190,12 @@ class DataPegawai extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'C') as $column) {
+        foreach (range('A', 'D') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -203,15 +209,20 @@ class DataPegawai extends ResourceController
     
     public function createTemplate() {
         $data = $this->dataPegawaiModel->getAll();
+        $keyKelas = $this->kategoriPegawaiModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Pegawai');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'NIP', 'Nama'];
+        $headers = ['No.', 'NIS', 'Nama', 'Id Kategori Pegawai'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    
+        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        $headerKelasID = ['ID Kategori Pegawai', 'Kategori Pegawai'];
+        $activeWorksheet->fromArray([$headerKelasID], NULL, 'F1');
+        $activeWorksheet->getStyle('F1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         foreach ($data as $index => $value) {
             if ($index >= 3) {
                 break;
@@ -219,13 +230,14 @@ class DataPegawai extends ResourceController
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
+            $activeWorksheet->setCellValue('D'.($index + 2), '');
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -235,20 +247,42 @@ class DataPegawai extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'C') as $column) {
+        foreach (range('A', 'D') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
+
+        foreach ($keyKelas as $index => $value) {
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->idKategoriPegawai);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaKategoriPegawai);
+    
+            $columns = ['F', 'G'];
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }    
+        }
+
+        $activeWorksheet->getStyle('F1:G1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('F1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('F1:G'.(count($keyKelas) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('F:G')->getAlignment()->setWrapText(true);
+    
+        foreach (range('F', 'G') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
 
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'NIP', 'Nama'];
+        $headers = ['No.', 'NIS', 'Nama', 'ID Kategori Pegawai'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -259,13 +293,14 @@ class DataPegawai extends ResourceController
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $value->nip);
             $exampleSheet->setCellValue('C'.($index + 2), $value->namaPegawai);
+            $exampleSheet->setCellValue('D'.($index + 2), $value->idKategoriPegawai);
 
             $exampleSheet->getStyle('A'.($index + 2))
                             ->getAlignment()
                             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C'];
+            $columns = ['B', 'C', 'D'];
             
             foreach ($columns as $column) {
                 $exampleSheet->getStyle($column . ($index + 2))
@@ -275,12 +310,12 @@ class DataPegawai extends ResourceController
             }            
         }
         
-        $exampleSheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:C1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:C'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:D'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:D')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'C') as $column) {
+        foreach (range('A', 'D') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
@@ -311,15 +346,18 @@ class DataPegawai extends ResourceController
                 }
                 $nip                    = $value[1] ?? null;
                 $namaPegawai              = $value[2] ?? null;
+                $idKategoriPegawai            = $value[3] ?? null;
                 if ($nip === null || $nip === '') {
                     continue; 
                 }
                 $data = [
                     'nip'   => $nip,
                     'namaPegawai' => $namaPegawai,
+                    'idKategoriPegawai'   => $idKategoriPegawai,
                 ];
 
-                if (!empty($data['nip']) && !empty($data['namaPegawai'])) {
+                if (!empty($data['nip']) && !empty($data['namaPegawai'])
+                && !empty($data['idKategoriPegawai'])) {
                         $this->dataPegawaiModel->insert($data);
                 } else {
                     return redirect()->to(site_url('dataPegawai'))->with('error', 'Pastikan semua data telah diisi!');
@@ -354,7 +392,7 @@ class DataPegawai extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Profil - Data Pegawai Report.pdf';
+        $filename = 'Profil - DataPegawai Report.pdf';
         $dompdf->stream($filename);
     }
 }

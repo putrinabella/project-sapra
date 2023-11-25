@@ -11,13 +11,13 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('peminjamanUser') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
+                    <a href="<?= site_url('manajemenPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Form Peminjaman</h4>
                     <div></div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('peminjamanUser/addLoan') ?>" method="POST" enctype="multipart/form-data" id="custom-validation">
+                <form action="<?= site_url('manajemenPeminjaman/addLoan') ?>" method="POST" enctype="multipart/form-data" id="custom-validation">
                     <div class="row">
                         <div class="col-12">
                             <div>
@@ -30,6 +30,12 @@
                                         <input type="text" class="form-control bg-transparent" name="tanggal" placeholder="Masukkan tanggal" readonly>
                                         <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="namaLab" class="col-sm-3 col-form-label">Lokasi</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab" value="<?= $namaLaboratorium->namaLab; ?>" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -72,7 +78,6 @@
                                         <tr class="text-center">
                                             <th></th>
                                             <th style="width: 12%;">Kode Aset</th>
-                                            <th>Lokasi</th>
                                             <th>Kategori Aset</th>
                                             <th>Nama Aset</th>
                                             <th>Merek</th>
@@ -85,12 +90,11 @@
                                                 <td>
                                                     <input type="checkbox" class="form-check-input row-select" name="selectedRows[]" value="<?= $value->idRincianLabAset ?>">
                                                 </td>
-                                                <td class="text-center"><?= $value->kodeRincianLabAset ?></td>
-                                                <td class="text-center"><?= $value->namaLab ?></td>
-                                                <td class="text-center"><?= $value->namaKategoriManajemen ?></td>
-                                                <td class="text-center"><?= $value->namaSarana ?></td>
-                                                <td class="text-center"><?= $value->merk ?></td>
-                                                <td class="text-center"><?= $value->warna ?></td>
+                                                <td><?= $value->kodeRincianLabAset ?></td>
+                                                <td><?= $value->namaKategoriManajemen ?></td>
+                                                <td><?= $value->namaSarana ?></td>
+                                                <td><?= $value->merk ?></td>
+                                                <td><?= $value->warna ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

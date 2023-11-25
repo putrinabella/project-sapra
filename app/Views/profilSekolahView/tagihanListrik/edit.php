@@ -68,7 +68,7 @@
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tahunPemakaianListrik">
                                 <input type="number" class="form-control" name="tahunPemakaianListrik" value="<?=$dataTagihanListrik->tahunPemakaianListrik?>">
-                                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
                     </div>

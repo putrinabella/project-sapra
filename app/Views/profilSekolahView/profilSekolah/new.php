@@ -107,7 +107,7 @@
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
                                     <input type="text" class="form-control" name="tanggalSkPendirian">
-                                    <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                                    <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                         <div class="col-sm-9">
                         <divw class="input-group date datepicker" id="tanggalSkIzinOperasional">
                                 <input type="text" class="form-control" name="tanggalSkIzinOperasional">
-                                <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                             </divw>
                         </div>
                     </div>

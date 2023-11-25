@@ -23,6 +23,10 @@ class DataPegawai extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'idKategoriPegawai' => [
+                'type' => 'INT',
+                'constraint' => 3,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

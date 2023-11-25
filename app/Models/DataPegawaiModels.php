@@ -9,19 +9,21 @@ class DataPegawaiModels extends Model
     protected $table            = 'tblDataPegawai';
     protected $primaryKey       = 'idDataPegawai';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idDataPegawai', 'namaPegawai', 'nip', 'idIdentitasKelas'];
+    protected $allowedFields    = ['idDataPegawai', 'namaPegawai', 'nip', 'idKategoriPegawai'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
     function getAll() {
         $builder = $this->db->table($this->table);
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblDataPegawai.deleted_at', NULL);
         $query = $builder->get();
         return $query->getResult();
     }
 
     function getRecycle() {
-        $builder = $this->db->table($this->table);  
+        $builder = $this->db->table($this->table);
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');  
         $builder->where('tblDataPegawai.deleted_at IS NOT NULL');
         $query = $builder->get();
         return $query->getResult();

@@ -10,12 +10,12 @@ class RincianLabAsetSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('id_ID');
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $data = [
                 'kodeRincianLabAset' =>  $faker->unique()->uuid,
-                'idIdentitasSarana' => random_int(10, 200),
+                'idIdentitasSarana' => random_int(15, 17),
                 'idSumberDana' => random_int(1,2),
-                'idKategoriManajemen' => random_int(1, 5),
+                'idKategoriManajemen' => random_int(1,2),
                 'idIdentitasLab' => 1,
                 'tahunPengadaan' => $faker->date('Y'),
                 'noSeri' => $faker->unique()->uuid,

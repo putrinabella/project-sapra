@@ -9,7 +9,7 @@ class ManajemenPeminjamanModels extends Model
     protected $table            = 'tblManajemenPeminjaman';
     protected $primaryKey       = 'idManajemenPeminjaman';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idManajemenPeminjaman', 'namaPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'loanStatus', 'tanggalPengembalian'];
+    protected $allowedFields    = ['idManajemenPeminjaman', 'kategoriPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'loanStatus', 'tanggalPengembalian', 'keperluanAlat', 'lamaPinjam'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -323,4 +323,39 @@ class ManajemenPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getRow();
     }
+
+    function getNamaSiswa($asalPeminjam) {
+        $builder = $this->db->table('tblDataSiswa');
+        $builder->where('idDataSiswa', $asalPeminjam);
+        $query = $builder->get();
+        $result = $query->getRow();
+        return $result ? $result->namaSiswa : null;
+    }
+    function getNamaPegawai($asalPeminjam) {
+        $builder = $this->db->table('tblDataPegawai');
+        $builder->where('idDataPegawai', $asalPeminjam);
+        $query = $builder->get();
+        $result = $query->getRow();
+        return $result ? $result->namaPegawai : null;
+    }
+
+    function getNamaKelas($asalPeminjam) {
+        $builder = $this->db->table('tblDataSiswa');        
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->where('idDataSiswa', $asalPeminjam);
+        $query = $builder->get();
+        $result = $query->getRow();
+        return $result ? $result->namaKelas : null;
+    }
+
+    function getNamaKategoriPegawai($asalPeminjam) {
+        $builder = $this->db->table('tblDataPegawai');
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
+        $builder->where('idDataPegawai', $asalPeminjam);
+        $query = $builder->get();
+        $result = $query->getRow();
+        return $result ? $result->namaKategoriPegawai : null;
+    }
+
+
 }

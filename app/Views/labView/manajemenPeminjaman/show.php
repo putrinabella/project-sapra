@@ -161,8 +161,8 @@
                     <div class="mb-3">
                         <label for="tanggal" class="form-label">Tanggal</label>
                         <div class="input-group date datepicker" id="tanggal">
-                            <input type="text" class="form-control" name="tanggal" placeholder="Masukkan tanggal" readonly>
-                            <span class="input-group-text input-group-addon"><i data-feather="calendar"></i></span>
+                            <input type="text" class="form-control bg-transparent" name="tanggal" placeholder="Masukkan tanggal" readonly>
+                            <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                         </div>
                     </div>
                     <div class="mb-3">
