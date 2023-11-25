@@ -136,7 +136,7 @@
                         <a href="<?= site_url('dataRincianItSarana') ?>" class="nav-link">Data Rincian Aset</a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= site_url('pemusnahanAsetIt') ?>" class="nav-link">Pemusnahan Aset</a>
+                        <a href="<?= site_url('pemusnahanItAset') ?>" class="nav-link">Pemusnahan Aset</a>
                     </li>
                 </ul>
             </div>
@@ -425,7 +425,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= site_url('pemusnahanAsetIt') ?>" class="nav-link">
+            <a href="<?= site_url('pemusnahanItAset') ?>" class="nav-link">
                 <i class="link-icon" data-feather="trash"></i>
                 <span class="link-title">Pemusnahan Aset</span>
             </a>

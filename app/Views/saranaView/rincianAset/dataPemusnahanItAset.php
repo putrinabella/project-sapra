@@ -25,8 +25,8 @@
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('pemusnahanAsetIt/exportDestroyFile') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('pemusnahanAsetIt/dataDestroyaGeneratePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= site_url('pemusnahanItAset/exportDestroyFile') ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= site_url('pemusnahanItAset/dataDestroyaGeneratePDF') ?>">Download as PDF</a>
             </div>
         </div>
     </div>

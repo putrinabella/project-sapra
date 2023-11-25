@@ -175,7 +175,7 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/dataPemusnahanAset', $data);
     }
 
-    public function pemusnahanAsetIt() {
+    public function pemusnahanItAset() {
         $data['dataRincianAset'] = $this->rincianAsetModel->getDestroyIt();
         return view('saranaView/rincianAset/dataPemusnahanItAset', $data);
     }
@@ -197,7 +197,7 @@ class RincianAset extends ResourceController
             }
         }
     }
-    public function pemusnahanAsetItDelete($idRincianAset) {
+    public function pemusnahanItAsetDelete($idRincianAset) {
         if ($this->request->getMethod(true) === 'POST') {
             $newSectionAset = $this->request->getPost('sectionAset');
             $namaAkun = $this->request->getPost('namaAkun'); 
@@ -498,7 +498,7 @@ class RincianAset extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
             $this->rincianAsetModel->update($id, $data);
-            return redirect()->to(site_url('pemusnahanAsetIt'))->with('success', 'Data berhasil diupdate');
+            return redirect()->to(site_url('pemusnahanItAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
@@ -1320,10 +1320,10 @@ class RincianAset extends ResourceController
                     return redirect()->to(site_url('rincianAset'))->with('error', 'Pastika semua data sudah terisi');
                 } else if ($statusData == "CORRECT: fill up") {
                     $this->rincianAsetModel->insert($data);
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diimport');
                 }
-
             }
-            return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('rincianAset'))->with('error', 'Pastikan excel yang dimasukan sudah sesuai!');
         } else {
             return redirect()->to(site_url('rincianAset'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }

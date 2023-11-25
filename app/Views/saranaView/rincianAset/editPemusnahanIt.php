@@ -94,7 +94,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('pemusnahanAsetIt') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('pemusnahanItAset') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
