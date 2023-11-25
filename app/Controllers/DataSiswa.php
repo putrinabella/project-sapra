@@ -5,9 +5,6 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\DataSiswaModels; 
 use App\Models\IdentitasKelasModels; 
-use App\Models\SumberDanaModels; 
-use App\Models\KategoriManajemenModels; 
-use App\Models\IdentitasPrasaranaModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -42,9 +39,6 @@ class DataSiswa extends ResourceController
                 $data = [
                     'dataDataSiswa'           => $dataDataSiswa,
                     'dataIdentitasKelas'       => $this->identitasKelasModel->findAll(),
-                    'dataSumberDana'            => $this->sumberDanaModel->findAll(),
-                    'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
@@ -93,22 +87,6 @@ class DataSiswa extends ResourceController
             } else {
                 return view('error/404');
             }
-        } else {
-            return view('error/404');
-        }
-    }
-
-    public function update2($id = null) {
-        if ($id != null) {
-            $data = $this->request->getPost();
-            if (!empty($data['nis'])) {
-                $nis = $data['nis'];
-                if ($this->dataSiswaModel->isDuplicate($nis, $id)) {
-                    return redirect()->to(site_url('dataSiswa'))->with('error', 'Gagal update karena ditemukan duplikat data!');
-                }
-            }
-            $this->dataSiswaModel->update($id, $data);
-            return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }

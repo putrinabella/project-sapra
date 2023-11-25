@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Siswa</title>
+    <title>Data Pegawai</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,30 +36,26 @@
 
 <body>
     <div class="container">
-        <h2 class="mt-3 mb-4">Data Siswa</h2>
+        <h2 class="mt-3 mb-4">Data Pegawai</h2>
         <table>
             <thead>
                 <tr>
                     <th>No.</th>
                     <th>Nama</th>
-                    <th>NIS</th>
-                    <th>Kelas</th>
+                    <th>NIP</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($data['dataDataSiswa'] as $key => $value) : ?>
+                <?php foreach ($data['dataDataPegawai'] as $key => $value) : ?>
                 <tr>
                     <td>
                         <?= $key + 1 ?>
                     </td>
                     <td>
-                        <?= $value->namaSiswa ?>
+                        <?= $value->namaPegawai ?>
                     </td>
                     <td>
-                        <?= $value->nis ?>
-                    </td>
-                    <td>
-                        <?= $value->namaKelas ?>
+                        <?= $value->nip ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

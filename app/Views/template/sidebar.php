@@ -250,6 +250,9 @@
                         <a href="<?= site_url('dataSiswa') ?>" class="nav-link">Data Siswa</a>
                     </li>
                     <li class="nav-item">
+                        <a href="<?= site_url('dataPegawai') ?>" class="nav-link">Data Pegawai</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?= site_url('identitasGedung') ?>" class="nav-link">Identitas Gedung</a>
                     </li>
                     <li class="nav-item">

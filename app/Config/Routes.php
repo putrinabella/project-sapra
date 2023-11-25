@@ -203,12 +203,23 @@ $routes->get('dataSiswa/restore', 'DataSiswa::restore');
 $routes->delete('dataSiswa/deletePermanent/(:any)', 'DataSiswa::deletePermanent/$1');
 $routes->delete('dataSiswa/deletePermanent', 'DataSiswa::deletePermanent');
 $routes->resource('dataSiswa', ['filter' => 'isLoggedIn']);
+
+// Data Pegawai
+$routes->get('dataPegawai/createTemplate', 'DataPegawai::createTemplate');
+$routes->get('dataPegawai/generatePDF', 'DataPegawai::generatePDF');
+$routes->get('dataPegawai/export', 'DataPegawai::export');
+$routes->post('dataPegawai/import', 'DataPegawai::import');
+$routes->get('dataPegawai/edit', 'DataPegawai::edit');
+$routes->get('dataPegawai/trash', 'DataPegawai::trash');
+$routes->get('dataPegawai/restore/(:any)', 'DataPegawai::restore/$1');
+$routes->get('dataPegawai/restore', 'DataPegawai::restore');
+$routes->delete('dataPegawai/deletePermanent/(:any)', 'DataPegawai::deletePermanent/$1');
+$routes->delete('dataPegawai/deletePermanent', 'DataPegawai::deletePermanent');
+$routes->resource('dataPegawai', ['filter' => 'isLoggedIn']);
+
 // SARANA
 
 // Rincian Aset
-// $routes->get('QRBarcode', 'QRBarcode::index');
-// $routes->get('rincianAset/qrcode/(:num)', 'RincianAset::qrcode/$1');
-// $routes->get('generateSelectedQR', 'RincianAset::generateSelectedQR');
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 $routes->get('generateItQRDoc', 'RincianAset::generateItQRDoc');
 $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
