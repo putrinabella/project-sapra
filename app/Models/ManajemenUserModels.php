@@ -31,4 +31,19 @@ class ManajemenUserModels extends Model
         return $builder->where('username', $username)
             ->countAllResults() > 0;
     }
+
+    public function getIdByUsername($username)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('idUser'); 
+        $builder->where('username', $username);
+        $userData = $builder->get()->getRowArray();
+    
+        return $userData ? $userData['idUser'] : null;
+    }
+
+    public function deleteByUsername($idUser)
+    {
+        $this->where('idUser', $idUser)->delete();
+    }
 }

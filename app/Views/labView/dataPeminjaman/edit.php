@@ -66,14 +66,6 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Jumlah Aset Dipinjam</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control bg-transparent" id="jumlahPeminjaman"
-                                name="jumlahPeminjaman" value="<?= $dataDataPeminjaman->jumlahPeminjaman ?> Aset"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
                         <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Tujuan</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"

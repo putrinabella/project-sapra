@@ -51,12 +51,15 @@ class DataPeminjamanModels extends Model
     function getDataSiswa($startDate = null, $endDate = null)
     {
         $builder = $this->db->table('tblManajemenPeminjaman');
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.*,  tblDataSiswa.*, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
+        $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
-        $builder->where('tblManajemenPeminjaman.loanStatus', "Peminjaman");
     
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
@@ -66,8 +69,10 @@ class DataPeminjamanModels extends Model
         $builder->where('tblManajemenPeminjaman.loanStatus', 'Peminjaman');
         $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
         $query = $builder->get();
+    
         return $query->getResult();
     }
+    
     
 
     function findHistory($id = null, $columns = '*')

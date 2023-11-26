@@ -12,6 +12,59 @@
     </ol>
 </nav>
 
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <form action="<?= site_url('dataPeminjaman') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
+                    readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
+                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-success btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+        <a href="<?= site_url('dataPeminjaman/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="trash"></i>
+            Recycle Bin
+        </a>
+        <div class="dropdown">
+            <?php
+                $startDate = $_GET['startDate'] ?? '';
+                $endDate = $_GET['endDate'] ?? '';
+                
+                $exportLink = site_url("dataPeminjaman/export?startDate=$startDate&endDate=$endDate");
+                $printAllLink = site_url("dataPeminjaman/printAll?startDate=$startDate&endDate=$endDate");
+            ?>
+            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="download"></i>
+                Export File
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= $printAllLink ?>">Download as ZIP</a>
+            </div>
+        </div>
+
+        <a href="<?= site_url('peminjamanUser') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="edit"></i>
+            Ajukan Peminjaman
+        </a>
+    </div>
+</div>
+
 <div class="col-12 col-xl-12 grid-margin stretch-card">
     <div class="card overflow-hidden">
         <div class="card-body">
@@ -37,7 +90,7 @@
                 <br>
                 <?php endif; ?>
             </div>
-            <h3 class="text-center py-3">Data Peminjaman</h3>
+            <h4 class="text-center py-3">Data Peminjaman</h4>
             <?php if (!empty($tableHeading)) : ?>
             <p class="text-center">
                 <?= $tableHeading ?>
@@ -50,49 +103,88 @@
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
+                            <th>NIS/NIP</th>
                             <th>Nama Peminjam</th>
                             <th>Karwayan/Siswa</th>
                             <th>Lokasi</th>
                             <th>Jumlah Aset Dipinjam</th>
                             <th>Status</th>
-                            <th>Dokumen Peminjaman</th>
+                            <th style="width: 20%;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="py-2">
                         <?php foreach ($dataDataPeminjaman as $key => $value) : ?>
 
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                            <td class="text-center">
+                        
+                            <td>
                                 <?= $key + 1 ?>
                             </td>
                             <td class="text-left">
                                 <?= date('d F Y', strtotime($value->tanggal)) ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->namaPeminjam ?>
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->nis;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->nip;
+                                    }
+                                ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->asalPeminjam ?>
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->namaSiswa;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->namaPegawai;
+                                    }
+                                ?>
                             </td>
-                            <td class="text-center">
+                            <td class="text-left">
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->namaKelas;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->namaKategoriPegawai;
+                                    }
+                                ?>
+                            </td>
+                            <td>
                                 <?= $value->namaLab ?>
                             </td>
                             <td class="text-center">
                                 <?= $value->jumlahPeminjaman ?>
                             </td>
-                            <td class="text-center">
+                            <td>
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
                                 <span class="badge bg-warning">Sedang Dipinjam</span>
                                 <?php else : ?>
                                 <span class="badge bg-success">Sudah Dikembalikan</span>
                                 <?php endif; ?>
                             </td>
-                            <th class="text-center">
-                            <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>" target="_blank"
-                                    class="btn btn-primary btn-icon"> <i data-feather="printer"></i></a>
+                            <td class="text-center">
+                                <?php if ($value->loanStatus == "Peminjaman") : ?>
+                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
+                                    target="_blank" class="btn btn-secondary btn-icon"> <i
+                                        data-feather="printer"></i></a>
+                                <a href="<?= site_url('dataPeminjaman/' . $value->idManajemenPeminjaman . '/edit') ?>"
+                                    class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <?php endif; ?>
-                            </th>
+                                <?php if ($value->loanStatus == "Pengembalian"): ?>
+                                <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
+                                    class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
+                                <?php endif; ?>
+                                <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger btn-icon"
+                                        data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

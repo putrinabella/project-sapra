@@ -12,6 +12,13 @@ class DataSiswaModels extends Model
     protected $allowedFields    = ['idDataSiswa', 'namaSiswa', 'nis', 'idIdentitasKelas'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
+    protected $manajemenUserModel;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->manajemenUserModel = new \App\Models\ManajemenUserModels();
+    }
 
     function getAll() {
         $builder = $this->db->table($this->table);
@@ -42,5 +49,46 @@ class DataSiswaModels extends Model
         $builder = $this->db->table($this->table);
         return $builder->where('nis', $nis)
             ->countAllResults() > 0;
+    }
+
+    public function purgeDeletedWithUser()
+    {
+        $deletedUsernames = $this->onlyDeleted()->findAll();
+    
+        foreach ($deletedUsernames as $deletedData) {
+            $username = $deletedData->nis;
+            var_dump($username);
+            // die;
+            $idUser = $this->manajemenUserModel->getIdByUsername($username);
+            var_dump($idUser);
+            // die;
+            if ($idUser !== null) {
+                $this->manajemenUserModel->deleteByUsername($idUser);
+            }
+        }
+    
+        $this->onlyDeleted()->purgeDeleted();
+    }
+    
+    public function getNamaKelasByUsername($username)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('tblIdentitasKelas.namaKelas');
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
+        $builder->where('tblDataSiswa.nis', $username);
+    
+        $result = $builder->get()->getRow();
+    
+        return $result ? $result->namaKelas : null;
+    }
+
+    public function getIdByUsername($username)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('idDataSiswa'); 
+        $builder->where('nis', $username);
+        $userData = $builder->get()->getRowArray();
+    
+        return $userData ? $userData['idDataSiswa'] : null;
     }
 }

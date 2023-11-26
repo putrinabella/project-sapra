@@ -337,7 +337,7 @@
         </li>
     <?php } ?>
 
-    <?php if (session()->get('role') == 'User') { ?>
+    <?php if (session()->get('role') == 'User' || session()->get('role') == 'Siswa' || session()->get('role') == 'Karyawan') { ?>
         <li class="nav-item nav-category">Pengajuan Peminjaman</li>
         <li class="nav-item">
             <a href="<?= site_url('peminjamanUser') ?>" class="nav-link">

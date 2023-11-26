@@ -12,6 +12,7 @@ use App\Models\RincianLabAsetModels;
 use App\Models\LaboratoriumModels;
 use App\Models\DataSiswaModels;
 use App\Models\DataPegawaiModels;
+use App\Models\ManajemenUserModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -32,6 +33,7 @@ class ManajemenPeminjaman extends ResourceController
         $this->kategoriPegawaiModel = new KategoriPegawaiModels();
         $this->dataSiswaModel = new DataSiswaModels();
         $this->dataPegawaiModel = new DataPegawaiModels();
+        $this->manajemenUserModel = new ManajemenUserModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -87,17 +89,22 @@ class ManajemenPeminjaman extends ResourceController
     public function loanUser($id)
     {
         $data = [
+            'dataRincianLabAset' => $this->manajemenPeminjamanModel->getDataLoan($id),
             'dataSiswa' => $this->identitasKelasModel->findAll(),
             'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
             'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
             'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-            'dataRincianLabAset' => $this->manajemenPeminjamanModel->getDataLoan($id)
+            'namaLaboratorium' => $this->manajemenPeminjamanModel->getLabName($id),
+            'namaKelas' => $this->dataSiswaModel->getNamaKelasByUsername(session('username')),
+            'idUser' => $this->dataSiswaModel->getIdByUsername(session('username')),
         ];
 
         return view('labView/manajemenPeminjaman/newUser', $data);
     }
-
+    
+ 
+    
 
     public function getKodeLab($idIdentitasSarana)
     {
@@ -308,7 +315,6 @@ class ManajemenPeminjaman extends ResourceController
         if (!empty($data['kategoriPeminjam']) && !empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
-
             foreach ($idRincianLabAset as $idRincianAset) {
                 $detailData = [
                     'idRincianLabAset' => $idRincianAset,
@@ -319,7 +325,7 @@ class ManajemenPeminjaman extends ResourceController
             }
             return redirect()->to(site_url('peminjamanDataUser'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('peminjamanUser'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('peminjamanDataUser'))->with('error', 'Semua field harus terisi');
         }
     }
 }

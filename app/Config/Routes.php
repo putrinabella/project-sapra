@@ -573,6 +573,8 @@ $routes->delete('dataPeminjaman/deletePermanent', 'DataPeminjaman::deletePermane
 $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 // Manajemen Peminjaman
+// User
+
 $routes->post('getNama', 'ManajemenPeminjaman::getNama');
 $routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
 $routes->get('peminjamanUser/loanUser/(:num)', 'ManajemenPeminjaman::loanUser/$1');

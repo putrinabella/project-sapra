@@ -43,6 +43,7 @@ class DataPeminjaman extends ResourceController
         if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
             $tableHeading = " $formattedStartDate - $formattedEndDate";
         }
+        
 
         $data['tableHeading'] = $tableHeading;
         $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
@@ -64,6 +65,8 @@ class DataPeminjaman extends ResourceController
 
         $data['tableHeading'] = $tableHeading;
         $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate);
+        // var_dump($data);
+        // die;
         return view('labView/dataPeminjaman/user', $data);
     }
 

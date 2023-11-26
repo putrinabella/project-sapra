@@ -10,6 +10,8 @@ use App\Models\KategoriPegawaiModels;
 use App\Models\IdentitasKelasModels;
 use App\Models\RincianLabAsetModels;
 use App\Models\LaboratoriumModels;
+use App\Models\DataSiswaModels;
+use App\Models\DataPegawaiModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -28,6 +30,8 @@ class ManajemenPeminjaman extends ResourceController
         $this->laboratoriumModel = new LaboratoriumModels();
         $this->identitasKelasModel = new IdentitasKelasModels();
         $this->kategoriPegawaiModel = new KategoriPegawaiModels();
+        $this->dataSiswaModel = new DataSiswaModels();
+        $this->dataPegawaiModel = new DataPegawaiModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -54,7 +58,7 @@ class ManajemenPeminjaman extends ResourceController
     public function new()
     {
         $data = [
-            'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+            'dataSiswa' => $this->identitasKelasModel->findAll(),
             'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
             'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
@@ -69,7 +73,7 @@ class ManajemenPeminjaman extends ResourceController
     {
         $data = [
             'dataRincianLabAset' => $this->manajemenPeminjamanModel->getDataLoan($id),
-            'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+            'dataSiswa' => $this->identitasKelasModel->findAll(),
             'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
             'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
@@ -83,7 +87,7 @@ class ManajemenPeminjaman extends ResourceController
     public function loanUser($id)
     {
         $data = [
-            'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+            'dataSiswa' => $this->identitasKelasModel->findAll(),
             'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
             'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
             'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
@@ -106,11 +110,11 @@ class ManajemenPeminjaman extends ResourceController
     {
         $kategoriPeminjam = $this->request->getPost('kategoriPeminjam');
         if ($kategoriPeminjam === 'karyawan') {
-            $dataIdentitasPegawai = $this->kategoriPegawaiModel->findAll();
-            return $this->response->setJSON($dataIdentitasPegawai);
+            $dataPegawai = $this->dataPegawaiModel->findAll();
+            return $this->response->setJSON($dataPegawai);
         } elseif ($kategoriPeminjam === 'siswa') {
-            $dataIdentitasKelas = $this->identitasKelasModel->findAll();
-            return $this->response->setJSON($dataIdentitasKelas);
+            $dataSiswa = $this->dataSiswaModel->findAll();
+            return $this->response->setJSON($dataSiswa);
         } else {
             return $this->response->setJSON([]);
         }
@@ -141,8 +145,8 @@ class ManajemenPeminjaman extends ResourceController
     {
         $selectedIdIdentitasSarana = $this->request->getPost('idIdentitasSarana');
         $selectedIdIdentitasLab = $this->request->getPost('idIdentitasLab');
-        $kodeRincianLabAsetOptions = $this->manajemenPeminjamanModel->getKodeBySarana($selectedIdIdentitasSarana, $selectedIdIdentitasLab);
-        return $this->response->setJSON($kodeRincianLabAsetOptions);
+        $asalPeminjamOptions = $this->manajemenPeminjamanModel->getKodeBySarana($selectedIdIdentitasSarana, $selectedIdIdentitasLab);
+        return $this->response->setJSON($asalPeminjamOptions);
     }
 
 
@@ -172,7 +176,7 @@ class ManajemenPeminjaman extends ResourceController
                 $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
                 $asetBagus = $this->laboratoriumModel->getSaranaLayakCount($dataLaboratorium->idIdentitasLab);
                 $data = [
-                    'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+                    'dataSiswa' => $this->identitasKelasModel->findAll(),
                     'dataLaboratorium'  => $dataLaboratorium,
                     'dataInfoLab'       => $dataInfoLab,
                     'dataSemuaSarana'   => $dataSemuaSarana,
@@ -199,7 +203,7 @@ class ManajemenPeminjaman extends ResourceController
                 $dataSarana = $this->laboratoriumModel->getSaranaByLab($dataLaboratorium->idIdentitasLab);
                 $asetBagus = $this->laboratoriumModel->getSaranaLayakCount($dataLaboratorium->idIdentitasLab);
                 $data = [
-                    'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+                    'dataSiswa' => $this->identitasKelasModel->findAll(),
                     'dataLaboratorium'  => $dataLaboratorium,
                     'dataInfoLab'       => $dataInfoLab,
                     'dataSemuaSarana'   => $dataSemuaSarana,
@@ -260,7 +264,7 @@ class ManajemenPeminjaman extends ResourceController
         $sectionAsetValue = 'Dipinjam';
 
 
-        if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam'])) {
+        if (!empty($data['kategoriPeminjam']) && !empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
             foreach ($idRincianLabAset as $idRincianAset) {
@@ -277,13 +281,31 @@ class ManajemenPeminjaman extends ResourceController
         }
     }
 
+
+    public function getNama() {
+        $asalPeminjam = $this->request->getPost('asalPeminjam');
+        $kategoriPeminjam = $this->request->getPost('kategoriPeminjam');
+    
+        if ($kategoriPeminjam === 'siswa') {
+            $namaSiswa = $this->manajemenPeminjamanModel->getNamaSiswa($asalPeminjam);
+            $namaKelas = $this->manajemenPeminjamanModel->getNamaKelas($asalPeminjam);
+            return $this->response->setJSON(['namaPeminjam' => $namaSiswa, 'kategori' => $namaKelas]);
+        } elseif ($kategoriPeminjam === 'karyawan') {
+            $namaPegawai = $this->manajemenPeminjamanModel->getNamaPegawai($asalPeminjam);
+            $namaKategoriPegawai = $this->manajemenPeminjamanModel->getNamaKategoriPegawai($asalPeminjam);
+            return $this->response->setJSON(['namaPeminjam' => $namaPegawai, 'kategori' => $namaKategoriPegawai]);
+        } else {
+            return $this->response->setJSON(['error' => 'Invalid kategoriPeminjam']);
+        }
+    }    
+    
     public function addLoanUser() {
         $data = $this->request->getPost();
         $idRincianLabAset = $_POST['selectedRows'];
         $sectionAsetValue = 'Dipinjam';
 
 
-        if (!empty($data['namaPeminjam']) && !empty($data['asalPeminjam'])) {
+        if (!empty($data['kategoriPeminjam']) && !empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
 

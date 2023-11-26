@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\DataSiswaModels; 
 use App\Models\IdentitasKelasModels; 
+use App\Models\ManajemenUserModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -17,6 +18,7 @@ class DataSiswa extends ResourceController
      function __construct() {
         $this->dataSiswaModel = new DataSiswaModels();
         $this->identitasKelasModel = new IdentitasKelasModels();
+        $this->manajemenUserModel = new ManajemenUserModels();
         $this->db = \Config\Database::connect();
     }
 
@@ -62,14 +64,20 @@ class DataSiswa extends ResourceController
 
     public function create() {
         $data = $this->request->getPost();
-    
         $nis = $data['nis'];
+        $hashedPassword = password_hash($data['nis'], PASSWORD_BCRYPT);
     
         if ($this->dataSiswaModel->isDuplicate($nis)) {
             return redirect()->to(site_url('dataSiswa'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
         } else {
-            unset($data['idIdentitasPrasarana']);
             $this->dataSiswaModel->insert($data);
+            $userData = [
+                'username' => $data['nis'],
+                'nama' => $data['namaSiswa'],
+                'role' => 'Siswa',
+                'password' => $hashedPassword,
+            ];
+            $this->manajemenUserModel->insert($userData);
             return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil disimpan');
         }
     }
@@ -102,8 +110,21 @@ class DataSiswa extends ResourceController
                 if ($this->dataSiswaModel->isDuplicate($nis)) {
                     return redirect()->to(site_url('dataSiswa'))->with('error', 'Gagal update karena ditemukan duplikat data!');
                 }
+            }           
+            $username = $existingData->nis;
+            $idUser = $this->manajemenUserModel->getIdByUsername($username);
+            $hashedPassword = password_hash($data['nis'], PASSWORD_BCRYPT);
+            if ($idUser !== null) {
+                $userData = [
+                    'username' => $data['nis'],
+                    'nama' => $data['namaSiswa'],
+                    'role' => 'Siswa',
+                    'password' => $hashedPassword,
+                ];
+                $this->manajemenUserModel->update($idUser, $userData);
             }
             $this->dataSiswaModel->update($id, $data);
+
             return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
@@ -144,13 +165,29 @@ class DataSiswa extends ResourceController
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->dataSiswaModel->delete($id, true);
-        return redirect()->to(site_url('dataSiswa/trash'))->with('success', 'Data berhasil dihapus permanen');
+            $existingData = $this->dataSiswaModel->withDeleted()->find($id);
+
+            if ($existingData) {
+                // Get the related idUser
+                $username = $existingData->nis;
+                $idUser = $this->manajemenUserModel->getIdByUsername($username);
+    
+                if ($idUser !== null) {
+                    $this->manajemenUserModel->delete($idUser);
+                }
+    
+                $this->dataSiswaModel->delete($id, true);
+    
+                return redirect()->to(site_url('dataSiswa/trash'))->with('success', 'Data berhasil dihapus permanen');
+            } else {
+                return view('error/404');
+            }
         } else {
             $countInTrash = $this->dataSiswaModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->dataSiswaModel->onlyDeleted()->purgeDeleted();
+                // $this->dataSiswaModel->onlyDeleted()->purgeDeleted();
+                $this->dataSiswaModel->purgeDeletedWithUser();
                 return redirect()->to(site_url('dataSiswa/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
                 return redirect()->to(site_url('dataSiswa/trash'))->with('error', 'Tempat sampah sudah kosong!');
@@ -343,7 +380,7 @@ class DataSiswa extends ResourceController
                 }
                 $nis                    = $value[1] ?? null;
                 $namaSiswa              = $value[2] ?? null;
-                $idIdentitasKelas            = $value[3] ?? null;
+                $idIdentitasKelas       = $value[3] ?? null;
                 if ($nis === null || $nis === '') {
                     continue; 
                 }
@@ -355,7 +392,15 @@ class DataSiswa extends ResourceController
 
                 if (!empty($data['nis']) && !empty($data['namaSiswa'])
                 && !empty($data['idIdentitasKelas'])) {
-                        $this->dataSiswaModel->insert($data);
+                    $this->dataSiswaModel->insert($data);
+                    $hashedPassword = password_hash($nis, PASSWORD_BCRYPT);
+                    $userData = [
+                        'username' => $nis,
+                        'nama' => $namaSiswa,
+                        'password' => $hashedPassword,
+                        'role' => 'Siswa',
+                    ];
+                    $this->manajemenUserModel->insert($userData);
                 } else {
                     return redirect()->to(site_url('dataSiswa'))->with('error', 'Pastikan semua data telah diisi!');
                 }

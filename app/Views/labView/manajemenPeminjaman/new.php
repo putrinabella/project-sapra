@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="lamaPinjam" class="col-sm-3 col-form-label">Kelas/Jabatan</label>
+                                <label for="lamaPinjam" class="col-sm-3 col-form-label">Lama Peminjaman</label>
                                 <div class="col-sm-9">
                                     <input type="number" class="form-control bg-transparent" id="lamaPinjam"
                                         name="lamaPinjam" placeholder="Masukkan lama pinjam (Hari)">
