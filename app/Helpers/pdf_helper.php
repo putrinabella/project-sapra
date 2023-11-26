@@ -45,9 +45,9 @@ if (!function_exists('pdf_suratpeminjaman')) {
 
         $pdf->SetFont('times', '', 12, '', true);
         $pdf->AddPage();
-        $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
-        $idPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->nis : $dataDataPeminjaman->nip;
-        $asalPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaKelas : $dataDataPeminjaman->namaKategoriPegawai;
+        // $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
+        // $idPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->nis : $dataDataPeminjaman->nip;
+        // $asalPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaKelas : $dataDataPeminjaman->namaKategoriPegawai;
         $yearNow = date('Y');
         $yearNext = date('Y', strtotime('+1 year'));
         $html = <<<EOD
@@ -62,17 +62,17 @@ if (!function_exists('pdf_suratpeminjaman')) {
             <tr>
                 <th style="width: 200px;">Nama</th>
                 <th style="width: 20px;">:</th>
-                <th>$namaPeminjam</th>
+                <th>$dataDataPeminjaman->namaSiswa</th>
             </tr>
             <tr>
                 <th style="width: 200px;">NIS/NIK</th>
                 <th style="width: 20px;">:</th>
-                <th>$idPeminjam</th>
+                <th>$dataDataPeminjaman->nis</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Kelas/Karyawan</th>
                 <th style="width: 20px;">:</th>
-                <th>$asalPeminjam</th>
+                <th>$dataDataPeminjaman->namaKelas</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Keperluan Alat</th>
@@ -140,7 +140,7 @@ if (!function_exists('pdf_suratpeminjaman')) {
         </tr>
         <tr>
             <th style="width: 60%;"></th>
-            <th style="width: 40%;"> ($namaPeminjam)</th>
+            <th style="width: 40%;"> ($dataDataPeminjaman->namaSiswa)</th>
         </tr>
     </table>
 

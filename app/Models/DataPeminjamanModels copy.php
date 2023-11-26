@@ -28,12 +28,14 @@ class DataPeminjamanModels extends Model
     function getData($startDate = null, $endDate = null)
     {
         $builder = $this->db->table('tblManajemenPeminjaman');
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.*,  tblDataSiswa.*, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
     
         if ($startDate !== null && $endDate !== null) {
@@ -49,12 +51,14 @@ class DataPeminjamanModels extends Model
     function getDataSiswa($startDate = null, $endDate = null)
     {
         $builder = $this->db->table('tblManajemenPeminjaman');
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.*,  tblDataSiswa.*, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
     
         if ($startDate !== null && $endDate !== null) {
@@ -75,13 +79,15 @@ class DataPeminjamanModels extends Model
     {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
         $builder->select($columns);;
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.namaPegawai,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         
         $builder->where('tblDetailManajemenPeminjaman.idManajemenPeminjaman', $id);
         $builder->groupBy('tblDetailManajemenPeminjaman.idManajemenPeminjaman');
@@ -92,13 +98,15 @@ class DataPeminjamanModels extends Model
     function findAllHistory($startDate = null, $endDate = null, $columns = '*') {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
         $builder->select($columns);;
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.namaPegawai,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.loanStatus =', 'Pengembalian');
         $builder->groupBy('tblDetailManajemenPeminjaman.idManajemenPeminjaman');
         if ($startDate && $endDate) {
@@ -216,12 +224,14 @@ class DataPeminjamanModels extends Model
     function getDataExport($startDate = null, $endDate = null)
     {
         $builder = $this->db->table('tblManajemenPeminjaman');
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.*,  tblDataSiswa.*, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
 
         if ($startDate !== null && $endDate !== null) {
@@ -240,8 +250,10 @@ class DataPeminjamanModels extends Model
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
         $builder->where('tblManajemenPeminjaman.loanStatus', "Pengembalian");
 
@@ -260,8 +272,10 @@ class DataPeminjamanModels extends Model
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
         $builder->where('tblManajemenPeminjaman.loanStatus', "Peminjaman");
 
@@ -283,8 +297,10 @@ class DataPeminjamanModels extends Model
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.' . $this->primaryKey, $id);
         $query = $builder->get();
         return $query->getRow();
@@ -301,14 +317,16 @@ class DataPeminjamanModels extends Model
     function getRecycle()
     {
         $builder = $this->db->table($this->table);
-        $builder->select('tblManajemenPeminjaman.*, tblRincianLabAset.idIdentitasSarana, tblIdentitasSarana.*, tblIdentitasLab.*, tblDataSiswa.*, tblIdentitasKelas.*, tblKategoriPegawai.*');
+        $builder->select('tblManajemenPeminjaman.*, tblRincianLabAset.idIdentitasSarana, tblIdentitasSarana.*, tblIdentitasLab.*, tblDataSiswa.*, tblDataPegawai.*, tblIdentitasKelas.*, tblKategoriPegawai.*');
         $builder->select('COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
         $builder->where('tblManajemenPeminjaman.deleted_at IS NOT NULL');
         $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
         $query = $builder->get();
