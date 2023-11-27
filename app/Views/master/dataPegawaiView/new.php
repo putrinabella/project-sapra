@@ -25,30 +25,21 @@
                 <form action="<?= site_url('dataPegawai')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
-                        <label for="nip" class="col-sm-3 col-form-label">NIP</label>
+                        <label for="nis" class="col-sm-3 col-form-label">NIP</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="nip" name="nip"
+                            <input type="number" class="form-control" id="nis" name="nis"
                                 placeholder="Masukkan NIP">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="namaPegawai" class="col-sm-3 col-form-label">Nama</label>
+                        <label for="namaSiswa" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="namaPegawai" name="namaPegawai"
-                                placeholder="Masukkan nama siswa">
+                            <input type="text" class="form-control" id="namaSiswa" name="namaSiswa"
+                                placeholder="Masukkan nama">
+                            <input type="text" class="form-control" id="idIdentitasKelas" name="idIdentitasKelas"
+                                value="0" hidden>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="idKategoriPegawai" class="col-sm-3 col-form-label">Kelas</label>
-                        <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" aria-hidden="true" id="idKategoriPegawai" name="idKategoriPegawai">
-                                <option value="" selected disabled hidden>Pilih kategori pegawai</option>
-                                <?php foreach($dataKategoriPegawai as $key =>$value): ?>
-                                <option value="<?=$value->idKategoriPegawai?>"><?=$value->namaKategoriPegawai?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>                   
+                    </div>        
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <a href="<?= site_url('dataPegawai') ?>" class="btn btn-secondary me-2">Cancel</a>

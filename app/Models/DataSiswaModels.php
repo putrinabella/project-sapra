@@ -24,6 +24,15 @@ class DataSiswaModels extends Model
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
         $builder->where('tblDataSiswa.deleted_at', NULL);
+        $builder->where('tblDataSiswa.idIdentitasKelas !=', 0);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    function getAllPegawai() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
+        $builder->where('tblDataSiswa.deleted_at', NULL);
+        $builder->where('tblDataSiswa.idIdentitasKelas =', 0);
         $query = $builder->get();
         return $query->getResult();
     }

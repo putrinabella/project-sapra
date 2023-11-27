@@ -117,10 +117,10 @@ class ManajemenPeminjaman extends ResourceController
     {
         $kategoriPeminjam = $this->request->getPost('kategoriPeminjam');
         if ($kategoriPeminjam === 'karyawan') {
-            $dataPegawai = $this->dataPegawaiModel->findAll();
+            $dataPegawai = $this->dataSiswaModel->getAllPegawai();
             return $this->response->setJSON($dataPegawai);
         } elseif ($kategoriPeminjam === 'siswa') {
-            $dataSiswa = $this->dataSiswaModel->findAll();
+            $dataSiswa = $this->dataSiswaModel->getAll();
             return $this->response->setJSON($dataSiswa);
         } else {
             return $this->response->setJSON([]);
@@ -271,7 +271,7 @@ class ManajemenPeminjaman extends ResourceController
         $sectionAsetValue = 'Dipinjam';
 
 
-        if (!empty($data['kategoriPeminjam']) && !empty($data['asalPeminjam'])) {
+        if (!empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
             foreach ($idRincianLabAset as $idRincianAset) {
@@ -289,7 +289,7 @@ class ManajemenPeminjaman extends ResourceController
     }
 
 
-    public function getNama() {
+    public function getNama2() {
         $asalPeminjam = $this->request->getPost('asalPeminjam');
         $kategoriPeminjam = $this->request->getPost('kategoriPeminjam');
     
@@ -298,12 +298,19 @@ class ManajemenPeminjaman extends ResourceController
             $namaKelas = $this->manajemenPeminjamanModel->getNamaKelas($asalPeminjam);
             return $this->response->setJSON(['namaPeminjam' => $namaSiswa, 'kategori' => $namaKelas]);
         } elseif ($kategoriPeminjam === 'karyawan') {
-            $namaPegawai = $this->manajemenPeminjamanModel->getNamaPegawai($asalPeminjam);
-            $namaKategoriPegawai = $this->manajemenPeminjamanModel->getNamaKategoriPegawai($asalPeminjam);
-            return $this->response->setJSON(['namaPeminjam' => $namaPegawai, 'kategori' => $namaKategoriPegawai]);
+            $namaSiswa = $this->manajemenPeminjamanModel->getNamaSiswa($asalPeminjam);
+            $namaKelas = $this->manajemenPeminjamanModel->getNamaKelas($asalPeminjam);
+            return $this->response->setJSON(['namaPeminjam' => $namaSiswa, 'kategori' => $namaKelas]);
         } else {
             return $this->response->setJSON(['error' => 'Invalid kategoriPeminjam']);
         }
+    }    
+
+    public function getNama() {
+        $asalPeminjam = $this->request->getPost('asalPeminjam');
+        $namaSiswa = $this->manajemenPeminjamanModel->getNamaSiswa($asalPeminjam);
+        $namaKelas = $this->manajemenPeminjamanModel->getNamaKelas($asalPeminjam);
+        return $this->response->setJSON(['namaPeminjam' => $namaSiswa, 'kategori' => $namaKelas]);
     }    
     
     public function addLoanUser() {
@@ -312,7 +319,7 @@ class ManajemenPeminjaman extends ResourceController
         $sectionAsetValue = 'Dipinjam';
 
 
-        if (!empty($data['kategoriPeminjam']) && !empty($data['asalPeminjam'])) {
+        if (!empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
             foreach ($idRincianLabAset as $idRincianAset) {

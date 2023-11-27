@@ -85,7 +85,6 @@
                                 <th style="width: 5%;">No.</th>
                                 <th>NIP</th>
                                 <th>Nama</th>
-                                <th>Kelas</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
@@ -95,14 +94,13 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td> <?= $value->nip; ?> </td>
-                                <td> <?= $value->namaPegawai; ?> </td>
-                                <td> <?= $value->namaKategoriPegawai; ?> </td>
+                                <td> <?= $value->nis; ?> </td>
+                                <td> <?= $value->namaSiswa; ?> </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('dataPegawai/'.$value->idDataPegawai.'/edit') ?>"
+                                    <a href="<?=site_url('dataPegawai/'.$value->idDataSiswa.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('dataPegawai/'.$value->idDataPegawai)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idDataPegawai;?>">
+                                    <form action="<?=site_url('dataPegawai/'.$value->idDataSiswa)?>"
+                                        method="post" class="d-inline" id="del-<?= $value->idDataSiswa;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">

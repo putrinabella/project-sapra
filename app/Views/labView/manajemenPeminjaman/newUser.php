@@ -51,9 +51,6 @@
                                     value="<?= session('username'); ?>" readonly>
                                     <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
                                         value="<?= $idUser; ?>" >
-                                    <?php $role = session('role'); ?>
-                                    <input type="text" class="form-control bg-transparent" id="kategoriPeminjam" name="kategoriPeminjam"
-                                        value="<?= $role == 'Siswa' ? 'siswa' : ($role == 'Karyawan' ? 'karyawan' : ''); ?>" >
                                 </div>
                             </div>
                             <div class="row mb-3">

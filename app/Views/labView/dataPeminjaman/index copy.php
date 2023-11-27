@@ -123,13 +123,31 @@
                                 <?= date('d F Y', strtotime($value->tanggal)) ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->nis; ?> 
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->nis;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->nip;
+                                    }
+                                ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->namaSiswa; ?> 
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->namaSiswa;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->namaPegawai;
+                                    }
+                                ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->namaKelas; ?> 
+                                <?php
+                                    if ($value->kategoriPeminjam == "siswa") {
+                                        echo $value->namaKelas;
+                                    } elseif ($value->kategoriPeminjam == "karyawan") {
+                                        echo $value->namaKategoriPegawai;
+                                    }
+                                ?>
                             </td>
                             <td>
                                 <?= $value->namaLab ?>

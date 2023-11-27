@@ -154,10 +154,9 @@ class DataPeminjaman extends ResourceController
     
         $pdfData = pdf_suratpeminjaman($dataDataPeminjaman, $dataRincianLabAset);
     
-        $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
         $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal));
         
-        $filename = 'Formulir Peminjaman Aset - ' . $namaPeminjam . " (" . $tanggal . ")" . ".pdf";
+        $filename = 'Formulir Peminjaman Aset - ' . $dataDataPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');
@@ -168,11 +167,11 @@ class DataPeminjaman extends ResourceController
     }
 
     public function printAll() {
-        $startDate = $this->request->getGet('startDate');
-        $endDate = $this->request->getGet('endDate');
-    
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
         $dataPeminjaman = $this->dataPeminjamanModel->findAllHistory($startDate, $endDate);
-    
+
     
         if (empty($dataPeminjaman)) {
             return view('error/404');
@@ -200,11 +199,9 @@ class DataPeminjaman extends ResourceController
             ];
     
             $pdfData = pdf_suratpeminjaman($dataDataPeminjaman, $dataRincianLabAset);
-    
-            $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
             $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal));
             
-            $filename = 'Formulir Peminjaman Aset - ' . $namaPeminjam . " (" . $tanggal . ")" . ".pdf";
+            $filename = 'Formulir Peminjaman Aset - ' . $dataDataPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
     
             $zip->addFromString($filename, $pdfData);
         }
@@ -219,7 +216,6 @@ class DataPeminjaman extends ResourceController
     
         unlink($zipFilename);
     }
-    
     
   
     public function update($id = null)
@@ -361,9 +357,9 @@ class DataPeminjaman extends ResourceController
         $activeWorksheet->getStyle('A1:K1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         foreach ($data as $index => $value) {
-            $namaPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaSiswa : $value->namaPegawai;
-            $idPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->nis : $value->nip;
-            $asalPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaKelas : $value->namaKategoriPegawai;
+            // $namaPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaSiswa : $value->namaPegawai;
+            // $idPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->nis : $value->nip;
+            // $asalPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaKelas : $value->namaKategoriPegawai;
 
             $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B' . ($index + 2), $value->tanggal);

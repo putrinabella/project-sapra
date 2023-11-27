@@ -3,8 +3,9 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\DataPegawaiModels; 
-use App\Models\KategoriPegawaiModels; 
+use App\Models\DataSiswaModels; 
+use App\Models\IdentitasKelasModels; 
+use App\Models\ManajemenUserModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -15,19 +16,20 @@ class DataPegawai extends ResourceController
 {
     
      function __construct() {
-        $this->dataPegawaiModel = new DataPegawaiModels();
-        $this->kategoriPegawaiModel = new KategoriPegawaiModels();
+        $this->dataSiswaModel = new DataSiswaModels();
+        $this->identitasKelasModel = new IdentitasKelasModels();
+        $this->manajemenUserModel = new ManajemenUserModels();
         $this->db = \Config\Database::connect();
     }
 
     public function index() {
-        $data['dataDataPegawai'] = $this->dataPegawaiModel->getAll();
+        $data['dataDataPegawai'] = $this->dataSiswaModel->getAllPegawai();
         return view('master/dataPegawaiView/index', $data);
     }
 
     public function show($id = null) {
         if ($id != null) {
-            $dataDataPegawai = $this->dataPegawaiModel->find($id);
+            $dataDataPegawai = $this->dataSiswaModel->find($id);
         
             if (is_object($dataDataPegawai)) {
                 $spesifikasiMarkup = $dataDataPegawai->spesifikasi;
@@ -38,7 +40,7 @@ class DataPegawai extends ResourceController
                 $buktiUrl = $this->generateFileId($dataDataPegawai->bukti);
                 $data = [
                     'dataDataPegawai'           => $dataDataPegawai,
-                    'dataKategoriPegawai'       => $this->kategoriPegawaiModel->findAll(),
+                    'dataIdentitasKelas'       => $this->identitasKelasModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
@@ -53,8 +55,8 @@ class DataPegawai extends ResourceController
 
     public function new() {
         $data = [
-            'dataDataPegawai' =>  $this->dataPegawaiModel->findAll(),
-            'dataKategoriPegawai' => $this->kategoriPegawaiModel->findAll(),
+            'dataDataPegawai' =>  $this->dataSiswaModel->findAll(),
+            'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
         ];
         
         return view('master/dataPegawaiView/new', $data);       
@@ -62,26 +64,32 @@ class DataPegawai extends ResourceController
 
     public function create() {
         $data = $this->request->getPost();
+        $nis = $data['nis'];
+        $hashedPassword = password_hash($data['nis'], PASSWORD_BCRYPT);
     
-        $nip = $data['nip'];
-    
-        if ($this->dataPegawaiModel->isDuplicate($nip)) {
+        if ($this->dataSiswaModel->isDuplicate($nis)) {
             return redirect()->to(site_url('dataPegawai'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
         } else {
-            unset($data['idIdentitasPrasarana']);
-            $this->dataPegawaiModel->insert($data);
+            $this->dataSiswaModel->insert($data);
+            $userData = [
+                'username' => $data['nis'],
+                'nama' => $data['namaSiswa'],
+                'role' => 'User',
+                'password' => $hashedPassword,
+            ];
+            $this->manajemenUserModel->insert($userData);
             return redirect()->to(site_url('dataPegawai'))->with('success', 'Data berhasil disimpan');
         }
     }
     
     public function edit($id = null) {
         if ($id != null) {
-            $dataDataPegawai = $this->dataPegawaiModel->find($id);
+            $dataDataPegawai = $this->dataSiswaModel->find($id);
     
             if (is_object($dataDataPegawai)) {
                 $data = [
                     'dataDataPegawai' => $dataDataPegawai,
-                    'dataKategoriPegawai' => $this->kategoriPegawaiModel->findAll(),
+                    'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
                 ];
                 return view('master/dataPegawaiView/edit', $data);
             } else {
@@ -95,15 +103,28 @@ class DataPegawai extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            $nip = $data['nip'];
+            $nis = $data['nis'];
     
-            $existingData = $this->dataPegawaiModel->find($id);
-            if ($existingData->nip != $nip) {
-                if ($this->dataPegawaiModel->isDuplicate($nip)) {
+            $existingData = $this->dataSiswaModel->find($id);
+            if ($existingData->nis != $nis) {
+                if ($this->dataSiswaModel->isDuplicate($nis)) {
                     return redirect()->to(site_url('dataPegawai'))->with('error', 'Gagal update karena ditemukan duplikat data!');
                 }
+            }           
+            $username = $existingData->nis;
+            $idUser = $this->manajemenUserModel->getIdByUsername($username);
+            $hashedPassword = password_hash($data['nis'], PASSWORD_BCRYPT);
+            if ($idUser !== null) {
+                $userData = [
+                    'username' => $data['nis'],
+                    'nama' => $data['namaSiswa'],
+                    'role' => 'User',
+                    'password' => $hashedPassword,
+                ];
+                $this->manajemenUserModel->update($idUser, $userData);
             }
-            $this->dataPegawaiModel->update($id, $data);
+            $this->dataSiswaModel->update($id, $data);
+
             return redirect()->to(site_url('dataPegawai'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
@@ -113,12 +134,12 @@ class DataPegawai extends ResourceController
 
 
     public function delete($id = null) {
-        $this->dataPegawaiModel->delete($id);
+        $this->dataSiswaModel->delete($id);
         return redirect()->to(site_url('dataPegawai'));
     }
 
     public function trash() {
-        $data['dataDataPegawai'] = $this->dataPegawaiModel->onlyDeleted()->getRecycle();
+        $data['dataDataPegawai'] = $this->dataSiswaModel->onlyDeleted()->getRecycle();
         
         return view('master/dataPegawaiView/trash', $data);
     } 
@@ -126,12 +147,12 @@ class DataPegawai extends ResourceController
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblDataPegawai')
+            $this->db->table('tblDataSiswa')
                 ->set('deleted_at', null, true)
-                ->where(['idDataPegawai' => $id])
+                ->where(['idDataSiswa' => $id])
                 ->update();
         } else {
-            $this->db->table('tblDataPegawai')
+            $this->db->table('tblDataSiswa')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
@@ -144,13 +165,29 @@ class DataPegawai extends ResourceController
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->dataPegawaiModel->delete($id, true);
-        return redirect()->to(site_url('dataPegawai/trash'))->with('success', 'Data berhasil dihapus permanen');
+            $existingData = $this->dataSiswaModel->withDeleted()->find($id);
+
+            if ($existingData) {
+                // Get the related idUser
+                $username = $existingData->nis;
+                $idUser = $this->manajemenUserModel->getIdByUsername($username);
+    
+                if ($idUser !== null) {
+                    $this->manajemenUserModel->delete($idUser);
+                }
+    
+                $this->dataSiswaModel->delete($id, true);
+    
+                return redirect()->to(site_url('dataPegawai/trash'))->with('success', 'Data berhasil dihapus permanen');
+            } else {
+                return view('error/404');
+            }
         } else {
-            $countInTrash = $this->dataPegawaiModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->dataSiswaModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->dataPegawaiModel->onlyDeleted()->purgeDeleted();
+                // $this->dataSiswaModel->onlyDeleted()->purgeDeleted();
+                $this->dataSiswaModel->purgeDeletedWithUser();
                 return redirect()->to(site_url('dataPegawai/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
                 return redirect()->to(site_url('dataPegawai/trash'))->with('error', 'Tempat sampah sudah kosong!');
@@ -159,28 +196,27 @@ class DataPegawai extends ResourceController
     } 
     
     public function export() {
-        $data = $this->dataPegawaiModel->getAll();
+        $data = $this->dataSiswaModel->getAllPegawai();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('DataPegawai');
+        $activeWorksheet->setTitle('DataSiswa');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'NIS', 'Nama', 'Kategori Pegawai'];
+        $headers = ['No.', 'NIP', 'Nama'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->nip);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPegawai);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->namaKategoriPegawai);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->nis);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSiswa);
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C', 'D'];
+            $columns = ['B', 'C'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -190,12 +226,12 @@ class DataPegawai extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'D') as $column) {
+        foreach (range('A', 'C') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -208,36 +244,28 @@ class DataPegawai extends ResourceController
     }
     
     public function createTemplate() {
-        $data = $this->dataPegawaiModel->getAll();
-        $keyKelas = $this->kategoriPegawaiModel->findAll();
+        $data = $this->dataSiswaModel->getAllPegawai();
+        $keyKelas = $this->identitasKelasModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Pegawai');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'NIS', 'Nama', 'Id Kategori Pegawai'];
+        $headers = ['No.', 'NIP', 'Nama'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
-        $headerKelasID = ['ID Kategori Pegawai', 'Kategori Pegawai'];
-        $activeWorksheet->fromArray([$headerKelasID], NULL, 'F1');
-        $activeWorksheet->getStyle('F1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
         foreach ($data as $index => $value) {
-            if ($index >= 3) {
-                break;
-            }
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
-            $activeWorksheet->setCellValue('D'.($index + 2), '');
 
             $activeWorksheet->getStyle('A'.($index + 2))
             ->getAlignment()
             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C', 'D'];
+            $columns = ['B', 'C'];
             
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -247,60 +275,37 @@ class DataPegawai extends ResourceController
             }            
         }
         
-        $activeWorksheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:D'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:D')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'D') as $column) {
+        foreach (range('A', 'C') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
-
-        foreach ($keyKelas as $index => $value) {
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->idKategoriPegawai);
-            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaKategoriPegawai);
-    
-            $columns = ['F', 'G'];
-            foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
-        }
-
-        $activeWorksheet->getStyle('F1:G1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('F1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('F1:G'.(count($keyKelas) + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('F:G')->getAlignment()->setWrapText(true);
-    
-        foreach (range('F', 'G') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
-        }
-
 
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'NIS', 'Nama', 'ID Kategori Pegawai'];
+        $headers = ['No.', 'NIP', 'Nama'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
-        $exampleSheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $exampleSheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
             if ($index >= 3) {
                 break;
             }
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->nip);
-            $exampleSheet->setCellValue('C'.($index + 2), $value->namaPegawai);
-            $exampleSheet->setCellValue('D'.($index + 2), $value->idKategoriPegawai);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->nis);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->namaSiswa);
 
             $exampleSheet->getStyle('A'.($index + 2))
                             ->getAlignment()
                             ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                             ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-            $columns = ['B', 'C', 'D'];
+            $columns = ['B', 'C'];
             
             foreach ($columns as $column) {
                 $exampleSheet->getStyle($column . ($index + 2))
@@ -310,12 +315,12 @@ class DataPegawai extends ResourceController
             }            
         }
         
-        $exampleSheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:D'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:D')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:C'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:C')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'D') as $column) {
+        foreach (range('A', 'C') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
@@ -344,21 +349,27 @@ class DataPegawai extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $nip                    = $value[1] ?? null;
-                $namaPegawai              = $value[2] ?? null;
-                $idKategoriPegawai            = $value[3] ?? null;
-                if ($nip === null || $nip === '') {
+                $nis                    = $value[1] ?? null;
+                $namaSiswa              = $value[2] ?? null;
+                if ($nis === null || $nis === '') {
                     continue; 
                 }
                 $data = [
-                    'nip'   => $nip,
-                    'namaPegawai' => $namaPegawai,
-                    'idKategoriPegawai'   => $idKategoriPegawai,
+                    'nis'   => $nis,
+                    'namaSiswa' => $namaSiswa,
+                    'idIdentitasKelas'   => 0,
                 ];
 
-                if (!empty($data['nip']) && !empty($data['namaPegawai'])
-                && !empty($data['idKategoriPegawai'])) {
-                        $this->dataPegawaiModel->insert($data);
+                if (!empty($data['nis']) && !empty($data['namaSiswa'])) {
+                    $this->dataSiswaModel->insert($data);
+                    $hashedPassword = password_hash($nis, PASSWORD_BCRYPT);
+                    $userData = [
+                        'username' => $nis,
+                        'nama' => $namaSiswa,
+                        'password' => $hashedPassword,
+                        'role' => 'User',
+                    ];
+                    $this->manajemenUserModel->insert($userData);
                 } else {
                     return redirect()->to(site_url('dataPegawai'))->with('error', 'Pastikan semua data telah diisi!');
                 }
@@ -377,7 +388,7 @@ class DataPegawai extends ResourceController
             return view('error/404');
         }
 
-        $data['dataDataPegawai'] = $this->dataPegawaiModel->getAll();
+        $data['dataDataPegawai'] = $this->dataSiswaModel->getAllPegawai();
 
         ob_start();
 
@@ -392,7 +403,7 @@ class DataPegawai extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $filename = 'Profil - DataPegawai Report.pdf';
+        $filename = 'Profil - DataSiswa Report.pdf';
         $dompdf->stream($filename);
     }
 }

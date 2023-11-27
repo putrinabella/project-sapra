@@ -40,7 +40,7 @@ class DataSiswa extends ResourceController
                 $buktiUrl = $this->generateFileId($dataDataSiswa->bukti);
                 $data = [
                     'dataDataSiswa'           => $dataDataSiswa,
-                    'dataIdentitasKelas'       => $this->identitasKelasModel->findAll(),
+                    'dataIdentitasKelas'       => $this->identitasKelasModel->getAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
@@ -56,7 +56,7 @@ class DataSiswa extends ResourceController
     public function new() {
         $data = [
             'dataDataSiswa' =>  $this->dataSiswaModel->findAll(),
-            'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+            'dataIdentitasKelas' => $this->identitasKelasModel->getAll(),
         ];
         
         return view('master/dataSiswaView/new', $data);       
@@ -74,7 +74,7 @@ class DataSiswa extends ResourceController
             $userData = [
                 'username' => $data['nis'],
                 'nama' => $data['namaSiswa'],
-                'role' => 'Siswa',
+                'role' => 'User',
                 'password' => $hashedPassword,
             ];
             $this->manajemenUserModel->insert($userData);
@@ -89,7 +89,7 @@ class DataSiswa extends ResourceController
             if (is_object($dataDataSiswa)) {
                 $data = [
                     'dataDataSiswa' => $dataDataSiswa,
-                    'dataIdentitasKelas' => $this->identitasKelasModel->findAll(),
+                    'dataIdentitasKelas' => $this->identitasKelasModel->getAll(),
                 ];
                 return view('master/dataSiswaView/edit', $data);
             } else {
@@ -118,7 +118,7 @@ class DataSiswa extends ResourceController
                 $userData = [
                     'username' => $data['nis'],
                     'nama' => $data['namaSiswa'],
-                    'role' => 'Siswa',
+                    'role' => 'User',
                     'password' => $hashedPassword,
                 ];
                 $this->manajemenUserModel->update($idUser, $userData);
@@ -246,7 +246,7 @@ class DataSiswa extends ResourceController
     
     public function createTemplate() {
         $data = $this->dataSiswaModel->getAll();
-        $keyKelas = $this->identitasKelasModel->findAll();
+        $keyKelas = $this->identitasKelasModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Siswa');
@@ -398,7 +398,7 @@ class DataSiswa extends ResourceController
                         'username' => $nis,
                         'nama' => $namaSiswa,
                         'password' => $hashedPassword,
-                        'role' => 'Siswa',
+                        'role' => 'User',
                     ];
                     $this->manajemenUserModel->insert($userData);
                 } else {

@@ -205,7 +205,7 @@
                             if (selectedKategoriPeminjam === 'siswa') {
                                 $asalPeminjamSelect.append("<option value='" + value.idDataSiswa + "'>" + value.nis + "</option>");
                             } else if (selectedKategoriPeminjam === 'karyawan') {
-                                $asalPeminjamSelect.append("<option value='" + value.idDataPegawai + "'>" + value.nip + "</option>");
+                                $asalPeminjamSelect.append("<option value='" + value.idDataSiswa + "'>" + value.nis + "</option>");
                             }
                         });
                     }

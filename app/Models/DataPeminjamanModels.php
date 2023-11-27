@@ -74,7 +74,7 @@ class DataPeminjamanModels extends Model
     function findHistory($id = null, $columns = '*')
     {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
-        $builder->select($columns);;
+        $builder->select($columns);
         $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
@@ -89,10 +89,10 @@ class DataPeminjamanModels extends Model
         return $query->getRow();
     }
 
-    function findAllHistory($startDate = null, $endDate = null, $columns = '*') {
+    function findAllHistory($startDate = null, $endDate = null, $columns = '*') { 
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
-        $builder->select($columns);;
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select($columns);
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
@@ -108,6 +108,31 @@ class DataPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
+    // function findAllHistory($startDate = null, $endDate = null, $columns = '*') {
+    //     $builder = $this->db->table('tblDetailManajemenPeminjaman');
+    //     $builder->select($columns);;
+    //     $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab, tblDataPegawai.namaPegawai,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas, tblKategoriPegawai.namaKategoriPegawai, COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+    //     $builder->join('tblManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
+    //     $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
+    //     $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+    //     $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+    //     $builder->join('tblDataPegawai', 'tblDataPegawai.idDataPegawai = tblManajemenPeminjaman.asalPeminjam');
+    //     $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
+    //     $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+    //     $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
+    //     $builder->where('tblManajemenPeminjaman.loanStatus =', 'Pengembalian');
+    //     $builder->groupBy('tblDetailManajemenPeminjaman.idManajemenPeminjaman');
+
+        // if ($startDate && $endDate) {
+        //     $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
+        //     $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
+        // }
+    //     $query = $builder->get();
+    //     return $query->getResult();
+    // }
+
+
 
     function getDataBySarana() {
         $builder = $this->db->table($this->table);

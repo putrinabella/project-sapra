@@ -12,4 +12,11 @@ class IdentitasKelasModels extends Model
     protected $allowedFields    = ['namaKelas', 'jumlahSiswa'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
+
+    function getAll() {
+        $builder = $this->db->table($this->table);
+        $builder->where('tblIdentitasKelas.idIdentitasKelas !=', 0);
+        $query = $builder->get();
+        return $query->getResult();
+    }
 }

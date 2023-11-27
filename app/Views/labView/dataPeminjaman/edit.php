@@ -26,21 +26,15 @@
                     <div class="row mb-3">
                         <label for="idPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
                         <div class="col-sm-9">
-                            <?php
-                                $idPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->nis : $dataDataPeminjaman->nip;
-                            ?>
                             <input type="text" class="form-control bg-transparent" id="idPeminjam" name="idPeminjam"
-                                value="<?= $idPeminjam ?>" readonly>
+                                value="<?= $dataDataPeminjaman->nis ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="namaPeminjam" class="col-sm-3 col-form-label">Nama Peminjam</label>
                         <div class="col-sm-9">
-                            <?php
-                                $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
-                            ?>
                             <input type="text" class="form-control bg-transparent" id="namaPeminjam" name="namaPeminjam"
-                                value="<?= $namaPeminjam ?>" readonly>
+                                value="<?= $dataDataPeminjaman->namaSiswa ?>" readonly>
                             <input type="text" class="form-control bg-transparent" id="idManajemenPeminjaman"
                                 name="idManajemenPeminjaman" value="<?= $dataDataPeminjaman->idManajemenPeminjaman ?>"
                                 hidden>
@@ -49,11 +43,8 @@
                     <div class="row mb-3">
                         <label for="asalPeminjam" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
                         <div class="col-sm-9">
-                            <?php
-                            $asalPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaKelas : $dataDataPeminjaman->namaKategoriPegawai;
-                        ?>
                             <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
-                                value="<?= $asalPeminjam ?>" readonly>
+                                value="<?= $dataDataPeminjaman->namaKelas ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
