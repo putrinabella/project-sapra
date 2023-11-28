@@ -151,11 +151,25 @@ class DataPegawai extends ResourceController
                 ->set('deleted_at', null, true)
                 ->where(['idDataSiswa' => $id])
                 ->update();
+                $data = [
+                    'user_id'     => session('id_user'),
+                    'actionTime'  => date('Y-m-d H:i:s'),
+                    'actionType'  => "Restore",
+                    'actionDetails'  => "Melakukan restore data pegawai dengan id " .$id ,
+                ];
+                $this->userActionLogsModel->insert($data);
         } else {
             $this->db->table('tblDataSiswa')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
+                $data = [
+                    'user_id'     => session('id_user'),
+                    'actionTime'  => date('Y-m-d H:i:s'),
+                    'actionType'  => "Restore All",
+                    'actionDetails'  => "Melakukan restore semua data inventaris" ,
+                ];
+                $this->userActionLogsModel->insert($data);
             }
         if($this->db->affectedRows() > 0) {
             return redirect()->to(site_url('dataPegawai'))->with('success', 'Data berhasil direstore');

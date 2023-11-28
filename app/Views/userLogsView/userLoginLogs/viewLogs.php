@@ -73,15 +73,15 @@
                             <?php foreach ($dataUserLog as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center"><?=$key + 1?></td>
-                                <td class="text-center"><?=$value->nama?></td>
-                                <td class="text-center"><?=$value->role?></td>
+                                <td><?=$value->nama?></td>
+                                <td><?=$value->role?></td>
                                 <td class="text-center"><?= date('H:i:s', strtotime($value->loginTime)) ?></td>
                                 <td class="text-center"><?= date('d F Y', strtotime($value->loginTime)) ?></td>
                                 <td class="text-center">
                                     <?php if ($value->actionType === 'Login') : ?>
                                         <span class="badge bg-success"><?= $value->actionType ?></span>
                                     <?php elseif ($value->actionType === 'Logout') : ?>
-                                        <span class="badge bg-warning"><?= $value->actionType ?></span>
+                                        <span class="badge bg-danger"><?= $value->actionType ?></span>
                                     <?php else : ?>
                                         <?= $value->actionType ?>
                                     <?php endif; ?>

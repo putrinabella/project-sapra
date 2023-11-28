@@ -6,6 +6,7 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Models\DataSiswaModels; 
 use App\Models\IdentitasKelasModels; 
 use App\Models\ManajemenUserModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -19,7 +20,9 @@ class DataSiswa extends ResourceController
         $this->dataSiswaModel = new DataSiswaModels();
         $this->identitasKelasModel = new IdentitasKelasModels();
         $this->manajemenUserModel = new ManajemenUserModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['custom']);
     }
 
     public function index() {
@@ -144,24 +147,35 @@ class DataSiswa extends ResourceController
         return view('master/dataSiswaView/trash', $data);
     } 
 
+    // public function restore($id = null) {
+    //     $this->db = \Config\Database::connect();
+    //     if($id != null) {
+    //         $this->db->table('tblDataSiswa')
+    //             ->set('deleted_at', null, true)
+    //             ->where(['idDataSiswa' => $id])
+    //             ->update();
+    //     } else {
+    //         $this->db->table('tblDataSiswa')
+    //             ->set('deleted_at', null, true)
+    //             ->where('deleted_at is NOT NULL', NULL, FALSE)
+    //             ->update();
+    //         }
+    //     if($this->db->affectedRows() > 0) {
+    //         return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil direstore');
+    //     } 
+    //     return redirect()->to(site_url('dataSiswa/trash'))->with('error', 'Tidak ada data untuk direstore');
+    // } 
+
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblDataSiswa')
-                ->set('deleted_at', null, true)
-                ->where(['idDataSiswa' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblDataSiswa')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblDataSiswa', 'idDataSiswa', $id, $this->userActionLogsModel);
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('dataSiswa/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
+    
 
     public function deletePermanent($id = null) {
         if($id != null) {

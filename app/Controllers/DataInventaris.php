@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\DataInventarisModels; 
 use App\Models\InventarisModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -17,13 +18,10 @@ class DataInventaris extends ResourceController
      function __construct() {
         $this->dataInventarisModel = new DataInventarisModels();
         $this->inventarisModel = new InventarisModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['custom']);
     }
-
-    // public function index() {
-    //     $data['dataDataInventaris'] = $this->dataInventarisModel->getAll();
-    //     return view('saranaView/dataInventaris/index', $data);
-    // }
 
     public function index() {
         $startDate = $this->request->getVar('startDate');
@@ -43,73 +41,8 @@ class DataInventaris extends ResourceController
         
         $data['dataDataInventaris'] = $dataDataInventaris;
     
-        // $chartDataResult = $dataDataInventaris; 
-        // $chartPemasukan = $this->chartPemasukan($chartDataResult);
-        // $chartPemakaian = $this->chartPemakaian($chartDataResult);
-    
-        // $data = array_merge($data, $chartPemasukan);
-        // $data = array_merge($data, $chartPemasukan, $chartPemakaian);
-    
         return view('saranaView/dataInventaris/index', $data);
     }
-    
-    private function chartPemasukan($chartDataResult) {
-        $chartPemasukan = [
-            'categories' => [],
-            'jumlah' => [],
-        ];
-    
-        if ($chartDataResult) {
-            foreach ($chartDataResult as $row) {
-                $category = $row->namaInventaris;
-                $chartPemasukan['categories'][] = $category;
-                $chartPemasukan['jumlah'][] =  $row->jumlahDataInventaris;
-            }
-        }
-        return $chartPemasukan;
-    }
-
-    private function chartPemakaian($chartDataResult) {
-        $chartPemakaian = [
-            'categories' => [],
-            'pemakaianInternet' => [],
-        ];
-    
-        if ($chartDataResult) {
-            foreach ($chartDataResult as $row) {
-                $category = $row->bulanPemakaianInternet . ' (' . $row->tahunPemakaianInternet . ')';
-                $chartPemakaian['categories'][] = $category;
-                $chartPemakaian['pemakaianInternet'][] = $row->pemakaianInternet;
-            }
-        }
-        return $chartPemakaian;
-    }
-    
-    
-        // public function index() {
-    //     $startDate = $this->request->getVar('startDate');
-    //     $endDate = $this->request->getVar('endDate');
-        
-    //     $formattedStartDate = !empty($startDate) ? $startDate : '';
-    //     $formattedEndDate = !empty($endDate) ? $endDate : '';
-        
-    //     $tableHeading = "";
-    //     if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
-    //         $tableHeading = "Tahun $formattedStartDate - $formattedEndDate";
-    //     }
-    
-    //     $data['tableHeading'] = $tableHeading;
-    //     $data['dataDataInventaris'] = $this->dataInventarisModel->getData($startDate, $endDate);
-    
-    //     $chartDataResult = $this->dataInventarisModel->getData($startDate, $endDate);
-    //     $chartData = $this->chartPemakaian($chartDataResult);
-    
-    //     $data = array_merge($data, $chartData);
-    
-    //     return view('saranaView/dataInventaris/index', $data);
-    // }
-    
-
     
     public function show($id = null) {
         if ($id != null) {
@@ -209,11 +142,15 @@ class DataInventaris extends ResourceController
                 ->set('deleted_at', null, true)
                 ->where(['idDataInventaris' => $id])
                 ->update();
-        } else {
+
+                activityLogs($this->userActionLogsModel, "Restore", "Melakukan restore data inventaris dengan id " .$id);
+            } else {
             $this->db->table('tblDataInventaris')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
+
+                activityLogs($this->userActionLogsModel, "Restore All", "Melakukan restore semua data inventaris");
             }
         if($this->db->affectedRows() > 0) {
             return redirect()->to(site_url('dataInventaris'))->with('success', 'Data berhasil direstore');

@@ -27,6 +27,11 @@ $routes->get('viewLogs/generatePDF', 'UserLogs::generatePDF');
 $routes->get('viewLogs/export', 'UserLogs::export');
 
 
+// User Action Logs
+$routes->get('viewActions', 'UserActionLogs::viewActions');
+$routes->get('viewActions/generatePDF', 'UserActionLogs::generatePDF');
+$routes->get('viewActions/export', 'UserActionLogs::export');
+
 // HOME
 // $routes->get('/', 'ProfilSekolah::index');
 // $routes->get('home', 'ProfilSekolah::index');

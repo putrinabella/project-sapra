@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use App\Models\UserLogModels;
+use App\Models\UserActionLogsModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class UserLogs extends BaseController
+class UserActionLogs extends BaseController
 {
     
      function __construct() {
-        $this->userLoginModel = new UserLogModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
     }
     
-    public function viewLogs()
+    public function viewActions()
     {
-        $data['dataUserLog'] = $this->userLoginModel->getAll();
-        return view('userLogsView/userLoginLogs/viewLogs', $data);
+        $data['dataActionLog'] = $this->userActionLogsModel->getAll();
+        return view('userLogsView/userActionLogs/actionLogs', $data);
     }
 
     public function export() {
-        $data = $this->userLoginModel->getAll();
+        $data = $this->userActionLogsModel->getAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('User Log');
@@ -69,13 +69,13 @@ class UserLogs extends BaseController
     }
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/userLogsView/userLoginLogs/print.php';
+        $filePath = APPPATH . 'Views/userLogsView/userActionLogs/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataUserLogs'] = $this->userLoginModel->getAll();
+        $data['dataUserActionLogs'] = $this->userActionLogsModel->getAll();
 
         ob_start();
 

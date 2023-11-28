@@ -217,6 +217,9 @@
                     <li class="nav-item">
                         <a href="<?= site_url('viewLogs') ?>" class="nav-link">User Logs</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('viewActions') ?>" class="nav-link">User Actions</a>
+                    </li>
                 </ul>
             </div>
         </li>

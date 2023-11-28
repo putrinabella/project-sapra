@@ -28,6 +28,7 @@ class Auth extends BaseController
         if ($user) {
             if (password_verify($post['password'], $user->password)) {
                 $this->logEvent($user->idUser, 'Login', $_SERVER['REMOTE_ADDR']);
+                
                 $session = session();
                 $session_data = [
                     'id_user'  => $user->idUser,
@@ -40,27 +41,12 @@ class Auth extends BaseController
                 return redirect()->to(site_url('home'));
             } else {
                 return redirect()->to(site_url('login'))->with('error', 'Password salah');
-                // return redirect()->back()->with('error', 'Password salah');
             }
         } else {
             return redirect()->to(site_url('login'))->with('error', 'Username tidak ditemukan');
-            // return redirect()->back()->with('error', 'Username tidak ditemukan');
         }
     }
 
-    protected function logLogin($userId, $ipAddress)
-    {
-        // $loginLogModel = new UserLoginLogModel();
-
-        $data = [
-            'user_id'    => $userId,
-            'loginTime' => date('Y-m-d H:i:s'),
-            'ipAddress' => $ipAddress,
-        ];
-
-        $this->userLogModel->insert($data);
-    }
-    
     public function logout() {
         $userId = session('id_user');
         $this->logEvent($userId, 'Logout', $this->request->getIPAddress());
