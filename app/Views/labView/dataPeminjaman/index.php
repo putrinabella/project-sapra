@@ -40,12 +40,16 @@
             Recycle Bin
         </a>
         <div class="dropdown">
-            <?php
-                $startDate = $_GET['startDate'] ?? '';
-                $endDate = $_GET['endDate'] ?? '';
-                
-                $exportLink = site_url("dataPeminjaman/export?startDate=$startDate&endDate=$endDate");
-                $printAllLink = site_url("dataPeminjaman/printAll?startDate=$startDate&endDate=$endDate");
+        <?php
+                if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
+                    $exportLink = site_url('dataPeminjaman/export');
+                    $printAllLink = site_url('dataPeminjaman/printAll');
+                } else {
+                    $startYear = $_GET['startYear'] ?? '';
+                    $endYear = $_GET['endYear'] ?? '';
+                    $exportLink = site_url("dataPeminjaman/export?startYear=$startYear&endYear=$endYear");
+                    $printAllLink = site_url("dataPeminjaman/printAll?startYear=$startYear&endYear=$endYear");
+                }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

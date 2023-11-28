@@ -9,6 +9,7 @@ use App\Models\SumberDanaModels;
 use App\Models\KategoriManajemenModels;
 use App\Models\IdentitasLabModels;
 use App\Models\ManajemenPeminjamanModels;
+use App\Models\DataSiswaModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -27,6 +28,7 @@ class DataPeminjaman extends ResourceController
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
         $this->identitasLabModel = new IdentitasLabModels();
+        $this->dataSiswaModel = new DataSiswaModels();
         $this->db = \Config\Database::connect();
         helper(['pdf']);
     }
@@ -47,6 +49,7 @@ class DataPeminjaman extends ResourceController
 
         $data['tableHeading'] = $tableHeading;
         $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
+
         return view('labView/dataPeminjaman/index', $data);
     }
     
@@ -54,6 +57,7 @@ class DataPeminjaman extends ResourceController
     {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
+        $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
 
         $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
         $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
@@ -63,10 +67,10 @@ class DataPeminjaman extends ResourceController
             $tableHeading = " $formattedStartDate - $formattedEndDate";
         }
 
-        $data['tableHeading'] = $tableHeading;
-        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate);
-        // var_dump($data);
-        // die;
+        $data = [
+            'tableHeading' => $tableHeading,
+            'dataDataPeminjaman' => $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate, $idUser),
+        ];
         return view('labView/dataPeminjaman/user', $data);
     }
 
@@ -174,7 +178,7 @@ class DataPeminjaman extends ResourceController
 
     
         if (empty($dataPeminjaman)) {
-            return view('error/404');
+            return redirect()->to(site_url('dataPeminjaman'))->with('error', 'Tidak ada dokumen untuk didownload');
         }
     
         $zip = new \ZipArchive();
@@ -340,13 +344,13 @@ class DataPeminjaman extends ResourceController
     }
 
 
-    public function export()
-    {
+    public function export() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
         $data = $this->dataPeminjamanModel->getDataExcel($startDate, $endDate);
-
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Pengembalian');
@@ -357,22 +361,16 @@ class DataPeminjaman extends ResourceController
         $activeWorksheet->getStyle('A1:K1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         foreach ($data as $index => $value) {
-            // $namaPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaSiswa : $value->namaPegawai;
-            // $idPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->nis : $value->nip;
-            // $asalPeminjam = ($value->kategoriPeminjam == 'siswa') ? $value->namaKelas : $value->namaKategoriPegawai;
-
             $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B' . ($index + 2), $value->tanggal);
-            $activeWorksheet->setCellValue('C' . ($index + 2), $idPeminjam);
-            $activeWorksheet->setCellValue('D' . ($index + 2), $namaPeminjam);
-            $activeWorksheet->setCellValue('E' . ($index + 2), $asalPeminjam);
+            $activeWorksheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $activeWorksheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
+            $activeWorksheet->setCellValue('E' . ($index + 2), $value->namaKelas);
             $activeWorksheet->setCellValue('F' . ($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('G' . ($index + 2), $value->namaLab);
             if ($value->loanStatus == "Peminjaman") {
-                $activeWorksheet->setCellValue('H' . ($index + 2), 'Sedang Dipinjam');
-            } else {
                 $activeWorksheet->setCellValue('H' . ($index + 2), 'Sudah Dikembalikan');
-            }
+            } 
             $activeWorksheet->setCellValue('I' . ($index + 2), "Bagus");
             $activeWorksheet->setCellValue('J' . ($index + 2), $value->statusSetelahPengembalian);
             $activeWorksheet->setCellValue('K' . ($index + 2), $value->tanggalPengembalian);
@@ -409,15 +407,13 @@ class DataPeminjaman extends ResourceController
 
             $exampleSheet->setCellValue('A' . ($index + 2), $index + 1);
             $exampleSheet->setCellValue('B' . ($index + 2), $value->tanggal);
-            $exampleSheet->setCellValue('C' . ($index + 2), $idPeminjam);
-            $exampleSheet->setCellValue('D' . ($index + 2), $namaPeminjam);
-            $exampleSheet->setCellValue('E' . ($index + 2), $asalPeminjam);
+            $exampleSheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $exampleSheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
+            $exampleSheet->setCellValue('E' . ($index + 2), $value->namaKelas);
             $exampleSheet->setCellValue('F' . ($index + 2), $value->namaSarana);
             $exampleSheet->setCellValue('G' . ($index + 2), $value->namaLab);
             if ($value->loanStatus == "Peminjaman") {
                 $exampleSheet->setCellValue('H' . ($index + 2), 'Sedang Dipinjam');
-            } else {
-                $exampleSheet->setCellValue('H' . ($index + 2), 'Sudah Dikembalikan');
             }
             $exampleSheet->setCellValue('I' . ($index + 2), "Bagus");
 
@@ -436,7 +432,7 @@ class DataPeminjaman extends ResourceController
         $exampleSheet->getStyle('A:I')->getAlignment()->setWrapText(true);
 
         foreach (range('A', 'I') as $column) {
-                $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
         $writer = new Xlsx($spreadsheet);
@@ -446,8 +442,6 @@ class DataPeminjaman extends ResourceController
         $writer->save('php://output');
         exit();
     }
-
-
 
     public function changeStatus($idRicianLabAset)
     {

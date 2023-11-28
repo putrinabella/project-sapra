@@ -9,7 +9,7 @@ class ManajemenPeminjamanModels extends Model
     protected $table            = 'tblManajemenPeminjaman';
     protected $primaryKey       = 'idManajemenPeminjaman';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idManajemenPeminjaman', 'kategoriPeminjam', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'loanStatus', 'tanggalPengembalian', 'keperluanAlat', 'lamaPinjam'];
+    protected $allowedFields    = ['idManajemenPeminjaman', 'asalPeminjam', 'idIdentitasSarana', 'idIdentitasLab', 'jumlah', 'tanggal', 'loanStatus', 'tanggalPengembalian', 'keperluanAlat', 'lamaPinjam'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 

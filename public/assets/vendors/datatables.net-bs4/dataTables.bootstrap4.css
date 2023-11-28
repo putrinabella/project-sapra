@@ -154,6 +154,10 @@ div.dataTables_scrollFoot > .dataTables_scrollFootInner > table {
   div.dataTables_wrapper div.dataTables_paginate {
     text-align: center;
   }
+  div.dataTables_wrapper div.dataTables_length,
+  div.dataTables_wrapper div.dataTables_filter {
+    margin: 5px 0;
+  }
   div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     justify-content: center !important;
   }

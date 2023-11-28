@@ -102,9 +102,6 @@ class ManajemenPeminjaman extends ResourceController
 
         return view('labView/manajemenPeminjaman/newUser', $data);
     }
-    
- 
-    
 
     public function getKodeLab($idIdentitasSarana)
     {

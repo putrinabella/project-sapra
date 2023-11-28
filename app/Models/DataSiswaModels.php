@@ -67,10 +67,8 @@ class DataSiswaModels extends Model
         foreach ($deletedUsernames as $deletedData) {
             $username = $deletedData->nis;
             var_dump($username);
-            // die;
             $idUser = $this->manajemenUserModel->getIdByUsername($username);
             var_dump($idUser);
-            // die;
             if ($idUser !== null) {
                 $this->manajemenUserModel->deleteByUsername($idUser);
             }

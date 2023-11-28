@@ -46,7 +46,7 @@ class DataPeminjamanModels extends Model
         return $query->getResult();
     }
 
-    function getDataSiswa($startDate = null, $endDate = null)
+    function getDataSiswa($startDate = null, $endDate = null, $idUser)
     {
         $builder = $this->db->table('tblManajemenPeminjaman');
         $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
@@ -63,6 +63,7 @@ class DataPeminjamanModels extends Model
         }
     
         $builder->where('tblManajemenPeminjaman.loanStatus', 'Peminjaman');
+        $builder->where('tblManajemenPeminjaman.asalPeminjam', $idUser);
         $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
         $query = $builder->get();
     
@@ -277,7 +278,7 @@ class DataPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-
+    
     function getDataExcelPeminjaman($startDate = null, $endDate = null)
     {
         $builder = $this->db->table($this->table);
