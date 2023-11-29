@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\ManajemenPeminjamanModels;
+use App\Models\RequestPeminjamanModels;
 use App\Models\IdentitasSaranaModels;
 use App\Models\IdentitasLabModels;
 use App\Models\KategoriPegawaiModels;
@@ -25,6 +26,7 @@ class ManajemenPeminjaman extends ResourceController
     function __construct()
     {
         $this->manajemenPeminjamanModel = new ManajemenPeminjamanModels();
+        $this->requestPeminjamanModel = new RequestPeminjamanModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->identitasLabModel = new IdentitasLabModels();
         $this->rincianLabAsetModel = new RincianLabAsetModels();
@@ -261,13 +263,10 @@ class ManajemenPeminjaman extends ResourceController
         }
     }
 
-    public function addLoan()
-    {
+    public function addLoan() {
         $data = $this->request->getPost();
         $idRincianLabAset = $_POST['selectedRows'];
         $sectionAsetValue = 'Dipinjam';
-
-
         if (!empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
@@ -285,24 +284,6 @@ class ManajemenPeminjaman extends ResourceController
         }
     }
 
-
-    public function getNama2() {
-        $asalPeminjam = $this->request->getPost('asalPeminjam');
-        $kategoriPeminjam = $this->request->getPost('kategoriPeminjam');
-    
-        if ($kategoriPeminjam === 'siswa') {
-            $namaSiswa = $this->manajemenPeminjamanModel->getNamaSiswa($asalPeminjam);
-            $namaKelas = $this->manajemenPeminjamanModel->getNamaKelas($asalPeminjam);
-            return $this->response->setJSON(['namaPeminjam' => $namaSiswa, 'kategori' => $namaKelas]);
-        } elseif ($kategoriPeminjam === 'karyawan') {
-            $namaSiswa = $this->manajemenPeminjamanModel->getNamaSiswa($asalPeminjam);
-            $namaKelas = $this->manajemenPeminjamanModel->getNamaKelas($asalPeminjam);
-            return $this->response->setJSON(['namaPeminjam' => $namaSiswa, 'kategori' => $namaKelas]);
-        } else {
-            return $this->response->setJSON(['error' => 'Invalid kategoriPeminjam']);
-        }
-    }    
-
     public function getNama() {
         $asalPeminjam = $this->request->getPost('asalPeminjam');
         $namaSiswa = $this->manajemenPeminjamanModel->getNamaSiswa($asalPeminjam);
@@ -313,23 +294,45 @@ class ManajemenPeminjaman extends ResourceController
     public function addLoanUser() {
         $data = $this->request->getPost();
         $idRincianLabAset = $_POST['selectedRows'];
-        $sectionAsetValue = 'Dipinjam';
 
 
         if (!empty($data['asalPeminjam'])) {
-            $this->manajemenPeminjamanModel->insert($data);
-            $idManajemenPeminjaman = $this->db->insertID();
+            $this->requestPeminjamanModel->insert($data);
+            $idRequestPeminjaman = $this->db->insertID();
             foreach ($idRincianLabAset as $idRincianAset) {
                 $detailData = [
                     'idRincianLabAset' => $idRincianAset,
-                    'idManajemenPeminjaman' => $idManajemenPeminjaman,
+                    'idRequestPeminjaman' => $idRequestPeminjaman,
                 ];
-                $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
-                $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
+                $this->requestPeminjamanModel->addRequestId($detailData);
+                $this->db->table('tblDetailRequestPeminjaman')->insert($detailData);
             }
             return redirect()->to(site_url('peminjamanDataUser'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->to(site_url('peminjamanDataUser'))->with('error', 'Semua field harus terisi');
         }
     }
+
+    // public function addLoanUser() {
+    //     $data = $this->request->getPost();
+    //     $idRincianLabAset = $_POST['selectedRows'];
+    //     $sectionAsetValue = 'Dipinjam';
+
+
+    //     if (!empty($data['asalPeminjam'])) {
+    //         $this->manajemenPeminjamanModel->insert($data);
+    //         $idManajemenPeminjaman = $this->db->insertID();
+    //         foreach ($idRincianLabAset as $idRincianAset) {
+    //             $detailData = [
+    //                 'idRincianLabAset' => $idRincianAset,
+    //                 'idManajemenPeminjaman' => $idManajemenPeminjaman,
+    //             ];
+    //             $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
+    //             $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
+    //         }
+    //         return redirect()->to(site_url('peminjamanDataUser'))->with('success', 'Data berhasil disimpan');
+    //     } else {
+    //         return redirect()->to(site_url('peminjamanDataUser'))->with('error', 'Semua field harus terisi');
+    //     }
+    // }
 }

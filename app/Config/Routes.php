@@ -577,6 +577,23 @@ $routes->delete('dataPeminjaman/deletePermanent/(:any)', 'DataPeminjaman::delete
 $routes->delete('dataPeminjaman/deletePermanent', 'DataPeminjaman::deletePermanent');
 $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
+
+// Request Peminjaman
+$routes->get('requestPeminjaman/print/(:num)', 'RequestPeminjaman::print/$1');
+$routes->get('requestPeminjaman/printAll', 'RequestPeminjaman::printAll');
+$routes->get('requestPeminjaman/generatePDF', 'RequestPeminjaman::generatePDF');
+$routes->get('requestPeminjaman/export', 'RequestPeminjaman::export');
+$routes->get('requestPeminjaman/trash', 'RequestPeminjaman::trash');
+$routes->get('requestPeminjaman/restore/(:any)', 'RequestPeminjaman::restore/$1');
+$routes->get('requestPeminjaman/restore', 'RequestPeminjaman::restore');
+$routes->get('peminjamanDataUser', 'RequestPeminjaman::user');
+$routes->get('requestPeminjaman/history/(:any)', 'RequestPeminjaman::getLoanHistory/$1');
+$routes->post('requestPeminjaman/processLoan', 'RequestPeminjaman::processLoan');
+$routes->post('returnItems/changeStatus/(:any)', 'RequestPeminjaman::changeStatus/$1');
+$routes->post('returnItems/changeSectionAset/(:any)', 'RequestPeminjaman::changeSectionAset/$1');
+$routes->delete('requestPeminjaman/deletePermanent/(:any)', 'RequestPeminjaman::deletePermanent/$1');
+$routes->delete('requestPeminjaman/deletePermanent', 'RequestPeminjaman::deletePermanent');
+$routes->resource('requestPeminjaman', ['filter' => 'isLoggedIn']);
 // Manajemen Peminjaman
 // User
 

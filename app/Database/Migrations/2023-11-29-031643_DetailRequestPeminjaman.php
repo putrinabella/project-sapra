@@ -4,35 +4,29 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class RequestPeminjaman extends Migration
+class DetailRequestPeminjaman extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'idRequestPeminjaman' => [
+            'idDetailRequestPeminjaman' => [
                 'type' => 'INT',
                 'constraint' => 3,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'tanggal' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+            'idRequestPeminjaman' => [
+                'type' => 'INT',
+                'constraint' => 3,
             ],
-            'asalPeminjam' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'keperluanAlat' => [
-                'type' => 'TEXT',
-            ],
-            'lamaPinjam' => [
+            'idRincianLabAset' => [
                 'type' => 'INT',
                 'constraint' => 10,
             ],
-            'loanStatus' => [
+            'requestItemStatus' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
+                'null' => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -48,12 +42,12 @@ class RequestPeminjaman extends Migration
             ],
         ]);
 
-        $this->forge->addKey('idRequestPeminjaman', true);
-        $this->forge->createTable('tblRequestPeminjaman');
+        $this->forge->addKey('idDetailRequestPeminjaman', true);
+        $this->forge->createTable('tblDetailRequestPeminjaman');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tblRequestPeminjaman');
+        $this->forge->dropTable('tblDetailRequestPeminjaman');
     }
 }

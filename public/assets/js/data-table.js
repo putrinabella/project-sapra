@@ -29,7 +29,7 @@ $(function() {
     $('#dataTable').each(function() {
       var datatable = $(this);
       var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
-      search_input.attr('placeholder', 'Search');
+      // search_input.attr('placeholder', 'Search');
       search_input.removeClass('form-control-sm');
       var searchLabel = $('<label for="' + search_input.attr('id') + '">Search</label>');
       searchLabel.css('padding-left', '8px');

@@ -27,10 +27,6 @@ class ManajemenPeminjaman extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'kategoriPeminjam' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
             'keperluanAlat' => [
                 'type' => 'TEXT',
             ],

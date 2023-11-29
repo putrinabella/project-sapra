@@ -14,7 +14,7 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?= site_url('dataPeminjaman') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?= site_url('requestPeminjaman') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
@@ -28,17 +28,39 @@
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-success btn-icon ">
+                <a href="<?= site_url('requestPeminjaman') ?>" class="btn btn-success btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('peminjamanUser') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="edit"></i>
-            Ajukan Peminjaman
+        <a href="<?= site_url('requestPeminjaman/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="trash"></i>
+            Recycle Bin
         </a>
+        <div class="dropdown">
+            <?php
+                if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
+                    $exportLink = site_url('requestPeminjaman/export');
+                    $printAllLink = site_url('requestPeminjaman/printAll');
+                } else {
+                    $startYear = $_GET['startYear'] ?? '';
+                    $endYear = $_GET['endYear'] ?? '';
+                    $exportLink = site_url("requestPeminjaman/export?startYear=$startYear&endYear=$endYear");
+                    $printAllLink = site_url("requestPeminjaman/printAll?startYear=$startYear&endYear=$endYear");
+                }
+            ?>
+            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="download"></i>
+                Export File
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
+                <a class="dropdown-item" href="<?= $printAllLink ?>">Download as ZIP</a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -90,7 +112,8 @@
                         </tr>
                     </thead>
                     <tbody class="py-2">
-                        <?php foreach ($dataUser as $key => $value) : ?>
+                        <?php foreach ($dataRequestPeminjaman as $key => $value) : ?>
+
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                             <td>
                                 <?= $key + 1 ?>
@@ -99,7 +122,7 @@
                                 <?= date('d F Y', strtotime($value->tanggal)) ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->nis; ?> 
+                                <?= $value->nis; ?>
                             </td>
                             <td class="text-left">
                                 <?= $value->namaSiswa; ?>
@@ -114,29 +137,29 @@
                                 <?= $value->jumlahPeminjaman ?>
                             </td>
                             <td>
-                                <?php if ($value->loanStatus == "Approve" || $value->loanStatus == "Peminjaman") : ?>
+                                <?php if ($value->loanStatus == "Approve") : ?>
                                 <span class="badge bg-success">Approve</span>
                                 <?php elseif ($value->loanStatus == "Request") : ?>
                                 <span class="badge bg-primary">Request</span>
                                 <?php elseif ($value->loanStatus == "Reject") : ?>
                                 <span class="badge bg-danger">Reject</span>
-                                <?php elseif ($value->loanStatus == "Completed" || $value->loanStatus == "Pengembalian") : ?>
-                                <span class="badge bg-info">Completed</span>
                                 <?php endif; ?>
                             </td>
+
                             <td class="text-center">
-                                <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                    <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
-                                    target="_blank" class="btn btn-secondary btn-icon"> <i
-                                    data-feather="printer"></i></a>
-                                <?php endif; ?>
-                                <?php if ($value->loanStatus == "Pengembalian"): ?>
-                                <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
-                                    class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
-                                <?php endif; ?>
-                                <?php if ($value->loanStatus == "Request" || $value->loanStatus == "Reject"): ?>
-                                    -
-                                <?php endif; ?>
+                                <?php if ($value->loanStatus == "Request" || "Approve") : ?>
+                                <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman . '/edit') ?>"
+                                    class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
+                                <?php endif; ?>                                
+                                <!-- <form action="<?= site_url('requestPeminjaman/' .  $value->idRequestPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idRequestPeminjaman; ?>">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger btn-icon"
+                                        data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                </form> -->
                             </td>
                         </tr>
                         <?php endforeach; ?>

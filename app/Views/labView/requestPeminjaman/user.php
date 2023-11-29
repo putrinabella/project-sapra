@@ -35,6 +35,10 @@
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
+        <a href="<?= site_url('dataPeminjaman/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+            <i class=" btn-icon-prepend" data-feather="trash"></i>
+            Recycle Bin
+        </a>
         <a href="<?= site_url('peminjamanUser') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Ajukan Peminjaman
@@ -90,8 +94,10 @@
                         </tr>
                     </thead>
                     <tbody class="py-2">
-                        <?php foreach ($dataUser as $key => $value) : ?>
+                        <?php foreach ($dataDataPeminjaman as $key => $value) : ?>
+
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
+                        
                             <td>
                                 <?= $key + 1 ?>
                             </td>
@@ -114,29 +120,33 @@
                                 <?= $value->jumlahPeminjaman ?>
                             </td>
                             <td>
-                                <?php if ($value->loanStatus == "Approve" || $value->loanStatus == "Peminjaman") : ?>
-                                <span class="badge bg-success">Approve</span>
-                                <?php elseif ($value->loanStatus == "Request") : ?>
-                                <span class="badge bg-primary">Request</span>
-                                <?php elseif ($value->loanStatus == "Reject") : ?>
-                                <span class="badge bg-danger">Reject</span>
-                                <?php elseif ($value->loanStatus == "Completed" || $value->loanStatus == "Pengembalian") : ?>
-                                <span class="badge bg-info">Completed</span>
+                                <?php if ($value->loanStatus == "Peminjaman") : ?>
+                                <span class="badge bg-warning">Sedang Dipinjam</span>
+                                <?php else : ?>
+                                <span class="badge bg-success">Sudah Dikembalikan</span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                    <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
+                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
-                                    data-feather="printer"></i></a>
+                                        data-feather="printer"></i></a>
+                                <a href="<?= site_url('dataPeminjaman/' . $value->idManajemenPeminjaman . '/edit') ?>"
+                                    class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <?php endif; ?>
                                 <?php if ($value->loanStatus == "Pengembalian"): ?>
                                 <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
-                                <?php if ($value->loanStatus == "Request" || $value->loanStatus == "Reject"): ?>
-                                    -
-                                <?php endif; ?>
+                                <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger btn-icon"
+                                        data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         <?php endforeach; ?>

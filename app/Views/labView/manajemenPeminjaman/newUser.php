@@ -24,7 +24,7 @@
                         <div class="col-12">
                             <div>
                                 <input type="text" class="form-control" id="loanStatus" name="loanStatus"
-                                    value="Peminjaman" hidden>
+                                    value="Request" hidden>
                             </div>
                             <div class="row mb-3">
                                 <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
@@ -50,7 +50,7 @@
                                     <input type="text" class="form-control bg-transparent" id="nisnip" name="nisnip"
                                     value="<?= session('username'); ?>" readonly>
                                     <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
-                                        value="<?= $idUser; ?>" >
+                                        value="<?= $idUser; ?>" hidden >
                                 </div>
                             </div>
                             <div class="row mb-3">

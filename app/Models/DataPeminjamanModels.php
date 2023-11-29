@@ -28,7 +28,7 @@ class DataPeminjamanModels extends Model
     function getData($startDate = null, $endDate = null)
     {
         $builder = $this->db->table('tblManajemenPeminjaman');
-        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailManajemenPeminjaman.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
@@ -62,7 +62,6 @@ class DataPeminjamanModels extends Model
             $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
         }
     
-        $builder->where('tblManajemenPeminjaman.loanStatus', 'Peminjaman');
         $builder->where('tblManajemenPeminjaman.asalPeminjam', $idUser);
         $builder->groupBy('tblManajemenPeminjaman.idManajemenPeminjaman');
         $query = $builder->get();
