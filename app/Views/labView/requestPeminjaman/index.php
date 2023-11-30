@@ -147,19 +147,10 @@
                             </td>
 
                             <td class="text-center">
-                                <?php if ($value->loanStatus == "Request" || "Approve") : ?>
+                                <?php if ($value->loanStatus == "Request") : ?>
                                 <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <?php endif; ?>                                
-                                <!-- <form action="<?= site_url('requestPeminjaman/' .  $value->idRequestPeminjaman) ?>"
-                                    method="post" class="d-inline" id="del-<?= $value->idRequestPeminjaman; ?>">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="btn btn-danger btn-icon"
-                                        data-confirm="Apakah anda yakin menghapus data ini?">
-                                        <i data-feather="trash"></i>
-                                    </button>
-                                </form> -->
                             </td>
                         </tr>
                         <?php endforeach; ?>

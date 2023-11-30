@@ -113,7 +113,7 @@
                             <td class="text-center">
                                 <?= $value->jumlahPeminjaman ?>
                             </td>
-                            <td>
+                            <td style="width: 10%"> 
                                 <?php if ($value->loanStatus == "Approve" || $value->loanStatus == "Peminjaman") : ?>
                                 <span class="badge bg-success">Approve</span>
                                 <?php elseif ($value->loanStatus == "Request") : ?>
@@ -129,13 +129,15 @@
                                     <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
                                     data-feather="printer"></i></a>
+                                    <a href="<?= site_url('peminjamanDataUser/userDetail/' . $value->idManajemenPeminjaman) ?>"
+                                    class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
                                 <?php if ($value->loanStatus == "Pengembalian"): ?>
-                                <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
+                                <a href="<?= site_url('peminjamanDataUser/userDetail/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
                                 <?php if ($value->loanStatus == "Request" || $value->loanStatus == "Reject"): ?>
-                                    -
+                                    
                                 <?php endif; ?>
                             </td>
                         </tr>

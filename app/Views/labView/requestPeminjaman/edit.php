@@ -11,20 +11,31 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('requestPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i
-                            class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
+                    <a href="<?= site_url('requestPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
+                        <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Form Request Peminjaman</h4>
                     <div></div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('requestPeminjaman/processLoan') ?>"
-                    method="POST" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
+                <form action="<?= site_url('requestPeminjaman/processLoan') ?>" method="POST" autocomplete="off"
+                    id="custom-validation" enctype="multipart/form-data">
                     <div class="row mb-3">
-                        <label for="idPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
+                        <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control bg-transparent" id="idPeminjam" name="idPeminjam"
+                            <input type="text" class="form-control bg-transparent" name="tanggal"
+                                placeholder="Masukkan tanggal" readonly value="<?= $dataRequestPeminjaman->tanggal ?>">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="asalPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bg-transparent" id="nis" name="nis"
                                 value="<?= $dataRequestPeminjaman->nis ?>" readonly>
+                            <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
+                                value="<?= $dataRequestPeminjaman->idDataSiswa ?>" hidden>
+                            <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"
+                                value="Peminjaman" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -38,9 +49,9 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="asalPeminjam" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
+                        <label for="kelasJabatan" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
+                            <input type="text" class="form-control bg-transparent" id="kelasJabatan" name="kelasJabatan"
                                 value="<?= $dataRequestPeminjaman->namaKelas ?>" readonly>
                         </div>
                     </div>
@@ -49,14 +60,6 @@
                         <div class="col-sm-9">
                             <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab"
                                 value="<?= $dataRequestPeminjaman->namaLab ?>" readonly>
-
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Tujuan</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"
-                                value="Pengembalian" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -65,8 +68,6 @@
                             <input type="text" class="form-control bg-transparent" id="jumlahPeminjaman"
                                 name="jumlahPeminjaman" value="<?= $dataRequestPeminjaman->jumlahPeminjaman ?> Aset"
                                 readonly>
-                            <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"
-                                value="Pengembalian" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -95,16 +96,17 @@
                                         <th>Nama</th>
                                         <th>Merk</th>
                                         <th>Warna</th>
-                                        <th>Harga Beli</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="py-2">
                                     <?php foreach ($dataItemDipinjam as $key => $value) : ?>
                                     <tr style=" vertical-align: middle;">
                                         <td style="width: 5%">
+                                            <?php if ($value->sectionAset !== "Dipinjam") : ?>
                                             <input type="checkbox" class="form-check-input row-select"
                                                 name="selectedRows[]" value="<?= $value->idRincianLabAset ?>">
-                                                
+                                            <?php endif; ?>
                                         </td>
                                         <td class="d-none">
                                             <?= $value->idRincianLabAset; ?>
@@ -122,17 +124,12 @@
                                             <?= $value->warna; ?>
                                         </td>
                                         <td>
-                                            <?= number_format($value->hargaBeli, 0, ',', '.') ?>
+                                            <?php if ($value->sectionAset == "None") : ?>
+                                            Tersedia
+                                            <?php elseif ($value->sectionAset == "Dipinjam") : ?>
+                                            <span class="badge bg-danger">Tidak Tersedia</span>
+                                            <?php endif; ?>
                                         </td>
-                                        <!-- <td>
-                                            <select name="loanStatus[]" id="loanStatus" class="form-select me-2"
-                                                style="width: 130px">
-                                                <option value="Approve">Approve</option>
-                                                <option value="Reject">Reject</option>
-                                            </select>
-                                            <input type="hidden" name="idRincianLabAset[]"
-                                                value="<?= $value->idRincianLabAset; ?>">
-                                        </td> -->
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -141,10 +138,11 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('requestPeminjaman') ?>" class="btn btn-secondary me-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <a href="<?= site_url('requestPeminjaman/rejectLoan') ?>" id="rejectButton"
+                                class="btn btn-danger me-2">Reject</a>
+                            <button type="submit" class="btn btn-primary">Approve</button>
                             <br>
-                            <input type="text" name="selectedRows" id="selectedRows" value="">
+                            <input type="hidden" name="getData" id="getData" value="">
                         </div>
                     </div>
                 </form>
@@ -168,15 +166,30 @@
 
         $("#custom-validation").on("submit", function () {
             var selectedRows = getSelectedRowIds();
-            $("#selectedRows").val(selectedRows.join(','));
+            $("#getData").val(selectedRows.join(','));
             if (selectedRows.length === 0) {
                 event.preventDefault();
                 Swal.fire({
                     icon: 'warning',
                     title: 'Warning!',
-                    text: 'Masukkan minimal satu barang!',
+                    text: 'Pilih minimal satu barang!',
                 });
             }
+        });
+
+        $("#rejectButton").on("click", function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this action!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, reject it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = $(this).attr('href');
+                }
+            });
         });
     });
 </script>

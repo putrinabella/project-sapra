@@ -267,6 +267,7 @@ class ManajemenPeminjaman extends ResourceController
         $data = $this->request->getPost();
         $idRincianLabAset = $_POST['selectedRows'];
         $sectionAsetValue = 'Dipinjam';
+
         if (!empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
@@ -304,7 +305,6 @@ class ManajemenPeminjaman extends ResourceController
                     'idRincianLabAset' => $idRincianAset,
                     'idRequestPeminjaman' => $idRequestPeminjaman,
                 ];
-                $this->requestPeminjamanModel->addRequestId($detailData);
                 $this->db->table('tblDetailRequestPeminjaman')->insert($detailData);
             }
             return redirect()->to(site_url('peminjamanDataUser'))->with('success', 'Data berhasil disimpan');

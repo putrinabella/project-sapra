@@ -60,20 +60,18 @@ class RequestPeminjaman extends ResourceController
         $sectionAsetValue = 'Dipinjam';
         $requestStatus = 'Approve';
         
-        var_dump($data);
-        // die;
-
         if (!empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
-            die;
             $idManajemenPeminjaman = $this->db->insertID();
+            
             foreach ($idRincianLabAset as $idRincianAset) {
+                // die;
                 $detailData = [
                     'idRincianLabAset' => $idRincianAset,
                     'idManajemenPeminjaman' => $idManajemenPeminjaman,
                 ];
                 $this->requestPeminjamanModel->updateDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus);
-                die;
+                // die;
                 $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
                 $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
                 
@@ -81,6 +79,27 @@ class RequestPeminjaman extends ResourceController
             $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
 
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
+        }
+    }
+
+    public function rejectLoan() {
+        $data = $this->request->getPost();
+        $idRincianLabAset = $_POST['selectedRows'];
+        $idRequestPeminjaman = $data['idRequestPeminjaman'];
+        $requestStatus = 'Reject';
+        
+        if (!empty($data['asalPeminjam'])) {
+            foreach ($idRincianLabAset as $idRincianAset) {
+                $detailData = [
+                    'idRincianLabAset' => $idRincianAset,
+                    'idManajemenPeminjaman' => $idManajemenPeminjaman,
+                ];
+                $this->requestPeminjamanModel->updateDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus);
+            }
+            $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
+            return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->to(site_url('manajemenPeminjaman'))->with('error', 'Semua field harus terisi');
         }
@@ -112,6 +131,8 @@ class RequestPeminjaman extends ResourceController
         if ($id != null) {
             $dataRequestPeminjaman = $this->requestPeminjamanModel->find($id);
             $dataItemDipinjam = $this->requestPeminjamanModel->getBorrowItems($dataRequestPeminjaman->idRequestPeminjaman);
+            // var_dump($dataItemDipinjam);
+            // die;
             if (is_object($dataRequestPeminjaman)) {
                 $data = [
                     'dataRequestPeminjaman' => $dataRequestPeminjaman,

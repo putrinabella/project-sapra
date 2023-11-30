@@ -70,63 +70,15 @@ class DataPeminjaman extends ResourceController
         }
 
         $dataPeminjaman = $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate, $idUser);
-        $dataRequest = $this->requestPeminjamanModel->getDataRequest($startDate, $endDate, $idUser);
+        $dataRequest = $this->requestPeminjamanModel->getDataRequestUser($startDate, $endDate, $idUser);
 
         $dataUser = array_merge($dataPeminjaman, $dataRequest);
 
         $data = [
             'tableHeading' => $tableHeading,
-            // 'dataDataPeminjaman' => $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate, $idUser),
             'dataUser' => $dataUser,
         ];
         return view('labView/dataPeminjaman/user', $data);
-    }
-
-    // public function user() {
-    //     $startDate = $this->request->getVar('startDate');
-    //     $endDate = $this->request->getVar('endDate');
-    //     $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
-
-    //     $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-    //     $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
-
-    //     $tableHeading = "";
-    //     if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
-    //         $tableHeading = " $formattedStartDate - $formattedEndDate";
-    //     }
-
-    //     $data = [
-    //         'tableHeading' => $tableHeading,
-    //         'dataDataPeminjaman' => $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate, $idUser),
-    //     ];
-    //     return view('labView/dataPeminjaman/user', $data);
-    // }
-
-    public function index2() {
-        $startDate = $this->request->getVar('startDate');
-        $endDate = $this->request->getVar('endDate');
-
-        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
-
-        $tableHeading = "";
-        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
-            $tableHeading = " $formattedStartDate - $formattedEndDate";
-        }
-
-        $dataDataPeminjaman = $this->dataPeminjamanModel->getData($startDate, $endDate);
-
-        $idManajemenPeminjamanArray = [];
-
-        foreach ($dataDataPeminjaman as $peminjaman) {
-            $idManajemenPeminjamanArray[] = $this->dataPeminjamanModel->getIdManajemenPeminjaman($peminjaman->namaPeminjam);
-        }
-
-        $data['idManajemenPeminjamanArray'] = $idManajemenPeminjamanArray;
-        $data['tableHeading'] = $tableHeading;
-        $data['dataDataPeminjaman'] = $dataDataPeminjaman;
-
-        return view('labView/dataPeminjaman/index', $data);
     }
 
     public function edit($id = null)
@@ -190,6 +142,25 @@ class DataPeminjaman extends ResourceController
                     'dataRincianLabAset' => $dataRincianLabAset,
                 ];
                 return view('labView/dataPeminjaman/show', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+
+    public function getUserLoanHistory($id = null) {
+        if ($id != null) {
+            $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($id);
+            $dataRincianLabAset = $this->dataPeminjamanModel->getRincianLabAset($id);
+            if (is_object($dataDataPeminjaman)) {
+                $data = [
+                    'dataDataPeminjaman' => $dataDataPeminjaman,
+                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+                    'dataRincianLabAset' => $dataRincianLabAset,
+                ];
+                return view('labView/dataPeminjaman/showUser', $data);
             } else {
                 return view('error/404');
             }

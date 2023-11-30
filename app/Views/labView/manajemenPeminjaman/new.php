@@ -97,7 +97,7 @@
                             <div class=" col-12 mb-3 text-end">
                                 <button type="submit" class="btn btn-primary">Ajukan Peminjaman </button>
                                 <br>
-                                <input type="hidden" name="selectedRows" id="selectedRows" value="">
+                                <input type="hidden" name="getData" id="getData" value="">
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
 
         $("#custom-validation").on("submit", function () {
             var selectedRows = getSelectedRowIds();
-            $("#selectedRows").val(selectedRows.join(','));
+            $("#getData").val(selectedRows.join(','));
             if (selectedRows.length === 0) {
                 event.preventDefault();
                 Swal.fire({
