@@ -20,6 +20,7 @@ class RequestPeminjamanModels extends Model
     {
         $builder = $this->db->table('tblRequestPeminjaman');
         $builder->select('tblRequestPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestPeminjaman.idRequestPeminjaman) as jumlahPeminjaman');
+        $builder->select('(SUM(CASE WHEN tblDetailRequestPeminjaman.requestItemStatus = "Approve" THEN 1 ELSE 0 END)) AS jumlahApprove', false);
         $builder->join('tblDetailRequestPeminjaman', 'tblDetailRequestPeminjaman.idRequestPeminjaman = tblRequestPeminjaman.idRequestPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
@@ -41,6 +42,7 @@ class RequestPeminjamanModels extends Model
     {
         $builder = $this->db->table('tblRequestPeminjaman');
         $builder->select('tblRequestPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestPeminjaman.idRequestPeminjaman) as jumlahPeminjaman');
+        $builder->select('(SUM(CASE WHEN tblDetailRequestPeminjaman.requestItemStatus = "Approve" THEN 1 ELSE 0 END)) AS jumlahApprove', false);
         $builder->join('tblDetailRequestPeminjaman', 'tblDetailRequestPeminjaman.idRequestPeminjaman = tblRequestPeminjaman.idRequestPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
@@ -89,18 +91,12 @@ class RequestPeminjamanModels extends Model
         $builder->select('*');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblRequestPeminjaman', 'tblRequestPeminjaman.idRequestPeminjaman = tblDetailRequestPeminjaman.idRequestPeminjaman');
         $builder->where('tblDetailRequestPeminjaman.idRequestPeminjaman', $idRequestPeminjaman);
         $query = $builder->get();
         return $query->getResult();
     }
 
-    // public function getSectionAsetById($idRincianLabAset)
-    // {
-    //     return $this->select('sectionAset')
-    //                 ->where('idRincianLabAset', $idRincianLabAset)
-    //                 ->first();
-    // }
-    
     public function updateRequestPeminjaman($idRequestPeminjaman, $requestStatus) {
         $builder = $this->db->table('tblRequestPeminjaman');
         $data = [
@@ -112,16 +108,34 @@ class RequestPeminjamanModels extends Model
     }
 
 
-    public function updateDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus) {
+    public function approveDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus, $idRincianLabAset) {
         $builder = $this->db->table('tblDetailRequestPeminjaman');
         $data = [
             'requestItemStatus' => $requestStatus,
         ];
-
+    
         $builder->where('idRequestPeminjaman', $idRequestPeminjaman)
+                ->whereIn('idRincianLabAset', $idRincianLabAset)
                 ->update($data);
     }
-
+    
+    public function rejectDetailRequestPeminjaman($idRequestPeminjaman) {
+        $builder = $this->db->table('tblDetailRequestPeminjaman');
+        $builder->where('idRequestPeminjaman', $idRequestPeminjaman)
+                ->where('requestItemStatus !=', 'Approve');
+    
+        $rowsToUpdate = $builder->get()->getResult();
+    
+        foreach ($rowsToUpdate as $data) {
+            $updateBuilder = $this->db->table('tblDetailRequestPeminjaman');
+            $data = [
+                'requestItemStatus' => 'Reject',
+            ];
+            $builder->where('idRequestPeminjaman', $idRequestPeminjaman)
+                    ->update($data);
+        }
+    }
+    
     function find($id = null, $columns = '*')
     {
         $builder = $this->db->table($this->table);

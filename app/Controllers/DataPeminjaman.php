@@ -169,6 +169,25 @@ class DataPeminjaman extends ResourceController
         }
     }
 
+    public function getuserRequestDetail($id = null) {
+        if ($id != null) {
+            $dataRequestPeminjaman = $this->requestPeminjamanModel->find($id);
+            $dataItemDipinjam = $this->requestPeminjamanModel->getBorrowItems($dataRequestPeminjaman->idRequestPeminjaman);
+            if (is_object($dataRequestPeminjaman)) {
+                $data = [
+                    'dataRequestPeminjaman' => $dataRequestPeminjaman,
+                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+                    'dataItemDipinjam' => $dataItemDipinjam,
+                ];
+                return view('labView/dataPeminjaman/userRequestDetail', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+
     public function print($id = null) {
         $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($id);
         $dataRincianLabAset = $this->dataPeminjamanModel->getRincianItem($id);

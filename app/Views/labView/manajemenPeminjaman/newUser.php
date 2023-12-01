@@ -29,12 +29,7 @@
                             <div class="row mb-3">
                                 <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                                 <div class="col-sm-9">
-                                    <div class="input-group date datepicker m-0" id="tanggal">
-                                        <input type="text" class="form-control bg-transparent" name="tanggal"
-                                            placeholder="Masukkan tanggal" readonly>
-                                        <span class="input-group-text input-group-addon bg-transparent"><i
-                                                data-feather="calendar"></i></span>
-                                    </div>
+                                    <input type="text" class="form-control bg-transparent" name="tanggal" id="tanggalInput" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -77,8 +72,7 @@
                             <div class="row mb-3">
                                 <label for="lamaPinjam" class="col-sm-3 col-form-label">Lama Peminjaman</label>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control bg-transparent" id="lamaPinjam"
-                                        name="lamaPinjam" placeholder="Masukkan lama pinjam (Hari)">
+                                <input type="number" class="form-control bg-transparent" id="lamaPinjam" name="lamaPinjam" placeholder="Masukkan lama pinjam (Hari)" pattern="\d*" title="Tulis lama peminjaman dengan angka">
                                 </div>
                             </div>
                             <div class=" col-12 mb-3 text-end">
@@ -164,6 +158,14 @@
                 });
             }
         });
+
+        function getCurrentFormattedDate() {
+            const today = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return today.toLocaleDateString('en-GB', options);
+        }
+        $("#tanggalInput").val(getCurrentFormattedDate());
+
     });
 </script>
 <?= $this->endSection(); ?>

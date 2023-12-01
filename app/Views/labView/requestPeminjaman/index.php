@@ -106,14 +106,13 @@
                             <th>Nama Peminjam</th>
                             <th>Karwayan/Siswa</th>
                             <th>Lokasi</th>
-                            <th>Jumlah Aset Dipinjam</th>
+                            <th style="width: 15%;">Jumlah Aset</th>
                             <th>Status</th>
-                            <th style="width: 20%;">Aksi</th>
+                            <th style="width: 10%;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="py-2">
                         <?php foreach ($dataRequestPeminjaman as $key => $value) : ?>
-
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                             <td>
                                 <?= $key + 1 ?>
@@ -133,8 +132,18 @@
                             <td>
                                 <?= $value->namaLab ?>
                             </td>
-                            <td class="text-center">
-                                <?= $value->jumlahPeminjaman ?>
+                            <td>
+                                <?php if ($value->loanStatus == "Approve") : ?>
+                                    Request: <?= $value->jumlahPeminjaman ?>
+                                    <br>
+                                    Approve: <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '-'; ?>
+                                <?php elseif ($value->loanStatus == "Request") : ?>
+                                    Request: <?= $value->jumlahPeminjaman ?>
+                                <?php elseif ($value->loanStatus == "Reject") : ?>
+                                    Request: <?= $value->jumlahPeminjaman ?>
+                                    <br>
+                                    Approve: <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '0'; ?>
+                                <?php endif; ?>
                             </td>
                             <td>
                                 <?php if ($value->loanStatus == "Approve") : ?>
@@ -145,11 +154,14 @@
                                 <span class="badge bg-danger">Reject</span>
                                 <?php endif; ?>
                             </td>
-
                             <td class="text-center">
                                 <?php if ($value->loanStatus == "Request") : ?>
                                 <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
+                                <?php endif; ?>                                
+                                <?php if ($value->loanStatus == "Approve") : ?>
+                                <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman) ?>"
+                                    class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>                                
                             </td>
                         </tr>

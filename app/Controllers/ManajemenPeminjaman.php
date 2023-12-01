@@ -197,6 +197,7 @@ class ManajemenPeminjaman extends ResourceController
             return view('error/404');
         }
     }
+    
     public function showUser($id = null)
     {
         if ($id != null) {

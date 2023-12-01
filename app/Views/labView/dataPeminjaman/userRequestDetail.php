@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>History Request Peminjaman &verbar; SARPRA </title>
+<title>Request Peminjaman &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -11,9 +11,9 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('requestPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
+                    <a href="<?= site_url('peminjamanDataUser') ?>" class="btn btn-icon-text btn-outline-primary me-2">
                         <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
-                    <h4 class="text-center">History Request Peminjaman</h4>
+                    <h4 class="text-center">Request Peminjaman</h4>
                     <div></div>
                 </div>
             </div>
@@ -23,34 +23,6 @@
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" name="tanggal"
                             placeholder="Masukkan tanggal" readonly value="<?= $dataRequestPeminjaman->tanggal ?>">
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="asalPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control bg-transparent" id="nis" name="nis"
-                            value="<?= $dataRequestPeminjaman->nis ?>" readonly>
-                        <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
-                            value="<?= $dataRequestPeminjaman->idDataSiswa ?>" hidden>
-                        <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"
-                            value="Peminjaman" hidden>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="namaPeminjam" class="col-sm-3 col-form-label">Nama Peminjam</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control bg-transparent" id="namaPeminjam" name="namaPeminjam"
-                            value="<?= $dataRequestPeminjaman->namaSiswa ?>" readonly>
-                        <input type="text" class="form-control bg-transparent" id="idRequestPeminjaman"
-                            name="idRequestPeminjaman" value="<?= $dataRequestPeminjaman->idRequestPeminjaman ?>"
-                            hidden>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="kelasJabatan" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control bg-transparent" id="kelasJabatan" name="kelasJabatan"
-                            value="<?= $dataRequestPeminjaman->namaKelas ?>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -115,10 +87,16 @@
                                         <?= $value->warna; ?>
                                     </td>
                                     <td>
-                                        <?php if ($value->requestItemStatus == "Approve") : ?>
-                                        Approve
-                                        <?php else :?>
-                                        <span class="badge bg-danger">Reject</span>
+                                        <?php if ($value->loanStatus == "Approve") : ?>
+                                            <?php if ($value->requestItemStatus == "Approve") : ?>
+                                                <span class="badge bg-success">Approve</span>
+                                            <?php else :?>
+                                                <span class="badge bg-danger">Reject</span>
+                                            <?php endif; ?>
+                                        <?php elseif ($value->loanStatus == "Request") : ?>
+                                            <span class="badge bg-primary">Request</span>
+                                        <?php elseif ($value->loanStatus == "Reject") : ?>
+                                            <span class="badge bg-danger">Reject</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

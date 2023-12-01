@@ -80,11 +80,8 @@
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
-                            <th>NIS/NIP</th>
-                            <th>Nama Peminjam</th>
-                            <th>Karwayan/Siswa</th>
                             <th>Lokasi</th>
-                            <th>Jumlah Aset Dipinjam</th>
+                            <th>Jumlah Aset</th>
                             <th>Status</th>
                             <th style="width: 20%;">Aksi</th>
                         </tr>
@@ -98,22 +95,13 @@
                             <td class="text-left">
                                 <?= date('d F Y', strtotime($value->tanggal)) ?>
                             </td>
-                            <td class="text-left">
-                                <?= $value->nis; ?> 
-                            </td>
-                            <td class="text-left">
-                                <?= $value->namaSiswa; ?>
-                            </td>
-                            <td class="text-left">
-                                <?= $value->namaKelas; ?>
-                            </td>
                             <td>
                                 <?= $value->namaLab ?>
                             </td>
                             <td class="text-center">
                                 <?= $value->jumlahPeminjaman ?>
                             </td>
-                            <td style="width: 10%"> 
+                            <td style="width: 10%">
                                 <?php if ($value->loanStatus == "Approve" || $value->loanStatus == "Peminjaman") : ?>
                                 <span class="badge bg-success">Approve</span>
                                 <?php elseif ($value->loanStatus == "Request") : ?>
@@ -124,20 +112,21 @@
                                 <span class="badge bg-info">Completed</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center">
+                            <td>
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                    <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
+                                <a href="<?= site_url('peminjamanDataUser/userDetail/' . $value->idManajemenPeminjaman) ?>"
+                                    class="btn btn-success btn-icon me-2"> <i data-feather="info"></i></a>
+                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
-                                    data-feather="printer"></i></a>
-                                    <a href="<?= site_url('peminjamanDataUser/userDetail/' . $value->idManajemenPeminjaman) ?>"
-                                    class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
+                                        data-feather="printer"></i></a>
                                 <?php endif; ?>
                                 <?php if ($value->loanStatus == "Pengembalian"): ?>
                                 <a href="<?= site_url('peminjamanDataUser/userDetail/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
-                                <?php if ($value->loanStatus == "Request" || $value->loanStatus == "Reject"): ?>
-                                    
+                                <?php if ($value->loanStatus == "Request" || $value->loanStatus == "Reject"  || $value->loanStatus == "Approve"): ?>
+                                <a href="<?= site_url('peminjamanDataUser/userRequestHistory/' . $value->idRequestPeminjaman) ?>"
+                                    class="btn btn-primary btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
                             </td>
                         </tr>

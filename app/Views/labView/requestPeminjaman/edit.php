@@ -138,8 +138,8 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('requestPeminjaman/rejectLoan') ?>" id="rejectButton"
-                                class="btn btn-danger me-2">Reject</a>
+                            <a href="<?= site_url('requestPeminjaman/rejectLoan/' . $value->idRequestPeminjaman) ?>"
+                                id="rejectButton" class="btn btn-danger me-2">Reject</a>
                             <button type="submit" class="btn btn-primary">Approve</button>
                             <br>
                             <input type="hidden" name="getData" id="getData" value="">
