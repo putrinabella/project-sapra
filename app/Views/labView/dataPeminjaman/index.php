@@ -148,7 +148,16 @@
                                 <span class="badge bg-success">Sudah Dikembalikan</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center">
+                            <td>
+                                <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger btn-icon"
+                                        data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                </form>
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
                                 <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
@@ -160,15 +169,6 @@
                                 <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
-                                <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
-                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="btn btn-danger btn-icon"
-                                        data-confirm="Apakah anda yakin menghapus data ini?">
-                                        <i data-feather="trash"></i>
-                                    </button>
-                                </form>
                             </td>
                         </tr>
                         <?php endforeach; ?>

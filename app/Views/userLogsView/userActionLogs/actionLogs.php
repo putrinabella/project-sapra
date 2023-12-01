@@ -77,9 +77,9 @@
                                 <td><?=$value->nama?></td>
                                 <td><?=$value->role?></td>
                                 <td>
-                                    <?php if ($value->actionType === 'Restore' || 'Restore All') : ?>
+                                    <?php if ($value->actionType === 'Restore' ||$value->actionType === 'Restore All') : ?>
                                         <span class="badge bg-primary"><?= $value->actionType ?></span>
-                                    <?php elseif ($value->actionType === 'Delete' || 'Delete All') : ?>
+                                    <?php elseif ($value->actionType === 'Delete' || $value->actionType === 'Delete All') : ?>
                                         <span class="badge bg-danger"><?= $value->actionType ?></span>
                                     <?php else : ?>
                                         <?= $value->actionType ?>

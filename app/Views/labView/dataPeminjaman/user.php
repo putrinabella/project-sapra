@@ -14,7 +14,7 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?= site_url('dataPeminjaman') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?= site_url('peminjamanDataUser') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
@@ -28,7 +28,7 @@
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('dataPeminjaman') ?>" class="btn btn-success btn-icon ">
+                <a href="<?= site_url('peminjamanDataUser') ?>" class="btn btn-success btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
@@ -92,8 +92,12 @@
                             <td>
                                 <?= $key + 1 ?>
                             </td>
-                            <td class="text-left">
-                                <?= date('d F Y', strtotime($value->tanggal)) ?>
+                            <?php
+                                $originalDate = $value->tanggal;
+                                $formattedDate = date('d F Y', strtotime($originalDate));
+                                ?>
+                            <td data-sort="<?= strtotime($originalDate) ?>">
+                                <?php echo $formattedDate; ?>
                             </td>
                             <td>
                                 <?= $value->namaLab ?>
@@ -116,7 +120,7 @@
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
                                 <a href="<?= site_url('peminjamanDataUser/userDetail/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon me-2"> <i data-feather="info"></i></a>
-                                <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
+                                <a href="<?= site_url('peminjamanDataUser/print/' . $value->idManajemenPeminjaman) ?>"
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
                                         data-feather="printer"></i></a>
                                 <?php endif; ?>

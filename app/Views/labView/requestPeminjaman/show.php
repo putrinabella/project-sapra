@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>History Request Peminjaman &verbar; SARPRA </title>
+<title>Request Peminjaman &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -13,7 +13,7 @@
                 <div class="d-flex justify-content-between">
                     <a href="<?= site_url('requestPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
                         <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
-                    <h4 class="text-center">History Request Peminjaman</h4>
+                    <h4 class="text-center">Request Peminjaman</h4>
                     <div></div>
                 </div>
             </div>

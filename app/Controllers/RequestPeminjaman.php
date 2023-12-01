@@ -30,7 +30,7 @@ class RequestPeminjaman extends ResourceController
         $this->identitasLabModel = new IdentitasLabModels();
         $this->dataSiswaModel = new DataSiswaModels();
         $this->db = \Config\Database::connect();
-        helper(['pdf']);
+        helper(['pdf', 'custom']);
     }
 
     public function index()

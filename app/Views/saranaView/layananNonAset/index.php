@@ -102,7 +102,7 @@
                                 </td>
                                 <?php
                                 $originalDate = $value->tanggal;
-                                $formattedDate = date('d M Y', strtotime($originalDate));
+                                $formattedDate = date('d F Y', strtotime($originalDate));
                                 ?>
                                 <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
                                 <td><?=$value->namaPrasarana?></td>

@@ -159,7 +159,7 @@
                                 <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <?php endif; ?>                                
-                                <?php if ($value->loanStatus == "Approve") : ?>
+                                <?php if ($value->loanStatus == "Approve"  || $value->loanStatus == "Reject") : ?>
                                 <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>                                

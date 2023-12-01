@@ -152,10 +152,6 @@
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
-                                    <a href="<?= site_url('QRBarcode/' . $value->kodeRincianAset) ?>" target="_blank"
-                                        class="btn btn-success mdi mdi-qrcode-scan"
-                                        data-kode="<?= $value->kodeRincianAset ?>">
-                                    </a>
                                 </td>
                                 <td class="text-center">
                                     <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>"

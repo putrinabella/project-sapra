@@ -22,6 +22,7 @@ class SaranaLayananAsetModels extends Model
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
         $builder->where('tblSaranaLayananAset.deleted_at', null);
+        $builder->orderBy('tanggal', 'desc'); 
         $query = $builder->get();
         return $query->getResult();
     }

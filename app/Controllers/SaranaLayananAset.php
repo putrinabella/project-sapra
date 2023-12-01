@@ -10,6 +10,7 @@ use App\Models\SumberDanaModels;
 use App\Models\RincianAsetModels; 
 use App\Models\KategoriManajemenModels; 
 use App\Models\IdentitasPrasaranaModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -26,7 +27,9 @@ class SaranaLayananAset extends ResourceController
         $this->sumberDanaModel = new SumberDanaModels();
         $this->rincianAsetModel = new RincianAsetModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -174,25 +177,16 @@ class SaranaLayananAset extends ResourceController
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblSaranaLayananAset')
-                ->set('deleted_at', null, true)
-                ->where(['idSaranaLayananAset' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblSaranaLayananAset')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblSaranaLayananAset', 'idSaranaLayananAset', $id, $this->userActionLogsModel, 'Sarana - Layanan Aset');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('saranaLayananAset/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
-
-    public function deletePermanent($id = null) {
+    }
+    
+    public function deletePermanent2($id = null) {
         if($id != null) {
         $this->saranaLayananAsetModel->delete($id, true);
         return redirect()->to(site_url('saranaLayananAset/trash'))->with('success', 'Data berhasil dihapus permanen');
@@ -207,6 +201,17 @@ class SaranaLayananAset extends ResourceController
             }
         }
     }  
+
+    public function deletePermanent($id = null) {
+        $affectedRows = deleteData('tblSaranaLayananAset', 'idSaranaLayananAset', $id, $this->userActionLogsModel, 'Sarana - Layanan Aset');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('saranaLayananAset/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    }
+    
 
     private function htmlConverter($html) {
         $plainText = strip_tags(str_replace('<br />', "\n", $html));

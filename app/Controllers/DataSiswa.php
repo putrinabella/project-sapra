@@ -167,7 +167,7 @@ class DataSiswa extends ResourceController
     // } 
 
     public function restore($id = null) {
-        $affectedRows = restoreData('tblDataSiswa', 'idDataSiswa', $id, $this->userActionLogsModel);
+        $affectedRows = restoreData('tblDataSiswa', 'idDataSiswa', $id, $this->userActionLogsModel, 'Data Siswa');
     
         if ($affectedRows > 0) {
             return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil direstore');
@@ -175,6 +175,8 @@ class DataSiswa extends ResourceController
     
         return redirect()->to(site_url('dataSiswa/trash'))->with('error', 'Tidak ada data untuk direstore');
     }
+    
+
     
 
     public function deletePermanent($id = null) {

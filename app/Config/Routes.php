@@ -563,6 +563,7 @@ $routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
 
 // Data Peminjaman
 $routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
+$routes->get('peminjamanDataUser/print/(:num)', 'DataPeminjaman::print/$1');
 $routes->get('dataPeminjaman/printAll', 'DataPeminjaman::printAll');
 $routes->get('dataPeminjaman/generatePDF', 'DataPeminjaman::generatePDF');
 $routes->get('dataPeminjaman/export', 'DataPeminjaman::export');

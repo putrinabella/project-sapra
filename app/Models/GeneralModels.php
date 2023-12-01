@@ -28,15 +28,15 @@ class GeneralModels extends Model
     }
 
     public function converDateDisplayFormat($inputDate) {
-    $dateTime = date_create_from_format('Y-m-d', $inputDate);
+        $dateTime = date_create_from_format('Y-m-d', $inputDate);
 
-    if ($dateTime === false) {
-        throw new \Exception("Invalid date format: $inputDate");
+        if ($dateTime === false) {
+            throw new \Exception("Invalid date format: $inputDate");
+        }
+
+        $displayDateFormat = $dateTime->format('d F Y');
+
+        return $displayDateFormat;
     }
-
-    $displayDateFormat = $dateTime->format('d F Y');
-
-    return $displayDateFormat;
-}
 
 }

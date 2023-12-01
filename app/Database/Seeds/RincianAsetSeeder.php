@@ -10,13 +10,13 @@ class RincianAsetSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $data = [
                 'kodeRincianAset' => $faker->unique()->uuid,
-                'idIdentitasSarana' => random_int(10, 200),
+                'idIdentitasSarana' => random_int(10, 20),
                 'idSumberDana' => random_int(1,2),
                 'idKategoriManajemen' => random_int(1, 5),
-                'idIdentitasPrasarana' => random_int(1, 28),
+                'idIdentitasPrasarana' => random_int(1, 5),
                 'tahunPengadaan' => $faker->date('Y'),
                 'noSeri' => $faker->unique()->uuid,
                 'merk' => $faker->word,

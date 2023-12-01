@@ -7,12 +7,6 @@
 <?= $this->section("content"); ?>
 <meta name="csrf-token" content="<?= csrf_hash() ?>">
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Layanan Aset</h4>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">

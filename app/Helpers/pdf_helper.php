@@ -45,9 +45,19 @@ if (!function_exists('pdf_suratpeminjaman')) {
 
         $pdf->SetFont('times', '', 12, '', true);
         $pdf->AddPage();
-        // $namaPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaSiswa : $dataDataPeminjaman->namaPegawai;
-        // $idPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->nis : $dataDataPeminjaman->nip;
-        // $asalPeminjam = ($dataDataPeminjaman->kategoriPeminjam == 'siswa') ? $dataDataPeminjaman->namaKelas : $dataDataPeminjaman->namaKategoriPegawai;
+
+        $dayNamesIndonesian = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $monthNamesIndonesian = [
+            '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        $tanggalFormatted = $dayNamesIndonesian[date('w', strtotime($dataDataPeminjaman->tanggal))];
+        $tanggalFormatted .= ', ' . date('j', strtotime($dataDataPeminjaman->tanggal));
+        $tanggalFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($dataDataPeminjaman->tanggal))];
+        $tanggalFormatted .= ' ' . date('Y', strtotime($dataDataPeminjaman->tanggal));
+
+
         $yearNow = date('Y');
         $yearNext = date('Y', strtotime('+1 year'));
         $html = <<<EOD
@@ -82,7 +92,7 @@ if (!function_exists('pdf_suratpeminjaman')) {
             <tr>
                 <th style="width: 200px;">Hari, Tanggal Pinjam</th>
                 <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->tanggal</th>
+                <th>$tanggalFormatted</th>
             </tr>
             <tr>
                 <th style="width: 200px;">Lama Pinjam</th>

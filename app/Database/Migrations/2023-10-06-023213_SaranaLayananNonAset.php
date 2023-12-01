@@ -16,8 +16,7 @@ class SaranaLayananNonAset extends Migration
                 'auto_increment' => true,
             ],
             'tanggal' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE', 
             ],
             'idIdentitasPrasarana' => [
                 'type' => 'INT',

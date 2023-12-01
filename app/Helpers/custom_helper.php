@@ -17,31 +17,104 @@
     }
 
     if (!function_exists('restoreData')) {
-        function restoreData($table, $idColumn, $id = null, $model) {
+        function restoreData($table, $idColumn, $id = null, $model, $namaData) {
             $db = \Config\Database::connect();
-    
             $builder = $db->table($table);
             $deletedAtColumn = 'deleted_at';
+    
             if ($id !== null) {
                 $builder->set($deletedAtColumn, null, true)
                         ->where([$idColumn => $id])
                         ->update();
+    
                 if ($model !== null) {
-                    activityLogs($model, "Restore", "Melakukan restore data $table dengan id $id");
+                    activityLogs($model, "Restore", "Melakukan restore data $namaData dengan id $id");
                 }
-                
             } else {
-                $builder->set($deletedAtColumn, null, true)
-                        ->where("$deletedAtColumn IS NOT NULL", null, false)
-                        ->update();
-
-                // Log activity
-                if ($model !== null) {
-                    activityLogs($model, "Restore All", "Melakukan restore semua data $table");
+                $countInTrash = $builder->where("$deletedAtColumn IS NOT NULL", null, false)->countAllResults();
+    
+                if ($countInTrash > 0) {
+                    $builder->set($deletedAtColumn, null, true)
+                            ->where("$deletedAtColumn IS NOT NULL", null, false)
+                            ->update();
+    
+                    // Log activity
+                    if ($model !== null) {
+                        activityLogs($model, "Restore All", "Melakukan restore semua data $namaData");
+                    }
+    
+                    return $countInTrash; // or return a success message
+                } else {
+                    return 0; // or return a message indicating that the trash is empty
                 }
             }
     
             return $db->affectedRows();
         }
     }
+    
+    // if (!function_exists('restoreData')) {
+    //     function restoreData($table, $idColumn, $id = null, $model, $namaData) {
+    //         $db = \Config\Database::connect();
+    
+    //         $builder = $db->table($table);
+    //         $deletedAtColumn = 'deleted_at';
+    //         if ($id !== null) {
+    //             $builder->set($deletedAtColumn, null, true)
+    //                     ->where([$idColumn => $id])
+    //                     ->update();
+    //             if ($model !== null) {
+    //                 activityLogs($model, "Restore", "Melakukan restore data $namaData dengan id $id");
+    //             }
+                
+    //         } else {
+    //             $builder->set($deletedAtColumn, null, true)
+    //                     ->where("$deletedAtColumn IS NOT NULL", null, false)
+    //                     ->update();
+
+    //             // Log activity
+    //             if ($model !== null) {
+    //                 activityLogs($model, "Restore All", "Melakukan restore semua data $namaData");
+    //             }
+    //         }
+    
+    //         return $db->affectedRows();
+    //     }
+    // }
+
+
+    if (!function_exists('deleteData')) {
+        function deleteData($table, $idColumn, $id = null, $model, $namaData) {
+            $db = \Config\Database::connect();
+            $builder = $db->table($table);
+            $deletedAtColumn = 'deleted_at';
+    
+            if ($id !== null) {
+                $builder->where([$idColumn => $id])->delete();
+    
+                if ($model !== null) {
+                    activityLogs($model, "Delete", "Melakukan delete data $namaData dengan id $id");
+                }
+            } else {
+                $countInTrash = $builder->where("$deletedAtColumn IS NOT NULL", null, false)->countAllResults();
+    
+                if ($countInTrash > 0) {
+                    // Directly purge deleted records
+                    $db->table($table)->where("$deletedAtColumn IS NOT NULL", null, false)->delete();
+                    // Log activity
+                    if ($model !== null) {
+                        activityLogs($model, "Delete All", "Menggosongkan tempat sampah $namaData ");
+                    }
+                    return $countInTrash; // or return a success message
+                } else {
+                    return 0; // or return a message indicating that the trash is empty
+                }
+            }
+    
+            return $db->affectedRows();
+        }
+    }
+    
+    
+    
 ?>

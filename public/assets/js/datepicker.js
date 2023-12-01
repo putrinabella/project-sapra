@@ -25,8 +25,8 @@ $(function() {
     // var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     
     $(selector).datepicker({
-      // format: "yyyy-mm-dd",
-      format: "dd MM yyyy",
+      format: "yyyy-mm-dd",
+      // format: "dd MM yyyy",
       todayHighlight: true,
       autoclose: true
     });

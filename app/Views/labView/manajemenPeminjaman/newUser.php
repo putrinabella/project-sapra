@@ -25,12 +25,7 @@
                             <div>
                                 <input type="text" class="form-control" id="loanStatus" name="loanStatus"
                                     value="Request" hidden>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control bg-transparent" name="tanggal" id="tanggalInput" readonly>
-                                </div>
+                                    <input type="text" class="form-control bg-transparent" name="tanggal" id="setTanggal" placeholder="Masukkan tanggal" hidden>
                             </div>
                             <div class="row mb-3">
                                 <label for="namaLab" class="col-sm-3 col-form-label">Lokasi</label>
@@ -159,13 +154,13 @@
             }
         });
 
-        function getCurrentFormattedDate() {
-            const today = new Date();
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            return today.toLocaleDateString('en-GB', options);
-        }
-        $("#tanggalInput").val(getCurrentFormattedDate());
+        var currentDate = new Date();
+        var year = currentDate.getFullYear();
+        var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        var day = String(currentDate.getDate()).padStart(2, '0');
+        var formattedDate = year + '-' + month + '-' + day;
 
+        document.getElementById('setTanggal').value = formattedDate;
     });
 </script>
 <?= $this->endSection(); ?>
