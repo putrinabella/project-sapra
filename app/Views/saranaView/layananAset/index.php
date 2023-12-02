@@ -151,7 +151,7 @@
                                 <td class="text-center">
                                     <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
                                 </td>
-                                <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     <?=$value->keterangan?>
                                 </td>
                                 <td class="text-center">

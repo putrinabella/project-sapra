@@ -163,7 +163,10 @@ if (!function_exists('pdf_suratpeminjaman')) {
 }
 
 if (!function_exists('pdf_layananaset')) {
-    function pdf_layananaset($dataSaranaLayananAset, $title,  $startDate = null, $endDate = null) {
+    function pdf_layananaset($data, $title,  $startDate = null, $endDate = null) {
+        usort($data, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         $pdf->SetCreator(PDF_CREATOR);
@@ -243,7 +246,7 @@ if (!function_exists('pdf_layananaset')) {
         EOD;
         
     
-    foreach ($dataSaranaLayananAset as $key => $value) {
+    foreach ($data as $key => $value) {
         $tanggalTimestamp = strtotime($value->tanggal);
         $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
         $html .= '<tr>';
@@ -306,7 +309,10 @@ if (!function_exists('pdf_layananaset')) {
 }
 
 if (!function_exists('pdf_layananasetlab')) {
-    function pdf_layananasetlab($dataSaranaLayananAset, $title,  $startDate = null, $endDate = null) {
+    function pdf_layananasetlab($data, $title,  $startDate = null, $endDate = null) {
+        usort($data, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         $pdf->SetCreator(PDF_CREATOR);
@@ -386,7 +392,7 @@ if (!function_exists('pdf_layananasetlab')) {
         EOD;
         
     
-    foreach ($dataSaranaLayananAset as $key => $value) {
+    foreach ($data as $key => $value) {
         $tanggalTimestamp = strtotime($value->tanggal);
         $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
         $html .= '<tr>';
@@ -428,6 +434,148 @@ if (!function_exists('pdf_layananasetlab')) {
                             '<td>Keterangan</td>' .
                             '<td>:</td>' .
                             '<td style="text-align: justify;">' . $value->keterangan . '</td>' .
+                        '</tr>' .
+                    '</table>' .
+                '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdf_layanannonaset')) {
+    function pdf_layanannonaset($data, $title,  $startDate = null, $endDate = null) {
+        usort($data, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Sarana - Layanan Non Aset');
+        $pdf->SetSubject('Sarana - Layanan Non Aset');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <style>
+        
+        </style>
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        // Include date range only when both $startDate and $endDate are not null
+        if ($startDateFormatted !== '' && $endDateFormatted !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+        
+        $html .= <<<EOD
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Tanggal</b></th>
+                    <th style="width: 60%;"><b>Penjelasan</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $tanggalTimestamp = strtotime($value->tanggal);
+        $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
+        $html .= '<tr>';
+        $html .= '<td  style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
+        $html .= '<td style="width: 60%; text-align: left;">' .
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 30%;">Lokasi</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 65%;">' . $value->namaPrasarana . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Layanan</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaStatusLayanan . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Kategori MEP</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaKategoriMep . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Sumber Dana</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaSumberDana . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Biaya</td>' .
+                            '<td>:</td>' .
+                            '<td>Rp' . number_format($value->biaya, 0, ',', '.') . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Keterangan</td>' .
+                            '<td>:</td>' .
+                            '<td style="text-align: justify;">' . $value->spesifikasi . '</td>' .
                         '</tr>' .
                     '</table>' .
                 '</td>';

@@ -52,36 +52,6 @@
             return $db->affectedRows();
         }
     }
-    
-    // if (!function_exists('restoreData')) {
-    //     function restoreData($table, $idColumn, $id = null, $model, $namaData) {
-    //         $db = \Config\Database::connect();
-    
-    //         $builder = $db->table($table);
-    //         $deletedAtColumn = 'deleted_at';
-    //         if ($id !== null) {
-    //             $builder->set($deletedAtColumn, null, true)
-    //                     ->where([$idColumn => $id])
-    //                     ->update();
-    //             if ($model !== null) {
-    //                 activityLogs($model, "Restore", "Melakukan restore data $namaData dengan id $id");
-    //             }
-                
-    //         } else {
-    //             $builder->set($deletedAtColumn, null, true)
-    //                     ->where("$deletedAtColumn IS NOT NULL", null, false)
-    //                     ->update();
-
-    //             // Log activity
-    //             if ($model !== null) {
-    //                 activityLogs($model, "Restore All", "Melakukan restore semua data $namaData");
-    //             }
-    //         }
-    
-    //         return $db->affectedRows();
-    //     }
-    // }
-
 
     if (!function_exists('deleteData')) {
         function deleteData($table, $idColumn, $id = null, $model, $namaData) {

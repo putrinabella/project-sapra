@@ -5,7 +5,13 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
-<meta name="csrf-token" content="<?= csrf_hash() ?>">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('saranaLayananAset')?>">Layanan Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Input Data</li>
+    </ol>
+</nav>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">

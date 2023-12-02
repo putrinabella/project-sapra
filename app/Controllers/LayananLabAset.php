@@ -154,10 +154,6 @@ class LayananLabAset extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            // $uploadedFilePath = $this->uploadFile('bukti');
-            // if ($uploadedFilePath !== null) {
-            //     $data['bukti'] = $uploadedFilePath;
-            // }
             $this->layananLabAsetModel->update($id, $data);
             return redirect()->to(site_url('layananLabAset'))->with('success', 'Data berhasil diupdate');
         } else {
@@ -580,36 +576,5 @@ class LayananLabAset extends ResourceController
         $response->setBody($pdfData);
         $response->send();
     }
-
-    
-    // public function fetchKategoriManajemen()
-    // {
-    //     $idIdentitasLab = $this->request->getPost('idIdentitasLab');
-    //     $kategoriManajemen =  $this->layananLabAsetModel->getKategoriManajemen($idIdentitasLab);
-
-    //     return $this->response->setJSON($kategoriManajemen);
-    // }
-
-    // public function setKategoriManajemen()
-    // {
-    //     $dataPaket = new RincianLabAsetModels();
-    //     $idIdentitasLab = $this->request->getVar('idIdentitasLab');
-
-    //     $kategoriManajemenLoad = $dataPaket->select('idKategoriManajemen, namaKategoriManajemen')->where(
-    //         'idIdentitasLab',
-    //         $idIdentitasLab
-    //     )->orderBy('namaKategoriManajemen')->findAll();
-    //     $data = [];
-    //     foreach ($kategoriManajemenLoad as $value) {
-    //         $data[] = [
-    //             'id' => $value->idKategoriManajemen,
-    //             'text' => $value->namaKategoriManajemen
-    //         ];
-    //     }
-    //     $response['data'] = $data;
-    //     echo $data;
-    //     die;
-    //     return $this->response->setJSON($response);
-    // }
 }
 

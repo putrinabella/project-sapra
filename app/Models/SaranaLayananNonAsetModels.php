@@ -13,7 +13,23 @@ class SaranaLayananNonAsetModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    function getAll() {
+    function getAll($startDate = null, $endDate = null) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananNonAset.idSumberDana');
+        $builder->join('tblKategoriMep', 'tblKategoriMep.idKategoriMep = tblSaranaLayananNonAset.idKategoriMep');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblSaranaLayananNonAset.idIdentitasPrasarana');
+        $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananNonAset.idStatusLayanan');
+        $builder->where('tblSaranaLayananNonAset.deleted_at', null);
+        $builder->orderBy('tanggal', 'desc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblSaranaLayananNonAset.tanggal >=', $startDate);
+            $builder->where('tblSaranaLayananNonAset.tanggal <=', $endDate);
+        }
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataTemplate() {
         $builder = $this->db->table($this->table);
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananNonAset.idSumberDana');
         $builder->join('tblKategoriMep', 'tblKategoriMep.idKategoriMep = tblSaranaLayananNonAset.idKategoriMep');

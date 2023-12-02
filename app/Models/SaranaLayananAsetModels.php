@@ -40,11 +40,10 @@ class SaranaLayananAsetModels extends Model
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
         $builder->where('tblSaranaLayananAset.deleted_at', null);
-        $builder->orderBy('tanggal', 'desc'); 
         $query = $builder->get();
         return $query->getResult();
     }
-    
+
     function getItAll() {
         $builder = $this->db->table('tblSaranaLayananAset');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');
@@ -89,16 +88,6 @@ class SaranaLayananAsetModels extends Model
         $query = $builder->get();
         return $query->getRow();
     }
-
-    // function getPrasarana() {
-    //     $builder = $this->db->table('tblRincianAset');
-    //     $builder->select('DISTINCT(tblRincianAset.idIdentitasPrasarana), tblIdentitasPrasarana.namaPrasarana');
-    //     $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
-    //     $builder->where('tblRincianAset.deleted_at', null);
-    //     $builder->groupBy('tblIdentitasPrasarana.idIdentitasPrasarana'); 
-    //     $query = $builder->get();
-    //     return $query->getResult();
-    // }
     
     function getSarana() {
         $builder = $this->db->table('tblRincianAset');
