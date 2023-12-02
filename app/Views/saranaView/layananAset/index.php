@@ -61,7 +61,6 @@
                 <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
-        
         <div class="dropdown">
             <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

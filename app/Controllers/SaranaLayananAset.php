@@ -32,13 +32,7 @@ class SaranaLayananAset extends ResourceController
         helper(['pdf', 'custom']);
     }
 
-    // public function index() {
-    //     $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
-    //     return view('saranaView/layananAset/index', $data);
-    // }
-    
-    public function index()
-    {
+    public function index() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
@@ -56,6 +50,7 @@ class SaranaLayananAset extends ResourceController
 
         return view('saranaView/layananAset/index', $data);
     }
+
     public function show($id = null) {
         if ($id != null) {
             $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
@@ -204,22 +199,6 @@ class SaranaLayananAset extends ResourceController
     
         return redirect()->to(site_url('saranaLayananAset/trash'))->with('error', 'Tidak ada data untuk direstore');
     }
-    
-    public function deletePermanent2($id = null) {
-        if($id != null) {
-        $this->saranaLayananAsetModel->delete($id, true);
-        return redirect()->to(site_url('saranaLayananAset/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->saranaLayananAsetModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->saranaLayananAsetModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('saranaLayananAset/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('saranaLayananAset/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
 
     public function deletePermanent($id = null) {
         $affectedRows = deleteData('tblSaranaLayananAset', 'idSaranaLayananAset', $id, $this->userActionLogsModel, 'Sarana - Layanan Aset');
@@ -251,9 +230,9 @@ class SaranaLayananAset extends ResourceController
         $activeWorksheet->setTitle('Layanan Aset');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
     
-        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti'];
+        $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti', 'Keterangan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
             $date = date('d F Y', strtotime($value->tanggal));
@@ -266,36 +245,42 @@ class SaranaLayananAset extends ResourceController
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('H'.($index + 2), $biayaFormatted);
-            $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
             $linkValue = $value->bukti; 
             $linkTitle = 'Click here'; 
-
             $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
             $activeWorksheet->setCellValue('I'.($index + 2), $hyperlinkFormula);
+            $activeWorksheet->setCellValue('J' . ($index + 2), $value->keterangan);
+            $activeWorksheet->getStyle('J' . ($index + 2))->getAlignment()->setWrapText(true);
+
         
-            $columns = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];  // Exclude column A
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']; 
         
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
             }
-        
-            // Center align cell A
-            $activeWorksheet->getStyle('A' . ($index + 2))
-                ->getAlignment()
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         }
         
-        $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
-        $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $activeWorksheet->getStyle('A1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'I') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        foreach (range('A', 'J') as $column) {
+            if ($column == 'J') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(35);
+            } else {
+                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            }
         }
-    
+        
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=Layanan Aset Sarana.xlsx');
@@ -306,9 +291,9 @@ class SaranaLayananAset extends ResourceController
     
     public function createTemplate() {
         $data = $this->saranaLayananAsetModel->getDataTemplate();
-        $keyAset = $this->rincianAsetModel->getAll();
-        $keyStatusLayanan = $this->statusLayananModel->findAll();
-        $keySumberDana = $this->sumberDanaModel->findAll();
+        $keyAset = $this->rincianAsetModel->orderBy('idRincianAset', 'asc')->getAll(); 
+        $keyStatusLayanan = $this->statusLayananModel->orderBy('idStatusLayanan', 'asc')->findAll();
+        $keySumberDana = $this->sumberDanaModel->orderBy('idSumberDana', 'asc')->findAll();
         $spreadsheet = new Spreadsheet();
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
@@ -323,8 +308,8 @@ class SaranaLayananAset extends ResourceController
         $activeWorksheet->fromArray([$headerSaranaID], NULL, 'J1');
         $activeWorksheet->getStyle('J1:L1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $headerPrasaranaID = ['ID Status Layanan', 'Nama Layanan'];
-        $activeWorksheet->fromArray([$headerPrasaranaID], NULL, 'Q1');
+        $headerLayananID = ['ID Status Layanan', 'Nama Layanan'];
+        $activeWorksheet->fromArray([$headerLayananID], NULL, 'Q1');
         $activeWorksheet->getStyle('Q1:R1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         $headerSumberDanaID = ['ID Sumber Dana', 'Sumber Dana'];
@@ -561,33 +546,6 @@ class SaranaLayananAset extends ResourceController
     }
 
 
-
-    public function generatePDFTDOMPDF() {
-        $filePath = APPPATH . 'Views/saranaView/layananAset/print.php';
-    
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll($startDate, $endDate);
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-    
-        $includeFile($filePath, $data);
-    
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Sarana - Layanan Aset Report.pdf';
-        $dompdf->stream($filename);
-    }
-
     public function generatePDF() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
@@ -605,7 +563,7 @@ class SaranaLayananAset extends ResourceController
         $pdfData = pdf_layananaset($dataSaranaLayananAset, $title, $startDate, $endDate);
     
         
-        $filename = 'Sarana - Layanan Aset - ' . ".pdf";
+        $filename = 'Sarana - Layanan Aset' . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');

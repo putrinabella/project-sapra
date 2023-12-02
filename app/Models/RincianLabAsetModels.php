@@ -41,6 +41,7 @@ class RincianLabAsetModels extends Model
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
         $builder->where('tblRincianLabAset.deleted_at', null);
         $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->orderBy('idRincianLabAset', 'asc'); 
         $query = $builder->get();
         return $query->getResult();
     }

@@ -13,7 +13,7 @@ class LayananLabAsetModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    function getAll() {
+    function getAll($startDate = null, $endDate = null) {
         $builder = $this->db->table('tblLayananLabAset');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblLayananLabAset.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
@@ -22,6 +22,25 @@ class LayananLabAsetModels extends Model
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
         $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblLayananLabAset.idStatusLayanan');
         $builder->where('tblLayananLabAset.deleted_at', null);
+        $builder->orderBy('tanggal', 'desc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblLayananLabAset.tanggal >=', $startDate);
+            $builder->where('tblLayananLabAset.tanggal <=', $endDate);
+        }
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataTemplate() {
+        $builder = $this->db->table('tblLayananLabAset');
+        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblLayananLabAset.idRincianLabAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblLayananLabAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblLayananLabAset.idStatusLayanan');
+        $builder->where('tblLayananLabAset.deleted_at', null);
+        $builder->orderBy('tanggal', 'desc'); 
         $query = $builder->get();
         return $query->getResult();
     }

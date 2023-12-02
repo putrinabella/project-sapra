@@ -64,7 +64,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                   <table class="table table-hover" id="dataTable">
+                <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -85,12 +85,12 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->namaLab?></td>
-                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
+                                <td><?=$value->namaSarana?></td>
+                                <td><?=$value->namaLab?></td>
+                                <td><?=$value->namaStatusLayanan?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSumberDana?></td>
+                                <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('layananLabAset/restore/'.$value->idLayananLabAset) ?>"
                                         class="btn btn-primary"> Restore</a>

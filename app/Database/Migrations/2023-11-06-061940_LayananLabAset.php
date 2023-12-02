@@ -16,8 +16,7 @@ class LayananLabAset extends Migration
                 'auto_increment' => true,
             ],
             'tanggal' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE', 
             ],
             'idRincianLabAset' => [
                 'type' => 'INT',

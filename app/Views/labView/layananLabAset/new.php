@@ -17,11 +17,6 @@
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Tambah Data</h4>
-                </div>
-            </div>
-            <div class="card-body">
                 <form action="<?= site_url('layananLabAset')?>" method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <div class="row mb-3">

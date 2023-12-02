@@ -13,8 +13,26 @@
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Layanan Aset Laboratorium</h4>
+<div>
+        <form action="<?= site_url('layananLabAset') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
+                    readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
+                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('layananLabAset') ?>" class="btn btn-success btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('layananLabAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
@@ -22,14 +40,25 @@
             Recycle Bin
         </a>
         <div class="dropdown">
+        <?php
+                if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
+                    $exportLink = site_url('layananLabAset/export');
+                    $generatePDFLink = site_url('layananLabAset/generatePDF');
+                } else {
+                    $startDate = $_GET['startDate'] ?? '';
+                    $endDate = $_GET['endDate'] ?? '';
+                    $exportLink = site_url("layananLabAset/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("layananLabAset/generatePDF?startDate=$startDate&endDate=$endDate");
+                }
+            ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('layananLabAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('layananLabAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
+                <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -78,6 +107,13 @@
                     <br>
                     <?php endif; ?>
                 </div>
+                <h4 class="text-center py-3">Data Layanan Aset Laboratorium</h4>
+                <?php if (!empty($tableHeading)) : ?>
+                <p class="text-center">
+                    <?= $tableHeading ?>
+                </p>
+                <?php endif; ?>
+                <br>
                 <div class="table-responsive">
                     <table class="table table-hover"  id="dataTable">
                         <thead>
@@ -101,7 +137,11 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
+                                <?php
+                                $originalDate = $value->tanggal;
+                                $formattedDate = date('d F Y', strtotime($originalDate));
+                                ?>
+                                <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
                                 <td><?=$value->namaLab?></td>
                                 <td><?=$value->namaKategoriManajemen?></td>
                                 <td><?=$value->namaSarana?></td>
@@ -111,7 +151,7 @@
                                 <td class="text-center">
                                     <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
                                 </td>
-                                <td>
+                                <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     <?=$value->keterangan?>
                                 </td>
                                 <td class="text-center">

@@ -103,7 +103,7 @@
                     $db->table($table)->where("$deletedAtColumn IS NOT NULL", null, false)->delete();
                     // Log activity
                     if ($model !== null) {
-                        activityLogs($model, "Delete All", "Menggosongkan tempat sampah $namaData ");
+                        activityLogs($model, "Delete All", "Mengosongkan tempat sampah  $namaData");
                     }
                     return $countInTrash; // or return a success message
                 } else {

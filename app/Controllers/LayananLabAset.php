@@ -10,6 +10,7 @@ use App\Models\SumberDanaModels;
 use App\Models\RincianLabAsetModels; 
 use App\Models\KategoriManajemenModels; 
 use App\Models\IdentitasLabModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -26,13 +27,32 @@ class LayananLabAset extends ResourceController
         $this->sumberDanaModel = new SumberDanaModels();
         $this->rincianLabAsetModel = new RincianLabAsetModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
+
+
     public function index() {
-        $data['dataLayananLabAset'] = $this->layananLabAsetModel->getAll();
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+
+        $tableHeading = "";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = " $formattedStartDate - $formattedEndDate";
+        }
+        
+
+        $data['tableHeading'] = $tableHeading;
+        $data['dataLayananLabAset'] = $this->layananLabAsetModel->getAll($startDate, $endDate);
+
         return view('labView/layananLabAset/index', $data);
     }
+
     
     public function show($id = null) {
         if ($id != null) {
@@ -179,39 +199,25 @@ class LayananLabAset extends ResourceController
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblLayananLabAset')
-                ->set('deleted_at', null, true)
-                ->where(['idLayananLabAset' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblLayananLabAset')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblLayananLabAset', 'idLayananLabAset', $id, $this->userActionLogsModel, 'Laboratorium - Layanan Aset');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('layananLabAset'))->with('success', 'Data berhasil direstore');
-        } 
-        return redirect()->to(site_url('layananLabAset/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
-
-    public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->layananLabAsetModel->delete($id, true);
-        return redirect()->to(site_url('layananLabAset/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->layananLabAsetModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->layananLabAsetModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('layananLabAset/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('layananLabAset/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
         }
-    }  
+    
+        return redirect()->to(site_url('layananLabAset/trash'))->with('error', 'Tidak ada data untuk direstore');
+    }
+    
+    public function deletePermanent($id = null) {
+        $affectedRows = deleteData('tblLayananLabAset', 'idLayananLabAset', $id, $this->userActionLogsModel, 'Laboratorium - Layanan Aset');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('layananLabAset'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('layananLabAset/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    }
+    
 
     private function htmlConverter($html) {
         $plainText = strip_tags(str_replace('<br />', "\n", $html));
@@ -220,7 +226,13 @@ class LayananLabAset extends ResourceController
     }
 
     public function export() {
-        $data = $this->layananLabAsetModel->getAll();
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+        
+        $data = $this->layananLabAsetModel->getAll($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Layanan Aset');
@@ -228,37 +240,55 @@ class LayananLabAset extends ResourceController
     
         $headers = ['No.', 'Tanggal', 'Nama Aset', 'Lokasi', 'Status Layanan', 'Kategori Manajemen', 'Sumber Dana', 'Biaya', 'Bukti', 'Keterangan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
+            $date = date('d F Y', strtotime($value->tanggal));
+            $biayaFormatted = 'Rp ' . number_format($value->biaya, 0, ',', '.');
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggal);
+            $activeWorksheet->setCellValue('B'.($index + 2), $date);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaLab);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaStatusLayanan);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
-            $activeWorksheet->setCellValue('H'.($index + 2), $value->biaya);
-            $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
-            $activeWorksheet->setCellValue('J'.($index + 2), $value->keterangan);
-    
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+            $activeWorksheet->setCellValue('H'.($index + 2), $biayaFormatted);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $activeWorksheet->setCellValue('I'.($index + 2), $hyperlinkFormula);
+            $activeWorksheet->setCellValue('J' . ($index + 2), $value->keterangan);
+            $activeWorksheet->getStyle('J' . ($index + 2))->getAlignment()->setWrapText(true);
 
+        
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']; 
+        
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                                ->getAlignment()
-                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }
         }
-    
+        
         $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
         $activeWorksheet->getStyle('A1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
     
         foreach (range('A', 'J') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            if ($column == 'J') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(35);
+            } else {
+                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            }
         }
+        
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -269,27 +299,26 @@ class LayananLabAset extends ResourceController
     }
     
     public function createTemplate() {
-        $data = $this->layananLabAsetModel->getAll();
-        $keyAset = $this->rincianLabAsetModel->getAll();
-        $keyLab = $this->identitasLabModel->findAll();
-        $keyStatusLayanan = $this->statusLayananModel->findAll();
-        $keySumberDana = $this->sumberDanaModel->findAll();
+        $data = $this->layananLabAsetModel->getDataTemplate();
+        $keyAset = $this->rincianLabAsetModel->getAll(); 
+        $keyStatusLayanan = $this->statusLayananModel->orderBy('idStatusLayanan', 'asc')->findAll();
+        $keySumberDana = $this->sumberDanaModel->orderBy('idSumberDana', 'asc')->findAll();
         $spreadsheet = new Spreadsheet();
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('ED1C24');
         
-        $headerInputTable = ['No.', 'Tanggal', 'ID Rincian Lab Aset', 'ID Sumber Dana', 'ID Status Layanan', 'Biaya', 'Bukti', 'Keterangan'];
+        $headerInputTable = ['No.', 'Tanggal', 'ID Rincian Aset', 'ID Sumber Dana', 'ID Status Layanan', 'Biaya', 'Bukti', 'Keterangan'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
-        $headerSaranaID = ['ID Rincian Lab Aset', 'Kode Aset', 'Nama Aset'];
+        $headerSaranaID = ['ID Rincian Aset', 'Kode Aset', 'Nama Aset'];
         $activeWorksheet->fromArray([$headerSaranaID], NULL, 'J1');
         $activeWorksheet->getStyle('J1:L1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-        $headerLabID = ['ID Status Layanan', 'Nama Layanan'];
-        $activeWorksheet->fromArray([$headerLabID], NULL, 'Q1');
+        $headerLayananID = ['ID Status Layanan', 'Nama Layanan'];
+        $activeWorksheet->fromArray([$headerLayananID], NULL, 'Q1');
         $activeWorksheet->getStyle('Q1:R1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         $headerSumberDanaID = ['ID Sumber Dana', 'Sumber Dana'];
@@ -300,22 +329,28 @@ class LayananLabAset extends ResourceController
             if ($index >= 3) {
                 break;
             };
-
+            
             $currentDate = date('Y-m-d');
-            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
+            $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B' . ($index + 2), $currentDate);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
             $activeWorksheet->setCellValue('F'.($index + 2), '');
             $activeWorksheet->setCellValue('G'.($index + 2), '');
             $activeWorksheet->setCellValue('H'.($index + 2), '');
+
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }
         }
     
         $activeWorksheet->getStyle('A1:H1')->getFont()->setBold(true);
@@ -338,10 +373,15 @@ class LayananLabAset extends ResourceController
     
             $columns = ['J', 'K', 'L'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'J') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }            
         }
 
         $activeWorksheet->getStyle('J1:L1')->getFont()->setBold(true);
@@ -359,10 +399,15 @@ class LayananLabAset extends ResourceController
     
             $columns = ['N', 'O'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'N') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }
         }
 
         $activeWorksheet->getStyle('N1:O1')->getFont()->setBold(true);
@@ -380,10 +425,15 @@ class LayananLabAset extends ResourceController
     
             $columns = ['Q', 'R'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'Q') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            } 
         }
 
         $activeWorksheet->getStyle('Q1:R1')->getFont()->setBold(true);
@@ -399,7 +449,7 @@ class LayananLabAset extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headerExampleTable =  ['No.', 'Tanggal', 'ID Rincian Lab Aset', 'ID Sumber Dana', 'ID Status Layanan', 'Biaya', 'Bukti', 'Keterangan'];
+        $headerExampleTable =  ['No.', 'Tanggal', 'ID Rincian Aset', 'ID Sumber Dana', 'ID Status Layanan', 'Biaya', 'Bukti', 'Keterangan'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -408,7 +458,6 @@ class LayananLabAset extends ResourceController
                 break;
             };
 
-            $currentDate = date('Y-m-d');
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $value->tanggal);
             $exampleSheet->setCellValue('C'.($index + 2), $value->idRincianLabAset);
@@ -417,12 +466,18 @@ class LayananLabAset extends ResourceController
             $exampleSheet->setCellValue('F'.($index + 2), $value->biaya);
             $exampleSheet->setCellValue('G'.($index + 2), $value->bukti);
             $exampleSheet->setCellValue('H'.($index + 2), $value->keterangan);
+
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
             foreach ($columns as $column) {
-                $exampleSheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $exampleSheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }
         }
     
         $exampleSheet->getStyle('A1:H1')->getFont()->setBold(true);
@@ -501,29 +556,29 @@ class LayananLabAset extends ResourceController
 
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/labView/layananLabAset/print.php';
-    
-        if (!file_exists($filePath)) {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+        $dataLayananLabAset = $this->layananLabAsetModel->getAll($startDate, $endDate);
+        $title = "REPORT LAYANAN ASET";
+        if (!$dataLayananLabAset) {
             return view('error/404');
         }
-
-        $data['dataLayananLabAset'] = $this->layananLabAsetModel->getAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $data = [
+            'dataLayananLabAset' => $dataLayananLabAset,
+        ];
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Laboratorium - Layanan Aset Report.pdf';
-        $dompdf->stream($filename);
+    
+        $pdfData = pdf_layananasetlab($dataLayananLabAset, $title, $startDate, $endDate);
+    
+        
+        $filename = 'Laboratorium - Layanan Aset' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 
     
