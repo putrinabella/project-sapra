@@ -252,7 +252,7 @@ class LayananLabAset extends ResourceController
         }
     
         $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
         $activeWorksheet->getStyle('A1:J'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
     
@@ -301,7 +301,7 @@ class LayananLabAset extends ResourceController
                 break;
             };
 
-            $currentDate = date('d F Y');
+            $currentDate = date('Y-m-d');
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
@@ -408,7 +408,7 @@ class LayananLabAset extends ResourceController
                 break;
             };
 
-            $currentDate = date('d F Y');
+            $currentDate = date('Y-m-d');
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $value->tanggal);
             $exampleSheet->setCellValue('C'.($index + 2), $value->idRincianLabAset);

@@ -16,8 +16,7 @@ class SaranaLayananAset extends Migration
                 'auto_increment' => true,
             ],
             'tanggal' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE', 
             ],
             'idRincianAset' => [
                 'type' => 'INT',

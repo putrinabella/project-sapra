@@ -73,8 +73,7 @@ class RincianAset extends Migration
                 'default' => 'None',
             ],
             'tanggalPemusnahan' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE', 
             ],
             'namaAkun' => [
                 'type' => 'VARCHAR',

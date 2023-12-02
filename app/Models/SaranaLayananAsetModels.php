@@ -13,7 +13,25 @@ class SaranaLayananAsetModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    function getAll() {
+    function getAll($startDate = null, $endDate = null) {
+        $builder = $this->db->table('tblSaranaLayananAset');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblSaranaLayananAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblSaranaLayananAset.idStatusLayanan');
+        $builder->where('tblSaranaLayananAset.deleted_at', null);
+        $builder->orderBy('tanggal', 'desc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblSaranaLayananAset.tanggal >=', $startDate);
+            $builder->where('tblSaranaLayananAset.tanggal <=', $endDate);
+        }
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataTemplate() {
         $builder = $this->db->table('tblSaranaLayananAset');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -26,7 +44,7 @@ class SaranaLayananAsetModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-
+    
     function getItAll() {
         $builder = $this->db->table('tblSaranaLayananAset');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblSaranaLayananAset.idRincianAset');

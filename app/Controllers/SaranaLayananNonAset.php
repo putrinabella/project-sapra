@@ -295,7 +295,7 @@ class SaranaLayananNonAset extends ResourceController
                 break;
             };
 
-            $currentDate = date('d F Y');
+            $currentDate = date('Y-m-d');
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
@@ -429,7 +429,7 @@ class SaranaLayananNonAset extends ResourceController
                 break;
             };
 
-            $currentDate = date('d F Y');
+            $currentDate = date('Y-m-d');
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $currentDate);
             $exampleSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);

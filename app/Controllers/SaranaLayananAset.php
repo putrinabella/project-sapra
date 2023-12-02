@@ -32,11 +32,30 @@ class SaranaLayananAset extends ResourceController
         helper(['pdf', 'custom']);
     }
 
-    public function index() {
-        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
+    // public function index() {
+    //     $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
+    //     return view('saranaView/layananAset/index', $data);
+    // }
+    
+    public function index()
+    {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+
+        $tableHeading = "";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = " $formattedStartDate - $formattedEndDate";
+        }
+        
+
+        $data['tableHeading'] = $tableHeading;
+        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll($startDate, $endDate);
+
         return view('saranaView/layananAset/index', $data);
     }
-    
     public function show($id = null) {
         if ($id != null) {
             $dataSaranaLayananAset = $this->saranaLayananAsetModel->find($id);
@@ -220,7 +239,13 @@ class SaranaLayananAset extends ResourceController
     }
 
     public function export() {
-        $data = $this->saranaLayananAsetModel->getAll();
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+        
+        $data = $this->saranaLayananAsetModel->getAll($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Layanan Aset');
@@ -231,27 +256,39 @@ class SaranaLayananAset extends ResourceController
         $activeWorksheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
         foreach ($data as $index => $value) {
+            $date = date('d F Y', strtotime($value->tanggal));
+            $biayaFormatted = 'Rp ' . number_format($value->biaya, 0, ',', '.');
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggal);
+            $activeWorksheet->setCellValue('B'.($index + 2), $date);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaStatusLayanan);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaKategoriManajemen);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
-            $activeWorksheet->setCellValue('H'.($index + 2), $value->biaya);
+            $activeWorksheet->setCellValue('H'.($index + 2), $biayaFormatted);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->bukti);
-    
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $activeWorksheet->setCellValue('I'.($index + 2), $hyperlinkFormula);
+        
+            $columns = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];  // Exclude column A
+        
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
-                                ->getAlignment()
-                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+                    ->getAlignment()
+                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            }
+        
+            // Center align cell A
+            $activeWorksheet->getStyle('A' . ($index + 2))
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         }
-    
+        
         $activeWorksheet->getStyle('A1:I1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF00');
+        $activeWorksheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
         $activeWorksheet->getStyle('A1:I'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:I')->getAlignment()->setWrapText(true);
     
@@ -268,7 +305,7 @@ class SaranaLayananAset extends ResourceController
     }
     
     public function createTemplate() {
-        $data = $this->saranaLayananAsetModel->getAll();
+        $data = $this->saranaLayananAsetModel->getDataTemplate();
         $keyAset = $this->rincianAsetModel->getAll();
         $keyStatusLayanan = $this->statusLayananModel->findAll();
         $keySumberDana = $this->sumberDanaModel->findAll();
@@ -298,22 +335,28 @@ class SaranaLayananAset extends ResourceController
             if ($index >= 3) {
                 break;
             };
-
-            $currentDate = date('d F Y');
-            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $currentDate);
+            
+            $currentDate = date('Y-m-d');
+            $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B' . ($index + 2), $currentDate);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
             $activeWorksheet->setCellValue('F'.($index + 2), '');
             $activeWorksheet->setCellValue('G'.($index + 2), '');
             $activeWorksheet->setCellValue('H'.($index + 2), '');
+
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }
         }
     
         $activeWorksheet->getStyle('A1:H1')->getFont()->setBold(true);
@@ -336,10 +379,15 @@ class SaranaLayananAset extends ResourceController
     
             $columns = ['J', 'K', 'L'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'J') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }            
         }
 
         $activeWorksheet->getStyle('J1:L1')->getFont()->setBold(true);
@@ -357,10 +405,15 @@ class SaranaLayananAset extends ResourceController
     
             $columns = ['N', 'O'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'N') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }
         }
 
         $activeWorksheet->getStyle('N1:O1')->getFont()->setBold(true);
@@ -378,10 +431,15 @@ class SaranaLayananAset extends ResourceController
     
             $columns = ['Q', 'R'];
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'Q') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            } 
         }
 
         $activeWorksheet->getStyle('Q1:R1')->getFont()->setBold(true);
@@ -406,7 +464,6 @@ class SaranaLayananAset extends ResourceController
                 break;
             };
 
-            $currentDate = date('d F Y');
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
             $exampleSheet->setCellValue('B'.($index + 2), $value->tanggal);
             $exampleSheet->setCellValue('C'.($index + 2), $value->idRincianAset);
@@ -415,12 +472,18 @@ class SaranaLayananAset extends ResourceController
             $exampleSheet->setCellValue('F'.($index + 2), $value->biaya);
             $exampleSheet->setCellValue('G'.($index + 2), $value->bukti);
             $exampleSheet->setCellValue('H'.($index + 2), $value->keterangan);
+
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
             foreach ($columns as $column) {
-                $exampleSheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $exampleSheet->getStyle($cellReference)->getAlignment();
+            
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                }
+            }
         }
     
         $exampleSheet->getStyle('A1:H1')->getFont()->setBold(true);
@@ -499,14 +562,14 @@ class SaranaLayananAset extends ResourceController
 
 
 
-    public function generatePDF() {
+    public function generatePDFTDOMPDF() {
         $filePath = APPPATH . 'Views/saranaView/layananAset/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll();
+        $data['dataSaranaLayananAset'] = $this->saranaLayananAsetModel->getAll($startDate, $endDate);
 
         ob_start();
 
@@ -525,35 +588,30 @@ class SaranaLayananAset extends ResourceController
         $dompdf->stream($filename);
     }
 
+    public function generatePDF() {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+        $dataSaranaLayananAset = $this->saranaLayananAsetModel->getAll($startDate, $endDate);
+        $title = "REPORT LAYANAN ASET";
+        if (!$dataSaranaLayananAset) {
+            return view('error/404');
+        }
     
-    // public function fetchKategoriManajemen()
-    // {
-    //     $idIdentitasPrasarana = $this->request->getPost('idIdentitasPrasarana');
-    //     $kategoriManajemen =  $this->saranaLayananAsetModel->getKategoriManajemen($idIdentitasPrasarana);
-
-    //     return $this->response->setJSON($kategoriManajemen);
-    // }
-
-    // public function setKategoriManajemen()
-    // {
-    //     $dataPaket = new RincianAsetModels();
-    //     $idIdentitasPrasarana = $this->request->getVar('idIdentitasPrasarana');
-
-    //     $kategoriManajemenLoad = $dataPaket->select('idKategoriManajemen, namaKategoriManajemen')->where(
-    //         'idIdentitasPrasarana',
-    //         $idIdentitasPrasarana
-    //     )->orderBy('namaKategoriManajemen')->findAll();
-    //     $data = [];
-    //     foreach ($kategoriManajemenLoad as $value) {
-    //         $data[] = [
-    //             'id' => $value->idKategoriManajemen,
-    //             'text' => $value->namaKategoriManajemen
-    //         ];
-    //     }
-    //     $response['data'] = $data;
-    //     echo $data;
-    //     die;
-    //     return $this->response->setJSON($response);
-    // }
+        $data = [
+            'dataSaranaLayananAset' => $dataSaranaLayananAset,
+        ];
+    
+    
+        $pdfData = pdf_layananaset($dataSaranaLayananAset, $title, $startDate, $endDate);
+    
+        
+        $filename = 'Sarana - Layanan Aset - ' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
 }
 
