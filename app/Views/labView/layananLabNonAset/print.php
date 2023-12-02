@@ -41,7 +41,7 @@
 <body>
     <div class="table-responsive">
     <h2 class="mt-3 mb-4">Layanan Non Aset Report</h2>
-        <table class="table table-hover" id="dataTable">
+        <table class="table table-hover" id="dataTable" style="width: 100%;">
             <thead>
                 <tr class="text-center">
                     <th>No.</th>

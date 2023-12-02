@@ -37,7 +37,8 @@
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger btn-icon-text" type="submit">
-                            <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent </button>
+                                <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent
+                            </button>
                         </form>
                         </a>
                     </div>
@@ -69,7 +70,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                   <table class="table table-hover" id="dataTable">
+                    <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -83,21 +84,24 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataSaranaLayananNonAset as $key => $value) : ?>
+                            <?php foreach ($dataSaranaLayananNonAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
-                                <td class="text-center"><?=$value->namaKategoriMep?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
+                                <td class="text-center">
+                                    <?= date('d F Y', strtotime($value->tanggal)) ?>
+                                </td>
+                                <td><?=$value->namaPrasarana?></td>
+                                <td><?=$value->namaStatusLayanan?></td>
+                                <td><?=$value->namaKategoriMep?></td>
+                                <td><?=$value->namaSumberDana?></td>
+                                <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('saranaLayananNonAset/restore/'.$value->idSaranaLayananNonAset) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('saranaLayananNonAset/deletePermanent/'.$value->idSaranaLayananNonAset) ?>"
+                                    <form
+                                        action="<?= site_url('saranaLayananNonAset/deletePermanent/'.$value->idSaranaLayananNonAset) ?>"
                                         method="POST" class="d-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
