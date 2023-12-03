@@ -154,7 +154,7 @@
                                     </form>
                                 </td>
                                 <td class="text-center">
-                                    <form action="<?= site_url('pemusnahanAset/delete/' . $value->idRincianAset) ?>"
+                                    <form action="<?= site_url('pemusnahanAset/destruction/' . $value->idRincianAset) ?>"
                                         method="post" class="d-inline">
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">

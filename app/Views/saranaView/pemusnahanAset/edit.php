@@ -6,12 +6,13 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Data Pemusnahan Aset</h4>
-    </div>
-</div>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('pemusnahanAset')?>">Pemusnahan Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
+    </ol>
+</nav>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -22,7 +23,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('pemusnahanAset/updatePemusnahan/'.$dataRincianAset->idRincianAset)?>" method="post"
+                <form action="<?= site_url('pemusnahanAset/'.$dataRincianAset->idRincianAset)?>" method="post"
                     autocomplete="off" id="custom-validation"  enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="PATCH">
@@ -94,7 +95,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('rincianAset') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('pemusnahanAset') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

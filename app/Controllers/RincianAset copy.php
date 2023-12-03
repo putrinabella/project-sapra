@@ -170,11 +170,33 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/dataSaranaIt', $data);
     }
 
+    public function pemusnahanAset() {
+        $data['dataRincianAset'] = $this->rincianAsetModel->getDestroy();
+        return view('saranaView/pemusnahanAset/dataPemusnahanAset', $data);
+    }
+
     public function pemusnahanItAset() {
         $data['dataRincianAset'] = $this->rincianAsetModel->getDestroyIt();
         return view('saranaView/rincianAset/dataPemusnahanItAset', $data);
     }
 
+    public function pemusnahanAsetDelete($idRincianAset) {
+        if ($this->request->getMethod(true) === 'POST') {
+            $newSectionAset = $this->request->getPost('sectionAset');
+            $namaAkun = $this->request->getPost('namaAkun'); 
+            $kodeAkun = $this->request->getPost('kodeAkun'); 
+    
+            if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
+                if ($newSectionAset === 'Dimusnahkan') {
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
+                } elseif ($newSectionAset === 'None') {
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
+                }
+            } else {
+                return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
+            }
+        }
+    }
     public function pemusnahanItAsetDelete($idRincianAset) {
         if ($this->request->getMethod(true) === 'POST') {
             $newSectionAset = $this->request->getPost('sectionAset');
@@ -334,6 +356,7 @@ class RincianAset extends ResourceController
         }
     }
     
+
     private function uploadFile($fieldName) {
         $file = $this->request->getFile($fieldName);
         if ($file !== null) {
@@ -390,7 +413,6 @@ class RincianAset extends ResourceController
             return view('error/404');
         }
     }
-
     public function updateIt($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
@@ -422,6 +444,26 @@ class RincianAset extends ResourceController
         }
     }
 
+    public function editPemusnahan($id = null) {
+        if ($id != null) {
+            $dataRincianAset = $this->rincianAsetModel->find($id);
+    
+            if (is_object($dataRincianAset)) {
+                $data = [
+                    'dataRincianAset' => $dataRincianAset,
+                    'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+                    'dataSumberDana' => $this->sumberDanaModel->findAll(),
+                    'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
+                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+                ];
+                return view('saranaView/pemusnahanAset/editPemusnahanIt', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
     public function editPemusnahanIt($id = null) {
         if ($id != null) {
             $dataRincianAset = $this->rincianAsetModel->find($id);
@@ -443,6 +485,15 @@ class RincianAset extends ResourceController
         }
     }
 
+    public function updatePemusnahan($id = null) {
+        if ($id != null) {
+            $data = $this->request->getPost();
+            $this->rincianAsetModel->update($id, $data);
+            return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
+        }
+    }
     public function updateItPemusnahan($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
@@ -453,6 +504,7 @@ class RincianAset extends ResourceController
         }
     }
     
+
     public function delete($id = null) {
         $this->rincianAsetModel->delete($id);
         return redirect()->to(site_url('rincianAset'));
@@ -507,7 +559,6 @@ class RincianAset extends ResourceController
             }
         }
     } 
-
     public function restoreIt($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
@@ -1277,7 +1328,6 @@ class RincianAset extends ResourceController
             return redirect()->to(site_url('rincianAset'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
-
     public function importIt() {
         $file = $this->request->getFile('formExcel');
         $extension = $file->getClientExtension();
@@ -1422,6 +1472,7 @@ class RincianAset extends ResourceController
         $dompdf->stream($filename);
     }
 
+
     public function generateQRDoc() {
         $dataRincianAset = $this->rincianAsetModel->getAll();
     
@@ -1561,6 +1612,7 @@ class RincianAset extends ResourceController
         $filename = 'Sarana - Rincian Aset Report.pdf';
         $dompdf->stream($filename);
     }
+
 
     public function print($id = null) {
         $dataRincianAset = $this->rincianAsetModel->find($id);
@@ -1756,6 +1808,106 @@ class RincianAset extends ResourceController
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
+    }
+
+    public function exportDestroyFile() {
+        $data = $this->rincianAsetModel->getDestroy();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+    
+        $headers = ['No.', 'Tanggal Pemusnahan',  'Nama Akun',  'Kode Akun', 'Kode Aset', 'Lokasi', 'Kategori Barang','Spesifikasi Barang', 'Status', 'Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($data as $index => $value) {
+            $spesifikasiMarkup = $value->spesifikasi; 
+            $parsedown = new Parsedown();
+            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
+            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
+
+            $pengadaan = $value->tahunPengadaan;
+            if ($pengadaan == 0 || 0000) {
+                $pengadaan = "Tidak Diketahui";
+            } else {
+                $pengadaan = $value->tahunPengadaan;
+            }
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->tanggalPemusnahan);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->namaAkun);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->kodeAkun);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->kodeRincianAset);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaPrasarana);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaKategoriManajemen);
+            $activeWorksheet->setCellValue('H'.($index + 2), $value->namaSarana);
+            $activeWorksheet->setCellValue('I'.($index + 2), $value->status);
+            $activeWorksheet->setCellValue('J'.($index + 2), $value->namaSumberDana);
+            $activeWorksheet->setCellValue('K'.($index + 2), $pengadaan);
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->hargaBeli);
+            $activeWorksheet->setCellValue('M'.($index + 2), $value->merk);
+            $activeWorksheet->setCellValue('N'.($index + 2), $value->noSeri);
+            $activeWorksheet->setCellValue('O'.($index + 2), $value->warna);
+            $activeWorksheet->setCellValue('P'.($index + 2), $spesifikasiText);
+            $linkCell = 'Q' . ($index + 2);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $activeWorksheet->setCellValue($linkCell, $hyperlinkFormula);
+        
+            
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q' ];
+            
+            foreach ($columns as $column) {
+                $activeWorksheet->getStyle($column . ($index + 2))
+                ->getAlignment()
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            }            
+        }
+
+        $activeWorksheet->getStyle('A1:Q1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:Q1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:Q'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:Q')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'Q') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Sarana - Pemusnahan Aset.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+    
+    public function dataDestroyaGeneratePDF() {
+        $filePath = APPPATH . 'Views/saranaView/rincianAset/printPemusnahan.php';
+    
+        if (!file_exists($filePath)) {
+            return view('error/404');
+        }
+
+        $data['dataPemusnahan'] = $this->rincianAsetModel->getDestroy();
+
+        ob_start();
+
+        $includeFile = function ($filePath, $data) {
+            include $filePath;
+        };
+    
+        $includeFile($filePath, $data);
+    
+        $html = ob_get_clean();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $filename = 'Sarana - Data Pemusnahan Report.pdf';
+        $dompdf->stream($filename);
     }
 
     public function exportDestroyItFile() {

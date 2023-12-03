@@ -231,8 +231,6 @@ $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
 $routes->add('generateSelectedItQR/(:any)', 'RincianAset::generateSelectedItQR/$1');
 
 $routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
-$routes->get('pemusnahanAsetDetail/(:num)', 'RincianAset::pemusnahanAsetDetail/$1');
-$routes->get('pemusnahanAset', 'RincianAset::pemusnahanAset');
 $routes->get('pemusnahanItAset', 'RincianAset::pemusnahanItAset');
 $routes->get('dataSaranaDetail/(:num)', 'RincianAset::dataSaranaDetail/$1');
 $routes->get('dataSarana', 'RincianAset::dataSarana');
@@ -255,15 +253,12 @@ $routes->get('rincianAset/print/(:num)', 'RincianAset::print/$1');
 $routes->get('rincianAset/generatePDF', 'RincianAset::generatePDF');
 $routes->get('rincianAset/export', 'RincianAset::export');
 $routes->get('rincianAset/edit', 'RincianAset::edit');
-$routes->get('rincianAset/editPemusnahan/(:any)', 'RincianAset::editPemusnahan/$1');
 $routes->get('dataItSarana/editPemusnahanIt/(:any)', 'RincianAset::editPemusnahanIt/$1');
 $routes->get('rincianAset/trash', 'RincianAset::trash');
 $routes->get('rincianAset/restore/(:any)', 'RincianAset::restore/$1');
 $routes->get('rincianAset/restore', 'RincianAset::restore');
 $routes->get('dataItSarana/restore/(:any)', 'RincianAset::restoreIt/$1');
 $routes->get('dataItSarana/restore', 'RincianAset::restoreIt');
-$routes->get('pemusnahanAset/dataDestroyaGeneratePDF', 'RincianAset::dataDestroyaGeneratePDF');
-$routes->get('pemusnahanAset/exportDestroyFile', 'RincianAset::exportDestroyFile');
 $routes->get('pemusnahanItAset/dataDestroyaGeneratePDF', 'RincianAset::dataDestroyaGenerateItPDF');
 $routes->get('pemusnahanItAset/exportDestroyFile', 'RincianAset::exportDestroyItFile');
 $routes->get('dataItSarana/(:any)/edit', 'RincianAset::editIt/$1');
@@ -281,15 +276,20 @@ $routes->post('rincianAset/(:any)/updateCheckDuplicate', 'RincianAset::checkDupl
 $routes->post('dataItSarana/generateKode', 'RincianAset::generateKode');
 $routes->post('dataItSarana/(:any)/updateKode', 'RincianAset::generateKode');
 $routes->post('dataItSarana/checkDuplicate', 'RincianAset::checkDuplicate');
-$routes->post('dataItSarana/(:any)/updateCheckDuplicate', 'RincianAset::checkDuplicate');
-$routes->patch('pemusnahanAset/updatePemusnahan/(:any)', 'RincianAset::updatePemusnahan/$1');
 $routes->patch('pemusnahanItAset/updatePemusnahan/(:any)', 'RincianAset::updateItPemusnahan/$1');
+$routes->post('dataItSarana/(:any)/updateCheckDuplicate', 'RincianAset::checkDuplicate');
 $routes->delete('rincianAset/deletePermanent/(:any)', 'RincianAset::deletePermanent/$1');
 $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
 $routes->delete('dataItSarana/deletePermanent/(:any)', 'RincianAset::deletePermanentIt/$1');
 $routes->delete('dataItSarana/deletePermanent', 'RincianAset::deletePermanentIt');
 $routes->delete('dataItSarana/(:any)', 'RincianAset::deleteIt/$1');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
+
+// PEMUSNAHAN ASET 
+$routes->get('pemusnahanAset/generatePDF', 'PemusnahanAset::generatePDF');
+$routes->get('pemusnahanAset/export', 'PemusnahanAset::export');
+$routes->post('pemusnahanAset/destruction/(:any)', 'PemusnahanAset::destruction/$1');
+$routes->resource('pemusnahanAset', ['filter' => 'isLoggedIn']);
 
 // Layanan Aset
 // Ajax Select2
