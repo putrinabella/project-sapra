@@ -555,7 +555,7 @@ class LayananLabAset extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
         $dataLayananLabAset = $this->layananLabAsetModel->getAll($startDate, $endDate);
-        $title = "REPORT LAYANAN ASET";
+        $title = "REPORT LAYANAN ASET LABORATORIUM";
         if (!$dataLayananLabAset) {
             return view('error/404');
         }

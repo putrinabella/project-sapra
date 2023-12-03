@@ -13,7 +13,23 @@ class LayananLabNonAsetModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    function getAll() {
+    function getAll($startDate = null, $endDate = null) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblLayananLabNonAset.idSumberDana');
+        $builder->join('tblKategoriMep', 'tblKategoriMep.idKategoriMep = tblLayananLabNonAset.idKategoriMep');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblLayananLabNonAset.idIdentitasLab');
+        $builder->join('tblStatusLayanan', 'tblStatusLayanan.idStatusLayanan = tblLayananLabNonAset.idStatusLayanan');
+        $builder->where('tblLayananLabNonAset.deleted_at', null);
+        $builder->orderBy('tanggal', 'desc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblLayananLabNonAset.tanggal >=', $startDate);
+            $builder->where('tblLayananLabNonAset.tanggal <=', $endDate);
+        }
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
+    function getDataTemplate() {
         $builder = $this->db->table($this->table);
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblLayananLabNonAset.idSumberDana');
         $builder->join('tblKategoriMep', 'tblKategoriMep.idKategoriMep = tblLayananLabNonAset.idKategoriMep');

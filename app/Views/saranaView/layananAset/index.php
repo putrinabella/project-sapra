@@ -115,7 +115,7 @@
                 <?php endif; ?>
                 <br>
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="dataTable">
+                    <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>

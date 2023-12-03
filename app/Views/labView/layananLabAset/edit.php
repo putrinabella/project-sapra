@@ -9,7 +9,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('layananLabAset')?>">Layanan Aset Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('layananLabAset')?>">Layanan Aset</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
     </ol>
 </nav>

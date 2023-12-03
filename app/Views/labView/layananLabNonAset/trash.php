@@ -6,8 +6,14 @@
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Layanan Non Aset Laboratorium</h4>
-<br>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('layananLabNonAset')?>">Layanan Non Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
+    </ol>
+</nav>
+
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -83,12 +89,12 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
-                                <td class="text-center"><?=$value->namaLab?></td>
-                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
-                                <td class="text-center"><?=$value->namaKategoriMep?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
+                                <td><?= date('d F Y', strtotime($value->tanggal)) ?></td>
+                                <td><?=$value->namaLab?></td>
+                                <td><?=$value->namaStatusLayanan?></td>
+                                <td><?=$value->namaKategoriMep?></td>
+                                <td><?=$value->namaSumberDana?></td>
+                                <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('layananLabNonAset/restore/'.$value->idLayananLabNonAset) ?>"
                                         class="btn btn-primary"> Restore</a>

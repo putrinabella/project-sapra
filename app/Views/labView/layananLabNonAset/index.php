@@ -8,13 +8,31 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Layanan Non Aset Laboratorium</li>
+        <li class="breadcrumb-item active" aria-current="page">Layanan Non Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Layanan Non Aset Laboratorium</h4>
+        <form action="<?= site_url('layananLabNonAset') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
+                    readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
+                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('layananLabNonAset') ?>" class="btn btn-success btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('layananLabNonAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
@@ -22,14 +40,25 @@
             Recycle Bin
         </a>
         <div class="dropdown">
+            <?php
+                if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
+                    $exportLink = site_url('layananLabNonAset/export');
+                    $generatePDFLink = site_url('layananLabNonAset/generatePDF');
+                } else {
+                    $startDate = $_GET['startDate'] ?? '';
+                    $endDate = $_GET['endDate'] ?? '';
+                    $exportLink = site_url("layananLabNonAset/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("layananLabNonAset/generatePDF?startDate=$startDate&endDate=$endDate");
+                }
+            ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('layananLabNonAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('layananLabNonAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
+                <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -39,7 +68,8 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('layananLabNonAset/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('layananLabNonAset/createTemplate') ?>">Download
+                    Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
@@ -78,8 +108,15 @@
                     <br>
                     <?php endif; ?>
                 </div>
+                <h4 class="text-center py-3">Data Layanan Non Aset Laboratorium</h4>
+                <?php if (!empty($tableHeading)) : ?>
+                <p class="text-center">
+                    <?= $tableHeading ?>
+                </p>
+                <?php endif; ?>
+                <br>
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="dataTable">
+                    <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -95,12 +132,16 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataLayananLabNonAset as $key => $value) : ?>
+                            <?php foreach ($dataLayananLabNonAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?= date('d F Y', strtotime($value->tanggal)) ?></td>
+                                <?php
+                                $originalDate = $value->tanggal;
+                                $formattedDate = date('d F Y', strtotime($originalDate));
+                                ?>
+                                <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
                                 <td><?=$value->namaLab?></td>
                                 <td><?=$value->namaStatusLayanan?></td>
                                 <td><?=$value->namaKategoriMep?></td>
@@ -109,16 +150,20 @@
                                 <td class="text-center">
                                     <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
                                 </td>
-                                <td><?=$value->spesifikasi?></td>
+                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <?=$value->spesifikasi?>
+                                </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('layananLabNonAset/'.$value->idLayananLabNonAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <a href="<?=site_url('layananLabNonAset/'.$value->idLayananLabNonAset) ?>"
+                                        class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('layananLabNonAset/'.$value->idLayananLabNonAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('layananLabNonAset/'.$value->idLayananLabNonAset)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idLayananLabNonAset;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <button class="btn btn-danger btn-icon"
+                                            data-confirm="Apakah anda yakin menghapus data ini?">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
@@ -140,7 +185,8 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("layananLabNonAset/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url(" layananLabNonAset/import")?>" method="POST" enctype="multipart/form-data"
+                id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
