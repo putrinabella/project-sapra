@@ -985,7 +985,6 @@ if (!function_exists('pdf_pemusnahanalabset')) {
         <h3 style="text-align: center;"> $title</h3>
         EOD;
         
-        // Include date range only when both $startDate and $endDate are not null
         if ($startDateFormatted !== '' && $endDateFormatted !== '') {
             $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
         }

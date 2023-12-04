@@ -1,14 +1,14 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Data Peminjaman &verbar; SARPRA </title>
+<title>Request Peminjaman &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data Peminjaman</li>
+        <li class="breadcrumb-item active" aria-current="page">Request Peminjaman</li>
     </ol>
 </nav>
 
@@ -35,20 +35,16 @@
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('requestPeminjaman/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="trash"></i>
-            Recycle Bin
-        </a>
         <div class="dropdown">
             <?php
-                if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
+                if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
                     $exportLink = site_url('requestPeminjaman/export');
-                    $printAllLink = site_url('requestPeminjaman/printAll');
+                    $generatePDFLink = site_url('requestPeminjaman/generatePDF');
                 } else {
-                    $startYear = $_GET['startYear'] ?? '';
-                    $endYear = $_GET['endYear'] ?? '';
-                    $exportLink = site_url("requestPeminjaman/export?startYear=$startYear&endYear=$endYear");
-                    $printAllLink = site_url("requestPeminjaman/printAll?startYear=$startYear&endYear=$endYear");
+                    $startDate = $_GET['startDate'] ?? '';
+                    $endDate = $_GET['endDate'] ?? '';
+                    $exportLink = site_url("requestPeminjaman/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("requestPeminjaman/generatePDF?startDate=$startDate&endDate=$endDate");
                 }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
@@ -58,7 +54,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= $printAllLink ?>">Download as ZIP</a>
+                <a class="dropdown-item" href="<?= $generatePDFLink ?>">Download as ZIP</a>
             </div>
         </div>
     </div>
@@ -89,7 +85,7 @@
                 <br>
                 <?php endif; ?>
             </div>
-            <h4 class="text-center py-3">Data Peminjaman</h4>
+            <h4 class="text-center py-3">Request Peminjaman</h4>
             <?php if (!empty($tableHeading)) : ?>
             <p class="text-center">
                 <?= $tableHeading ?>
@@ -117,9 +113,11 @@
                             <td>
                                 <?= $key + 1 ?>
                             </td>
-                            <td class="text-left">
-                                <?= date('d F Y', strtotime($value->tanggal)) ?>
-                            </td>
+                            <?php
+                            $originalDate = $value->tanggal;
+                            $formattedDate = date('d F Y', strtotime($originalDate));
+                            ?>
+                            <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
                             <td class="text-left">
                                 <?= $value->nis; ?>
                             </td>

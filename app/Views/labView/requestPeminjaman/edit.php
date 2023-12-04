@@ -103,9 +103,9 @@
                                     <?php foreach ($dataItemDipinjam as $key => $value) : ?>
                                     <tr style=" vertical-align: middle;">
                                         <td style="width: 5%">
-                                            <?php if ($value->sectionAset !== "Dipinjam") : ?>
-                                            <input type="checkbox" class="form-check-input row-select"
-                                                name="selectedRows[]" value="<?= $value->idRincianLabAset ?>">
+                                            <?php if ($value->sectionAset !== "Dipinjam" && $value->sectionAset !== "Dimusnahkan") : ?>
+                                                <input type="checkbox" class="form-check-input row-select"
+                                                    name="selectedRows[]" value="<?= $value->idRincianLabAset ?>">
                                             <?php endif; ?>
                                         </td>
                                         <td class="d-none">
@@ -127,6 +127,8 @@
                                             <?php if ($value->sectionAset == "None") : ?>
                                             Tersedia
                                             <?php elseif ($value->sectionAset == "Dipinjam") : ?>
+                                            <span class="badge bg-danger">Tidak Tersedia</span>
+                                            <?php elseif ($value->sectionAset == "Dimusnahkan") : ?>
                                             <span class="badge bg-danger">Tidak Tersedia</span>
                                             <?php endif; ?>
                                         </td>

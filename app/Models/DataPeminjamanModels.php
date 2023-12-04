@@ -35,6 +35,8 @@ class DataPeminjamanModels extends Model
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
+        $builder->orderBy('tblManajemenPeminjaman.loanStatus', 'asc'); 
+        $builder->orderBy('tblManajemenPeminjaman.tanggal', 'asc'); 
     
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);

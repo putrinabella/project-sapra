@@ -588,8 +588,6 @@ $routes->resource('dataPeminjaman', ['filter' => 'isLoggedIn']);
 
 
 // Request Peminjaman
-$routes->get('requestPeminjaman/print/(:num)', 'RequestPeminjaman::print/$1');
-$routes->get('requestPeminjaman/printAll', 'RequestPeminjaman::printAll');
 $routes->get('requestPeminjaman/generatePDF', 'RequestPeminjaman::generatePDF');
 $routes->get('requestPeminjaman/export', 'RequestPeminjaman::export');
 $routes->get('requestPeminjaman/trash', 'RequestPeminjaman::trash');
