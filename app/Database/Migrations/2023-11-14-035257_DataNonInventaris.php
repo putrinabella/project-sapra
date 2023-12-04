@@ -4,31 +4,31 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class TblDataInventaris extends Migration
+class DataNonInventaris extends Migration
 {
 
     public function up()
     {
         $this->forge->addField([
-            'idDataInventaris' => [
+            'idDataNonInventaris' => [
                 'type' => 'INT',
                 'constraint' => 3,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'idInventaris' => [
+            'idNonInventaris' => [
                 'type' => 'INT',
                 'constraint' => 3,
             ],
-            'jumlahDataInventaris' => [
+            'jumlah' => [
                 'type' => 'INT',
                 'constraint' => 10,
             ],
-            'tanggalDataInventaris' => [
+            'tanggal' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'tipeDataInventaris' => [
+            'tipe' => [
                 'type' => 'ENUM',
                 'constraint' => ['Pemasukan', 'Pengeluaran'],
                 'default' => 'Pemasukan',
@@ -47,12 +47,12 @@ class TblDataInventaris extends Migration
             ],
         ]);
     
-            $this->forge->addKey('idDataInventaris', true);
-            $this->forge->createTable('tblDataInventaris');
+            $this->forge->addKey('idDataNonInventaris', true);
+            $this->forge->createTable('tblDataNonInventaris');
         }
     
         public function down()
         {
-            $this->forge->dropTable('tblDataInventaris');
+            $this->forge->dropTable('tblDataNonInventaris');
         }
     }

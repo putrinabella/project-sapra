@@ -17,11 +17,11 @@
         <h4 class="mb-3 mb-md-0">Non Inventaris</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('inventaris/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('nonInventaris/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
-        <a href="<?= site_url('inventaris/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('nonInventaris/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -67,18 +67,18 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataInventaris as $key => $value) : ?>
+                        <?php foreach ($dataNonInventaris as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                               <td> <?= $value->namaInventaris; ?> </td>
+                               <td> <?= $value->nama; ?> </td>
                                <td> <?= $value->satuan; ?> </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('inventaris/'.$value->idInventaris.'/edit') ?>"
+                                    <a href="<?=site_url('nonInventaris/'.$value->idNonInventaris.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('inventaris/'.$value->idInventaris)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idInventaris;?>">
+                                    <form action="<?=site_url('nonInventaris/'.$value->idNonInventaris)?>"
+                                        method="post" class="d-inline" id="del-<?= $value->idNonInventaris;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
@@ -103,7 +103,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("inventaris/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url("nonInventaris/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>
                     <input class="form-control" type="file" id="formExcel" name="formExcel">

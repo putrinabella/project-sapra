@@ -6,11 +6,13 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Data Inventaris</h4>
-    </div>
-</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('dataNonInventaris')?>">Non Inventaris</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Input Data</li>
+    </ol>
+</nav>
 
 
 <div class="row">
@@ -22,36 +24,36 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('dataInventaris')?>" method="post" autocomplete="off"  id="custom-validation">
+                <form action="<?= site_url('dataNonInventaris')?>" method="post" autocomplete="off"  id="custom-validation">
                     <?= csrf_field() ?>
                     <div class="row mb-3">
-                        <label for="tanggalDataInventaris" class="col-sm-3 col-form-label">Tanggal</label>
+                        <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
-                                <input type="text" class="form-control" name="tanggalDataInventaris" readonly>
+                                <input type="text" class="form-control" name="tanggal" readonly>
                                 <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="idInventaris" class="col-sm-3 col-form-label">Nama Inventaris</label>
+                        <label for="idNonInventaris" class="col-sm-3 col-form-label">Nama Inventaris</label>
                         <div class="col-sm-9">
                             <select class="js-example-basic-single form-select select2-hidden-accessible"
                                 data-width="100%" data-select2-id="1"  aria-hidden="true"
-                                id="idInventaris" name="idInventaris">
+                                id="idNonInventaris" name="idNonInventaris">
                                 <option value="" selected disabled hidden>Pilih aset</option>
-                                <?php foreach($dataInventaris as $key =>$value): ?>
-                                <option value="<?=$value->idInventaris?>"><?=$value->namaInventaris?> (<?= $value->satuan; ?>)</option>
+                                <?php foreach($nonInventaris as $key =>$value): ?>
+                                <option value="<?=$value->idNonInventaris?>"><?=$value->nama?> (<?= $value->satuan; ?>)</option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="tipeDataInventaris" class="col-sm-3 col-form-label">Tipe</label>
+                        <label for="tipe" class="col-sm-3 col-form-label">Tipe</label>
                         <div class="col-sm-9">
                         <select class="js-example-basic-single form-select select2-hidden-accessible"
                                 data-width="100%" data-select2-id="2"  aria-hidden="true"
-                                id="tipeDataInventaris" name="tipeDataInventaris">
+                                id="tipe" name="tipe">
                                 <option value="" selected disabled hidden>Pilih Tipe</option>
                                 <option value="Pemasukan">Pemasukan</option>
                                 <option value="Pengeluaran">Pengeluaran</option>
@@ -59,15 +61,15 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="jumlahDataInventaris" class="col-sm-3 col-form-label">Jumlah</label>
+                        <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="jumlahDataInventaris" name="jumlahDataInventaris"
+                            <input type="number" class="form-control" id="jumlah" name="jumlah"
                                 placeholder="Masukkan jumlah">
                         </div>
                     </div>                    
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('dataInventaris') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('dataNonInventaris') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

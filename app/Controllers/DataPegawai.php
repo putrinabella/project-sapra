@@ -214,7 +214,7 @@ class DataPegawai extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('DataSiswa');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'NIP', 'Nama'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -263,7 +263,7 @@ class DataPegawai extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Pegawai');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'NIP', 'Nama'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

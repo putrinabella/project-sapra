@@ -28,7 +28,7 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="<?= site_url('dataInventaris') ?>" class="nav-link">
+            <a href="<?= site_url('dataNonInventaris') ?>" class="nav-link">
                 <i class="link-icon" data-feather="inbox"></i>
                 <span class="link-title">Non Inventaris</span>
             </a>
@@ -277,7 +277,7 @@
                         <a href="<?= site_url('identitasKelas') ?>" class="nav-link">Identitas Kelas</a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= site_url('inventaris') ?>" class="nav-link">Non Inventaris</a>
+                        <a href="<?= site_url('nonInventaris') ?>" class="nav-link">Non Inventaris</a>
                     </li>
                     <li class="nav-item">
                         <a href="<?= site_url('kategoriManajemen') ?>" class="nav-link">Kategori Barang </a>
@@ -382,7 +382,7 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="<?= site_url('dataInventaris') ?>" class="nav-link">
+            <a href="<?= site_url('dataNonInventaris') ?>" class="nav-link">
                 <i class="link-icon" data-feather="inbox"></i>
                 <span class="link-title">Non Inventaris</span>
             </a>

@@ -160,7 +160,7 @@ class KategoriPegawai extends ResourcePresenter
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
 
         $headers = ['No.', 'Nama Kategori Pegawai'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

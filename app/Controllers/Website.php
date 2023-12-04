@@ -155,7 +155,7 @@ class Website extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Website');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Nama', 'Fungsi', 'Link','PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -205,7 +205,7 @@ class Website extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Website');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Nama', 'Fungsi', 'Link','PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

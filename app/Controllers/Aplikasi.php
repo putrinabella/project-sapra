@@ -150,7 +150,7 @@ class Aplikasi extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Aplikasi');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Nama Aplikasi',  'PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -198,7 +198,7 @@ class Aplikasi extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Nama Aplikasi',  'PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

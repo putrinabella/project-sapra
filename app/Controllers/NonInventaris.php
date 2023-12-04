@@ -3,23 +3,23 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\InventarisModels; 
+use App\Models\NonInventarisModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Parsedown;
 
-class Inventaris extends ResourceController
+class NonInventaris extends ResourceController
 {
     
      function __construct() {
-        $this->inventarisModel = new InventarisModels();
+        $this->nonInventarisModel = new NonInventarisModels();
         $this->db = \Config\Database::connect();
     }
     public function index() {
-        $data['dataInventaris'] = $this->inventarisModel->getAll();
-        return view('master/inventarisView/index', $data);
+        $data['dataNonInventaris'] = $this->nonInventarisModel->getAll();
+        return view('master/nonInventarisView/index', $data);
     }
 
     // public function index() {
@@ -36,21 +36,21 @@ class Inventaris extends ResourceController
     
     //     $data['tableHeading'] = $tableHeading;
 
-    //     $dataInventaris = $this->inventarisModel->getData($startYear, $endYear);
+    //     $dataNonInventaris = $this->nonInventarisModel->getData($startYear, $endYear);
         
-    //     foreach ($dataInventaris as $value) {
-    //         $value->bulanPemakaianAir = $this->inventarisModel->convertMonth($value->bulanPemakaianAir);
+    //     foreach ($dataNonInventaris as $value) {
+    //         $value->bulanPemakaianAir = $this->nonInventarisModel->convertMonth($value->bulanPemakaianAir);
     //     }
         
-    //     $data['dataInventaris'] = $dataInventaris;
+    //     $data['dataNonInventaris'] = $dataNonInventaris;
     
-    //     $chartDataResult = $dataInventaris; 
+    //     $chartDataResult = $dataNonInventaris; 
     //     $chartBiaya = $this->chartBiaya($chartDataResult);
     //     $chartPemakaian = $this->chartPemakaian($chartDataResult);
     
     //     $data = array_merge($data, $chartBiaya, $chartPemakaian);
     
-    //     return view('master/inventarisView/index', $data);
+    //     return view('master/nonInventarisView/index', $data);
     // }
     
     private function chartBiaya($chartDataResult) {
@@ -98,31 +98,31 @@ class Inventaris extends ResourceController
     //     }
     
     //     $data['tableHeading'] = $tableHeading;
-    //     $data['dataInventaris'] = $this->inventarisModel->getData($startYear, $endYear);
+    //     $data['dataNonInventaris'] = $this->nonInventarisModel->getData($startYear, $endYear);
     
-    //     $chartDataResult = $this->inventarisModel->getData($startYear, $endYear);
+    //     $chartDataResult = $this->nonInventarisModel->getData($startYear, $endYear);
     //     $chartData = $this->chartPemakaian($chartDataResult);
     
     //     $data = array_merge($data, $chartData);
     
-    //     return view('master/inventarisView/index', $data);
+    //     return view('master/nonInventarisView/index', $data);
     // }
     
 
     
     public function show($id = null) {
         if ($id != null) {
-            $dataInventaris = $this->inventarisModel->find($id);
+            $dataNonInventaris = $this->nonInventarisModel->find($id);
         
-            if (is_object($dataInventaris)) {
-                $spesifikasiMarkup = $dataInventaris->spesifikasi;
+            if (is_object($dataNonInventaris)) {
+                $spesifikasiMarkup = $dataNonInventaris->spesifikasi;
                 $parsedown = new Parsedown();
                 $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
                 
-                $buktiUrl = $this->generateFileId($dataInventaris->bukti);
+                $buktiUrl = $this->generateFileId($dataNonInventaris->bukti);
                 $data = [
-                    'dataInventaris'           => $dataInventaris,
+                    'dataNonInventaris'           => $dataNonInventaris,
                     'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
@@ -130,7 +130,7 @@ class Inventaris extends ResourceController
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                 ];
-                return view('master/inventarisView/show', $data);
+                return view('master/nonInventarisView/show', $data);
             } else {
                 return view('error/404');
             }
@@ -140,31 +140,31 @@ class Inventaris extends ResourceController
     }
 
     public function new() {
-        $data['dataInventaris'] = $this->inventarisModel->findAll();
+        $data['dataNonInventaris'] = $this->nonInventarisModel->findAll();
         
-        return view('master/inventarisView/new', $data);        
+        return view('master/nonInventarisView/new', $data);        
     }
 
     
     public function create() {
         $data = $this->request->getPost(); 
-        if (!empty($data['namaInventaris'])  && !empty($data['satuan']) ) {
-            $this->inventarisModel->insert($data);
-            return redirect()->to(site_url('inventaris'))->with('success', 'Data berhasil disimpan');
+        if (!empty($data['nama'])  && !empty($data['satuan']) ) {
+            $this->nonInventarisModel->insert($data);
+            return redirect()->to(site_url('nonInventaris'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('inventaris'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('nonInventaris'))->with('error', 'Semua field harus terisi');
         }
     }
 
     public function edit($id = null) {
         if ($id != null) {
-            $dataInventaris = $this->inventarisModel->find($id);
+            $dataNonInventaris = $this->nonInventarisModel->find($id);
     
-            if (is_object($dataInventaris)) {
+            if (is_object($dataNonInventaris)) {
                 $data = [
-                    'dataInventaris' => $dataInventaris,
+                    'dataNonInventaris' => $dataNonInventaris,
                 ];
-                return view('master/inventarisView/edit', $data);
+                return view('master/nonInventarisView/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -176,11 +176,11 @@ class Inventaris extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            if (!empty($data['namaInventaris'])  && !empty($data['satuan']) ) {
-                $this->inventarisModel->update($id, $data);
-                return redirect()->to(site_url('inventaris'))->with('success', 'Data berhasil diupdate');
+            if (!empty($data['nama'])  && !empty($data['satuan']) ) {
+                $this->nonInventarisModel->update($id, $data);
+                return redirect()->to(site_url('nonInventaris'))->with('success', 'Data berhasil diupdate');
             } else {
-                return redirect()->to(site_url('inventaris'))->with('error', 'Semua data harus diisi');
+                return redirect()->to(site_url('nonInventaris'))->with('error', 'Semua data harus diisi');
             }
         } else {
             return view('error/404');
@@ -188,46 +188,46 @@ class Inventaris extends ResourceController
     }
 
     public function delete($id = null) {
-        $this->inventarisModel->delete($id);
-        return redirect()->to(site_url('inventaris'));
+        $this->nonInventarisModel->delete($id);
+        return redirect()->to(site_url('nonInventaris'));
     }
 
     public function trash() {
-        $data['dataInventaris'] = $this->inventarisModel->onlyDeleted()->getRecycle();
-        return view('master/inventarisView/trash', $data);
+        $data['dataNonInventaris'] = $this->nonInventarisModel->onlyDeleted()->getRecycle();
+        return view('master/nonInventarisView/trash', $data);
     } 
 
     public function restore($id = null) {
         $this->db = \Config\Database::connect();
         if($id != null) {
-            $this->db->table('tblInventaris')
+            $this->db->table('tblNonInventaris')
                 ->set('deleted_at', null, true)
-                ->where(['idInventaris' => $id])
+                ->where(['idNonInventaris' => $id])
                 ->update();
         } else {
-            $this->db->table('tblInventaris')
+            $this->db->table('tblNonInventaris')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
             }
         if($this->db->affectedRows() > 0) {
-            return redirect()->to(site_url('inventaris'))->with('success', 'Data berhasil direstore');
+            return redirect()->to(site_url('nonInventaris'))->with('success', 'Data berhasil direstore');
         } 
-        return redirect()->to(site_url('inventaris/trash'))->with('error', 'Tidak ada data untuk direstore');
+        return redirect()->to(site_url('nonInventaris/trash'))->with('error', 'Tidak ada data untuk direstore');
     } 
 
     public function deletePermanent($id = null) {
         if($id != null) {
-        $this->inventarisModel->delete($id, true);
-        return redirect()->to(site_url('inventaris/trash'))->with('success', 'Data berhasil dihapus permanen');
+        $this->nonInventarisModel->delete($id, true);
+        return redirect()->to(site_url('nonInventaris/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            $countInTrash = $this->inventarisModel->onlyDeleted()->countAllResults();
+            $countInTrash = $this->nonInventarisModel->onlyDeleted()->countAllResults();
         
             if ($countInTrash > 0) {
-                $this->inventarisModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('inventaris/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+                $this->nonInventarisModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('nonInventaris/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
-                return redirect()->to(site_url('inventaris/trash'))->with('error', 'Tempat sampah sudah kosong!');
+                return redirect()->to(site_url('nonInventaris/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     } 
@@ -236,11 +236,11 @@ class Inventaris extends ResourceController
         $startYear = $this->request->getVar('startYear');
         $endYear = $this->request->getVar('endYear');
 
-        $data = $this->inventarisModel->getData($startYear, $endYear);
+        $data = $this->nonInventarisModel->getData($startYear, $endYear);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Inventaris');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->setTitle('NonInventaris');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -281,11 +281,11 @@ class Inventaris extends ResourceController
     }
     
     public function createTemplate() {
-        $data = $this->inventarisModel->findAll();
+        $data = $this->nonInventarisModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -396,14 +396,14 @@ class Inventaris extends ResourceController
                 ];
 
                 if (!empty($data['pemakaianAir'])  && !empty($data['bulanPemakaianAir'])  && !empty($data['tahunPemakaianAir']) && !empty($data['biaya']) ) {
-                        $this->inventarisModel->insert($data);
+                        $this->nonInventarisModel->insert($data);
                 } else {
-                    return redirect()->to(site_url('inventaris'))->with('error', 'Pastikan semua data telah diisi!');
+                    return redirect()->to(site_url('nonInventaris'))->with('error', 'Pastikan semua data telah diisi!');
                 }
             }
-            return redirect()->to(site_url('inventaris'))->with('success', 'Data berhasil diimport');
+            return redirect()->to(site_url('nonInventaris'))->with('success', 'Data berhasil diimport');
         } else {
-            return redirect()->to(site_url('inventaris'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
+            return redirect()->to(site_url('nonInventaris'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
 
@@ -413,13 +413,13 @@ class Inventaris extends ResourceController
         $endYear = $this->request->getVar('endYear');
         
 
-        $filePath = APPPATH . 'Views/master/inventarisView/print.php';
+        $filePath = APPPATH . 'Views/master/nonInventarisView/print.php';
     
         if (!file_exists($filePath)) {
             return view('error/404');
         }
 
-        $data['dataInventaris'] = $this->inventarisModel->getData($startYear, $endYear);
+        $data['dataNonInventaris'] = $this->nonInventarisModel->getData($startYear, $endYear);
 
         ob_start();
 

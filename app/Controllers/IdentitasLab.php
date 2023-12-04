@@ -155,7 +155,7 @@ class IdentitasLab extends ResourceController
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
         $headerInputTable = ['No.', 'Kode', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
@@ -208,7 +208,7 @@ class IdentitasLab extends ResourceController
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
         $headerInputTable = ['No.', 'Kode Lab', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'Status'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');

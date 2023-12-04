@@ -28,7 +28,7 @@ class UserLogs extends BaseController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('User Log');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Username', 'Role', 'Time', 'Date', 'Action Type'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

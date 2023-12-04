@@ -200,14 +200,11 @@ class SaranaLayananNonAset extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
-        
         $data = $this->saranaLayananNonAsetModel->getAll($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Layanan Non Aset');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori MEP', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Keterangan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -280,7 +277,7 @@ class SaranaLayananNonAset extends ResourceController
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
         $headerInputTable = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori MEP', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Keterangan'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');

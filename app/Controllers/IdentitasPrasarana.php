@@ -155,7 +155,7 @@ class IdentitasPrasarana extends ResourceController
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
         $headerInputTable = ['No.', 'Kode', 'Nama Prasarana', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
@@ -209,7 +209,7 @@ class IdentitasPrasarana extends ResourceController
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
         $headerInputTable = ['No.', 'Kode Prasarana', 'Nama Prasarana', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'Status'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');

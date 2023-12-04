@@ -216,7 +216,7 @@ class DataSiswa extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('DataSiswa');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'NIS', 'Nama', 'Kelas'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -266,7 +266,7 @@ class DataSiswa extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Siswa');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'NIS', 'Nama', 'Id Identitas Kelas'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

@@ -155,7 +155,7 @@ class SosialMedia extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('SosialMedia');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link', 'PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -205,7 +205,7 @@ class SosialMedia extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Aplikasi Sosial Media', 'Username', 'Link', 'PIC'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

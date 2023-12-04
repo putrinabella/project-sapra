@@ -207,7 +207,7 @@ class LayananLabNonAset extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Layanan Non Aset');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori MEP', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Keterangan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -280,7 +280,7 @@ class LayananLabNonAset extends ResourceController
         
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
         $headerInputTable = ['No.', 'Tanggal', 'Lokasi', 'Status Layanan', 'Kategori MEP', 'Sumber Dana', 'Biaya', 'Link Dokumentasi', 'Keterangan'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');

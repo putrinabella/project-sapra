@@ -236,7 +236,7 @@ class TagihanInternet extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('TagihanInternet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Internet (kWh)',  'Biaya Tagihan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -281,7 +281,7 @@ class TagihanInternet extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Internet (kWh)',  'Biaya Tagihan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');

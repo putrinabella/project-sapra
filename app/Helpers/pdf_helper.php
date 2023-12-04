@@ -44,7 +44,7 @@ if (!function_exists('pdf_suratpeminjaman')) {
 
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(10, 54, 10);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -70,10 +70,6 @@ if (!function_exists('pdf_suratpeminjaman')) {
         $yearNow = date('Y');
         $yearNext = date('Y', strtotime('+1 year'));
         $html = <<<EOD
-        <style>
-
-        </style>
-        
         <p style="text-align: right;">No Peminjaman: $dataDataPeminjaman->idManajemenPeminjaman </p>
         <h3 style="text-align: center;">SURAT PERMOHONAN PEMINJAMAN ALAT LAB $yearNow/$yearNext</h3>
         <p style="padding-top: 10px;">Saya yang bertanda tangan di bawah ini: </p>
@@ -193,7 +189,7 @@ if (!function_exists('pdf_layananaset')) {
 
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(10, 54, 10);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -340,7 +336,7 @@ if (!function_exists('pdf_layanannonaset')) {
 
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(10, 54, 10);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -481,7 +477,7 @@ if (!function_exists('pdf_layananasetlab')) {
 
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(10, 54, 10);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -628,7 +624,7 @@ if (!function_exists('pdf_layanannonasetlab')) {
 
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(10, 54, 10);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -770,7 +766,7 @@ if (!function_exists('pdf_pemusnahanaset')) {
 
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 54, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(10, 54, 10);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -900,17 +896,8 @@ if (!function_exists('pdf_pemusnahanaset')) {
                             '<td>Harga Beli</td>' .
                             '<td>:</td>' .
                             '<td>Rp' . number_format($value->hargaBeli, 0, ',', '.') . '</td>' .
-                        '</tr>' .
-                        '<tr>' .
-                            '<td>Bukti</td>' .
-                            '<td>:</td>' . 
-                        '</tr>' .                    
-                        '<tr>' .
-                            // '<td colspan="3"><img src="' . $imageUrl . '" width="350" height="150"></td>' . 
-                            '<td colspan="3"><img style="width: 380px; max-height: 500px;" src="' . $imageUrl . '"></td>' .
-
-                        '</tr>' .                    
-                    '</table>' .
+                        '</tr>' ;     
+                        $html .= '</table>' .
                 '</td>';
         $html .= '</tr>';
     }
@@ -928,4 +915,271 @@ if (!function_exists('pdf_pemusnahanaset')) {
     return $pdfData;
     }
 }
+
+// Not use 
+if (!function_exists('pdf_detailpemusnahanaset')) {
+    function pdf_detailpemusnahanaset($data, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Sarana - Detail Pemusnahan Aset');
+        $pdf->SetSubject('Sarana - Detail Pemusnahan Aset');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+        $tanggalFormatted = number_format($data->hargaBeli, 0, ',', '.');
+        
+        $imageUrl = generateFileId($data->bukti);
+        $html = <<<EOD
+        <style>
+        
+        </style>
+        
+        <h3 style="text-align: center;"> $title</h3>
+        <br>
+        <table style="padding-top: 10px;">
+            <tr>
+                <th style="width: 200px;">Kode</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->kodeRincianAset</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Lokasi</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->namaPrasarana</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Kategori Barang</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->namaKategoriManajemen</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Nama Aset</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->namaSarana</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Merek</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->merk</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Status Terakhir</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->status</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Sumber Dana</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->namaSumberDana</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Tahun Pengadaan</th>
+                <th style="width: 20px;">:</th>
+                <th>$data->tahunPengadaan</th>
+            </tr>
+            <tr>
+                <th style="width: 200px;">Harga Beli</th>
+                <th style="width: 20px;">:</th>
+                <th>Rp$tanggalFormatted</th>
+            </tr>
+            <tr>
+                <th><img src="$imageUrl" style="max-width: 800px; height: auto;" alt="Bukti"></th>
+            </tr>
+        </table>
+        EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdf_noninventaris')) {
+    function pdf_noninventaris($dataPemasukan, $dataPengeluaran, $title,  $startDate = null, $endDate = null) {
+        usort($dataPemasukan, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+        usort($dataPengeluaran, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Sarana - Non Inventaris');
+        $pdf->SetSubject('Laboratorium - Non Inventaris');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <style>
+        img {
+            width: 380px;
+            max-height: 500px;
+        }
+        </style>
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        // Include date range only when both $startDate and $endDate are not null
+        if ($startDateFormatted !== '' && $endDateFormatted !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+        
+        $html .= <<<EOD
+        <h4>Data Pemasukan</h4>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Tanggal</b></th>
+                    <th style="width: 20%;"><b>Nama</b></th>
+                    <th style="width: 20%;"><b>Satuan</b></th>
+                    <th style="width: 20%;"><b>Jumlah</b></th>
+
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($dataPemasukan as $key => $value) {
+        $tanggalTimestamp = strtotime($value->tanggal);
+        $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
+        $html .= '<tr>';
+        $html .= '<td  style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->nama. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->satuan. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->jumlah. '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+
+    $html .= <<<EOD
+        <br>    
+        <h4>Data Pengeluaran</h4>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Tanggal</b></th>
+                    <th style="width: 20%;"><b>Nama</b></th>
+                    <th style="width: 20%;"><b>Satuan</b></th>
+                    <th style="width: 20%;"><b>Jumlah</b></th>
+
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($dataPengeluaran as $key => $value) {
+        $tanggalTimestamp = strtotime($value->tanggal);
+        $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
+        $html .= '<tr>';
+        $html .= '<td  style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->nama. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->satuan. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->jumlah. '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
 ?>

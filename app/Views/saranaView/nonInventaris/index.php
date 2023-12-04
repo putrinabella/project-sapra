@@ -1,20 +1,20 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Data Inventaris &verbar; SARPRA </title>
+<title>Data Non Inventaris &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Profil</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data Inventaris</li>
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Non Inventaris</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?= site_url('dataInventaris') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?= site_url('dataNonInventaris') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <span class="input-group-text input-group-addon bg-transparent border-primary"><i
                         data-feather="calendar" class=" text-primary"></i></span>
@@ -31,26 +31,37 @@
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('dataInventaris') ?>" class="btn btn-success btn-icon ">
+                <a href="<?= site_url('dataNonInventaris') ?>" class="btn btn-success btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('dataInventaris/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('dataNonInventaris/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
         <div class="dropdown">
+        <?php
+                if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
+                    $exportLink = site_url('dataNonInventaris/export');
+                    $generatePDFLink = site_url('dataNonInventaris/generatePDF');
+                } else {
+                    $startDate = $_GET['startDate'] ?? '';
+                    $endDate = $_GET['endDate'] ?? '';
+                    $exportLink = site_url("dataNonInventaris/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("dataNonInventaris/generatePDF?startDate=$startDate&endDate=$endDate");
+                }
+            ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('dataInventaris/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('dataInventaris/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
+                <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -60,11 +71,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('dataInventaris/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('dataNonInventaris/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('dataInventaris/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('dataNonInventaris/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -100,7 +111,7 @@
                     <?php endif; ?>
                 </div>
                 <div>
-                    <h4 class="text-center py-3">Data Inventaris</h4>
+                    <h4 class="text-center py-3">Data Non Inventaris</h4>
                     <?php if (!empty($tableHeading)) : ?>
                     <p class="text-center">
                         <?= $tableHeading ?>
@@ -122,31 +133,33 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataDataInventaris as $key => $value) : ?>
+                            <?php foreach ($dataNonInventaris as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
+                                <?php
+                                $originalDate = $value->tanggal;
+                                $formattedDate = date('d F Y', strtotime($originalDate));
+                                ?>
+                                <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
                                 <td>
-                                    <?= $value->tanggalDataInventaris; ?>
-                                </td>
-                                <td>
-                                    <?= $value->namaInventaris; ?>
+                                    <?= $value->nama; ?>
                                 </td>
                                 <td>
                                     <?= $value->satuan; ?>
                                 </td>
                                 <td>
-                                    <?= $value->tipeDataInventaris; ?>
+                                    <?= $value->tipe; ?>
                                 </td>
                                 <td class="text-center">
-                                    <?= $value->jumlahDataInventaris; ?>
+                                    <?= $value->jumlah; ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('dataInventaris/'.$value->idDataInventaris.'/edit') ?>"
+                                    <a href="<?=site_url('dataNonInventaris/'.$value->idDataNonInventaris.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('dataInventaris/'.$value->idDataInventaris)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idDataInventaris;?>">
+                                    <form action="<?=site_url('dataNonInventaris/'.$value->idDataNonInventaris)?>"
+                                        method="post" class="d-inline" id="del-<?= $value->idDataNonInventaris;?>">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
@@ -172,7 +185,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url(" dataInventaris/import")?>" method="POST" enctype="multipart/form-data"
+            <form action="<?=site_url(" dataNonInventaris/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
                     <?= csrf_field() ?>

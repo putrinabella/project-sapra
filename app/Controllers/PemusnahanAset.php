@@ -187,7 +187,7 @@ class PemusnahanAset extends ResourceController
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Pemusnahan Aset');
-        $activeWorksheet->getTabColor()->setRGB('ED1C24');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Tanggal Pemusnahan',  'Nama Akun',  'Kode Akun', 'Kode Aset', 'Lokasi', 'Kategori Barang','Spesifikasi Barang', 'Status', 'Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
@@ -263,7 +263,7 @@ class PemusnahanAset extends ResourceController
         $writer->save('php://output');
         exit();
     }
-    
+
     public function GeneratePDF() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');

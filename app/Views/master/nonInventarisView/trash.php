@@ -15,19 +15,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('inventaris')?>"
+                        <a href="<?= site_url('nonInventaris')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('inventaris/restore')?>"
+                        <a href="<?= site_url('nonInventaris/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('inventaris/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('nonInventaris/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
@@ -74,17 +74,17 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataInventaris as $key => $value) : ?>
+                        <?php foreach ($dataNonInventaris as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"> <?= $value->namaInventaris; ?> </td>
+                                <td class="text-center"> <?= $value->nama; ?> </td>
                                 <td class="text-center"> <?= $value->satuan; ?> </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('inventaris/restore/'.$value->idInventaris) ?>"
+                                    <a href="<?=site_url('nonInventaris/restore/'.$value->idNonInventaris) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('inventaris/deletePermanent/'.$value->idInventaris) ?>"
+                                    <form action="<?= site_url('nonInventaris/deletePermanent/'.$value->idNonInventaris) ?>"
                                         method="POST" class="d-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="_method" value="DELETE">

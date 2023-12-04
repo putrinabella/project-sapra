@@ -4,33 +4,33 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class InventarisModels extends Model
+class NonInventarisModels extends Model
 {
-    protected $table            = 'tblInventaris';
-    protected $primaryKey       = 'idInventaris';
+    protected $table            = 'tblNonInventaris';
+    protected $primaryKey       = 'idNonInventaris';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idInventaris', 'namaInventaris', 'satuan', 'tanggalInventaris', 'tipeInventaris'];
+    protected $allowedFields    = ['idNonInventaris', 'nama', 'satuan'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
     function getAll() {
         $builder = $this->db->table($this->table);
-        $builder->where('tblInventaris.deleted_at', null);
+        $builder->where('tblNonInventaris.deleted_at', null);
         $query = $builder->get();
         return $query->getResult();
     }
 
     function getData($startYear = null, $endYear = null) {
         $builder = $this->db->table($this->table);
-        $builder->where('tblInventaris.deleted_at', null);
+        $builder->where('tblNonInventaris.deleted_at', null);
     
         if ($startYear !== null && $endYear !== null) {
-            $builder->where('tblInventaris.tahunPemakaianAir >=', $startYear);
-            $builder->where('tblInventaris.tahunPemakaianAir <=', $endYear);
+            $builder->where('tblNonInventaris.tahunPemakaianAir >=', $startYear);
+            $builder->where('tblNonInventaris.tahunPemakaianAir <=', $endYear);
         }
     
-        $builder->orderBy('tblInventaris.tahunPemakaianAir', 'asc'); 
-        $builder->orderBy('tblInventaris.bulanPemakaianAir', 'asc');
+        $builder->orderBy('tblNonInventaris.tahunPemakaianAir', 'asc'); 
+        $builder->orderBy('tblNonInventaris.bulanPemakaianAir', 'asc');
         $query = $builder->get();
         return $query->getResult();
     }
@@ -46,7 +46,7 @@ class InventarisModels extends Model
     
     function getRecycle() {
         $builder = $this->db->table($this->table);
-        $builder->where('tblInventaris.deleted_at IS NOT NULL');
+        $builder->where('tblNonInventaris.deleted_at IS NOT NULL');
         $query = $builder->get();
         return $query->getResult();
     }

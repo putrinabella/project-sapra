@@ -258,7 +258,7 @@
                                     <div class="row">
                                         <div class="col-12 col-xl-12 stretch-card">
                                             <div class="row flex-grow-1">
-                                                <?php foreach ($dataInventaris as $key => $value) : ?>
+                                                <?php foreach ($dataNonInventaris as $key => $value) : ?>
                                                 <div class="col-md-4 grid-margin stretch-card">
                                                     <div class="card">
                                                         <div class="card-body">
@@ -266,7 +266,7 @@
                                                                 <div class="col-7">
                                                                     <div class="row">
                                                                         <h6 class="card-title text-center">
-                                                                            <?= $value->namaInventaris; ?>
+                                                                            <?= $value->nama; ?>
                                                                         </h6>
                                                                     </div>
                                                                     <div class="row text-center">
@@ -956,7 +956,7 @@
                                     <div class="row">
                                         <div class="col-12 col-xl-12 stretch-card">
                                             <div class="row flex-grow-1">
-                                                <?php foreach ($dataInventaris as $key => $value) : ?>
+                                                <?php foreach ($dataNonInventaris as $key => $value) : ?>
                                                 <div class="col-md-4 grid-margin stretch-card">
                                                     <div class="card">
                                                         <div class="card-body">
@@ -964,7 +964,7 @@
                                                                 <div class="col-7">
                                                                     <div class="row">
                                                                         <h6 class="card-title text-center">
-                                                                            <?= $value->namaInventaris; ?>
+                                                                            <?= $value->nama; ?>
                                                                         </h6>
                                                                     </div>
                                                                     <div class="row text-center">
