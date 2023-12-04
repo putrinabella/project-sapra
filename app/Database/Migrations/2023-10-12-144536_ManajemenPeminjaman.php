@@ -20,8 +20,7 @@ class ManajemenPeminjaman extends Migration
                 'constraint' => 255,
             ],
             'tanggal' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE',
             ],
             'asalPeminjam' => [
                 'type' => 'VARCHAR',
@@ -39,8 +38,7 @@ class ManajemenPeminjaman extends Migration
                 'constraint' => 255,
             ],
             'tanggalPengembalian' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE',
             ],
             'namaPenerima' => [
                 'type' => 'VARCHAR',

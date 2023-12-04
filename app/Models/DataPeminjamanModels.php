@@ -13,19 +13,7 @@ class DataPeminjamanModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    function getAll()
-    {
-        $builder = $this->db->table($this->table);
-        $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
-        $builder->where('tblManajemenPeminjaman.deleted_at', null);
-        $query = $builder->get();
-        return $query->getResult();
-    }
-
-    function getData($startDate = null, $endDate = null)
+    function getAll($startDate = null, $endDate = null)
     {
         $builder = $this->db->table('tblManajemenPeminjaman');
         $builder->select('tblManajemenPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailManajemenPeminjaman.idManajemenPeminjaman) as jumlahPeminjaman');
@@ -328,7 +316,7 @@ class DataPeminjamanModels extends Model
     function getRecycle()
     {
         $builder = $this->db->table($this->table);
-        $builder->select('tblManajemenPeminjaman.*, tblRincianLabAset.idIdentitasSarana, tblIdentitasSarana.*, tblIdentitasLab.*, tblDataSiswa.*, tblIdentitasKelas.*, tblKategoriPegawai.*');
+        $builder->select('tblManajemenPeminjaman.*, tblRincianLabAset.idIdentitasSarana, tblIdentitasSarana.*, tblIdentitasLab.*, tblDataSiswa.*, tblIdentitasKelas.*');
         $builder->select('COUNT(tblRincianLabAset.idManajemenPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenPeminjaman', 'tblDetailManajemenPeminjaman.idManajemenPeminjaman = tblManajemenPeminjaman.idManajemenPeminjaman');
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');

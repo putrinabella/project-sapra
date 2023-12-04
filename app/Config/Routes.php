@@ -568,18 +568,18 @@ $routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
 // MANAJEMEN PEMINJAMAN
 
 // Data Peminjaman
-$routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
 $routes->get('peminjamanDataUser/print/(:num)', 'DataPeminjaman::print/$1');
+$routes->get('peminjamanDataUser', 'DataPeminjaman::user');
+$routes->get('peminjamanDataUser/userDetail/(:any)', 'DataPeminjaman::getUserLoanHistory/$1');
+$routes->get('peminjamanDataUser/userRequestHistory/(:any)', 'DataPeminjaman::getuserRequestDetail/$1');
+$routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
 $routes->get('dataPeminjaman/printAll', 'DataPeminjaman::printAll');
 $routes->get('dataPeminjaman/generatePDF', 'DataPeminjaman::generatePDF');
 $routes->get('dataPeminjaman/export', 'DataPeminjaman::export');
 $routes->get('dataPeminjaman/trash', 'DataPeminjaman::trash');
 $routes->get('dataPeminjaman/restore/(:any)', 'DataPeminjaman::restore/$1');
 $routes->get('dataPeminjaman/restore', 'DataPeminjaman::restore');
-$routes->get('peminjamanDataUser', 'DataPeminjaman::user');
 $routes->get('dataPeminjaman/history/(:any)', 'DataPeminjaman::getLoanHistory/$1');
-$routes->get('peminjamanDataUser/userDetail/(:any)', 'DataPeminjaman::getUserLoanHistory/$1');
-$routes->get('peminjamanDataUser/userRequestHistory/(:any)', 'DataPeminjaman::getuserRequestDetail/$1');
 $routes->post('returnItems/changeStatus/(:any)', 'DataPeminjaman::changeStatus/$1');
 $routes->post('returnItems/changeSectionAset/(:any)', 'DataPeminjaman::changeSectionAset/$1');
 $routes->delete('dataPeminjaman/deletePermanent/(:any)', 'DataPeminjaman::deletePermanent/$1');
@@ -602,6 +602,7 @@ $routes->post('returnItems/changeSectionAset/(:any)', 'RequestPeminjaman::change
 $routes->delete('requestPeminjaman/deletePermanent/(:any)', 'RequestPeminjaman::deletePermanent/$1');
 $routes->delete('requestPeminjaman/deletePermanent', 'RequestPeminjaman::deletePermanent');
 $routes->resource('requestPeminjaman', ['filter' => 'isLoggedIn']);
+
 // Manajemen Peminjaman
 // User
 

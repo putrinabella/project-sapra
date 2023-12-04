@@ -41,14 +41,14 @@
         </a>
         <div class="dropdown">
         <?php
-                if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
+                if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
                     $exportLink = site_url('dataPeminjaman/export');
                     $printAllLink = site_url('dataPeminjaman/printAll');
                 } else {
-                    $startYear = $_GET['startYear'] ?? '';
-                    $endYear = $_GET['endYear'] ?? '';
-                    $exportLink = site_url("dataPeminjaman/export?startYear=$startYear&endYear=$endYear");
-                    $printAllLink = site_url("dataPeminjaman/printAll?startYear=$startYear&endYear=$endYear");
+                    $startDate = $_GET['startDate'] ?? '';
+                    $endDate = $_GET['endDate'] ?? '';
+                    $exportLink = site_url("dataPeminjaman/export?startDate=$startDate&endDate=$endDate");
+                    $printAllLink = site_url("dataPeminjaman/printAll?startDate=$startDate&endDate=$endDate");
                 }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
@@ -118,13 +118,16 @@
                     </thead>
                     <tbody class="py-2">
                         <?php foreach ($dataDataPeminjaman as $key => $value) : ?>
-
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                             <td>
                                 <?= $key + 1 ?>
                             </td>
-                            <td class="text-left">
-                                <?= date('d F Y', strtotime($value->tanggal)) ?>
+                            <?php
+                            $originalDate = $value->tanggal;
+                            $formattedDate = date('d F Y', strtotime($originalDate));
+                            ?>
+                            <td data-sort="<?= strtotime($originalDate) ?>">
+                                <?php echo $formattedDate; ?>
                             </td>
                             <td class="text-left">
                                 <?= $value->nis; ?> 

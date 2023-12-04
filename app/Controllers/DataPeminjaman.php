@@ -50,7 +50,7 @@ class DataPeminjaman extends ResourceController
         
 
         $data['tableHeading'] = $tableHeading;
-        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getData($startDate, $endDate);
+        $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getAll($startDate, $endDate);
 
         return view('labView/dataPeminjaman/index', $data);
     }
@@ -371,41 +371,44 @@ class DataPeminjaman extends ResourceController
         $activeWorksheet->setTitle('Data Pengembalian');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
 
-        $headers = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal', 'Kondisi Pengembalian', 'Tanggal Pengembalian'];
+        $headers = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Kondisi Awal', 'Kondisi Pengembalian', 'Tanggal Pengembalian'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:K1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         foreach ($data as $index => $value) {
+            $date = date('d F Y', strtotime($value->tanggal));
             $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B' . ($index + 2), $value->tanggal);
+            $activeWorksheet->setCellValue('B' . ($index + 2), $date);
             $activeWorksheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             $activeWorksheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
             $activeWorksheet->setCellValue('E' . ($index + 2), $value->namaKelas);
             $activeWorksheet->setCellValue('F' . ($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('G' . ($index + 2), $value->namaLab);
-            if ($value->loanStatus == "Peminjaman") {
-                $activeWorksheet->setCellValue('H' . ($index + 2), 'Sudah Dikembalikan');
-            } 
-            $activeWorksheet->setCellValue('I' . ($index + 2), "Bagus");
-            $activeWorksheet->setCellValue('J' . ($index + 2), $value->statusSetelahPengembalian);
-            $activeWorksheet->setCellValue('K' . ($index + 2), $value->tanggalPengembalian);
+            $activeWorksheet->setCellValue('H' . ($index + 2), "Bagus");
+            $activeWorksheet->setCellValue('I' . ($index + 2), $value->statusSetelahPengembalian);
+            $activeWorksheet->setCellValue('J' . ($index + 2), $value->tanggalPengembalian);
 
 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-            }
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }  
         }
-        $activeWorksheet->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:K1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:K' . $activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:K')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:J' . $activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
 
-        foreach (range('A', 'K') as $column) {
+        foreach (range('A', 'J') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
 
@@ -413,43 +416,46 @@ class DataPeminjaman extends ResourceController
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Data Peminjaman');
         $exampleSheet->getTabColor()->setRGB('767870');
-        $headerExampleTable = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Status', 'Kondisi Awal'];
+        $headerExampleTable = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Kondisi Awal'];
      
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
-        $exampleSheet->getStyle('A1:I1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
+        $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
         foreach ($dataPeminjaman as $index => $value) {
-
+            $date = date('d F Y', strtotime($value->tanggal));
             $exampleSheet->setCellValue('A' . ($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B' . ($index + 2), $value->tanggal);
+            $exampleSheet->setCellValue('B' . ($index + 2), $date);
             $exampleSheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             $exampleSheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
             $exampleSheet->setCellValue('E' . ($index + 2), $value->namaKelas);
             $exampleSheet->setCellValue('F' . ($index + 2), $value->namaSarana);
             $exampleSheet->setCellValue('G' . ($index + 2), $value->namaLab);
-            if ($value->loanStatus == "Peminjaman") {
-                $exampleSheet->setCellValue('H' . ($index + 2), 'Sedang Dipinjam');
-            }
-            $exampleSheet->setCellValue('I' . ($index + 2), "Bagus");
+            $exampleSheet->setCellValue('H' . ($index + 2), "Bagus");
 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
             foreach ($columns as $column) {
-                $exampleSheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-            }
+                $cellReference = $column . ($index + 2);
+                $alignment = $exampleSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }  
         }
-        $exampleSheet->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:I1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:I' . $exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:I')->getAlignment()->setWrapText(true);
+        $exampleSheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $exampleSheet->getStyle('A1:H1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:H' . $exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:H')->getAlignment()->setWrapText(true);
 
-        foreach (range('A', 'I') as $column) {
+        foreach (range('A', 'H') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
-
+        
+        $spreadsheet->setActiveSheetIndex(0);
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=Laboratorium - Data Peminjaman.xlsx');

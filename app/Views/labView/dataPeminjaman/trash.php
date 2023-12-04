@@ -6,8 +6,13 @@
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Data Peminjaman</h4>
-<br>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('dataPeminjaman')?>">Data Peminjaman</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
+    </ol>
+</nav>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -90,36 +95,11 @@
                                 <td class="text-center">
                                     <?= date('d F Y', strtotime($value->tanggal)) ?>
                                 </td>
-                                <td class="text-left">
-                                    <?php
-                                    if ($value->kategoriPeminjam == "siswa") {
-                                        echo $value->nis;
-                                    } elseif ($value->kategoriPeminjam == "karyawan") {
-                                        echo $value->nip;
-                                    }
-                                ?>
-                                </td>
-                                <td class="text-left">
-                                    <?php
-                                    if ($value->kategoriPeminjam == "siswa") {
-                                        echo $value->namaSiswa;
-                                    } elseif ($value->kategoriPeminjam == "karyawan") {
-                                        echo $value->namaPegawai;
-                                    }
-                                ?>
-                                </td>
-                                <td class="text-left">
-                                    <?php
-                                    if ($value->kategoriPeminjam == "siswa") {
-                                        echo $value->namaKelas;
-                                    } elseif ($value->kategoriPeminjam == "karyawan") {
-                                        echo $value->namaKategoriPegawai;
-                                    }
-                                ?>
-                                </td>
+                                <td><?= $value->nis; ?> </td>
+                                <td><?= $value->namaSiswa; ?> </td>
+                                <td><?= $value->namaKelas; ?> </td>
                                 <td class="text-center">
                                     <?= $value->namaSarana ?>
-                                    <?= $value->idManajemenPeminjaman ?>
                                 </td>
                                 <td class="text-center">
                                     <?= $value->namaLab ?>
