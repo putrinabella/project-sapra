@@ -486,4 +486,28 @@ class RequestPeminjaman extends ResourceController
             return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
         }
     }
+
+    public function generatePDF() {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $dataRequest = $this->requestPeminjamanModel->getDataRequest($startDate, $endDate);
+        $dataApprove = $this->requestPeminjamanModel->getDataApprove($startDate, $endDate);
+        $dataReject = $this->requestPeminjamanModel->getDataReject($startDate, $endDate);
+
+        $title = "REPORT REQUEST PEMINJAMAN";
+        if (!$dataRequest || !$dataApprove || !$dataReject) {
+            return view('error/404');
+        }
+    
+        $pdfData = pdf_requestpeminjaman($dataRequest, $dataApprove, $dataReject, $title, $startDate, $endDate);
+    
+        $filename = 'Laboratorium - Request Peminjaman' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
 }

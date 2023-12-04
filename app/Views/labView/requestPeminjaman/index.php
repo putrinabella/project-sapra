@@ -35,7 +35,7 @@
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <div class="dropdown">
+        <div class="d-flex align-items-center flex-wrap text-nowrap">
             <?php
                 if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
                     $exportLink = site_url('requestPeminjaman/export');
@@ -47,15 +47,14 @@
                     $generatePDFLink = site_url("requestPeminjaman/generatePDF?startDate=$startDate&endDate=$endDate");
                 }
             ?>
-            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <!-- <a href="<?= $generatePDFLink ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0" target="_blank">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
-                Export File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= $generatePDFLink ?>">Download as ZIP</a>
-            </div>
+                Download PDF
+            </a> -->
+            <a href="<?= $exportLink ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+                <i class=" btn-icon-prepend" data-feather="download"></i>
+                Download Excel
+            </a>
         </div>
     </div>
 </div>
@@ -117,7 +116,9 @@
                             $originalDate = $value->tanggal;
                             $formattedDate = date('d F Y', strtotime($originalDate));
                             ?>
-                            <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
+                            <td data-sort="<?= strtotime($originalDate) ?>">
+                                <?php echo $formattedDate; ?>
+                            </td>
                             <td class="text-left">
                                 <?= $value->nis; ?>
                             </td>
@@ -132,15 +133,20 @@
                             </td>
                             <td>
                                 <?php if ($value->loanStatus == "Approve") : ?>
-                                    Request: <?= $value->jumlahPeminjaman ?>
-                                    <br>
-                                    Approve: <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '-'; ?>
+                                Request:
+                                <?= $value->jumlahPeminjaman ?>
+                                <br>
+                                Approve:
+                                <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '-'; ?>
                                 <?php elseif ($value->loanStatus == "Request") : ?>
-                                    Request: <?= $value->jumlahPeminjaman ?>
+                                Request:
+                                <?= $value->jumlahPeminjaman ?>
                                 <?php elseif ($value->loanStatus == "Reject") : ?>
-                                    Request: <?= $value->jumlahPeminjaman ?>
-                                    <br>
-                                    Approve: <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '0'; ?>
+                                Request:
+                                <?= $value->jumlahPeminjaman ?>
+                                <br>
+                                Approve:
+                                <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '0'; ?>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -156,11 +162,11 @@
                                 <?php if ($value->loanStatus == "Request") : ?>
                                 <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                <?php endif; ?>                                
+                                <?php endif; ?>
                                 <?php if ($value->loanStatus == "Approve"  || $value->loanStatus == "Reject") : ?>
                                 <a href="<?= site_url('requestPeminjaman/' . $value->idRequestPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
-                                <?php endif; ?>                                
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -488,39 +488,8 @@ class DataNonInventaris extends ResourceController
         if (!$dataPemasukan || !$dataPengeluaran) {
             return view('error/404');
         }
-        
-        // $data = [
-        //     'dataPemasukan' => $dataPemasukan,
-        //     'dataPengeluaran' => $dataPengeluaran,
-        // ];
     
         $pdfData = pdf_noninventaris($dataPemasukan, $dataPengeluaran, $title, $startDate, $endDate);
-    
-        
-        $filename = 'Sarana - Non Inventaris' . ".pdf";
-        
-        $response = $this->response;
-        $response->setHeader('Content-Type', 'application/pdf');
-        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
-        $response->setBody($pdfData);
-        $response->send();
-    }
-
-    public function generatePDF2() {
-        $startDate = $this->request->getVar('startDate');
-        $endDate = $this->request->getVar('endDate');
-
-        $dataNonInventaris = $this->dataNonInventarisModel->getPemasukan($startDate, $endDate);
-        $title = "REPORT DATA NON INVENTARIS";
-        if (!$dataNonInventaris) {
-            return view('error/404');
-        }
-    
-        $data = [
-            'dataNonInventaris' => $dataNonInventaris,
-        ];
-    
-        $pdfData = pdf_noninventaris($dataNonInventaris, $title, $startDate, $endDate);
     
         
         $filename = 'Sarana - Non Inventaris' . ".pdf";

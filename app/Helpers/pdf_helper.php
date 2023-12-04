@@ -1208,7 +1208,7 @@ if (!function_exists('pdf_noninventaris')) {
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Putri Nabella');
         $pdf->SetTitle('Sarana - Non Inventaris');
-        $pdf->SetSubject('Laboratorium - Non Inventaris');
+        $pdf->SetSubject('Sarana - Non Inventaris');
         $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
 
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -1290,6 +1290,168 @@ if (!function_exists('pdf_noninventaris')) {
         
     
     foreach ($dataPemasukan as $key => $value) {
+        $tanggalTimestamp = strtotime($value->tanggal);
+        $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
+        $html .= '<tr>';
+        $html .= '<td  style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->nama. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->satuan. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->jumlah. '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+
+    $html .= <<<EOD
+        <br>    
+        <h4>Data Pengeluaran</h4>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Tanggal</b></th>
+                    <th style="width: 20%;"><b>Nama</b></th>
+                    <th style="width: 20%;"><b>Satuan</b></th>
+                    <th style="width: 20%;"><b>Jumlah</b></th>
+
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($dataPengeluaran as $key => $value) {
+        $tanggalTimestamp = strtotime($value->tanggal);
+        $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
+        $html .= '<tr>';
+        $html .= '<td  style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->nama. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->satuan. '</td>';
+        $html .= '<td style="width: 20%; text-align: left;">' . $value->jumlah. '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+// Not priority, maybe i'll do it letter
+if (!function_exists('pdf_requestpeminjaman')) {
+    function pdf_requestpeminjaman($dataRequest, $dataApprove, $dataReject, $title,  $startDate = null, $endDate = null) {
+        usort($dataRequest, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+        usort($dataApprove, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+        usort($dataReject, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Laboratorium - Non Inventaris');
+        $pdf->SetSubject('Laboratorium - Non Inventaris');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <style>
+        img {
+            width: 380px;
+            max-height: 500px;
+        }
+        </style>
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        // Include date range only when both $startDate and $endDate are not null
+        if ($startDateFormatted !== '' && $endDateFormatted !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+        
+        $html .= <<<EOD
+        <h4>Data Request</h4>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Tanggal</b></th>
+                    <th style="width: 20%;"><b>Nama</b></th>
+                    <th style="width: 20%;"><b>Satuan</b></th>
+                    <th style="width: 20%;"><b>Jumlah</b></th>
+
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($dataRequest as $key => $value) {
         $tanggalTimestamp = strtotime($value->tanggal);
         $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
         $html .= '<tr>';
