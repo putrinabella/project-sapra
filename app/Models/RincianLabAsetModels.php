@@ -46,7 +46,7 @@ class RincianLabAsetModels extends Model
         return $query->getResult();
     }
 
-    function getDestroy() {
+    function getDestroy($startDate = null, $endDate = null) {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
@@ -54,6 +54,11 @@ class RincianLabAsetModels extends Model
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
         $builder->where('tblRincianLabAset.deleted_at', null);
         $builder->where('tblRincianLabAset.sectionAset =', 'Dimusnahkan');
+        $builder->orderBy('tanggalPemusnahan', 'desc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblRincianLabAset.tanggalPemusnahan >=', $startDate);
+            $builder->where('tblRincianLabAset.tanggalPemusnahan <=', $endDate);
+        }
         $query = $builder->get();
         return $query->getResult();
     }

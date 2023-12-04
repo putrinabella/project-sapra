@@ -24,7 +24,7 @@
             <div class="card-body">
                 <form action="<?= site_url('rincianAset/'.$dataRincianAset->idRincianAset)?>" method="post"
                     autocomplete="off" id="custom-validation"  enctype="multipart/form-data">
-                    <?= csrf_field() ?>
+                    
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
                         <label for="kodeRincianAset" class="col-sm-3 col-form-label">Kode Rincian Aset</label>

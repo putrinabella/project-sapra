@@ -29,7 +29,7 @@
             </div>
             <div class="card-body">
                 <form action="<?= site_url('identitasKelas')?>" method="post" autocomplete="off"  id="custom-validation">
-                    <?= csrf_field() ?>
+                    
                     <div class="row mb-3">
                         <label for="namaKelas" class="col-sm-3 col-form-label">Identitas Kelas</label>
                         <div class="col-sm-9">

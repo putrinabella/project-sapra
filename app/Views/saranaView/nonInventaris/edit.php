@@ -25,7 +25,7 @@
             <div class="card-body">
                 <form action="<?= site_url('dataNonInventaris/'.$dataNonInventaris->idDataNonInventaris)?>" method="post"
                     autocomplete="off" id="custom-validation">
-                    <?= csrf_field() ?>
+                    
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
                         <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>

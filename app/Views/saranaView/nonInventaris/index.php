@@ -160,7 +160,7 @@
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('dataNonInventaris/'.$value->idDataNonInventaris)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idDataNonInventaris;?>">
-                                        <?= csrf_field() ?>
+                                        
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?">
@@ -188,7 +188,7 @@
             <form action="<?=site_url(" dataNonInventaris/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
-                    <?= csrf_field() ?>
+                    
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">

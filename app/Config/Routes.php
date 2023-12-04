@@ -13,6 +13,7 @@ $routes->get('createDatabase', function () {
 });
 
 // USER ROUTES
+
 // Login 
 $routes->get('login', 'Auth::login');
 $routes->get('auth', 'Auth::index');
@@ -33,14 +34,12 @@ $routes->get('viewActions/generatePDF', 'UserActionLogs::generatePDF');
 $routes->get('viewActions/export', 'UserActionLogs::export');
 
 // HOME
-// $routes->get('/', 'ProfilSekolah::index');
-// $routes->get('home', 'ProfilSekolah::index');
-
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
 
 
 // DATA MASTER
+// Manajemen User
 $routes->get('manajemenUser/createTemplate', 'ManajemenUser::createTemplate');
 $routes->get('manajemenUser/generatePDF', 'ManajemenUser::generatePDF');
 $routes->get('manajemenUser/export', 'ManajemenUser::export');
@@ -222,9 +221,22 @@ $routes->delete('dataPegawai/deletePermanent/(:any)', 'DataPegawai::deletePerman
 $routes->delete('dataPegawai/deletePermanent', 'DataPegawai::deletePermanent');
 $routes->resource('dataPegawai', ['filter' => 'isLoggedIn']);
 
-// SARANA
+// Inventaris
+$routes->get('nonInventaris/createTemplate', 'NonInventaris::createTemplate');
+$routes->get('nonInventaris/generatePDF', 'NonInventaris::generatePDF');
+$routes->get('nonInventaris/export', 'NonInventaris::export');
+$routes->post('nonInventaris/import', 'NonInventaris::import');
+$routes->get('nonInventaris/edit', 'NonInventaris::edit');
+$routes->get('nonInventaris/trash', 'NonInventaris::trash');
+$routes->get('nonInventaris/restore/(:any)', 'NonInventaris::restore/$1');
+$routes->get('nonInventaris/restore', 'NonInventaris::restore');
+$routes->delete('nonInventaris/deletePermanent/(:any)', 'NonInventaris::deletePermanent/$1');
+$routes->delete('nonInventaris/deletePermanent', 'NonInventaris::deletePermanent');
+$routes->resource('nonInventaris', ['filter' => 'isLoggedIn']);
 
-// Rincian Aset
+// SARANA - MANAJEMEN ASET
+
+// Data Rincian Aset
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 $routes->get('generateItQRDoc', 'RincianAset::generateItQRDoc');
 $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
@@ -285,15 +297,29 @@ $routes->delete('dataItSarana/deletePermanent', 'RincianAset::deletePermanentIt'
 $routes->delete('dataItSarana/(:any)', 'RincianAset::deleteIt/$1');
 $routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
 
-// PEMUSNAHAN ASET 
+// Pemusnahan Aset
 $routes->get('pemusnahanAset/print/(:any)', 'PemusnahanAset::print/$1');
 $routes->get('pemusnahanAset/generatePDF', 'PemusnahanAset::generatePDF');
 $routes->get('pemusnahanAset/export', 'PemusnahanAset::export');
 $routes->post('pemusnahanAset/destruction/(:any)', 'PemusnahanAset::destruction/$1');
 $routes->resource('pemusnahanAset', ['filter' => 'isLoggedIn']);
 
+// Data Inventaris
+$routes->get('dataNonInventaris/createTemplate', 'DataNonInventaris::createTemplate');
+$routes->get('dataNonInventaris/generatePDF', 'DataNonInventaris::generatePDF');
+$routes->get('dataNonInventaris/export', 'DataNonInventaris::export');
+$routes->post('dataNonInventaris/import', 'DataNonInventaris::import');
+$routes->get('dataNonInventaris/edit', 'DataNonInventaris::edit');
+$routes->get('dataNonInventaris/trash', 'DataNonInventaris::trash');
+$routes->get('dataNonInventaris/restore/(:any)', 'DataNonInventaris::restore/$1');
+$routes->get('dataNonInventaris/restore', 'DataNonInventaris::restore');
+$routes->delete('dataNonInventaris/deletePermanent/(:any)', 'DataNonInventaris::deletePermanent/$1');
+$routes->delete('dataNonInventaris/deletePermanent', 'DataNonInventaris::deletePermanent');
+$routes->resource('dataNonInventaris', ['filter' => 'isLoggedIn']);
+
+// SARANA - LAYANAN ASET
+
 // Layanan Aset
-// Ajax Select2
 $routes->post('getKodeRincianAsetBySarana', 'SaranaLayananAset::getKodeRincianAsetBySarana');
 $routes->post('getIdentitasPrasaranaByKodeRincianAset', 'SaranaLayananAset::getIdentitasPrasaranaByKodeRincianAset');
 $routes->post('getKategoriManajemenByKodeRincianAset', 'SaranaLayananAset::getKategoriManajemenByKodeRincianAset');
@@ -324,31 +350,6 @@ $routes->delete('saranaLayananNonAset/deletePermanent/(:any)', 'SaranaLayananNon
 $routes->delete('saranaLayananNonAset/deletePermanent', 'SaranaLayananNonAset::deletePermanent');
 $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 
-// Inventaris
-$routes->get('nonInventaris/createTemplate', 'NonInventaris::createTemplate');
-$routes->get('nonInventaris/generatePDF', 'NonInventaris::generatePDF');
-$routes->get('nonInventaris/export', 'NonInventaris::export');
-$routes->post('nonInventaris/import', 'NonInventaris::import');
-$routes->get('nonInventaris/edit', 'NonInventaris::edit');
-$routes->get('nonInventaris/trash', 'NonInventaris::trash');
-$routes->get('nonInventaris/restore/(:any)', 'NonInventaris::restore/$1');
-$routes->get('nonInventaris/restore', 'NonInventaris::restore');
-$routes->delete('nonInventaris/deletePermanent/(:any)', 'NonInventaris::deletePermanent/$1');
-$routes->delete('nonInventaris/deletePermanent', 'NonInventaris::deletePermanent');
-$routes->resource('nonInventaris', ['filter' => 'isLoggedIn']);
-
-// Data Inventaris
-$routes->get('dataNonInventaris/createTemplate', 'DataNonInventaris::createTemplate');
-$routes->get('dataNonInventaris/generatePDF', 'DataNonInventaris::generatePDF');
-$routes->get('dataNonInventaris/export', 'DataNonInventaris::export');
-$routes->post('dataNonInventaris/import', 'DataNonInventaris::import');
-$routes->get('dataNonInventaris/edit', 'DataNonInventaris::edit');
-$routes->get('dataNonInventaris/trash', 'DataNonInventaris::trash');
-$routes->get('dataNonInventaris/restore/(:any)', 'DataNonInventaris::restore/$1');
-$routes->get('dataNonInventaris/restore', 'DataNonInventaris::restore');
-$routes->delete('dataNonInventaris/deletePermanent/(:any)', 'DataNonInventaris::deletePermanent/$1');
-$routes->delete('dataNonInventaris/deletePermanent', 'DataNonInventaris::deletePermanent');
-$routes->resource('dataNonInventaris', ['filter' => 'isLoggedIn']);
 
 // PRASARANA
 
@@ -443,7 +444,6 @@ $routes->delete('profilSekolah/deletePermanent/(:any)', 'ProfilSekolah::deletePe
 $routes->delete('profilSekolah/deletePermanent', 'ProfilSekolah::deletePermanent');
 $routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
 
-
 // Tagihan Air
 $routes->get('tagihanAir/createTemplate', 'TagihanAir::createTemplate');
 $routes->get('tagihanAir/generatePDF', 'TagihanAir::generatePDF');
@@ -485,14 +485,13 @@ $routes->resource('tagihanInternet', ['filter' => 'isLoggedIn']);
 
 // LABORATORIUM
 
-// Manajemen Aset
+// Data Rincian Aset
 $routes->get('generateLabQRDoc', 'RincianLabAset::generateLabQRDoc');
 $routes->add('generateSelectedLabQR/(:any)', 'RincianLabAset::generateSelectedLabQR/$1');
-
 $routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
 
-$routes->get('pemusnahanLabAsetDetail/(:num)', 'RincianLabAset::pemusnahanLabAsetDetail/$1');
-$routes->get('pemusnahanLabAset', 'RincianLabAset::pemusnahanLabAset');
+// $routes->get('pemusnahanLabAsetDetail/(:num)', 'RincianLabAset::pemusnahanLabAsetDetail/$1');
+// $routes->get('pemusnahanLabAset', 'RincianLabAset::pemusnahanLabAset');
 $routes->get('dataSaranaDetail/(:num)', 'RincianLabAset::dataSaranaDetail/$1');
 $routes->get('dataSarana', 'RincianLabAset::dataSarana');
 $routes->get('dataSarana/generatePDF', 'RincianLabAset::dataSaranaGeneratePDF');
@@ -506,19 +505,26 @@ $routes->get('rincianLabAset/editPemusnahanLab/(:any)', 'RincianLabAset::editPem
 $routes->get('rincianLabAset/trash', 'RincianLabAset::trash');
 $routes->get('rincianLabAset/restore/(:any)', 'RincianLabAset::restore/$1');
 $routes->get('rincianLabAset/restore', 'RincianLabAset::restore');
-$routes->get('pemusnahanLabAset/dataDestroyLabGeneratePDF', 'RincianLabAset::dataDestroyLabGeneratePDF');
-$routes->get('pemusnahanLabAset/exportDestroyFile', 'RincianLabAset::exportDestroyFile');
+// $routes->get('pemusnahanLabAset/dataDestroyLabGeneratePDF', 'RincianLabAset::dataDestroyLabGeneratePDF');
+// $routes->get('pemusnahanLabAset/exportDestroyFile', 'RincianLabAset::exportDestroyFile');
 $routes->post('rincianLabAset/import', 'RincianLabAset::import');
-$routes->post('pemusnahanLabAset/delete/(:any)', 'RincianLabAset::pemusnahanLabAsetDelete/$1');
+// $routes->post('pemusnahanLabAset/delete/(:any)', 'RincianLabAset::pemusnahanLabAsetDelete/$1');
 $routes->post('rincianLabAset/generateAndSetKodeRincianLabAset', 'RincianLabAset::generateAndSetKodeRincianLabAset');
 $routes->post('rincianLabAset/generateKode', 'RincianLabAset::generateKode');
 $routes->post('rincianLabAset/(:any)/updateKode', 'RincianLabAset::generateKode');
 $routes->post('rincianLabAset/checkDuplicate', 'RincianLabAset::checkDuplicate');
 $routes->post('rincianLabAset/(:any)/updateCheckDuplicate', 'RincianLabAset::checkDuplicate');
-$routes->patch('pemusnahanLabAset/updatePemusnahanLab/(:any)', 'RincianLabAset::updatePemusnahanLab/$1');
+// $routes->patch('pemusnahanLabAset/updatePemusnahanLab/(:any)', 'RincianLabAset::updatePemusnahanLab/$1');
 $routes->delete('rincianLabAset/deletePermanent/(:any)', 'RincianLabAset::deletePermanent/$1');
 $routes->delete('rincianLabAset/deletePermanent', 'RincianLabAset::deletePermanent');
 $routes->resource('rincianLabAset', ['filter' => 'isLoggedIn']);
+
+// Pemusnahan Aset Lab
+$routes->get('pemusnahanLabAset/print/(:any)', 'PemusnahanLabAset::print/$1');
+$routes->get('pemusnahanLabAset/generatePDF', 'PemusnahanLabAset::generatePDF');
+$routes->get('pemusnahanLabAset/export', 'PemusnahanLabAset::export');
+$routes->post('pemusnahanLabAset/destruction/(:any)', 'PemusnahanLabAset::destruction/$1');
+$routes->resource('pemusnahanLabAset', ['filter' => 'isLoggedIn']);
 
 // Laboratorium
 $routes->get('laboratorium/print/(:num)', 'Laboratorium::print/$1');
@@ -528,7 +534,6 @@ $routes->resource('laboratorium', ['filter' => 'isLoggedIn']);
 // MANAJEMEN LAYANAN
 
 // Layanan Aset Lab
-// Ajax Select2
 $routes->post('getAllKodeRincianLabAset', 'LayananLabAset::getAllKodeRincianLabAset');
 $routes->post('getKodeRincianLabAsetBySarana', 'LayananLabAset::getKodeRincianLabAsetBySarana');
 $routes->post('getIdentitasLabByKodeRincianLabAset', 'LayananLabAset::getIdentitasLabByKodeRincianLabAset');

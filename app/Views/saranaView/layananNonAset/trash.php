@@ -34,7 +34,7 @@
                         </a>
                         <form action="<?= site_url('saranaLayananNonAset/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
-                            <?= csrf_field() ?>
+                            
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger btn-icon-text" type="submit">
                                 <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent
@@ -103,7 +103,7 @@
                                     <form
                                         action="<?= site_url('saranaLayananNonAset/deletePermanent/'.$value->idSaranaLayananNonAset) ?>"
                                         method="POST" class="d-inline">
-                                        <?= csrf_field() ?>
+                                        
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger" type="submit"> Delete Permanent </button>
                                     </form>

@@ -144,7 +144,6 @@
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>" method="post"
                                         class="d-inline" id="del-<?= $value->idRincianAset;?>">
-
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?"

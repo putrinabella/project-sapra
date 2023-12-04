@@ -23,7 +23,7 @@
             </div>
             <div class="card-body">
                 <form action="<?= site_url('tagihanAir/'.$dataTagihanAir->idTagihanAir)?>" method="post" autocomplete="off"  id="custom-validation">
-                    <?= csrf_field() ?>
+                    
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row mb-3">
                         <label for="pemakaianAir" class="col-sm-3 col-form-label">Pemakaian Air</label>

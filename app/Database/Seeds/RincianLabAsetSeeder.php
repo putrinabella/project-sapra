@@ -13,7 +13,7 @@ class RincianLabAsetSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $data = [
                 'kodeRincianLabAset' =>  $faker->unique()->uuid,
-                'idIdentitasSarana' => random_int(15, 17),
+                'idIdentitasSarana' => random_int(1, 5),
                 'idSumberDana' => random_int(1,2),
                 'idKategoriManajemen' => random_int(1,2),
                 'idIdentitasLab' => 1,

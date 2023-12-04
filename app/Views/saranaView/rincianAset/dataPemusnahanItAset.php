@@ -113,7 +113,7 @@
                                 </td>
                                 <td class="text-center">
                                     <form action="<?= site_url('pemusnahanItAset/delete/' . $value->idRincianAset) ?>" method="post" class="d-inline">
-                                        <?= csrf_field() ?>
+                                        
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
                                                 <select name="sectionAset" class="form-control me-2 sectionAsetSelect" style="width: 130px">

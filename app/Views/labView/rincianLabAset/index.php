@@ -165,7 +165,7 @@
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('rincianLabAset/'.$value->idRincianLabAset)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idRincianLabAset;?>">
-                                        <?= csrf_field() ?>
+                                        
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?"
@@ -180,9 +180,8 @@
                                 </td>
                                 <td class="text-center">
                                     <form
-                                        action="<?= site_url('pemusnahanLabAset/delete/' . $value->idRincianLabAset) ?>"
+                                        action="<?= site_url('pemusnahanLabAset/destruction/' . $value->idRincianLabAset) ?>"
                                         method="post" class="d-inline">
-                                        <?= csrf_field() ?>
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
                                                 <select name="sectionAset" class="form-control me-2 sectionAsetSelect"
@@ -222,7 +221,7 @@
             <form action="<?=site_url(" rincianLabAset/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
-                    <?= csrf_field() ?>
+                    
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">

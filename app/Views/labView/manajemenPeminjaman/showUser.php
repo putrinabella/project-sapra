@@ -140,7 +140,7 @@
             <form action="<?=site_url('manajemenPeminjaman/addLoan') ?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
-                    <?= csrf_field() ?>
+                    
                     <div class="mb-3">
                         <input type="text" class="form-control" id="idIdentitasLab" name="idIdentitasLab" hidden>
                     </div>

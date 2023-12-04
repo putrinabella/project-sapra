@@ -18,7 +18,7 @@
             <div class="card-body">
                 <form action="<?= site_url('profilSekolah/'.$dataProfilSekolah->idProfilSekolah)?>"
                     method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
-                    <?= csrf_field() ?>
+                    
                     <input type="hidden" name="_method" value="PATCH">
                     <h5>SMK TELKOM BANJARBARU</h5>
                     <br>

@@ -1,20 +1,21 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Layanan Non Aset Laboratorium &verbar; SARPRA </title>
+<title>Pemusnahan Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
+
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Layanan Non Aset</li>
+        <li class="breadcrumb-item active" aria-current="page">Pemusnahan Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?= site_url('layananLabNonAset') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?= site_url('pemusnahanLabAset') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
@@ -28,27 +29,23 @@
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('layananLabNonAset') ?>" class="btn btn-success btn-icon ">
+                <a href="<?= site_url('pemusnahanLabAset') ?>" class="btn btn-success btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('layananLabNonAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="trash"></i>
-            Recycle Bin
-        </a>
         <div class="dropdown">
             <?php
                 if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
-                    $exportLink = site_url('layananLabNonAset/export');
-                    $generatePDFLink = site_url('layananLabNonAset/generatePDF');
+                    $exportLink = site_url('pemusnahanLabAset/export');
+                    $generatePDFLink = site_url('pemusnahanLabAset/generatePDF');
                 } else {
                     $startDate = $_GET['startDate'] ?? '';
                     $endDate = $_GET['endDate'] ?? '';
-                    $exportLink = site_url("layananLabNonAset/export?startDate=$startDate&endDate=$endDate");
-                    $generatePDFLink = site_url("layananLabNonAset/generatePDF?startDate=$startDate&endDate=$endDate");
+                    $exportLink = site_url("pemusnahanLabAset/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("pemusnahanLabAset/generatePDF?startDate=$startDate&endDate=$endDate");
                 }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
@@ -61,22 +58,6 @@
                 <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
-                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class=" btn-icon-prepend" data-feather="upload"></i>
-                Import File
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('layananLabNonAset/createTemplate') ?>">Download
-                    Template</a>
-                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
-            </div>
-        </div>
-        <a href="<?= site_url('layananLabNonAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-            <i class=" btn-icon-prepend" data-feather="edit"></i>
-            Tambah Data
-        </a>
     </div>
 </div>
 
@@ -108,7 +89,7 @@
                     <br>
                     <?php endif; ?>
                 </div>
-                <h4 class="text-center py-3">Data Layanan Non Aset Laboratorium</h4>
+                <h4 class="text-center py-3">Data Pemusnahan Aset</h4>
                 <?php if (!empty($tableHeading)) : ?>
                 <p class="text-center">
                     <?= $tableHeading ?>
@@ -120,52 +101,71 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th>Tanggal</th>
+                                <th>Tanggal Pemusnahan</th>
+                                <th style="width: 12%;">Kode Aset</th>
                                 <th>Lokasi</th>
-                                <th>Status Layanan</th>
-                                <th>Kategori</th>
+                                <th>Kategori Aset</th>
+                                <th>Nama Aset</th>
                                 <th>Sumber Dana</th>
-                                <th>Biaya</th>
-                                <th>Bukti</th>
-                                <th>Keterangan</th>
-                                <th style="width: 20%;">Aksi</th>
+                                <th>Tahun Pengadaan</th>
+                                <th>Harga Beli</th>
+                                <th>Merek</th>
+                                <th>Nama Akun</th>
+                                <th>Kode Akun</th>
+                                <th>Aksi</th>
+                                <th>Pemusnahan</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataLayananLabNonAset as $key => $value) : ?>
+                            <?php foreach ($dataRincianLabAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
                                 <?php
-                                $originalDate = $value->tanggal;
+                                $originalDate = $value->tanggalPemusnahan;
                                 $formattedDate = date('d F Y', strtotime($originalDate));
                                 ?>
                                 <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
+                                <td><?=$value->kodeRincianLabAset?></td>
                                 <td><?=$value->namaLab?></td>
-                                <td><?=$value->namaStatusLayanan?></td>
-                                <td><?=$value->namaKategoriMep?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSarana?></td>
                                 <td><?=$value->namaSumberDana?></td>
-                                <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
-                                    <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
+                                    <?php 
+                                        if($value->tahunPengadaan == 0 || 0000) {
+                                            echo "Tidak diketahui"; 
+                                        } else {
+                                            echo $value->tahunPengadaan;
+                                        };
+                                    ?>
                                 </td>
-                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    <?=$value->spesifikasi?>
-                                </td>
+                                <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td><?=$value->merk?></td>
+                                <td><?= $value->namaAkun; ?> </td>
+                                <td><?= $value->kodeAkun; ?> </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('layananLabNonAset/'.$value->idLayananLabNonAset) ?>"
-                                        class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('layananLabNonAset/'.$value->idLayananLabNonAset.'/edit') ?>"
+                                <a href="<?=site_url('pemusnahanLabAset/'.$value->idRincianLabAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <a href="<?=site_url('pemusnahanLabAset/'.$value->idRincianLabAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('layananLabNonAset/'.$value->idLayananLabNonAset)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idLayananLabNonAset;?>">
+                                </td>
+                                <td class="text-center">
+                                    <form action="<?= site_url('pemusnahanLabAset/destruction/' . $value->idRincianLabAset) ?>" method="post" class="d-inline">
                                         
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon"
-                                            data-confirm="Apakah anda yakin menghapus data ini?">
-                                            <i data-feather="trash"></i>
-                                        </button>
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center">
+                                                <select name="sectionAset" class="form-control me-2 sectionAsetSelect" style="width: 130px">
+                                                    <option value="Dimusnahkan">Dimusnahkan</option>
+                                                    <option value="None">None</option>
+                                                </select>
+                                                <input class="form-control" type="text" name="namaAkun" value=" <?= session('nama'); ?>" hidden>
+                                                <input class="form-control" type="text" name="kodeAkun" value=" <?= session('role'); ?>" hidden>
+                                                <button type="submit" class="btn btn-success btn-icon ml-2 submitButton">
+                                                    <i data-feather="check"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -178,25 +178,24 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-            </div>
-            <form action="<?=site_url(" layananLabNonAset/import")?>" method="POST" enctype="multipart/form-data"
-                id="custom-validation">
-                <div class="modal-body">
-                    
-                    <input class="form-control" type="file" id="formExcel" name="formExcel">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sectionAsetSelects = document.querySelectorAll('.sectionAsetSelect');
+        const submitButtons = document.querySelectorAll('.submitButton');
+
+        sectionAsetSelects.forEach((select, index) => {
+            select.addEventListener('change', function () {
+                if (select.value === 'Dimusnahkan') {
+                    submitButtons[index].disabled = true;
+                } else {
+                    submitButtons[index].disabled = false;
+                }
+            });
+
+            if (select.value === 'Dimusnahkan') {
+                submitButtons[index].disabled = true;
+            }
+        });
+    });
+</script>
 <?= $this->endSection(); ?>

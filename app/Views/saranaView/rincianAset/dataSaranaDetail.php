@@ -136,7 +136,7 @@
             <form action="<?=site_url(" rincianAset/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
-                    <?= csrf_field() ?>
+                    
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">

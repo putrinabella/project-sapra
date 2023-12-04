@@ -332,7 +332,7 @@
                                     <form
                                         action="<?=site_url('profilSekolah/deleteDokumen/'.$value->idDokumenSekolah)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idDokumenSekolah;?>">
-                                        <?= csrf_field() ?>
+                                        
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?">
@@ -359,7 +359,7 @@
             </div>
             <form action="<?=site_url("profilSekolah/importDokumen")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
-                    <?= csrf_field() ?>
+                    
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">

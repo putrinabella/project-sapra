@@ -110,7 +110,7 @@
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('identitasSarana/delete/'.$value->idIdentitasSarana)?>"
                                         method="post" class="d-inline"  id="del-<?= $value->idIdentitasSarana;?>">
-                                        <?= csrf_field() ?>
+                                        
                                         <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
                                             <i data-feather="trash"></i>
                                         </button>
@@ -135,7 +135,7 @@
             </div>
             <form action="<?=site_url("identitasSarana/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
-                    <?= csrf_field() ?>
+                    
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">

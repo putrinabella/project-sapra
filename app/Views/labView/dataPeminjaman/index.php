@@ -151,7 +151,7 @@
                             <td>
                                 <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
                                     method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
-                                    <?= csrf_field() ?>
+                                    
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="btn btn-danger btn-icon"
                                         data-confirm="Apakah anda yakin menghapus data ini?">
