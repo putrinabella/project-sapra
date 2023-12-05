@@ -41,7 +41,7 @@
                                 <?= $value->luas; ?> m&sup2
                             </span>
                         </p>
-                        <a href="<?=site_url('prasaranaRuangan/'.$value->idIdentitasLab) ?>"
+                        <a href="<?=site_url('laboratorium/'.$value->idIdentitasLab) ?>"
                             class="btn btn-primary">Tampilkan
                             Aset</a>
                     </div>
@@ -51,7 +51,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<!-- <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
@@ -108,6 +108,6 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <?= $this->endSection(); ?>

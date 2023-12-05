@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\RincianLabAsetModels; 
+use App\Models\RincianAsetModels; 
 use App\Models\IdentitasSaranaModels; 
 use App\Models\SumberDanaModels; 
 use App\Models\KategoriManajemenModels; 
-use App\Models\IdentitasLabModels; 
+use App\Models\IdentitasPrasaranaModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -26,14 +26,14 @@ use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 
-class PemusnahanLabAset extends ResourceController
+class PemusnahanAset extends ResourceController
 {
     function __construct() {
-        $this->rincianLabAsetModel = new RincianLabAsetModels();
+        $this->rincianAsetModel = new RincianAsetModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
-        $this->identitasLabModel = new IdentitasLabModels();
+        $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
         $this->db = \Config\Database::connect();
         helper(['pdf']);
     }
@@ -53,36 +53,36 @@ class PemusnahanLabAset extends ResourceController
         
 
         $data['tableHeading'] = $tableHeading;
-        $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getDestroy($startDate, $endDate);
+        $data['dataRincianAset'] = $this->rincianAsetModel->getDestroy($startDate, $endDate);
 
-        return view('labView/pemusnahanLabAset/index', $data);
+        return view('saranaView/pemusnahanAset/index', $data);
     }
 
     
     public function show($id = null) {
         if ($id != null) {
-            $dataRincianLabAset = $this->rincianLabAsetModel->find($id);
+            $dataRincianAset = $this->rincianAsetModel->find($id);
         
-            if (is_object($dataRincianLabAset)) {
-                $spesifikasiMarkup = $dataRincianLabAset->spesifikasi;
+            if (is_object($dataRincianAset)) {
+                $spesifikasiMarkup = $dataRincianAset->spesifikasi;
                 $parsedown = new Parsedown();
                 $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
                 $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
                 
-                $buktiUrl = $this->generateFileId($dataRincianLabAset->bukti);
-                $qrCodeData = $this->generateQRCode($dataRincianLabAset->kodeRincianLabAset);
+                $buktiUrl = $this->generateFileId($dataRincianAset->bukti);
+                $qrCodeData = $this->generateQRCode($dataRincianAset->kodeRincianAset);
 
                 $data = [
-                    'dataRincianLabAset'           => $dataRincianLabAset,
+                    'dataRincianAset'           => $dataRincianAset,
                     'dataIdentitasSarana'       => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana'            => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen'     => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasLab'    => $this->identitasLabModel->findAll(),
+                    'dataIdentitasPrasarana'    => $this->identitasPrasaranaModel->findAll(),
                     'buktiUrl'                  => $buktiUrl,
                     'spesifikasiHtml'           => $spesifikasiHtml,
                     'qrCodeData'                => $qrCodeData
                 ];
-                return view('labView/pemusnahanLabAset/show', $data);
+                return view('saranaView/pemusnahanAset/show', $data);
             } else {
                 return view('error/404');
             }
@@ -108,9 +108,9 @@ class PemusnahanLabAset extends ResourceController
         }
     }
 
-    public function generateQRCode($kodeRincianLabAset)    {
+    public function generateQRCode($kodeRincianAset)    {
         $writer = new PngWriter();
-        $qrCode = QrCode::create($kodeRincianLabAset)
+        $qrCode = QrCode::create($kodeRincianAset)
             ->setEncoding(new Encoding('UTF-8'))
             ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
             ->setSize(300)
@@ -127,17 +127,17 @@ class PemusnahanLabAset extends ResourceController
     
     public function edit($id = null) {
         if ($id != null) {
-            $dataRincianLabAset = $this->rincianLabAsetModel->find($id);
+            $dataRincianAset = $this->rincianAsetModel->find($id);
     
-            if (is_object($dataRincianLabAset)) {
+            if (is_object($dataRincianAset)) {
                 $data = [
-                    'dataRincianLabAset' => $dataRincianLabAset,
+                    'dataRincianAset' => $dataRincianAset,
                     'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
                     'dataSumberDana' => $this->sumberDanaModel->findAll(),
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+                    'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
                 ];
-                return view('labView/pemusnahanLabAset/edit', $data);
+                return view('saranaView/pemusnahanAset/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -150,28 +150,28 @@ class PemusnahanLabAset extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
-            $this->rincianLabAsetModel->update($id, $data);
-            return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Data berhasil diupdate');
+            $this->rincianAsetModel->update($id, $data);
+            return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
     }
 
     
-    public function destruction($idRincianLabAset = null) {
+    public function destruction($idRincianAset = null) {
         if ($this->request->getMethod(true) === 'POST') {
             $newSectionAset = $this->request->getPost('sectionAset');
             $namaAkun = $this->request->getPost('namaAkun'); 
             $kodeAkun = $this->request->getPost('kodeAkun'); 
     
-            if ($this->rincianLabAsetModel->updateSectionAset($idRincianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
+            if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
                 if ($newSectionAset === 'Dimusnahkan') {
-                    return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Aset berhasil dimusnahkan');
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('rincianLabAset'))->with('success', 'Aset berhasil dikembalikan');
+                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
                 }
             } else {
-                return redirect()->to(site_url('rincianLabAset'))->with('error', 'Aset batal dimusnahkan');
+                return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
             }
         }
     }
@@ -180,10 +180,7 @@ class PemusnahanLabAset extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
-        
-        $data = $this->rincianLabAsetModel->getDestroy($startDate, $endDate);
+        $data = $this->rincianAsetModel->getDestroy($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Pemusnahan Aset');
@@ -207,8 +204,8 @@ class PemusnahanLabAset extends ResourceController
             $activeWorksheet->setCellValue('B'.($index + 2), $date);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaAkun);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->kodeAkun);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->kodeRincianLabAset);
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLab);
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->kodeRincianAset);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaKategoriManajemen);
             $activeWorksheet->setCellValue('H'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->status);
@@ -267,18 +264,18 @@ class PemusnahanLabAset extends ResourceController
     public function GeneratePDF() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
-        $dataPemusnahanLabAset = $this->rincianLabAsetModel->getDestroy($startDate, $endDate);
+        $dataPemusnahanAset = $this->rincianAsetModel->getDestroy($startDate, $endDate);
         
         $title = "REPORT PEMUSNAHAN ASET";
-        if (!$dataPemusnahanLabAset) {
+        if (!$dataPemusnahanAset) {
             return view('error/404');
         }
     
         $data = [
-            'dataPemusnahanLabAset' => $dataPemusnahanLabAset,
+            'dataPemusnahanAset' => $dataPemusnahanAset,
         ];
     
-        $pdfData = pdf_pemusnahanalabset($dataPemusnahanLabAset, $title, $startDate, $endDate);
+        $pdfData = pdf_pemusnahanaset($dataPemusnahanAset, $title, $startDate, $endDate);
     
         
         $filename = 'Sarana - Pemusnahan Aset' . ".pdf";

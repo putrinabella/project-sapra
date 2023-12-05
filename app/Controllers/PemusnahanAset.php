@@ -166,7 +166,7 @@ class PemusnahanAset extends ResourceController
     
             if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
                 if ($newSectionAset === 'Dimusnahkan') {
-                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
+                    return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
                     return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
                 }

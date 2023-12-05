@@ -30,7 +30,8 @@ class PerangkatIt extends ResourceController
     public function show($id = null) {
         if ($id != null) {
             $dataPerangkatIt = $this->perangkatItModel->find($id);
-        
+            var_dump($dataPerangkatIt);
+            die;
             if (is_object($dataPerangkatIt)) {
                 $dataAsetIT = $this->perangkatItModel->getData($dataPerangkatIt->idIdentitasSarana);
                 $totalSarana = $this->perangkatItModel->getTotalSarana($dataPerangkatIt->idIdentitasSarana);
@@ -55,24 +56,6 @@ class PerangkatIt extends ResourceController
         } else {
             return view('error/404');
         }
-        // if ($id != null) {
-        //     $dataPerangkatIt = $this->perangkatItModel->find($id);
-            
-        //     if (is_object($dataPerangkatIt)) {
-
-        //         $dataAsetIT = $this->perangkatItModel->getData($dataPerangkatIt->idIdentitasSarana);
-
-        //         $data = [
-        //             'dataPerangkatIt'  => $dataPerangkatIt,
-        //             'dataAsetIT'       => $dataAsetIT,
-        //         ];
-        //         return view('itView/perangkatIt/show', $data);
-        //     } else {
-        //         return view('error/404');
-        //     }
-        // } else {
-        //     return view('error/404');
-        // }
     }
     
     private function htmlConverter($html) {

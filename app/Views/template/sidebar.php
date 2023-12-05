@@ -16,7 +16,7 @@
             <div class="collapse" id="dataAsetUmum">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
-                        <a href="<?= site_url('dataSarana') ?>" class="nav-link">Data General</a>
+                        <a href="<?= site_url('asetGeneral') ?>" class="nav-link">Data General</a>
                     </li>
                     <li class="nav-item">
                         <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian Aset</a>
@@ -370,7 +370,7 @@
             <div class="collapse" id="dataAsetUmum">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
-                        <a href="<?= site_url('dataSarana') ?>" class="nav-link">Data General</a>
+                        <a href="<?= site_url('asetGeneral') ?>" class="nav-link">Data General</a>
                     </li>
                     <li class="nav-item">
                         <a href="<?= site_url('rincianAset') ?>" class="nav-link">Data Rincian Aset</a>

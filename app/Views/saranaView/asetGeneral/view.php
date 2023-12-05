@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Data Aset General &verbar; SARPRA </title>
+<title>Data General &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -9,7 +9,7 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data Aset General</li>
+        <li class="breadcrumb-item active" aria-current="page">Data General</li>
     </ol>
 </nav>
 
@@ -19,11 +19,11 @@
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <a href="<?= site_url('dataSarana/generatePDF') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
+            <a href="<?= site_url('asetGeneral/generatePDF') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Download PDF
             </a>
-            <a href="<?= site_url('dataSarana/export') ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+            <a href="<?= site_url('asetGeneral/export') ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Download Excel
             </a>
@@ -60,7 +60,7 @@
                                 <td class="text-center"><?=$value->jumlahRusak?></td>
                                 <td class="text-center"><?=$value->jumlahHilang?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('dataSaranaDetail/'.$value->idIdentitasSarana) ?>"
+                                    <a href="<?=site_url('asetGeneral/'.$value->idIdentitasSarana) ?>"
                                         class="btn btn-outline-success">Show Detail</a>
                                 </td>
                             </tr>
@@ -72,28 +72,4 @@
         </div>
     </div>
 </div>
-
-
-<div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-            </div>
-            <form action="<?=site_url(" rincianAset/import")?>" method="POST" enctype="multipart/form-data"
-                id="custom-validation">
-                <div class="modal-body">
-                    
-                    <input class="form-control" type="file" id="formExcel" name="formExcel">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <?= $this->endSection(); ?>

@@ -306,9 +306,13 @@ class DataPeminjaman extends ResourceController
     public function restore($id = null)
     {
         $this->db = \Config\Database::connect();
+
+        // Check if $id is not null and not empty
         if ($id != null) {
+            // Retrieve details of the deleted records based on $id
             $dataDetailManajemenPeminjaman = $this->dataPeminjamanModel->getIdDetailManajemenPeminjaman($id);
             
+            // Iterate through each detail record and restore it
             foreach ($dataDetailManajemenPeminjaman as $data) {
                 $this->db->table('tblDetailManajemenPeminjaman')
                 ->set('deleted_at', null, true)
@@ -316,86 +320,112 @@ class DataPeminjaman extends ResourceController
                 ->update();
             }
 
+            // Restore the main record
             $this->db->table('tblManajemenPeminjaman')
                 ->set('deleted_at', null, true)
                 ->where(['idManajemenPeminjaman' => $id])
                 ->update();
 
+            // Log the restore action
             activityLogs($this->userActionLogsModel, "Restore", "Melakukan restore data Laboratorium - Peminjaman dengan id $id");
-
         } else {
+            // Restore all deleted detail records
             $this->db->table('tblDetailManajemenPeminjaman')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
+
+            // Restore all deleted main records
             $this->db->table('tblManajemenPeminjaman')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
 
+                // Log the restore all action
                 activityLogs($this->userActionLogsModel, "Restore All", "Melakukan restore semua data Laboratorium - Peminjaman");
         }
+        // Check if any rows were affected
         if ($this->db->affectedRows() > 0) {
+            // Redirect with success message
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil direstore');
         }
+        // Redirect with error message if no rows were affected
         return redirect()->to(site_url('dataPeminjaman/trash'))->with('error', 'Tidak ada data untuk direstore');
     }
 
-    public function deletePermanent($id = null) {
+    public function deletePermanent($id = null)
+    {
+        // Retrieve details of the deleted records based on $id
         $dataDetailManajemenPeminjaman = $this->dataPeminjamanModel->getIdDetailManajemenPeminjaman($id);
-        if ($id !== null) {
     
+        // Check if $id is not null and not empty
+        if ($id !== null && !empty($id)) {
+
+            // Iterate through each detail record and permanently delete it
             foreach ($dataDetailManajemenPeminjaman as $data) {
                 // Use the correct ID for each iteration
                 $idDetailManajemenPeminjaman = $data->idDetailManajemenPeminjaman;
                 $this->detailManajemenPeminjamanModel->delete($idDetailManajemenPeminjaman, true);
             }
     
-            // Use the correct ID for deleting the main record
+            // Permanently delete the main record
             $this->dataPeminjamanModel->delete($id, true);
     
+            // Log the permanent delete action for the main record
             activityLogs($this->userActionLogsModel, "Delete", "Melakukan delete data Laboratorium - Peminjaman dengan id $id");
+    
+            // Redirect with success message
             return redirect()->to(site_url('dataPeminjaman/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
-            // Count deleted records before purging
+            // Count deleted records in the trash before purging
             $countInTrash = $this->dataPeminjamanModel->onlyDeleted()->countAllResults();
     
+            // Check if there are records in the trash
             if ($countInTrash > 0) {
-                // Purge each detail record separately
+                // Permanently delete all detail records in the trash
                 $this->detailManajemenPeminjamanModel->onlyDeleted()->purgeDeleted();
     
-                // Purge the main record
+                // Permanently delete all main records in the trash
                 $this->dataPeminjamanModel->onlyDeleted()->purgeDeleted();
     
+                // Log the permanent delete action for all records in the trash
                 activityLogs($this->userActionLogsModel, "Delete All", "Mengosongkan tempat sampah Laboratorium - Peminjaman");
+    
+                // Redirect with success message
                 return redirect()->to(site_url('dataPeminjaman/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
+                // Redirect with error message if the trash is already empty
                 return redirect()->to(site_url('dataPeminjaman/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     }
-    
-
 
     public function export() {
+        // Retrieve start and end dates from the request
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
-
-        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+    
+        // Retrieve data for export from the model
         $data = $this->dataPeminjamanModel->getDataExcel($startDate, $endDate);
+    
+        // Create a new spreadsheet
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data Pengembalian');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
-
+    
+        // Set headers for the worksheet
         $headers = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Kondisi Awal', 'Kondisi Pengembalian', 'Tanggal Pengembalian'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
+    
+        // Populate the worksheet with data
         foreach ($data as $index => $value) {
+            // Format dates for display
             $date = date('d F Y', strtotime($value->tanggal));
             $returnDate = date('d F Y', strtotime($value->tanggalPengembalian));
+    
+            // Set cell values
             $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B' . ($index + 2), $date);
             $activeWorksheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
@@ -406,42 +436,52 @@ class DataPeminjaman extends ResourceController
             $activeWorksheet->setCellValue('H' . ($index + 2), "Bagus");
             $activeWorksheet->setCellValue('I' . ($index + 2), $value->statusSetelahPengembalian);
             $activeWorksheet->setCellValue('J' . ($index + 2), $returnDate);
-
-
+    
+            // Set cell formatting
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-
+    
             foreach ($columns as $column) {
                 $cellReference = $column . ($index + 2);
                 $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
                 $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+    
+                // Set horizontal alignment based on column
                 if ($column === 'A') {
                     $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 } else {
                     $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-                    
                 }
-            }  
+            }
         }
+    
+        // Set additional styling for the worksheet
         $activeWorksheet->getStyle('A1:J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $activeWorksheet->getStyle('A1:J1')->getFont()->setBold(true);
         $activeWorksheet->getStyle('A1:J' . $activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $activeWorksheet->getStyle('A:J')->getAlignment()->setWrapText(true);
-
+    
+        // Set column widths to auto-size
         foreach (range('A', 'J') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
-
+    
+        // Create a new worksheet for Data Peminjaman
         $dataPeminjaman = $this->dataPeminjamanModel->getDataExcelPeminjaman($startDate, $endDate);
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Data Peminjaman');
         $exampleSheet->getTabColor()->setRGB('767870');
         $headerExampleTable = ['No.', 'Tanggal', 'NIS/NIP', 'Nama', 'Siswa/Karyawan', 'Barang yang dipinjam', 'Lokasi', 'Kondisi Awal'];
-     
+    
+        // Set headers for the Data Peminjaman worksheet
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
-        $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
-
+        $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+        // Populate the Data Peminjaman worksheet with data
         foreach ($dataPeminjaman as $index => $value) {
+            // Format date for display
             $date = date('d F Y', strtotime($value->tanggal));
+    
+            // Set cell values
             $exampleSheet->setCellValue('A' . ($index + 2), $index + 1);
             $exampleSheet->setCellValue('B' . ($index + 2), $date);
             $exampleSheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
@@ -450,53 +490,50 @@ class DataPeminjaman extends ResourceController
             $exampleSheet->setCellValue('F' . ($index + 2), $value->namaSarana);
             $exampleSheet->setCellValue('G' . ($index + 2), $value->namaLab);
             $exampleSheet->setCellValue('H' . ($index + 2), "Bagus");
-
+    
+            // Set cell formatting
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-
+    
             foreach ($columns as $column) {
                 $cellReference = $column . ($index + 2);
                 $alignment = $exampleSheet->getStyle($cellReference)->getAlignment();
                 $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+    
+                // Set horizontal alignment based on column
                 if ($column === 'A') {
                     $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 } else {
                     $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-                    
                 }
-            }  
+            }
         }
+    
+        // Set additional styling for the Data Peminjaman worksheet
         $exampleSheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $exampleSheet->getStyle('A1:H1')->getFont()->setBold(true);
         $exampleSheet->getStyle('A1:H' . $exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $exampleSheet->getStyle('A:H')->getAlignment()->setWrapText(true);
-
+    
+        // Set column widths to auto-size
         foreach (range('A', 'H') as $column) {
             $exampleSheet->getColumnDimension($column)->setAutoSize(true);
         }
-        
+    
+        // Set the active sheet to the first one
         $spreadsheet->setActiveSheetIndex(0);
+    
+        // Create a writer for exporting
         $writer = new Xlsx($spreadsheet);
+    
+        // Set headers for file download
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=Laboratorium - Data Peminjaman.xlsx');
         header('Cache-Control: max-age=0');
+    
+        // Save the spreadsheet to output
         $writer->save('php://output');
+    
+        // Exit to prevent additional output
         exit();
     }
-
-    // public function changeStatus($idRicianLabAset)
-    // {
-    //     $newSectionAset = $this->request->getPost('sectionAset');
-    //     $namaAkun = $this->request->getPost('namaAkun');
-    //     $kodeAkun = $this->request->getPost('kodeAkun');
-
-    //     if ($this->rincianAsetModel->updateSectionAset($idRicianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
-    //         if ($newSectionAset === 'Dimusnahkan') {
-    //             return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
-    //         } elseif ($newSectionAset === 'None') {
-    //             return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
-    //         }
-    //     } else {
-    //         return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
-    //     }
-    // }
 }

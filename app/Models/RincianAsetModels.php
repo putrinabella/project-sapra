@@ -267,23 +267,61 @@ class RincianAsetModels extends Model
         $builder->where('idRincianAset', $idRincianAset);
         $builder->update($data);
     }
+
+    function getTotalSarana($idIdentitasSarana) {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('COUNT(*) as totalSarana');
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.deleted_at', null); 
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+        $query = $builder->get();
+        $result = $query->getRow();
     
+        if ($result) {
+            return $result->totalSarana;
+        } else {
+            return 0;
+        }
+    }
+    
+    function getSaranaLayak($idIdentitasSarana) {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('COUNT(*) as count');
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+        $builder->where('status', 'Bagus');
+        $query = $builder->get();
+        $result = $query->getRow();
+
+        return $result ? $result->count : 0;
+    }
+
+    function getSaranaRusak($idIdentitasSarana) {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('COUNT(*) as count');
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+        $builder->where('status', 'Rusak');
+        $query = $builder->get();
+        $result = $query->getRow();
+
+        return $result ? $result->count : 0;
+    }
+
+    function getSaranaHilang($idIdentitasSarana) {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('COUNT(*) as count');
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('idIdentitasSarana', $idIdentitasSarana);
+        $builder->where('status', 'Hilang');
+        $query = $builder->get();
+        $result = $query->getRow();
+
+        return $result ? $result->count : 0;
+    }
 
 
+    
 
-    // public function updateSectionAset($idRincianAset, $newSectionAset)
-    // {
-    //     if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {
-    //         $data = ['sectionAset' => $newSectionAset];
-    
-    //         if ($newSectionAset === 'Dimusnahkan') {
-    //             $data['tanggalPemusnahan'] = date('Y-m-d H:i:s');
-    //         }
-    
-    //         $this->update($idRincianAset, $data);
-    //         return true;
-    //     }
-    //     return false;
-    // }
     
 }
