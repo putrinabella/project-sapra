@@ -105,8 +105,6 @@ class RequestPeminjaman extends ResourceController
     }
 
     public function rejectLoan($idRequestPeminjaman) {
-        // var_dump($idRequestPeminjaman);
-        // die;
         $requestStatus = 'Reject';
         $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
         return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Request peminjaman berhasil ditolak');

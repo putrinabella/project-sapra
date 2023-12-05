@@ -110,7 +110,7 @@
                                 <span class="badge bg-success">Approve</span>
                                 <?php elseif ($value->loanStatus == "Request") : ?>
                                 <span class="badge bg-primary">Request</span>
-                                <?php elseif ($value->loanStatus == "Reject") : ?>
+                                <?php elseif ($value->loanStatus == "Reject" || $value->loanStatus == "Dibatalkan") : ?>
                                 <span class="badge bg-danger">Reject</span>
                                 <?php elseif ($value->loanStatus == "Completed" || $value->loanStatus == "Pengembalian") : ?>
                                 <span class="badge bg-info">Completed</span>
@@ -124,7 +124,7 @@
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
                                         data-feather="printer"></i></a>
                                 <?php endif; ?>
-                                <?php if ($value->loanStatus == "Pengembalian"): ?>
+                                <?php if ($value->loanStatus == "Pengembalian" || $value->loanStatus == "Dibatalkan"): ?>
                                 <a href="<?= site_url('peminjamanDataUser/userDetail/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>

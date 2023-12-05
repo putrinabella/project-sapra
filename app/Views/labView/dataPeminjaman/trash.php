@@ -107,11 +107,13 @@
                                 <td class="text-center">
                                     <?= $value->jumlahPeminjaman ?>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <?php if ($value->loanStatus == "Peminjaman") : ?>
                                     <span class="badge bg-warning">Sedang Dipinjam</span>
-                                    <?php else : ?>
+                                    <?php elseif ($value->loanStatus == "Pengembalian"): ?>
                                     <span class="badge bg-success">Sudah Dikembalikan</span>
+                                    <?php elseif ($value->loanStatus == "Dibatalkan"): ?>
+                                    <span class="badge bg-danger">Dibatalkan</span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">

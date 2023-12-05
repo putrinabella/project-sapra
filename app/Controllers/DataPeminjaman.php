@@ -10,7 +10,9 @@ use App\Models\SumberDanaModels;
 use App\Models\KategoriManajemenModels;
 use App\Models\IdentitasLabModels;
 use App\Models\ManajemenPeminjamanModels;
+use App\Models\DetailManajemenPeminjamanModels;
 use App\Models\DataSiswaModels;
+use App\Models\UserActionLogsModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -24,6 +26,7 @@ class DataPeminjaman extends ResourceController
     function __construct()
     {
         $this->manajemenPeminjamanModel = new ManajemenPeminjamanModels();
+        $this->detailManajemenPeminjamanModel = new DetailManajemenPeminjamanModels();
         $this->dataPeminjamanModel = new DataPeminjamanModels();
         $this->requestPeminjamanModel = new RequestPeminjamanModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
@@ -31,8 +34,9 @@ class DataPeminjaman extends ResourceController
         $this->kategoriManajemenModel = new KategoriManajemenModels();
         $this->identitasLabModel = new IdentitasLabModels();
         $this->dataSiswaModel = new DataSiswaModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
-        helper(['pdf']);
+        helper(['pdf', 'custom']);
     }
 
     public function index()
@@ -126,6 +130,20 @@ class DataPeminjaman extends ResourceController
             }
             $this->dataPeminjamanModel->update($id, $updateData);
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
+        } else {
+            return view('error/404');
+        }
+    }
+
+    public function revokeLoan($idManajemenPeminjaman = null) {
+        if ($idManajemenPeminjaman != null) {
+            $dataItemDipinjam = $this->dataPeminjamanModel->getBorrowItems($idManajemenPeminjaman);
+
+            foreach ($dataItemDipinjam as $data) {
+                $this->dataPeminjamanModel->updateReturnSectionAset($data->idRincianLabAset);
+            }
+            $this->dataPeminjamanModel->updateRevokeLoan($idManajemenPeminjaman);
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Peminjaman berhasil dibatalkan');
         } else {
             return view('error/404');
         }
@@ -268,49 +286,13 @@ class DataPeminjaman extends ResourceController
         unlink($zipFilename);
     }
 
-    // public function update($id = null) {
-    //     $data = $this->request->getPost();
-    //     $idRincianLabAset = $data['idRincianLabAset'];
-    //     $idManajemenPeminjaman = $data['idManajemenPeminjaman'];
-    //     $idIdentitasSarana = $data['idIdentitasSarana'];
-    //     $idIdentitasLab = $data['idIdentitasLab'];
-    //     $sectionAsetValue = 'None';
-    //     $jumlah = $data['jumlahPeminjaman'];
-
-
-    //     if ($data['loanStatus'] === 'Pengembalian') {
-    //         $jumlahBarangDikembalikan = $data['jumlahBarangDikembalikan'];
-    //         $jumlahBarangRusak = $data['jumlahBarangRusak'];
-    //         $jumlahBarangHilang = $data['jumlahBarangHilang'];
-
-    //         $assetsToBorrow = $this->manajemenPeminjamanModel->getBorrowedItems($idIdentitasSarana, $jumlah, $idIdentitasLab);
-
-    //         $updateRusak = 0;
-    //         $updateHilang = 0;
-
-    //         foreach ($assetsToBorrow as $asset) {
-    //             if ($jumlahBarangRusak > $updateRusak) {
-    //                 $this->manajemenPeminjamanModel->updateReturnStatus($asset['idIdentitasSarana'], 'Rusak', 1, $asset['idIdentitasLab'], $asset['idManajemenPeminjaman']);
-    //                 $this->manajemenPeminjamanModel->updateReturnSectionAsetRusak($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman, "Rusak");
-    //                 $updateRusak++;
-    //             } 
-
-    //             if ($jumlahBarangHilang > $updateHilang) {
-    //                 $this->manajemenPeminjamanModel->updateReturnStatus($asset['idIdentitasSarana'], 'Hilang', 1, $asset['idIdentitasLab'], $asset['idManajemenPeminjaman']);
-    //                 $this->manajemenPeminjamanModel->updateReturnSectionAsetHilang($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman, "Hilang");
-    //                 $updateHilang++;
-    //             }
-    //         }
-    //     } 
-
-    //     $this->manajemenPeminjamanModel->updateReturnSectionAset($idIdentitasSarana, $sectionAsetValue, $idIdentitasLab, $jumlah, $idManajemenPeminjaman);
-    //     $this->dataPeminjamanModel->update($id, $data);
-
-    //     return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Return data berhasil disimpan');
-    // }
-
     public function delete($id = null)
     {
+        $dataDetailManajemenPeminjaman = $this->dataPeminjamanModel->getIdDetailManajemenPeminjaman($id);
+
+        foreach ($dataDetailManajemenPeminjaman as $data) {
+            $this->detailManajemenPeminjamanModel->delete($data->idDetailManajemenPeminjaman);
+        }
         $this->dataPeminjamanModel->delete($id);
         return redirect()->to(site_url('dataPeminjaman'));
     }
@@ -325,15 +307,33 @@ class DataPeminjaman extends ResourceController
     {
         $this->db = \Config\Database::connect();
         if ($id != null) {
+            $dataDetailManajemenPeminjaman = $this->dataPeminjamanModel->getIdDetailManajemenPeminjaman($id);
+            
+            foreach ($dataDetailManajemenPeminjaman as $data) {
+                $this->db->table('tblDetailManajemenPeminjaman')
+                ->set('deleted_at', null, true)
+                ->where(['idDetailManajemenPeminjaman' => $data->idDetailManajemenPeminjaman])
+                ->update();
+            }
+
             $this->db->table('tblManajemenPeminjaman')
                 ->set('deleted_at', null, true)
                 ->where(['idManajemenPeminjaman' => $id])
                 ->update();
+
+            activityLogs($this->userActionLogsModel, "Restore", "Melakukan restore data Laboratorium - Peminjaman dengan id $id");
+
         } else {
+            $this->db->table('tblDetailManajemenPeminjaman')
+                ->set('deleted_at', null, true)
+                ->where('deleted_at is NOT NULL', NULL, FALSE)
+                ->update();
             $this->db->table('tblManajemenPeminjaman')
                 ->set('deleted_at', null, true)
                 ->where('deleted_at is NOT NULL', NULL, FALSE)
                 ->update();
+
+                activityLogs($this->userActionLogsModel, "Restore All", "Melakukan restore semua data Laboratorium - Peminjaman");
         }
         if ($this->db->affectedRows() > 0) {
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Data berhasil direstore');
@@ -341,22 +341,40 @@ class DataPeminjaman extends ResourceController
         return redirect()->to(site_url('dataPeminjaman/trash'))->with('error', 'Tidak ada data untuk direstore');
     }
 
-    public function deletePermanent($id = null)
-    {
-        if ($id != null) {
+    public function deletePermanent($id = null) {
+        $dataDetailManajemenPeminjaman = $this->dataPeminjamanModel->getIdDetailManajemenPeminjaman($id);
+        if ($id !== null) {
+    
+            foreach ($dataDetailManajemenPeminjaman as $data) {
+                // Use the correct ID for each iteration
+                $idDetailManajemenPeminjaman = $data->idDetailManajemenPeminjaman;
+                $this->detailManajemenPeminjamanModel->delete($idDetailManajemenPeminjaman, true);
+            }
+    
+            // Use the correct ID for deleting the main record
             $this->dataPeminjamanModel->delete($id, true);
+    
+            activityLogs($this->userActionLogsModel, "Delete", "Melakukan delete data Laboratorium - Peminjaman dengan id $id");
             return redirect()->to(site_url('dataPeminjaman/trash'))->with('success', 'Data berhasil dihapus permanen');
         } else {
+            // Count deleted records before purging
             $countInTrash = $this->dataPeminjamanModel->onlyDeleted()->countAllResults();
-
+    
             if ($countInTrash > 0) {
+                // Purge each detail record separately
+                $this->detailManajemenPeminjamanModel->onlyDeleted()->purgeDeleted();
+    
+                // Purge the main record
                 $this->dataPeminjamanModel->onlyDeleted()->purgeDeleted();
+    
+                activityLogs($this->userActionLogsModel, "Delete All", "Mengosongkan tempat sampah Laboratorium - Peminjaman");
                 return redirect()->to(site_url('dataPeminjaman/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
                 return redirect()->to(site_url('dataPeminjaman/trash'))->with('error', 'Tempat sampah sudah kosong!');
             }
         }
     }
+    
 
 
     public function export() {
@@ -377,6 +395,7 @@ class DataPeminjaman extends ResourceController
 
         foreach ($data as $index => $value) {
             $date = date('d F Y', strtotime($value->tanggal));
+            $returnDate = date('d F Y', strtotime($value->tanggalPengembalian));
             $activeWorksheet->setCellValue('A' . ($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B' . ($index + 2), $date);
             $activeWorksheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
@@ -386,7 +405,7 @@ class DataPeminjaman extends ResourceController
             $activeWorksheet->setCellValue('G' . ($index + 2), $value->namaLab);
             $activeWorksheet->setCellValue('H' . ($index + 2), "Bagus");
             $activeWorksheet->setCellValue('I' . ($index + 2), $value->statusSetelahPengembalian);
-            $activeWorksheet->setCellValue('J' . ($index + 2), $value->tanggalPengembalian);
+            $activeWorksheet->setCellValue('J' . ($index + 2), $returnDate);
 
 
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
@@ -464,20 +483,20 @@ class DataPeminjaman extends ResourceController
         exit();
     }
 
-    public function changeStatus($idRicianLabAset)
-    {
-        $newSectionAset = $this->request->getPost('sectionAset');
-        $namaAkun = $this->request->getPost('namaAkun');
-        $kodeAkun = $this->request->getPost('kodeAkun');
+    // public function changeStatus($idRicianLabAset)
+    // {
+    //     $newSectionAset = $this->request->getPost('sectionAset');
+    //     $namaAkun = $this->request->getPost('namaAkun');
+    //     $kodeAkun = $this->request->getPost('kodeAkun');
 
-        if ($this->rincianAsetModel->updateSectionAset($idRicianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
-            if ($newSectionAset === 'Dimusnahkan') {
-                return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
-            } elseif ($newSectionAset === 'None') {
-                return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
-            }
-        } else {
-            return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
-        }
-    }
+    //     if ($this->rincianAsetModel->updateSectionAset($idRicianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
+    //         if ($newSectionAset === 'Dimusnahkan') {
+    //             return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
+    //         } elseif ($newSectionAset === 'None') {
+    //             return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
+    //         }
+    //     } else {
+    //         return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
+    //     }
+    // }
 }

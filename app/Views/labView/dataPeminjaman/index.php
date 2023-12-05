@@ -40,7 +40,7 @@
             Recycle Bin
         </a>
         <div class="dropdown">
-        <?php
+            <?php
                 if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
                     $exportLink = site_url('dataPeminjaman/export');
                     $printAllLink = site_url('dataPeminjaman/printAll');
@@ -130,13 +130,13 @@
                                 <?php echo $formattedDate; ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->nis; ?> 
+                                <?= $value->nis; ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->namaSiswa; ?> 
+                                <?= $value->namaSiswa; ?>
                             </td>
                             <td class="text-left">
-                                <?= $value->namaKelas; ?> 
+                                <?= $value->namaKelas; ?>
                             </td>
                             <td>
                                 <?= $value->namaLab ?>
@@ -147,30 +147,38 @@
                             <td>
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
                                 <span class="badge bg-warning">Sedang Dipinjam</span>
-                                <?php else : ?>
+                                <?php elseif ($value->loanStatus == "Pengembalian"): ?>
                                 <span class="badge bg-success">Sudah Dikembalikan</span>
+                                <?php elseif ($value->loanStatus == "Dibatalkan"): ?>
+                                <span class="badge bg-danger">Dibatalkan</span>
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
-                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
-                                    
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="btn btn-danger btn-icon"
-                                        data-confirm="Apakah anda yakin menghapus data ini?">
-                                        <i data-feather="trash"></i>
-                                    </button>
-                                </form>
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
                                 <a href="<?= site_url('dataPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
                                         data-feather="printer"></i></a>
                                 <a href="<?= site_url('dataPeminjaman/' . $value->idManajemenPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
+                                <form action="<?= site_url('dataPeminjaman/revokeLoan/' .  $value->idManajemenPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
+                                    <button class="btn btn-danger btn-icon"
+                                        data-confirm="Apakah anda yakin membatalkan peminjaman ini?"  data-bs-toggle="tooltip" data-bs-placement="top" title="Batalkan Peminjaman">
+                                        <i data-feather="alert-triangle"></i>
+                                    </button>
+                                </form>
                                 <?php endif; ?>
-                                <?php if ($value->loanStatus == "Pengembalian"): ?>
+                                <?php if ($value->loanStatus == "Pengembalian" || $value->loanStatus == "Dibatalkan"): ?>
                                 <a href="<?= site_url('dataPeminjaman/history/' . $value->idManajemenPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
+                                <form action="<?= site_url('dataPeminjaman/' .  $value->idManajemenPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idManajemenPeminjaman; ?>">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger btn-icon"
+                                        data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <i data-feather="trash"></i>
+                                    </button>
+                                </form>
                                 <?php endif; ?>
                             </td>
                         </tr>
