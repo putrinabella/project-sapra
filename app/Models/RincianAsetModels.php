@@ -34,6 +34,8 @@ class RincianAsetModels extends Model
         return $builder->get()->getResult();
     }
     
+
+    // For another controller
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -43,6 +45,62 @@ class RincianAsetModels extends Model
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->orderBy('idRincianAset', 'asc'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    // For index so sorthing by koderincianaset
+    function getData() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->orderBy('kodeRincianAset', 'asc'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataBagus() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.status =', 'Bagus');
+        $builder->orderBy('tblRincianAset.kodeRincianAset', 'asc'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataRusak() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.status =', 'Rusak');
+        $builder->orderBy('tblRincianAset.kodeRincianAset', 'asc'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
+    function getDataHilang() {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.status =', 'Hilang');
+        $builder->orderBy('tblRincianAset.kodeRincianAset', 'asc'); 
         $query = $builder->get();
         return $query->getResult();
     }

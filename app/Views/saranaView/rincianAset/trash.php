@@ -6,8 +6,14 @@
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Rincian Aset</h4>
-<br>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('rincianAset')?>">Rincian Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
+    </ol>
+</nav>
+
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -88,15 +94,15 @@
                                     <?=$key + 1?>
                                 </td>
                                 <td class="text-center"><?=$value->kodeRincianAset?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->status?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=$value->tahunPengadaan?></td>
-                                <td class="text-center"><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
-                                <td class="text-center"><?=$value->merk?></td>
-                                <td class="text-center"><?=$value->warna?></td>
+                                <td><?=$value->namaPrasarana?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSarana?></td>
+                                <td><?=$value->status?></td>
+                                <td><?=$value->namaSumberDana?></td>
+                                <td><?=$value->tahunPengadaan?></td>
+                                <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
+                                <td><?=$value->merk?></td>
+                                <td><?=$value->warna?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianAset/restore/'.$value->idRincianAset) ?>"
                                         class="btn btn-primary"> Restore</a>

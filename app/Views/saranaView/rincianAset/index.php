@@ -28,7 +28,8 @@
             </div>
         </div>
         <form action="<?= site_url('rincianAset/generateAndSetKodeRincianAset') ?>" method="post">
-            <button type="submit" class="btn btn-primary btn-icon-text mdi mdi-key me-2 mb-2 mb-md-0" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click for generate kode aset"></button>
+            <button type="submit" class="btn btn-primary btn-icon-text mdi mdi-key me-2 mb-2 mb-md-0"
+                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click for generate kode aset"></button>
         </form>
         <a href="<?= site_url('rincianAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
@@ -42,7 +43,8 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('rincianAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('rincianAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('rincianAset/generatePDF') ?>">Download as
+                    PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -138,7 +140,8 @@
                                 <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                                 <td><?=$value->merk?></td>
                                 <td><?=$value->warna?></td>
-                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <td
+                                    style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     <?=$value->spesifikasi?>
                                 </td>
                                 <td class="text-center">
@@ -157,7 +160,8 @@
                                     </form>
                                 </td>
                                 <td class="text-center">
-                                    <form action="<?= site_url('pemusnahanAset/destruction/' . $value->idRincianAset) ?>"
+                                    <form
+                                        action="<?= site_url('pemusnahanAset/destruction/' . $value->idRincianAset) ?>"
                                         method="post" class="d-inline">
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
