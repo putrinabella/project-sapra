@@ -107,6 +107,7 @@
                                 <th>Harga Beli</th>
                                 <th>Merek</th>
                                 <th>Warna</th>
+                                <th>Spesifikasi</th>
                                 <th style="width: 20%;">Aksi</th>
                                 <th style="width: 20%;">Pemusnahan</th>
                             </tr>
@@ -137,6 +138,9 @@
                                 <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                                 <td><?=$value->merk?></td>
                                 <td><?=$value->warna?></td>
+                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <?=$value->spesifikasi?>
+                                </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianAset/'.$value->idRincianAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
@@ -206,6 +210,9 @@
     </div>
 </div>
 
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const sectionAsetSelects = document.querySelectorAll('.sectionAsetSelect');
@@ -240,7 +247,12 @@
                 const selectedRowsQueryParam = selectedRows.join(',');
                 window.location.href = '<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam;
             } else {
-                alert('No rows selected for QR code generation.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak ada data',
+                    text: 'Silahkan pilih minimal satu data!',
+                    confirmButtonText: 'OK',
+                });
             }
         });
 

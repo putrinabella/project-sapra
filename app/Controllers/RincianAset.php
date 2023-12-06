@@ -58,24 +58,6 @@ class RincianAset extends ResourceController
         return redirect()->to(site_url('rincianAset'))->with('success', 'Berhasil generate kode aset');
     }
 
-    public function generateAndSetKodeRincianItAset() {
-
-        $dataRincianAset = $this->rincianAsetModel->getItAll();
-
-        foreach ($dataRincianAset as $data) {
-            $newKodeRincianAset = $this->generateKodeRincianAset(
-                $data->idKategoriManajemen,
-                $data->idIdentitasPrasarana,
-                $data->idSumberDana,
-                $data->idIdentitasSarana,
-                $data->tahunPengadaan,
-                $data->nomorBarang
-            );
-
-            $this->rincianAsetModel->updateKodeRincianAset($data->idRincianAset, $newKodeRincianAset);
-        }
-        return redirect()->to(site_url('dataRincianItSarana'))->with('success', 'Berhasil generate kode aset');
-    }
 
     public function generateKodeRincianAset($idKategoriManajemen, $idIdentitasPrasarana, $idSumberDana, $idIdentitasSarana, $tahunPengadaan, $nomorBarang) {
         $kodeKategoriManajemen = $this->kategoriManajemenModel->getKodeKategoriManajemenById($idKategoriManajemen);
@@ -137,72 +119,7 @@ class RincianAset extends ResourceController
         return view('saranaView/rincianAset/index', $data);
     }
     
-    public function dataRincianItSarana() {
-        $data['dataRincianAset'] = $this->rincianAsetModel->getItAll();
-        return view('saranaView/rincianAset/dataAsetIt', $data);
-    }
-
-    public function dataSarana() {
-        $dataGeneral = $this->rincianAsetModel->getDataBySarana();
-
-        $jumlahTotal = 0;
-        foreach ($dataGeneral as $value) {
-            $jumlahTotal += $value->jumlahAset;
-        }
-    
-        $data['dataGeneral'] = $dataGeneral;
-        $data['jumlahTotal'] = $jumlahTotal;
-        
-        return view('saranaView/rincianAset/dataSarana', $data);
-    }
-
-    public function dataItSarana() {
-        $dataGeneral = $this->rincianAsetModel->getDataItBySarana();
-
-        $jumlahTotal = 0;
-        foreach ($dataGeneral as $value) {
-            $jumlahTotal += $value->jumlahAset;
-        }
-    
-        $data['dataGeneral'] = $dataGeneral;
-        $data['jumlahTotal'] = $jumlahTotal;
-        
-        return view('saranaView/rincianAset/dataSaranaIt', $data);
-    }
-
-    public function pemusnahanItAset() {
-        $data['dataRincianAset'] = $this->rincianAsetModel->getDestroyIt();
-        return view('saranaView/rincianAset/dataPemusnahanItAset', $data);
-    }
-
-    public function pemusnahanItAsetDelete($idRincianAset) {
-        if ($this->request->getMethod(true) === 'POST') {
-            $newSectionAset = $this->request->getPost('sectionAset');
-            $namaAkun = $this->request->getPost('namaAkun'); 
-            $kodeAkun = $this->request->getPost('kodeAkun'); 
-    
-            if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
-                if ($newSectionAset === 'Dimusnahkan') {
-                    return redirect()->to(site_url('dataRincianItSarana'))->with('success', 'Aset berhasil dimusnahkan');
-                } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('dataRincianItSarana'))->with('success', 'Aset berhasil dikembalikan');
-                }
-            } else {
-                return redirect()->to(site_url('dataRincianItSarana'))->with('error', 'Aset batal dimusnahkan');
-            }
-        }
-    }
-    
-    public function dataSaranaDetail($id = null) {
-        $data['dataSarana'] = $this->rincianAsetModel->getDataBySaranaDetail($id);
-        return view('saranaView/rincianAset/dataSaranaDetail', $data);
-    }
-
-    public function dataItSaranaDetail($id = null) {
-        $data['dataSarana'] = $this->rincianAsetModel->getDataItBySaranaDetail($id);
-        return view('saranaView/rincianAset/dataSaranaItDetail', $data);
-    }
-
+    // For generate QR Code 
     public function generateQRCode($kodeRincianAset)    {
         $writer = new PngWriter();
         $qrCode = QrCode::create($kodeRincianAset)
@@ -561,11 +478,6 @@ class RincianAset extends ResourceController
         $activeWorksheet->getStyle('A1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
-            $spesifikasiMarkup = $value->spesifikasi; 
-            $parsedown = new Parsedown();
-            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-            
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
@@ -578,26 +490,27 @@ class RincianAset extends ResourceController
             $activeWorksheet->setCellValue('J'.($index + 2), $value->merk);
             $activeWorksheet->setCellValue('K'.($index + 2), $value->noSeri);
             $activeWorksheet->setCellValue('L'.($index + 2), $value->warna);
-            $activeWorksheet->setCellValue('M'.($index + 2), $spesifikasiText);
-            $linkCell = 'N' . ($index + 2);
+            $activeWorksheet->setCellValue('M' . ($index + 2), $value->spesifikasi);
+            $activeWorksheet->getStyle('M' . ($index + 2))->getAlignment()->setWrapText(true);
             $linkValue = $value->bukti; 
             $linkTitle = 'Click here'; 
-
             $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
-            $activeWorksheet->setCellValue($linkCell, $hyperlinkFormula);
-        
+            $activeWorksheet->setCellValue('N'.($index + 2), $hyperlinkFormula);
             
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'N'];
             
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
         }
-        $activeWorksheet->getStyle('M')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $activeWorksheet->getStyle('M')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         
         $activeWorksheet->getStyle('A1:N1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $activeWorksheet->getStyle('A1:N1')->getFont()->setBold(true);
@@ -605,14 +518,11 @@ class RincianAset extends ResourceController
         $activeWorksheet->getStyle('A:N')->getAlignment()->setWrapText(true);
     
         foreach (range('A', 'N') as $column) {
-            if ($column === 'K') {
-                $activeWorksheet->getColumnDimension($column)->setWidth(20);
-            } else if ($column === 'L') {
+            if ($column === 'M') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(40); 
             } else {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
             }
-
         }
     
         $writer = new Xlsx($spreadsheet);
@@ -709,7 +619,7 @@ class RincianAset extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
-        $headerInputTable = ['No.', 'Kode Rincian Aset', 'ID Identitas Prasarana', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status (Bagus, Rusak, Hilang)', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
+        $headerInputTable = ['No.', 'Status', 'ID Identitas Prasarana', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status (Bagus, Rusak, Hilang)', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -744,10 +654,9 @@ class RincianAset extends ResourceController
             $dataValidation->setError('Value is not in list.');
             $dataValidation->setFormula1('"Bagus,Rusak,Hilang"'); 
 
-            $generateID = '=CONCAT("TS-BJB ", IFERROR(INDEX($W$2:$W$' . (count($keyKategoriManajemen) + 1) . ', MATCH(D' . ($index + 2) . ', $U$2:$U$' . (count($keyKategoriManajemen) + 1) . ', 0)), D' . ($index + 2) . '), " ", IFERROR(INDEX($S$2:$S$' . (count($keyPrasarana) + 1) . ', MATCH(C' . ($index + 2) . ', $Q$2:$Q$' . (count($keyPrasarana) + 1) . ', 0)), C' . ($index + 2) . '), " ", IFERROR(INDEX($AE$2:$AE$' . (count($keySumberDana) + 1) . ', MATCH(H' . ($index + 2) . ', $AC$2:$AC$' . (count($keySumberDana) + 1) . ', 0)), H' . ($index + 2) . '), " ", IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", IFERROR(INDEX($AA$2:$AA$' . (count($keySarana) + 1) . ', MATCH(E' . ($index + 2) . ', $Y$2:$Y$' . (count($keySarana) + 1) . ', 0)), E' . ($index + 2) . '), " ", TEXT(F' . ($index + 2) . ', "000"))';
             $generateStatus = '=IF(OR(ISBLANK(C' . ($index + 2) . '), ISBLANK(D' . ($index + 2) . '), ISBLANK(E' . ($index + 2) . '), ISBLANK(F' . ($index + 2) . '), ISBLANK(H' . ($index + 2) . '), ISBLANK(I' . ($index + 2) . '), ISBLANK(J' . ($index + 2) . '), ISBLANK(K' . ($index + 2) . '), ISBLANK(L' . ($index + 2) . '), ISBLANK(M' . ($index + 2) . '), ISBLANK(N' . ($index + 2) . '), ISBLANK(O' . ($index + 2) . ')), "ERROR: empty data", "CORRECT: fill up")';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $generateID);
+            $activeWorksheet->setCellValue('B'.($index + 2), $generateStatus);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
@@ -760,7 +669,6 @@ class RincianAset extends ResourceController
             $activeWorksheet->setCellValue('M'.($index + 2), '');
             $activeWorksheet->setCellValue('N'.($index + 2), '');
             $activeWorksheet->setCellValue('O'.($index + 2), '');
-            $activeWorksheet->setCellValue('P'.($index + 2), $generateStatus);
             
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
             foreach ($columns as $column) {
@@ -1231,7 +1139,7 @@ class RincianAset extends ResourceController
                     continue;
                 }
                 
-                $kodeRincianAset        = $value[1] ?? null;
+                $kodeRincianAset        = "";
                 $idIdentitasPrasarana   = $value[2] ?? null;
                 $idKategoriManajemen    = $value[3] ?? null;
                 $idIdentitasSarana      = $value[4] ?? null;
@@ -1245,7 +1153,7 @@ class RincianAset extends ResourceController
                 $warna                  = $value[12] ?? null;
                 $spesifikasi            = $value[13] ?? null;
                 $bukti                  = $value[14] ?? null;
-                $statusData                 = $value[15] ?? null;
+                $statusData             = $value[1] ?? null;
 
                 $data = [
                     'kodeRincianAset' => $kodeRincianAset,
@@ -1272,7 +1180,7 @@ class RincianAset extends ResourceController
                     return redirect()->to(site_url('rincianAset'))->with('success', 'Data berhasil diimport');
                 }
             }
-            return redirect()->to(site_url('rincianAset'))->with('error', 'Pastikan excel yang dimasukan sudah sesuai!');
+            return redirect()->to(site_url('rincianAset'))->with('error', 'Pastikan data yang dimasukan sudah benar');
         } else {
             return redirect()->to(site_url('rincianAset'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
@@ -1387,7 +1295,7 @@ class RincianAset extends ResourceController
         $dataRincianAset = $this->rincianAsetModel->getSelectedRows($selectedRows);
     
         if (empty($selectedRows)) {
-            return redirect()->to('rincianAset')->with('error', 'No rows selected for QR code generation.');
+            return redirect()->to(site_url('rincianAset'))->with('error', 'No rows selected for QR code generation.');
         }
     
         $data = [

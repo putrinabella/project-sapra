@@ -27,7 +27,6 @@ $routes->get('viewLogs', 'UserLogs::viewLogs');
 $routes->get('viewLogs/generatePDF', 'UserLogs::generatePDF');
 $routes->get('viewLogs/export', 'UserLogs::export');
 
-
 // User Action Logs
 $routes->get('viewActions', 'UserActionLogs::viewActions');
 $routes->get('viewActions/generatePDF', 'UserActionLogs::generatePDF');
@@ -236,15 +235,15 @@ $routes->resource('nonInventaris', ['filter' => 'isLoggedIn']);
 
 // SARANA - MANAJEMEN ASET
 
-// Data Rincian Aset
+// Data General Aset
 $routes->get('asetGeneral/(:num)', 'AsetGeneral::asetGeneralDetail/$1');
 $routes->get('asetGeneral/generatePDF', 'AsetGeneral::GeneratePDF');
 $routes->get('asetGeneral/export', 'AsetGeneral::Export');
 $routes->get('asetGeneral', 'AsetGeneral::asetGeneral');
 
+// Data Rincian Aset
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
-$routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
 $routes->get('rincianAset/createTemplate', 'RincianAset::createTemplate');
 $routes->get('rincianAset/print/(:num)', 'RincianAset::print/$1');
 $routes->get('rincianAset/generatePDF', 'RincianAset::generatePDF');

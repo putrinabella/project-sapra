@@ -1245,7 +1245,7 @@ class RincianAset extends ResourceController
                 $warna                  = $value[12] ?? null;
                 $spesifikasi            = $value[13] ?? null;
                 $bukti                  = $value[14] ?? null;
-                $statusData             = $value[15] ?? null;
+                $statusData                 = $value[15] ?? null;
 
                 $data = [
                     'kodeRincianAset' => $kodeRincianAset,
