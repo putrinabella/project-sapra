@@ -574,7 +574,7 @@ class SaranaLayananNonAset extends ResourceController
             'dataSaranaLayananNonAset' => $dataSaranaLayananNonAset,
         ];
     
-        $pdfData = pdf_layanannonaset($dataSaranaLayananNonAset, $title, $startDate, $endDate);
+        $pdfData = pdfLayananNonAset($dataSaranaLayananNonAset, $title, $startDate, $endDate);
     
         
         $filename = 'Sarana - Layanan Non Aset' . ".pdf";

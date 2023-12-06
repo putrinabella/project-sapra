@@ -33,6 +33,7 @@ class AsetGeneral extends ResourceController
         $this->kategoriManajemenModel = new KategoriManajemenModels();
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf']);
     }
 
     public function asetGeneral() {
@@ -71,11 +72,11 @@ class AsetGeneral extends ResourceController
         }
     }
 
-   public function Export() {
+    public function Export() {
         $data = $this->rincianAsetModel->getDataBySarana();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->setTitle('Data General');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Nama Aset', 'Total', 'Aset Bagus','Aset Rusak', 'Aset Hilang'];
@@ -94,10 +95,15 @@ class AsetGeneral extends ResourceController
             $columns = ['A', 'B', 'C', 'D', 'E', 'F'];
             
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'B') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    
+                }
             }            
         }
         
@@ -112,13 +118,38 @@ class AsetGeneral extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Rincian Aset General.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Data General Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
 
-    public function PDF() {
+    public function generatePDF() {
+        $asetGeneral = $this->rincianAsetModel->getDataBySarana();
+        // var_dump($asetGeneral);
+        // die;
+        $title = "REPORT DATA GENERAL ASET";
+        if (!$asetGeneral) {
+            return view('error/404');
+        }
+    
+        $data = [
+            'asetGeneral' => $asetGeneral,
+        ];
+    
+        $pdfData = pdfAsetGeneral($asetGeneral, $title);
+    
+        
+        $filename = 'Sarana - Data General Aset' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
+    
+    public function generatePDF2() {
         $filePath = APPPATH . 'Views/saranaView/asetGeneral/printGeneral.php';
     
         if (!file_exists($filePath)) {

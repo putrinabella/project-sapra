@@ -198,7 +198,7 @@ class RequestPeminjaman extends ResourceController
         ];
     
     
-        $pdfData = pdf_suratpeminjaman($dataRequestPeminjaman, $dataRincianLabAset);
+        $pdfData = pdfSuratPeminjaman($dataRequestPeminjaman, $dataRincianLabAset);
     
         $tanggal = date('d F Y', strtotime($dataRequestPeminjaman->tanggal));
         
@@ -243,7 +243,7 @@ class RequestPeminjaman extends ResourceController
                 'dataRincianLabAset' => $dataRincianLabAset,
             ];
     
-            $pdfData = pdf_suratpeminjaman($dataRequestPeminjaman, $dataRincianLabAset);
+            $pdfData = pdfSuratPeminjaman($dataRequestPeminjaman, $dataRincianLabAset);
             $tanggal = date('d F Y', strtotime($dataRequestPeminjaman->tanggal));
             
             $filename = 'Formulir Peminjaman Aset - ' . $dataRequestPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
@@ -498,7 +498,7 @@ class RequestPeminjaman extends ResourceController
             return view('error/404');
         }
     
-        $pdfData = pdf_requestpeminjaman($dataRequest, $dataApprove, $dataReject, $title, $startDate, $endDate);
+        $pdfData = pdfRequestPeminjaman($dataRequest, $dataApprove, $dataReject, $title, $startDate, $endDate);
     
         $filename = 'Laboratorium - Request Peminjaman' . ".pdf";
         

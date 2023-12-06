@@ -560,7 +560,7 @@ class SaranaLayananAset extends ResourceController
         ];
     
     
-        $pdfData = pdf_layananaset($dataSaranaLayananAset, $title, $startDate, $endDate);
+        $pdfData = pdfLayananAset($dataSaranaLayananAset, $title, $startDate, $endDate);
     
         
         $filename = 'Sarana - Layanan Aset' . ".pdf";

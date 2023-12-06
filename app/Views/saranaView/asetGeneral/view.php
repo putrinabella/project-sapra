@@ -15,11 +15,14 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Total Aset: <?= $jumlahTotal; ?> </h4>
+        <h4 class="mb-3 mb-md-0">Total Aset:
+            <?= $jumlahTotal; ?>
+        </h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <a href="<?= site_url('asetGeneral/generatePDF') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
+            <a href="<?= site_url('asetGeneral/generatePDF') ?>" target="_blank"
+                class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Download PDF
             </a>

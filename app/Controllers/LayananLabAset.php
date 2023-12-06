@@ -565,7 +565,7 @@ class LayananLabAset extends ResourceController
         ];
     
     
-        $pdfData = pdf_layananasetlab($dataLayananLabAset, $title, $startDate, $endDate);
+        $pdfData = pdfLayananAsetLab($dataLayananLabAset, $title, $startDate, $endDate);
     
         
         $filename = 'Laboratorium - Layanan Aset' . ".pdf";

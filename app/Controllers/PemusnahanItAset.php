@@ -275,7 +275,7 @@ class PemusnahanAset extends ResourceController
             'dataPemusnahanAset' => $dataPemusnahanAset,
         ];
     
-        $pdfData = pdf_pemusnahanaset($dataPemusnahanAset, $title, $startDate, $endDate);
+        $pdfData = pdfPemusnahanAset($dataPemusnahanAset, $title, $startDate, $endDate);
     
         
         $filename = 'Sarana - Pemusnahan Aset' . ".pdf";

@@ -221,7 +221,7 @@ class DataPeminjaman extends ResourceController
         ];
     
     
-        $pdfData = pdf_suratpeminjaman($dataDataPeminjaman, $dataRincianLabAset);
+        $pdfData = pdfSuratPeminjaman($dataDataPeminjaman, $dataRincianLabAset);
     
         $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal));
         
@@ -267,7 +267,7 @@ class DataPeminjaman extends ResourceController
                 'dataRincianLabAset' => $dataRincianLabAset,
             ];
     
-            $pdfData = pdf_suratpeminjaman($dataDataPeminjaman, $dataRincianLabAset);
+            $pdfData = pdfSuratPeminjaman($dataDataPeminjaman, $dataRincianLabAset);
             $tanggal = date('d F Y', strtotime($dataDataPeminjaman->tanggal));
             
             $filename = 'Formulir Peminjaman Aset - ' . $dataDataPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";

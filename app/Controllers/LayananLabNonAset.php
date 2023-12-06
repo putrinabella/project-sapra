@@ -200,9 +200,6 @@ class LayananLabNonAset extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
-        
         $data = $this->layananLabNonAsetModel->getAll($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
@@ -577,7 +574,7 @@ class LayananLabNonAset extends ResourceController
             'dataLayananLabNonAset' => $dataLayananLabNonAset,
         ];
     
-        $pdfData = pdf_layanannonasetlab($dataLayananLabNonAset, $title, $startDate, $endDate);
+        $pdfData = pdfLayananNonAsetLab($dataLayananLabNonAset, $title, $startDate, $endDate);
     
         
         $filename = 'Laboratorium - Layanan Non Aset' . ".pdf";
@@ -588,8 +585,5 @@ class LayananLabNonAset extends ResourceController
         $response->setBody($pdfData);
         $response->send();
     }
-
-
-    
 }
 

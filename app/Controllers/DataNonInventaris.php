@@ -489,7 +489,7 @@ class DataNonInventaris extends ResourceController
             return view('error/404');
         }
     
-        $pdfData = pdf_noninventaris($dataPemasukan, $dataPengeluaran, $title, $startDate, $endDate);
+        $pdfData = pdfNonInventaris($dataPemasukan, $dataPengeluaran, $title, $startDate, $endDate);
     
         
         $filename = 'Sarana - Non Inventaris' . ".pdf";
