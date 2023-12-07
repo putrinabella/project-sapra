@@ -242,6 +242,7 @@ $routes->get('asetGeneral/export', 'AsetGeneral::Export');
 $routes->get('asetGeneral', 'AsetGeneral::asetGeneral');
 
 // Data Rincian Aset
+$routes->get('rincianAset/testqr', 'RincianAset::testqr');
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
 $routes->get('rincianAset/createTemplate', 'RincianAset::createTemplate');

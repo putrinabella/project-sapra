@@ -1396,7 +1396,10 @@ if (!function_exists('pdfRincianAset')) {
     foreach ($dataAsetBagus as $key => $value) {
         $html .= '<tr>';
         $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
-        $html .= '<td style="width: 30%; text-align: left;">' . $value->kodeRincianAset. '</td>';    
+        $html .= '<td style="width: 30%; text-align: left;">' . $value->kodeRincianAset. '</td>'; 
+        // $qrCodeValue = $value->kodeRincianAset;
+        // $qrCodeSize = 20; // Adjust the size as needed
+        // $myQr = $pdf->write2DBarcode($qrCodeValue, 'QRCODE,H', $pdf->GetX() + 10, $pdf->GetY() + 5, $qrCodeSize, $qrCodeSize);   
         $html .= '<td style="width: 60%; text-align: left;">' .
                     '<table style="width: 100%; padding:5px;">' .
                         '<tr>' .

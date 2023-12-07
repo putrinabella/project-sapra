@@ -23,8 +23,8 @@
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('generateQRDoc') ?>">Generate All</a>
-                <a class="dropdown-item" href="#" id="generateSelectedQR">Generate Selected</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('generateQRDoc') ?>">Generate All</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('generateSelectedQR') ?>" id="generateSelectedQR">Generate Selected</a>
             </div>
         </div>
         <form action="<?= site_url('rincianAset/generateAndSetKodeRincianAset') ?>" method="post">
@@ -249,7 +249,8 @@
 
             if (selectedRows.length > 0) {
                 const selectedRowsQueryParam = selectedRows.join(',');
-                window.location.href = '<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam;
+                window.open('<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam, '_blank');
+
             } else {
                 Swal.fire({
                     icon: 'warning',
