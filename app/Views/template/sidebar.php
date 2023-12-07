@@ -133,10 +133,10 @@
             <div class="collapse" id="itAsetIt">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
-                        <a href="<?= site_url('dataItSarana') ?>" class="nav-link">Data General</a>
+                        <a href="<?= site_url('asetItGeneral') ?>" class="nav-link">Data General</a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= site_url('dataRincianItSarana') ?>" class="nav-link">Data Rincian Aset</a>
+                        <a href="<?= site_url('rincianItAset') ?>" class="nav-link">Data Rincian Aset</a>
                     </li>
                     <li class="nav-item">
                         <a href="<?= site_url('pemusnahanItAset') ?>" class="nav-link">Pemusnahan Aset</a>
@@ -422,13 +422,13 @@
     <?php if (session()->get('role') == 'Admin IT') { ?>
         <li class="nav-item nav-category">MANAJEMEN ASET</li>
         <li class="nav-item">
-            <a href="<?= site_url('dataItSarana') ?>" class="nav-link">
+            <a href="<?= site_url('asetItGeneral') ?>" class="nav-link">
                 <i class="link-icon" data-feather="bookmark"></i>
                 <span class="link-title">Data General</span>
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= site_url('dataRincianItSarana') ?>" class="nav-link">
+            <a href="<?= site_url('rincianItAset') ?>" class="nav-link">
                 <i class="link-icon" data-feather="folder"></i>
                 <span class="link-title">Data Rincian Aset</span>
             </a>

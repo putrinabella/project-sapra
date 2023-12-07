@@ -242,7 +242,6 @@ $routes->get('asetGeneral/export', 'AsetGeneral::Export');
 $routes->get('asetGeneral', 'AsetGeneral::asetGeneral');
 
 // Data Rincian Aset
-$routes->get('rincianAset/testqr', 'RincianAset::testqr');
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
 $routes->get('rincianAset/createTemplate', 'RincianAset::createTemplate');
@@ -331,6 +330,33 @@ $routes->resource('prasaranaNonRuangan', ['filter' => 'isLoggedIn']);
 
 
 // IT 
+
+// Data Rincian Aset
+$routes->get('rincianItAset/generateQRDoc', 'RincianItAset::generateQRDoc');
+$routes->get('rincianItAset/createTemplate', 'RincianItAset::createTemplate');
+$routes->get('rincianItAset/print/(:num)', 'RincianItAset::print/$1');
+$routes->get('rincianItAset/generatePDF', 'RincianItAset::generatePDF');
+$routes->get('rincianItAset/export', 'RincianItAset::export');
+$routes->get('rincianItAset/edit', 'RincianItAset::edit');
+$routes->get('rincianItAset/trash', 'RincianItAset::trash');
+$routes->get('rincianItAset/restore/(:any)', 'RincianItAset::restore/$1');
+$routes->get('rincianItAset/restore', 'RincianItAset::restore');
+$routes->post('rincianItAset/import', 'RincianItAset::import');
+$routes->post('rincianItAset/generateAndSetKodeRincianItAset', 'RincianItAset::generateAndSetKodeRincianItAset');
+$routes->post('rincianItAset/generateKode', 'RincianItAset::generateKode');
+$routes->post('rincianItAset/(:any)/updateKode', 'RincianItAset::generateKode');
+$routes->post('rincianItAset/checkDuplicate', 'RincianItAset::checkDuplicate');
+$routes->post('rincianItAset/(:any)/updateCheckDuplicate', 'RincianItAset::checkDuplicate');
+$routes->delete('rincianItAset/deletePermanent/(:any)', 'RincianItAset::deletePermanent/$1');
+$routes->delete('rincianItAset/deletePermanent', 'RincianItAset::deletePermanent');
+$routes->resource('rincianItAset', ['filter' => 'isLoggedIn']);
+
+// Pemusnahan Aset IT
+$routes->get('pemusnahanItAset/print/(:any)', 'PemusnahanItAset::print/$1');
+$routes->get('pemusnahanItAset/generatePDF', 'PemusnahanItAset::generatePDF');
+$routes->get('pemusnahanItAset/export', 'PemusnahanItAset::export');
+$routes->post('pemusnahanItAset/destruction/(:any)', 'PemusnahanItAset::destruction/$1');
+$routes->resource('pemusnahanItAset', ['filter' => 'isLoggedIn']);
 
 // Perangkat IT
 $routes->get('perangkatIt/print/(:num)', 'perangkatIt::print/$1');

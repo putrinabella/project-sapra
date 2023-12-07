@@ -6,11 +6,14 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Detail Rincian Aset</h4>
-    </div>
-</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('rincianAset')?>">Rincian Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Data</li>
+    </ol>
+</nav>
+
 
 
 <div class="row">
@@ -19,16 +22,16 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('dataRincianItSarana')?>"
+                        <a href="<?= site_url('rincianAset')?>"
                             class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                        <a href="<?= site_url('rincianAset/print/'.$dataRincianAset->idRincianAset)?>"
+                        <!-- <a href="<?= site_url('rincianAset/print/'.$dataRincianAset->idRincianAset)?>"
                             class="btn btn-outline-success btn-icon-text mb-2 mb-md-0" target="_blank">
                             <i class="btn-icon-prepend" data-feather="printer"></i>
                             Print
-                        </a>
+                        </a> -->
                     </div>
                 </div>
                 <br>

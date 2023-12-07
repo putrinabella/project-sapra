@@ -46,7 +46,7 @@ class IdentitasSaranaModels extends Model
         }
     }
 
-    public function findAsetIT() {
+    public function  getDataIt() {
         $builder = $this->db->table($this->table);
         $builder->where('tblIdentitasSarana.perangkatIT', 1); 
         $query = $builder->get();

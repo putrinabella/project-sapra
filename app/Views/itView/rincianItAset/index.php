@@ -8,7 +8,7 @@
 
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Perangkat IT</a></li>
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
         <li class="breadcrumb-item active" aria-current="page">Rincian Aset</li>
     </ol>
 </nav>
@@ -23,14 +23,15 @@
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('generateItQRDoc') ?>">Generate All</a>
-                <a class="dropdown-item" href="#" id="generateSelectedItQR">Generate Selected</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('rincianItAset/generateQRDoc') ?>">Generate All</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('generateSelectedQR') ?>" id="generateSelectedQR">Generate Selected</a>
             </div>
         </div>
-        <form action="<?= site_url('dataItSarana/generateAndSetKodeRincianItAset') ?>" method="post">
-            <button type="submit" class="btn btn-primary btn-icon-text mdi mdi-key me-2 mb-2 mb-md-0" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click for generate kode aset"></button>
+        <form action="<?= site_url('rincianItAset/generateAndSetKodeRincianItAset') ?>" method="post">
+            <button type="submit" class="btn btn-primary btn-icon-text mdi mdi-key me-2 mb-2 mb-md-0"
+                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click for generate kode aset"></button>
         </form>
-        <a href="<?= site_url('dataItSarana/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('rincianItAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
@@ -42,7 +43,8 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('rincianItAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('rincianItAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('rincianItAset/generatePDF') ?>">Download as
+                    PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -52,11 +54,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('dataItSarana/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('rincianItAset/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('dataItSarana/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('rincianItAset/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -107,25 +109,26 @@
                                 <th>Harga Beli</th>
                                 <th>Merek</th>
                                 <th>Warna</th>
+                                <th>Spesifikasi</th>
                                 <th style="width: 20%;">Aksi</th>
                                 <th style="width: 20%;">Pemusnahan</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataRincianAset as $key => $value) : ?>
+                            <?php foreach ($dataRincianItAset as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td><input type="checkbox" class="form-check-input row-select" name="selectedRows[]"
                                         value="<?= $value->idRincianAset ?>"></td>
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td><?=$value->kodeRincianAset?></td>
+                                <td class="text-center"><?=$value->kodeRincianAset?></td>
                                 <td><?=$value->namaPrasarana?></td>
                                 <td><?=$value->namaKategoriManajemen?></td>
                                 <td><?=$value->namaSarana?></td>
                                 <td><?=$value->status?></td>
                                 <td><?=$value->namaSumberDana?></td>
-                                <td>
+                                <td class="text-center">
                                     <?php 
                                         if($value->tahunPengadaan == 0 || 0000) {
                                             echo "Tidak diketahui"; 
@@ -137,12 +140,16 @@
                                 <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                                 <td><?=$value->merk?></td>
                                 <td><?=$value->warna?></td>
+                                <td
+                                    style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <?=$value->spesifikasi?>
+                                </td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('dataItSarana/show/'.$value->idRincianAset) ?>"
+                                    <a href="<?=site_url('rincianItAset/'.$value->idRincianAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('dataItSarana/'.$value->idRincianAset.'/edit') ?>"
+                                    <a href="<?=site_url('rincianItAset/'.$value->idRincianAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('dataItSarana/'.$value->idRincianAset)?>" method="post"
+                                    <form action="<?=site_url('rincianItAset/'.$value->idRincianAset)?>" method="post"
                                         class="d-inline" id="del-<?= $value->idRincianAset;?>">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
@@ -151,13 +158,10 @@
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
-                                    <a href="<?= site_url('QRBarcode/' . $value->kodeRincianAset) ?>" target="_blank"
-                                        class="btn btn-success mdi mdi-qrcode-scan"
-                                        data-kode="<?= $value->kodeRincianAset ?>">
-                                    </a>
                                 </td>
                                 <td class="text-center">
-                                    <form action="<?= site_url('pemusnahanItAset/delete/' . $value->idRincianAset) ?>"
+                                    <form
+                                        action="<?= site_url('pemusnahanItAset/destruction/' . $value->idRincianAset) ?>"
                                         method="post" class="d-inline">
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
@@ -195,7 +199,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("dataItSarana/import")?>" method="POST" enctype="multipart/form-data"
+            <form action="<?=site_url(" rincianItAset/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
 
@@ -209,6 +213,9 @@
         </div>
     </div>
 </div>
+
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -234,17 +241,23 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const generateSelectedItQR = document.getElementById('generateSelectedItQR');
-        generateSelectedItQR.addEventListener('click', function (e) {
+        const generateSelectedQR = document.getElementById('generateSelectedQR');
+        generateSelectedQR.addEventListener('click', function (e) {
             e.preventDefault();
 
             const selectedRows = getSelectedRowIds();
 
             if (selectedRows.length > 0) {
                 const selectedRowsQueryParam = selectedRows.join(',');
-                window.location.href = '<?= site_url('generateSelectedItQR') ?>/' + selectedRowsQueryParam;
+                window.open('<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam, '_blank');
+
             } else {
-                alert('No rows selected for QR code generation.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak ada data',
+                    text: 'Silahkan pilih minimal satu data!',
+                    confirmButtonText: 'OK',
+                });
             }
         });
 
