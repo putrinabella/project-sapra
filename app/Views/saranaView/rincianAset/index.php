@@ -104,6 +104,7 @@
                                 <th>Kategori Aset</th>
                                 <th>Nama Aset</th>
                                 <th>Status</th>
+                                <th>Keterediaan</th>
                                 <th>Sumber Dana</th>
                                 <th>Tahun Pengadaan</th>
                                 <th>Harga Beli</th>
@@ -126,7 +127,28 @@
                                 <td><?=$value->namaPrasarana?></td>
                                 <td><?=$value->namaKategoriManajemen?></td>
                                 <td><?=$value->namaSarana?></td>
-                                <td><?=$value->status?></td>
+                                <td class="text-center">
+                                    <?php if ($value->status == "Rusak") : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Hilang"): ?>
+                                    <span class="badge bg-danger">
+                                    <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Bagus"): ?>
+                                    <?= $value->status; ?> 
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php if ($value->sectionAset == "None") : ?>
+                                        Tersedia
+                                    <?php else : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->sectionAset; ?> 
+                                    </span>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
                                     <?php 

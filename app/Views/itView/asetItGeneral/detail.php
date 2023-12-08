@@ -10,8 +10,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('asetGeneral')?>">Data General</a></li>
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('asetItGeneral')?>">Data General</a></li>
         <li class="breadcrumb-item active" aria-current="page">Data Aset</li>
     </ol>
 </nav>
@@ -22,7 +22,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('asetGeneral')?>"
+                        <a href="<?= site_url('asetItGeneral')?>"
                             class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
@@ -88,7 +88,7 @@
                                 </tr>
                             </thead>
                             <tbody class="py-2">
-                                <?php foreach ($asetGeneral as $key => $value) : ?>
+                                <?php foreach ($asetItGeneral as $key => $value) : ?>
                                 <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                     <td class="text-center">
                                         <?=$key + 1?>
@@ -110,11 +110,11 @@
                                     <td><?=$value->merk?></td>
                                     <td><?=$value->warna?></td>
                                     <td class="text-center">
-                                        <a href="<?=site_url('asetGeneral/dataAset/'.$value->idRincianAset) ?>"
+                                        <a href="<?=site_url('asetItGeneral/dataItAset/'.$value->idRincianAset) ?>"
                                             class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                        <a href="<?=site_url('rincianAset/'.$value->idRincianAset.'/edit') ?>"
+                                        <a href="<?=site_url('rincianItAset/'.$value->idRincianAset.'/edit') ?>"
                                             class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                        <form action="<?=site_url('rincianAset/'.$value->idRincianAset)?>" method="post"
+                                        <form action="<?=site_url('rincianItAset/'.$value->idRincianAset)?>" method="post"
                                             class="d-inline" id="del-<?= $value->idRincianAset;?>">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button class="btn btn-danger btn-icon"

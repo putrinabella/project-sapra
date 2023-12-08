@@ -290,9 +290,13 @@ class RincianItAset extends ResourceController
     
     public function export() {
         $data = $this->rincianAsetModel->getItAll();
+        $dataAsetItBagus = $this->rincianAsetModel->getDataItBagus();
+        $dataAsetItRusak = $this->rincianAsetModel->getDataItRusak();
+        $dataAsetItHilang = $this->rincianAsetModel->getDataItHilang();
+
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->setTitle('Data Aset');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Kode Aset', 'Lokasi', 'Kategori Barang','Spesifikasi Barang', 'Status', 'Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti'];
@@ -300,6 +304,7 @@ class RincianItAset extends ResourceController
         $activeWorksheet->getStyle('A1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
@@ -307,7 +312,7 @@ class RincianItAset extends ResourceController
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->status);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
-            $activeWorksheet->setCellValue('H'.($index + 2), $value->tahunPengadaan);
+            $activeWorksheet->setCellValue('H'.($index + 2), $tahunPengadaan);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->hargaBeli);
             $activeWorksheet->setCellValue('J'.($index + 2), $value->merk);
             $activeWorksheet->setCellValue('K'.($index + 2), $value->noSeri);
@@ -319,8 +324,8 @@ class RincianItAset extends ResourceController
             $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
             $activeWorksheet->setCellValue('N'.($index + 2), $hyperlinkFormula);
             
+            $activeWorksheet->getStyle('I' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'N'];
-            
             foreach ($columns as $column) {
                 $cellReference = $column . ($index + 2);
                 $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
@@ -347,6 +352,175 @@ class RincianItAset extends ResourceController
             }
         }
     
+        $asetBagusSheet = $spreadsheet->createSheet();
+        $asetBagusSheet->setTitle('Aset Bagus');
+        $asetBagusSheet->getTabColor()->setRGB('DF2E38');
+        $headerData = ['No.', 'Kode Aset', 'Lokasi', 'Kategori Barang','Spesifikasi Barang', 'Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti'];
+        $asetBagusSheet->fromArray([$headerData], NULL, 'A1');
+        $asetBagusSheet->getStyle('A1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        foreach ($dataAsetItBagus as $index => $value) {
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
+            $asetBagusSheet->setCellValue('A'.($index + 2), $index + 1);
+            $asetBagusSheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
+            $asetBagusSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
+            $asetBagusSheet->setCellValue('D'.($index + 2), $value->namaKategoriManajemen);
+            $asetBagusSheet->setCellValue('E'.($index + 2), $value->namaSarana);
+            $asetBagusSheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
+            $asetBagusSheet->setCellValue('G'.($index + 2), $tahunPengadaan);
+            $asetBagusSheet->setCellValue('H'.($index + 2), $value->hargaBeli);
+            $asetBagusSheet->setCellValue('I'.($index + 2), $value->merk);
+            $asetBagusSheet->setCellValue('J'.($index + 2), $value->noSeri);
+            $asetBagusSheet->setCellValue('K'.($index + 2), $value->warna);
+            $asetBagusSheet->setCellValue('L' . ($index + 2), $value->spesifikasi);
+            $asetBagusSheet->getStyle('L' . ($index + 2))->getAlignment()->setWrapText(true);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $asetBagusSheet->setCellValue('M'.($index + 2), $hyperlinkFormula);
+
+            $asetBagusSheet->getStyle('H' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M'];
+            
+            foreach ($columns as $column) {
+                $cellReference = $column . ($index + 2);
+                $alignment = $asetBagusSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
+        }
+        
+        $asetBagusSheet->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $asetBagusSheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $asetBagusSheet->getStyle('A1:M'.$asetBagusSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $asetBagusSheet->getStyle('A:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'M') as $column) {
+            if ($column === 'L') {
+                $asetBagusSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $asetBagusSheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+
+        
+        $asetRusakSheet = $spreadsheet->createSheet();
+        $asetRusakSheet->setTitle('Aset Rusak');
+        $asetRusakSheet->getTabColor()->setRGB('DF2E38');
+        $asetRusakSheet->fromArray([$headerData], NULL, 'A1');
+        $asetRusakSheet->getStyle('A1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($dataAsetItRusak as $index => $value) {
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
+            $asetRusakSheet->setCellValue('A'.($index + 2), $index + 1);
+            $asetRusakSheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
+            $asetRusakSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
+            $asetRusakSheet->setCellValue('D'.($index + 2), $value->namaKategoriManajemen);
+            $asetRusakSheet->setCellValue('E'.($index + 2), $value->namaSarana);
+            $asetRusakSheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
+            $asetRusakSheet->setCellValue('G'.($index + 2), $tahunPengadaan);
+            $asetRusakSheet->setCellValue('H'.($index + 2), $value->hargaBeli);
+            $asetRusakSheet->setCellValue('I'.($index + 2), $value->merk);
+            $asetRusakSheet->setCellValue('J'.($index + 2), $value->noSeri);
+            $asetRusakSheet->setCellValue('K'.($index + 2), $value->warna);
+            $asetRusakSheet->setCellValue('L' . ($index + 2), $value->spesifikasi);
+            $asetRusakSheet->getStyle('L' . ($index + 2))->getAlignment()->setWrapText(true);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $asetRusakSheet->setCellValue('M'.($index + 2), $hyperlinkFormula);
+
+            $asetRusakSheet->getStyle('H' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M'];
+            
+            foreach ($columns as $column) {
+                $cellReference = $column . ($index + 2);
+                $alignment = $asetRusakSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
+        }
+        
+        $asetRusakSheet->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $asetRusakSheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $asetRusakSheet->getStyle('A1:M'.$asetRusakSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $asetRusakSheet->getStyle('A:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'M') as $column) {
+            if ($column === 'L') {
+                $asetRusakSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $asetRusakSheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+
+        $asetHilangSheet = $spreadsheet->createSheet();
+        $asetHilangSheet->setTitle('Aset Hilang');
+        $asetHilangSheet->getTabColor()->setRGB('DF2E38');
+        $asetHilangSheet->fromArray([$headerData], NULL, 'A1');
+        $asetHilangSheet->getStyle('A1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($dataAsetItHilang as $index => $value) {
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
+            $asetHilangSheet->setCellValue('A'.($index + 2), $index + 1);
+            $asetHilangSheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
+            $asetHilangSheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
+            $asetHilangSheet->setCellValue('D'.($index + 2), $value->namaKategoriManajemen);
+            $asetHilangSheet->setCellValue('E'.($index + 2), $value->namaSarana);
+            $asetHilangSheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
+            $asetHilangSheet->setCellValue('G'.($index + 2), $tahunPengadaan);
+            $asetHilangSheet->setCellValue('H'.($index + 2), $value->hargaBeli);
+            $asetHilangSheet->setCellValue('I'.($index + 2), $value->merk);
+            $asetHilangSheet->setCellValue('J'.($index + 2), $value->noSeri);
+            $asetHilangSheet->setCellValue('K'.($index + 2), $value->warna);
+            $asetHilangSheet->setCellValue('L' . ($index + 2), $value->spesifikasi);
+            $asetHilangSheet->getStyle('L' . ($index + 2))->getAlignment()->setWrapText(true);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $asetHilangSheet->setCellValue('M'.($index + 2), $hyperlinkFormula);
+
+            $asetHilangSheet->getStyle('H' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M'];
+            
+            foreach ($columns as $column) {
+                $cellReference = $column . ($index + 2);
+                $alignment = $asetHilangSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
+        }
+        
+        $asetHilangSheet->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $asetHilangSheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $asetHilangSheet->getStyle('A1:M'.$asetHilangSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $asetHilangSheet->getStyle('A:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'M') as $column) {
+            if ($column === 'L') {
+                $asetHilangSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $asetHilangSheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+        
+
+        $spreadsheet->setActiveSheetIndex(0);
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=IT - Rincian Aset.xlsx');
@@ -552,7 +726,7 @@ class RincianItAset extends ResourceController
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
-        $headerExampleTable =  ['No.', 'Kode Rincian Aset', 'ID Identitas Prasarana', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
+        $headerExampleTable =  ['No.', 'Status', 'ID Identitas Prasarana', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -560,13 +734,9 @@ class RincianItAset extends ResourceController
             if ($index >= 3) {
                 break;
             }
-            $spesifikasiMarkup = $value->spesifikasi; 
-            $parsedown = new Parsedown();
-            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-
+            $generateStatus = '=IF(OR(ISBLANK(C' . ($index + 2) . '), ISBLANK(D' . ($index + 2) . '), ISBLANK(E' . ($index + 2) . '), ISBLANK(F' . ($index + 2) . '), ISBLANK(H' . ($index + 2) . '), ISBLANK(I' . ($index + 2) . '), ISBLANK(J' . ($index + 2) . '), ISBLANK(K' . ($index + 2) . '), ISBLANK(L' . ($index + 2) . '), ISBLANK(M' . ($index + 2) . '), ISBLANK(N' . ($index + 2) . '), ISBLANK(O' . ($index + 2) . ')), "ERROR: empty data", "CORRECT: fill up")';
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeRincianAset);
+            $exampleSheet->setCellValue('B'.($index + 2), $generateStatus);
             $exampleSheet->setCellValue('C'.($index + 2), $value->idIdentitasPrasarana);
             $exampleSheet->setCellValue('D'.($index + 2), $value->idKategoriManajemen);
             $exampleSheet->setCellValue('E'.($index + 2), $value->idIdentitasSarana);
@@ -578,30 +748,41 @@ class RincianItAset extends ResourceController
             $exampleSheet->setCellValue('K'.($index + 2), $value->merk);
             $exampleSheet->setCellValue('L'.($index + 2), $value->noSeri);
             $exampleSheet->setCellValue('M'.($index + 2), $value->warna);
-            $exampleSheet->setCellValue('N'.($index + 2), $spesifikasiText);
+            $exampleSheet->setCellValue('N'.($index + 2), $value->spesifikasi);
             $exampleSheet->setCellValue('O'.($index + 2), $value->bukti);
             
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M', 'N', 'O'];
+            
             foreach ($columns as $column) {
-                $exampleSheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $exampleSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
         }
-
+        
+        $exampleSheet->getStyle('A1:O1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $exampleSheet->getStyle('A1:O1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:O1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
         $exampleSheet->getStyle('A1:O'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $exampleSheet->getStyle('A:O')->getAlignment()->setWrapText(true);
-        
+    
         foreach (range('A', 'O') as $column) {
-            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+            if ($column === 'N' || $column === 'O') {
+                $exampleSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+            }
         }
 
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Rincian Aset Example.xlsx');
+        header('Content-Disposition: attachment;filename=IT - Rincian Aset Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -708,21 +889,23 @@ class RincianItAset extends ResourceController
 
 
     public function generatePDF() {
-        $dataAsetBagus = $this->rincianAsetModel->getDataBagus();
-        $dataAsetRusak = $this->rincianAsetModel->getDataRusak();
-        $dataAsetHilang = $this->rincianAsetModel->getDataHilang();
+        $dataAsetItBagus = $this->rincianAsetModel->getDataItBagus();
+        $dataAsetItRusak = $this->rincianAsetModel->getDataItRusak();
+        $dataAsetItHilang = $this->rincianAsetModel->getDataItHilang();
+        
         $title = "REPORT RINCIAN ASET IT";
-        if (!$dataAsetBagus || !$dataAsetRusak || !$dataAsetHilang) {
+        
+        if (!$dataAsetItBagus && !$dataAsetItRusak && !$dataAsetItHilang) {
             return view('error/404');
         }
     
         $data = [
-            'dataAsetBagus' => $dataAsetBagus,
-            'dataAsetRusak' => $dataAsetRusak,
-            'dataAsetHilang' => $dataAsetHilang,
+            'dataAsetItBagus' => $dataAsetItBagus,
+            'dataAsetItRusak' => $dataAsetItRusak,
+            'dataAsetItHilang' => $dataAsetItHilang,
         ];
     
-        $pdfData = pdfRincianItAset($dataAsetBagus, $dataAsetRusak, $dataAsetHilang, $title);
+        $pdfData = pdfRincianItAset($dataAsetItBagus, $dataAsetItRusak, $dataAsetItHilang, $title);
     
         
         $filename = 'IT - Rincian Aset' . ".pdf";

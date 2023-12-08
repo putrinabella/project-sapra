@@ -494,7 +494,7 @@ class RequestPeminjaman extends ResourceController
         $dataReject = $this->requestPeminjamanModel->getDataReject($startDate, $endDate);
 
         $title = "REPORT REQUEST PEMINJAMAN";
-        if (!$dataRequest || !$dataApprove || !$dataReject) {
+        if (!$dataRequest && !$dataApprove && !$dataReject) {
             return view('error/404');
         }
     

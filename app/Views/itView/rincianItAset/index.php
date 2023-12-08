@@ -126,7 +126,19 @@
                                 <td><?=$value->namaPrasarana?></td>
                                 <td><?=$value->namaKategoriManajemen?></td>
                                 <td><?=$value->namaSarana?></td>
-                                <td><?=$value->status?></td>
+                                <td class="text-center">
+                                    <?php if ($value->status == "Rusak") : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Hilang"): ?>
+                                    <span class="badge bg-danger">
+                                    <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Bagus"): ?>
+                                    <?= $value->status; ?> 
+                                    <?php endif; ?>
+                                </td>
                                 <td><?=$value->namaSumberDana?></td>
                                 <td class="text-center">
                                     <?php 

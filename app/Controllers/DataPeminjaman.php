@@ -210,7 +210,7 @@ class DataPeminjaman extends ResourceController
         $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($id);
         $dataRincianLabAset = $this->dataPeminjamanModel->getRincianItem($id);
     
-        if (!$dataDataPeminjaman || empty($dataRincianLabAset)) {
+        if (!$dataDataPeminjaman && !($dataRincianLabAset)) {
             return view('error/404');
         }
     

@@ -123,11 +123,23 @@
         }
     }
 
-      var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
-      $('.nav li a', sidebar).each(function() {
-        var $this = $(this);
-        addActiveClass($this);
-      });
+    // Get the current URL path
+    var currentPath = location.pathname; // "/rincianAset/8"
+
+    // Split the path into an array using the '/' character as a separator
+    var pathSegments = currentPath.split("/"); // ["", "rincianAset", "8"]
+
+    // Extract the second segment of the path
+    var current = pathSegments[1] || "default"; // "rincianAset" or "default" if not present
+
+    console.log(current); // Output: "rincianAset"
+
+
+    // var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
+    $('.nav li a', sidebar).each(function() {
+      var $this = $(this);
+      addActiveClass($this);
+    });
 
     $('.horizontal-menu .nav li a').each(function() {
       var $this = $(this);

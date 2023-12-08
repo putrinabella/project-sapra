@@ -107,6 +107,7 @@
                                 <th>Harga Beli</th>
                                 <th>Merek</th>
                                 <th>Warna</th>
+                                <th>Spesifikasi</th>
                                 <th style="width: 20%;">Aksi</th>
                                 <th style="width: 20%;">Pemusnahan</th>
                             </tr>
@@ -158,6 +159,10 @@
                                 <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                                 <td><?=$value->merk?></td>
                                 <td><?=$value->warna?></td>
+                                <td
+                                    style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <?=$value->spesifikasi?>
+                                </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset) ?>"
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>

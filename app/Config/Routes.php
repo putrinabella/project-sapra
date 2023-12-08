@@ -236,10 +236,11 @@ $routes->resource('nonInventaris', ['filter' => 'isLoggedIn']);
 // SARANA - MANAJEMEN ASET
 
 // Data General Aset
-$routes->get('asetGeneral/(:num)', 'AsetGeneral::asetGeneralDetail/$1');
+$routes->get('asetGeneral/dataAset/(:num)', 'AsetGeneral::info/$1');
+$routes->get('asetGeneral/(:num)', 'AsetGeneral::show/$1');
 $routes->get('asetGeneral/generatePDF', 'AsetGeneral::GeneratePDF');
 $routes->get('asetGeneral/export', 'AsetGeneral::Export');
-$routes->get('asetGeneral', 'AsetGeneral::asetGeneral');
+$routes->get('asetGeneral', 'AsetGeneral::view');
 
 // Data Rincian Aset
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
@@ -330,8 +331,14 @@ $routes->resource('prasaranaNonRuangan', ['filter' => 'isLoggedIn']);
 
 
 // IT 
+// Data General Aset IT
+$routes->get('asetItGeneral/dataItAset/(:num)', 'AsetItGeneral::info/$1');
+$routes->get('asetItGeneral/(:num)', 'AsetItGeneral::show/$1');
+$routes->get('asetItGeneral/generatePDF', 'AsetItGeneral::GeneratePDF');
+$routes->get('asetItGeneral/export', 'AsetItGeneral::Export');
+$routes->get('asetItGeneral', 'AsetItGeneral::view');
 
-// Data Rincian Aset
+// Data Rincian Aset IT
 $routes->get('rincianItAset/generateQRDoc', 'RincianItAset::generateQRDoc');
 $routes->get('rincianItAset/createTemplate', 'RincianItAset::createTemplate');
 $routes->get('rincianItAset/print/(:num)', 'RincianItAset::print/$1');

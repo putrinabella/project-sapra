@@ -23,7 +23,7 @@ use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 
-class AsetGeneral extends ResourceController
+class AsetItGeneral extends ResourceController
 {
     
     function __construct() {
@@ -37,7 +37,7 @@ class AsetGeneral extends ResourceController
     }
 
     public function view() {
-        $dataGeneral = $this->rincianAsetModel->getDataBySarana();
+        $dataGeneral = $this->rincianAsetModel->getDataItBySarana();
 
         $jumlahTotal = 0;
         foreach ($dataGeneral as $value) {
@@ -47,7 +47,7 @@ class AsetGeneral extends ResourceController
         $data['dataGeneral'] = $dataGeneral;
         $data['jumlahTotal'] = $jumlahTotal;
         
-        return view('saranaView/asetGeneral/view', $data);
+        return view('itView/asetItGeneral/view', $data);
     }
 
     public function show($id = null) {
@@ -56,14 +56,14 @@ class AsetGeneral extends ResourceController
             if (is_object($detailAset)) {
                 $data = [
                     'detailAset'        => $detailAset,
-                    'asetGeneral'       => $this->rincianAsetModel->getDataBySaranaDetail($id),
-                    'totalSarana'       => $this->rincianAsetModel->getTotalSarana($detailAset->idIdentitasSarana),
-                    'saranaLayak'       => $this->rincianAsetModel->getSaranaLayak($detailAset->idIdentitasSarana),
-                    'saranaRusak'       => $this->rincianAsetModel->getSaranaRusak($detailAset->idIdentitasSarana),
-                    'saranaHilang'      => $this->rincianAsetModel->getSaranaHilang($detailAset->idIdentitasSarana),
+                    'asetItGeneral'       => $this->rincianAsetModel->getDataItBySaranaDetail($id),
+                    'totalSarana'       => $this->rincianAsetModel->getTotalItSarana($detailAset->idIdentitasSarana),
+                    'saranaLayak'       => $this->rincianAsetModel->getSaranaItLayak($detailAset->idIdentitasSarana),
+                    'saranaRusak'       => $this->rincianAsetModel->getSaranaItRusak($detailAset->idIdentitasSarana),
+                    'saranaHilang'      => $this->rincianAsetModel->getSaranaItHilang($detailAset->idIdentitasSarana),
                 ];
 
-                return view('saranaView/asetGeneral/detail', $data);
+                return view('itView/asetItGeneral/detail', $data);
             } else {
                 return view('error/404');
             }
@@ -89,7 +89,7 @@ class AsetGeneral extends ResourceController
                     'buktiUrl'                  => $buktiUrl,
                     'qrCodeData'                => $qrCodeData
                 ];
-                return view('saranaView/asetGeneral/show', $data);
+                return view('itView/asetItGeneral/show', $data);
             } else {
                 return view('error/404');
             }
@@ -99,7 +99,7 @@ class AsetGeneral extends ResourceController
     }
 
     public function Export() {
-        $data = $this->rincianAsetModel->getDataBySarana();
+        $data = $this->rincianAsetModel->getDataItBySarana();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Data General');
@@ -144,61 +144,35 @@ class AsetGeneral extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Data General Aset.xlsx');
+        header('Content-Disposition: attachment;filename=IT - Data General Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
     }
 
     public function generatePDF() {
-        $asetGeneral = $this->rincianAsetModel->getDataBySarana();
-        // var_dump($asetGeneral);
+        $asetItGeneral = $this->rincianAsetModel->getDataItBySarana();
+        // var_dump($asetItGeneral);
         // die;
-        $title = "REPORT DATA GENERAL ASET";
-        if (!$asetGeneral) {
+        $title = "REPORT DATA GENERAL ASET IT";
+        if (!$asetItGeneral) {
             return view('error/404');
         }
     
         $data = [
-            'asetGeneral' => $asetGeneral,
+            'asetItGeneral' => $asetItGeneral,
         ];
     
-        $pdfData = pdfAsetGeneral($asetGeneral, $title);
+        $pdfData = pdfAsetItGeneral($asetItGeneral, $title);
     
         
-        $filename = 'Sarana - Data General Aset' . ".pdf";
+        $filename = 'IT - Data General Aset' . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');
         $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
         $response->setBody($pdfData);
         $response->send();
-    }
-    
-    public function generatePDF2() {
-        $filePath = APPPATH . 'Views/saranaView/asetGeneral/printGeneral.php';
-    
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        $data['asetGeneral'] = $this->rincianAsetModel->getDataBySarana();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-    
-        $includeFile($filePath, $data);
-    
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Sarana - Rincian Aset General Report.pdf';
-        $dompdf->stream($filename);
     }
 
     private function generateFileId($url) {
