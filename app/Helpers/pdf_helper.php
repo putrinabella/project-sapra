@@ -169,6 +169,191 @@ if (!function_exists('pdfSuratPeminjaman')) {
     }
 }
 
+if (!function_exists('pdfProfilSekolah')) {
+    function pdfProfilSekolah($data, $dataDokumenSekolah, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Profil Sekolah');
+        $pdf->SetSubject('Profil Sekolah');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $dayNamesIndonesian = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $monthNamesIndonesian = [
+            '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        $tanggalPendirianFormatted = $dayNamesIndonesian[date('w', strtotime($data->tanggalSkPendirian))];
+        $tanggalPendirianFormatted .= ', ' . date('j', strtotime($data->tanggalSkPendirian));
+        $tanggalPendirianFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($data->tanggalSkPendirian))];
+        $tanggalPendirianFormatted .= ' ' . date('Y', strtotime($data->tanggalSkPendirian));
+
+
+        $yearNow = date('Y');
+        $yearNext = date('Y', strtotime('+1 year'));
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+
+        <h4>Identitas Sekolah</h4>
+        <table style="padding-top: 10px; width: 100%">
+            <tr>
+                <th style="width: 30%;">NPSN</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%">$data->npsn</th>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <th>:</th>
+                <th>$data->status</th>
+            </tr>
+            <tr>
+                <th>Bentuk Pendidikan</th>
+                <th>:</th>
+                <th>$data->bentukPendidikan</th>
+            </tr>
+            <tr>
+                <th>Status Kepemilikan</th>
+                <th>:</th>
+                <th>$data->statusKepemilikan</th>
+            </tr>
+            <tr>
+                <th>SK Pendirian</th>
+                <th>:</th>
+                <th>$data->skPendirian</th>
+            </tr>
+            <tr>
+                <th>Tanggal SK Pendirian</th>
+                <th>:</th>
+                <th>$data->tanggalSkPendirian</th>
+            </tr>
+            <tr>
+                <th>SK Izin Operasional</th>
+                <th>:</th>
+                <th>$data->skIzinOperasional</th>
+            </tr>
+            <tr>
+                <th>Tanggal SK Izin Operasional</th>
+                <th>:</th>
+                <th>$data->tanggalSkIzinOperasional</th>
+            </tr>
+        </table>
+
+        <br>
+
+        <h4>Data Rinci</h4>
+        <table style="padding-top: 10px; width: 100%">
+            <tr>
+                <th style="width: 30%;">Status BOS</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%">$data->statusBos</th>
+            </tr>
+            <tr>
+                <th>Waktu Penyelenggaraan</th>
+                <th>:</th>
+                <th>$data->waktuPenyelenggaraan</th>
+            </tr>
+            <tr>
+                <th>Sertifikasi ISO</th>
+                <th>:</th>
+                <th>$data->sertifikasiIso</th>
+            </tr>
+            <tr>
+                <th>Sumber Listrik</th>
+                <th>:</th>
+                <th>$data->sumberListrik</th>
+            </tr>
+            <tr>
+                <th>Kecepatan Internet</th>
+                <th>:</th>
+                <th>$data->kecepatanInternet</th>
+            </tr>
+        </table>
+
+        <br>
+
+        <h4>Data Pelengkap</h4>
+        <table style="padding-top: 10px; width: 100%">
+            <tr>
+                <th style="width: 30%;">Siswa Berkebutuhan Khusus</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%">$data->siswaKebutuhanKhusus</th>
+            </tr>
+            <tr>
+                <th>Nama Bank</th>
+                <th>:</th>
+                <th>$data->namaBank</th>
+            </tr>
+            <tr>
+                <th>Cabang KCP</th>
+                <th>:</th>
+                <th>$data->cabangKcp</th>
+            </tr>
+            <tr>
+                <th>Atas Nama Rekening</th>
+                <th>:</th>
+                <th>$data->atasNamaRekening</th>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+        <thead>
+            <tr>
+                <th style="width: 10%;"><b>No.</b></th>
+                <th style="width: 35%;"><b>Nama Dokumen</b></th>
+                <th style="width: 55%;"><b>Link</b></th>
+            </tr>
+        </thead>
+    <tbody>
+EOD;
+
+foreach ($dataDokumenSekolah as $key => $value) {
+
+    $html .= '<tr>';
+    $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+    $html .= '<td style="width: 35%; text-align: left;">' . $value->namaDokumenSekolah . '</td>';
+    $html .= '<td style="width: 55%; text-align: left;">' . $value->linkDokumenSekolah . '</td>';
+    $html .= '</tr>';
+}
+
+    $html .= <<<EOD
+        </tbody>
+    </table>
+    EOD;
+
+    
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
 if (!function_exists('pdfLayananAset')) {
     function pdfLayananAset($data, $title,  $startDate = null, $endDate = null) {
         usort($data, function($a, $b) {
@@ -437,6 +622,152 @@ if (!function_exists('pdfLayananNonAset')) {
                             '<td>Keterangan</td>' .
                             '<td>:</td>' .
                             '<td style="text-align: justify;">' . $value->spesifikasi . '</td>' .
+                        '</tr>' .
+                    '</table>' .
+                '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdfLayananAsetIt')) {
+    function pdfLayananAsetIt($data, $title,  $startDate = null, $endDate = null) {
+        usort($data, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('IT - Layanan Aset');
+        $pdf->SetSubject('IT - Layanan Aset');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <style>
+        
+        </style>
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        // Include date range only when both $startDate and $endDate are not null
+        if ($startDateFormatted !== '' && $endDateFormatted !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+        
+        $html .= <<<EOD
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Tanggal</b></th>
+                    <th style="width: 60%;"><b>Penjelasan</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $tanggalTimestamp = strtotime($value->tanggal);
+        $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
+        $html .= '<tr>';
+        $html .= '<td  style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
+        $html .= '<td style="width: 60%; text-align: left;">' .
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 30%;">Lokasi</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 65%;">' . $value->namaPrasarana . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Kategori</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaKategoriManajemen . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Aset</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaSarana . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Layanan</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaStatusLayanan . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Sumber Dana</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaSumberDana . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Biaya</td>' .
+                            '<td>:</td>' .
+                            '<td>Rp' . number_format($value->biaya, 0, ',', '.') . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Keterangan</td>' .
+                            '<td>:</td>' .
+                            '<td style="text-align: justify;">' . $value->keterangan . '</td>' .
                         '</tr>' .
                     '</table>' .
                 '</td>';

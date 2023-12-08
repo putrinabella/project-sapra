@@ -6,8 +6,13 @@
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Dokumen Sekolah</h4>
-<br>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sekolah</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('profilSekolah')?>">Profil Sekolah</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
+    </ol>
+</nav>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -22,7 +27,7 @@
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('profilSekolah/restoreDokumen')?>"
+                        <a href="<?= site_url('profilSekolah/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
@@ -83,7 +88,7 @@
                                 <td class="text-center">
                                 <a href="<?= $value->linkDokumenSekolah; ?>" target="_blank">Link Document</a>
                                 <td class="text-center">
-                                    <a href="<?=site_url('profilSekolah/restoreDokumen/'.$value->idDokumenSekolah) ?>"
+                                    <a href="<?=site_url('profilSekolah/restore/'.$value->idDokumenSekolah) ?>"
                                         class="btn btn-primary"> Restore</a>
                                     <form action="<?= site_url('profilSekolah/deletePermanent/'.$value->idDokumenSekolah) ?>"
                                         method="POST" class="d-inline">

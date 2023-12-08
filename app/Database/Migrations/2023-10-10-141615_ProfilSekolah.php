@@ -56,16 +56,14 @@ class ProfilSekolah extends Migration
                 'constraint' => 255,
             ],
             'tanggalSkPendirian' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE',
             ],
             'skIzinOperasional' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
             'tanggalSkIzinOperasional' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'DATE',
             ],
             'statusBos' => [
                 'type' => 'VARCHAR',

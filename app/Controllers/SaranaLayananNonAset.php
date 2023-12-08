@@ -212,15 +212,13 @@ class SaranaLayananNonAset extends ResourceController
         
         foreach ($data as $index => $value) {
             $date = date('d F Y', strtotime($value->tanggal));
-            $biayaFormatted = 'Rp ' . number_format($value->biaya, 0, ',', '.');
-            
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $date);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->namaStatusLayanan);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaKategoriMep);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
-            $activeWorksheet->setCellValue('G'.($index + 2), $biayaFormatted);
+            $activeWorksheet->setCellValue('G'.($index + 2), $value->biaya);
             $linkValue = $value->bukti; 
             $linkTitle = 'Click here'; 
             $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
@@ -228,6 +226,7 @@ class SaranaLayananNonAset extends ResourceController
             $activeWorksheet->setCellValue('I' . ($index + 2), $value->spesifikasi);
             $activeWorksheet->getStyle('I' . ($index + 2))->getAlignment()->setWrapText(true);
             
+            $activeWorksheet->getStyle('G' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
             
             foreach ($columns as $column) {

@@ -1,17 +1,18 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Layanan Perangkat IT &verbar; SARPRA </title>
+<title>Layanan Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Detail Layanan Perangkat IT</h4>
-    </div>
-</div>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('layananAsetIt')?>">Layanan Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Data</li>
+    </ol>
+</nav>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -36,14 +37,7 @@
                         <td style="width: 15%;">Tanggal</td>
                             <td style="width: 2%;">:</td>
                             <td>
-                                <?= $dataLayananAsetIt->tanggal?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Nama Aset</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataLayananAsetIt->namaSarana?>
+                                <?= date('d F Y', strtotime($dataLayananAsetIt->tanggal)) ?>
                             </td>
                         </tr>
                         <tr>
@@ -54,17 +48,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Status Layanan</td>
-                            <td>:</td>
-                            <td>
-                                <?= $dataLayananAsetIt->namaStatusLayanan?>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>Kategori Manajemen</td>
                             <td>:</td>
                             <td>
                                 <?= $dataLayananAsetIt->namaKategoriManajemen?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nama Aset</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataLayananAsetIt->namaSarana?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Status Layanan</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataLayananAsetIt->namaStatusLayanan?>
                             </td>
                         </tr>
                         <tr>
@@ -86,6 +87,13 @@
                                 <a href="<?= $dataLayananAsetIt->bukti ?>" target="_blank">
                                     <?= $dataLayananAsetIt->bukti ?>
                                 </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Keterangan</td>
+                            <td>:</td>
+                            <td>
+                                <?= $dataLayananAsetIt->keterangan?>
                             </td>
                         </tr>
                     </table>

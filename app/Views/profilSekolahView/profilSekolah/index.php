@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Profil</a></li>
+        <li class="breadcrumb-item"><a href="#">Sekolah</a></li>
         <li class="breadcrumb-item active" aria-current="page">Profil Sekolah</li>
     </ol>
 </nav>
@@ -17,7 +17,7 @@
         <h4 class="mb-3 mb-md-0">Profil Sekolah</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('profilSekolah/print/'. $firstRecordId) ?>"
+        <a href="<?= site_url('profilSekolah/print/'. $firstRecordId) ?>" target="_blank"
             class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
             <i class="btn-icon-prepend" data-feather="printer"></i>
             Print
@@ -157,7 +157,8 @@
                         <td>Tanggal SK Pendirian</td>
                         <td style="width: 2%;">:</td>
                         <td>
-                            <?= $value->tanggalSkPendirian; ?>
+                            <?php $tanggalPendirian = date('d F Y', strtotime($value->tanggalSkPendirian)) ?>
+                            <?= $tanggalPendirian; ?>
                         </td>
                     </tr>
                     <tr>
@@ -171,7 +172,8 @@
                         <td>Tanggal SK Izin Operasinal</td>
                         <td style="width: 2%;">:</td>
                         <td>
-                            <?= $value->tanggalSkIzinOperasional; ?>
+                            <?php $tanggalOperasional = date('d F Y', strtotime($value->tanggalSkIzinOperasional)) ?>
+                            <?= $tanggalOperasional; ?>
                         </td>
                     </tr>
                 </table>
@@ -269,20 +271,11 @@
                             <i class=" btn-icon-prepend" data-feather="trash"></i>
                             Recycle Bin
                         </a>
-                        <div class="dropdown">
-                            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0"
-                                type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class=" btn-icon-prepend" data-feather="download"></i>
-                                Export File
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="<?= site_url('profilSekolah/exportDokumen') ?>">Download as
-                                    Excel</a>
-                                <a class="dropdown-item" href="<?= site_url('profilSekolah/generatePDFDokumen') ?>">Download as
-                                    PDF</a>
-                            </div>
-                        </div>
+                        <a href="<?= site_url('profilSekolah/exportDokumen') ?>"
+                            class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+                            <i class=" btn-icon-prepend" data-feather="download"></i>
+                            Download as Excel
+                        </a>
                         <div class="dropdown">
                             <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0"
                                 type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -291,7 +284,8 @@
                                 Import File
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="<?= site_url('profilSekolah/createTemplateDokumen') ?>">Download
+                                <a class="dropdown-item"
+                                    href="<?= site_url('profilSekolah/createTemplateDokumen') ?>">Download
                                     Template</a>
                                 <a class="dropdown-item" href="" data-bs-toggle="modal"
                                     data-bs-target="#modalImport">Upload Excel</a>
@@ -332,7 +326,7 @@
                                     <form
                                         action="<?=site_url('profilSekolah/deleteDokumen/'.$value->idDokumenSekolah)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idDokumenSekolah;?>">
-                                        
+
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?">
@@ -357,9 +351,10 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("profilSekolah/importDokumen")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url(" profilSekolah/importDokumen")?>" method="POST" enctype="multipart/form-data"
+                id="custom-validation">
                 <div class="modal-body">
-                    
+
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">

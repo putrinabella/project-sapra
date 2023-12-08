@@ -1,20 +1,38 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Layanan Perangkat IT &verbar; SARPRA </title>
+<title>Layanan Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">IT</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Layanan Perangkat IT</li>
+        <li class="breadcrumb-item active" aria-current="page">Layanan Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Layanan Perangkat IT</h4>
+        <form action="<?= site_url('layananAsetIt') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
+                    readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
+                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('layananAsetIt') ?>" class="btn btn-success btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <a href="<?= site_url('layananAsetIt/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
@@ -22,14 +40,25 @@
             Recycle Bin
         </a>
         <div class="dropdown">
+        <?php
+                if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
+                    $exportLink = site_url('layananAsetIt/export');
+                    $generatePDFLink = site_url('layananAsetIt/generatePDF');
+                } else {
+                    $startDate = $_GET['startDate'] ?? '';
+                    $endDate = $_GET['endDate'] ?? '';
+                    $exportLink = site_url("layananAsetIt/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("layananAsetIt/generatePDF?startDate=$startDate&endDate=$endDate");
+                }
+            ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class=" btn-icon-prepend" data-feather="download"></i>
                 Export File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('layananAsetIt/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('layananAsetIt/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
+                <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -78,16 +107,23 @@
                     <br>
                     <?php endif; ?>
                 </div>
+                <h4 class="text-center py-3">Data Layanan Aset</h4>
+                <?php if (!empty($tableHeading)) : ?>
+                <p class="text-center">
+                    <?= $tableHeading ?>
+                </p>
+                <?php endif; ?>
+                <br>
                 <div class="table-responsive">
                     <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
                                 <th>Tanggal</th>
-                                <th>Nama Aset</th>
                                 <th>Lokasi</th>
-                                <th>Status Layanan</th>
                                 <th>Kategori</th>
+                                <th>Nama Aset</th>
+                                <th>Status Layanan</th>
                                 <th>Sumber Dana</th>
                                 <th>Biaya</th>
                                 <th>Bukti</th>
@@ -101,17 +137,21 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->tanggal?></td>
-                                <td><?=$value->namaSarana?></td>
+                                <?php
+                                $originalDate = $value->tanggal;
+                                $formattedDate = date('d F Y', strtotime($originalDate));
+                                ?>
+                                <td data-sort="<?= strtotime($originalDate) ?>"><?php echo $formattedDate; ?></td>
                                 <td><?=$value->namaPrasarana?></td>
-                                <td><?=$value->namaStatusLayanan?></td>
                                 <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSarana?></td>
+                                <td><?=$value->namaStatusLayanan?></td>
                                 <td><?=$value->namaSumberDana?></td>
                                 <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?= $value->bukti ?>" target="_blank">Dokumentasi Bukti</a>
                                 </td>
-                                <td>
+                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     <?=$value->keterangan?>
                                 </td>
                                 <td class="text-center">

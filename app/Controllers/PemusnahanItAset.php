@@ -211,7 +211,7 @@ class PemusnahanItAset extends ResourceController
             $activeWorksheet->setCellValue('I'.($index + 2), $value->status);
             $activeWorksheet->setCellValue('J'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('K'.($index + 2), $pengadaan);
-            $activeWorksheet->setCellValue('L'.($index + 2), $biayaFormatted);
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->biaya);
             $activeWorksheet->setCellValue('M'.($index + 2), $value->merk);
             $activeWorksheet->setCellValue('N'.($index + 2), $value->noSeri);
             $activeWorksheet->setCellValue('O'.($index + 2), $value->warna);
@@ -222,7 +222,7 @@ class PemusnahanItAset extends ResourceController
             $activeWorksheet->setCellValue('Q' . ($index + 2), $value->spesifikasi);
             $activeWorksheet->getStyle('Q' . ($index + 2))->getAlignment()->setWrapText(true);
         
-            
+            $activeWorksheet->getStyle('L' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q' ];
             
             foreach ($columns as $column) {

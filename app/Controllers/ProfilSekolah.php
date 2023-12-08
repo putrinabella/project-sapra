@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\ProfilSekolahModels; 
 use App\Models\DokumenSekolahModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -17,6 +18,9 @@ class ProfilSekolah extends ResourceController
      function __construct() {
         $this->profilSekolahModel = new ProfilSekolahModels();
         $this->dokumenSekolahModel = new DokumenSekolahModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
+        $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -33,26 +37,6 @@ class ProfilSekolah extends ResourceController
             'dataDokumenSekolah'    => $dataDokumenSekolah,
         ];
         return view('profilSekolahView/profilSekolah/index', $data);
-    }
-    
-
-    public function show($id = null) {
-        if ($id != null) {
-            $dataProfilSekolah = $this->profilSekolahModel->find($id);
-            $rowCount =  $this->profilSekolahModel->getCount();
-            if (is_object($dataProfilSekolah)) {
-                $data = [
-                    'dataProfilSekolah'     => $dataProfilSekolah,
-                    'rowCount'              => $rowCount,
-
-                ];
-                return view('profilSekolahView/profilSekolah/show', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
     }
 
     public function new() {
@@ -166,40 +150,26 @@ class ProfilSekolah extends ResourceController
         return view('profilSekolahView/profilSekolah/trashDokumen', $data);
     } 
 
-    public function restoreDokumen($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblDokumenSekolah')
-                ->set('deleted_at', null, true)
-                ->where(['idDokumenSekolah' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblDokumenSekolah')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+    
+    public function restore($id = null) {
+        $affectedRows = restoreData('tblDokumenSekolah', 'idDokumenSekolah', $id, $this->userActionLogsModel, 'Profil - Dokumen Sekolah');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('profilSekolah'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('profilSekolah/trashDokumen'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->dokumenSekolahModel->delete($id, true);
-        return redirect()->to(site_url('profilSekolah/trashDokumen'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->dokumenSekolahModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->dokumenSekolahModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('profilSekolah/trashDokumen'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('profilSekolah/trashDokumen'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    } 
+        $affectedRows = deleteData('tblDokumenSekolah', 'idDokumenSekolah', $id, $this->userActionLogsModel, 'Profil - Dokumen Sekolah');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('profilSekolah'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('profilSekolah/trashDokumen'))->with('error', 'Tidak ada data untuk dihapus');
+    }
     
     public function exportDokumen() {
         $data = $this->dokumenSekolahModel->findAll();
@@ -384,40 +354,27 @@ class ProfilSekolah extends ResourceController
         }
     }
 
-
     public function print($id = null) {
         $dataProfilSekolah = $this->profilSekolahModel->find($id);
+        $dataDokumenSekolah = $this->dokumenSekolahModel->findAll();
+
+        $title = "SMK TELKOM BANJARBARU";
+        if (!$dataProfilSekolah) {
+            return view('error/404');
+        }
+    
+        $pdfData = pdfProfilSekolah($dataProfilSekolah, $dataDokumenSekolah, $title);
+    
         
-        if (!is_object($dataProfilSekolah)) {
-            return view('error/404');
-        }
-
-        $data = [
-            'dataProfilSekolah'         => $dataProfilSekolah,
-        ];
-
-        $filePath = APPPATH . 'Views/profilSekolahView/profilSekolah/print.php';
-
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-
-        $includeFile($filePath, $data);
-
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $filename = "Profil - Identitas Sekolah.pdf";
-        $dompdf->stream($filename);
+        $filename = 'Profil - Identitas Sekolah' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
+
 
     public function generatePDFDokumen() {
         $filePath = APPPATH . 'Views/profilSekolahView/profilSekolah/printDokumen.php';

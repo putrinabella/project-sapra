@@ -367,7 +367,8 @@ class RincianAsetModels extends Model
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
-        $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $builder->where('tblIdentitasSarana.perangkatIT', 1);
+        $builder->orderBy('idRincianAset', 'asc');  
         $query = $builder->get();
         return $query->getResult();
     }

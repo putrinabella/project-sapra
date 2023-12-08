@@ -1,26 +1,22 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Edit Layanan Perangkat IT &verbar; SARPRA </title>
+<title>Edit Layanan Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Layanan Perangkat IT</h4>
-    </div>
-</div>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('layananAsetIt')?>">Layanan Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
+    </ol>
+</nav>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Edit Data</h4>
-                </div>
-            </div>
             <div class="card-body">
                 <form action="<?= site_url('layananAsetIt/'.$dataLayananAsetIt->idSaranaLayananAset)?>"
                     method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
@@ -30,7 +26,8 @@
                         <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tanggal">
-                                <input type="text" class="form-control bg-transparent" name="tanggal"  value="<?=$dataLayananAsetIt->tanggal?>">
+                                <input type="text" class="form-control bg-transparent" name="tanggal"
+                                    value="<?=$dataLayananAsetIt->tanggal?>">
                                 <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
                             </div>
                         </div>
@@ -38,12 +35,15 @@
                     <div class="row mb-3">
                         <label for="idIdentitasSarana" class="col-sm-3 col-form-label">Nama Aset</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="idIdentitasSarana" name="idIdentitasSarana">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"
+                                id="idIdentitasSarana" name="idIdentitasSarana">
                                 <option value="" disabled hidden>Pilih Nama Aset</option>
-                                <?php foreach ($dataSaranaIt as $key => $value): ?>
-                                    <option value="<?= $value->idIdentitasSarana ?>" <?php echo ($value->idIdentitasSarana == $dataLayananAsetIt->idIdentitasSarana) ? 'selected' : '' ?>>
-                                        <?= $value->namaSarana ?>
-                                    </option>
+                                <?php foreach ($dataIdentitsaSarana as $key => $value): ?>
+                                <option value="<?= $value->idIdentitasSarana ?>" <?php echo ($value->idIdentitasSarana
+                                    == $dataLayananAsetIt->idIdentitasSarana) ? 'selected' : '' ?>>
+                                    <?= $value->namaSarana ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -51,35 +51,45 @@
                     <div class="row mb-3">
                         <label for="kodeRincianAset" class="col-sm-3 col-form-label">Kode Aset</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true" id="kodeRincianAset" name="kodeRincianAset">
-                                <option value="<?=$dataLayananAsetIt->kodeRincianAset?>"><?=$dataLayananAsetIt->kodeRincianAset?></option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="2" tabindex="-1" aria-hidden="true"
+                                id="kodeRincianAset" name="kodeRincianAset">
+                                <option value="<?=$dataLayananAsetIt->kodeRincianAset?>">
+                                    <?=$dataLayananAsetIt->kodeRincianAset?></option>
                             </select>
-                            <input type="text" class="form-control" id="idRincianAset" name="idRincianAset" placeholder="Menampilkan ID rincian aset" value="<?=$dataLayananAsetIt->idRincianAset?>" hidden>
+                            <input type="text" class="form-control" id="idRincianAset" name="idRincianAset"
+                                placeholder="Menampilkan ID rincian aset"
+                                value="<?=$dataLayananAsetIt->idRincianAset?>" hidden>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi Aset</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="idIdentitasPrasarana" name="idIdentitasPrasarana"
-                                placeholder="Masukkan Lokasi" value="<?=$dataLayananAsetIt->namaPrasarana?>" readonly>
+                            <input type="text" class="form-control" id="idIdentitasPrasarana"
+                                name="idIdentitasPrasarana" placeholder="Masukkan Lokasi"
+                                value="<?=$dataLayananAsetIt->namaPrasarana?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idKategoriManajemen" class="col-sm-3 col-form-label">Kategori Aset</label>
                         <div class="col-sm-9">
-                        <input type="text" class="form-control" id="idKategoriManajemen" name="idKategoriManajemen"
-                                placeholder="Masukkan Kategori Aset" value="<?=$dataLayananAsetIt->namaKategoriManajemen?>" readonly>
+                            <input type="text" class="form-control" id="idKategoriManajemen" name="idKategoriManajemen"
+                                placeholder="Masukkan Kategori Aset"
+                                value="<?=$dataLayananAsetIt->namaKategoriManajemen?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="idStatusLayanan" class="col-sm-3 col-form-label">Status Layanan</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true" id="idStatusLayanan" name="idStatusLayanan">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="3" tabindex="-1" aria-hidden="true"
+                                id="idStatusLayanan" name="idStatusLayanan">
                                 <option value="" disabled hidden>Pilih status layanan</option>
                                 <?php foreach ($dataStatusLayanan as $key => $value): ?>
-                                    <option value="<?= $value->idStatusLayanan ?>" <?php echo ($value->idStatusLayanan == $dataLayananAsetIt->idStatusLayanan) ? 'selected' : '' ?>>
-                                        <?= $value->namaStatusLayanan ?>
-                                    </option>
+                                <option value="<?= $value->idStatusLayanan ?>" <?php echo ($value->idStatusLayanan ==
+                                    $dataLayananAsetIt->idStatusLayanan) ? 'selected' : '' ?>>
+                                    <?= $value->namaStatusLayanan ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -87,12 +97,15 @@
                     <div class="row mb-3">
                         <label for="idSumberDana" class="col-sm-3 col-form-label">Sumber Dana</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true"  id="idSumberDana" name="idSumberDana">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="4" tabindex="-1" aria-hidden="true" id="idSumberDana"
+                                name="idSumberDana">
                                 <option value="" selected disabled hidden>Pilih sumber dana</option>
                                 <?php foreach ($dataSumberDana as $key => $value): ?>
-                                    <option value="<?= $value->idSumberDana ?>" <?php echo ($value->idSumberDana == $dataLayananAsetIt->idSumberDana) ? 'selected' : '' ?>>
-                                        <?= $value->namaSumberDana ?>
-                                    </option>
+                                <option value="<?= $value->idSumberDana ?>" <?php echo ($value->idSumberDana ==
+                                    $dataLayananAsetIt->idSumberDana) ? 'selected' : '' ?>>
+                                    <?= $value->namaSumberDana ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -107,13 +120,15 @@
                     <div class="row mb-3">
                         <label for="bukti" class="col-sm-3 col-form-label">Bukti Dokumentasi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bukti" name="bukti" placeholder="Masukkan link dokumentasi (Link Google Drive)" value="<?=$dataLayananAsetIt->bukti?>">
+                            <input type="text" class="form-control" id="bukti" name="bukti"
+                                placeholder="Masukkan link dokumentasi (Link Google Drive)" value="<?=$dataLayananAsetIt->bukti?>">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" id="keterangan" name="keterangan" rows="4" placeholder="Masukkan keterangan layanan"><?=$dataLayananAsetIt->keterangan?></textarea>
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="4"
+                                placeholder="Masukkan keterangan layanan"><?=$dataLayananAsetIt->keterangan?></textarea>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -229,5 +244,6 @@
         });
     });
 </script>
+
 
 <?= $this->endSection(); ?>

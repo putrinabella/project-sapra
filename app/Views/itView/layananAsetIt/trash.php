@@ -1,13 +1,18 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Layanan Aset IT &verbar; SARPRA </title>
+<title>Recycle Bin Layanan Aset Sarana &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Layanan Aset IT</h4>
-<br>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('layananAsetIt')?>">Layanan Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
+    </ol>
+</nav>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -32,7 +37,8 @@
                             
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger btn-icon-text" type="submit">
-                            <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent </button>
+                                <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent
+                            </button>
                         </form>
                         </a>
                     </div>
@@ -64,7 +70,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                   <table class="table table-hover" id="dataTable" style="width: 100%;">
+                    <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -79,22 +85,25 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataLayananAsetIt as $key => $value) : ?>
+                            <?php foreach ($dataLayananAsetIt as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td class="text-center"><?=$value->tanggal?></td>
-                                <td class="text-center"><?=$value->namaSarana?></td>
-                                <td class="text-center"><?=$value->namaPrasarana?></td>
-                                <td class="text-center"><?=$value->namaStatusLayanan?></td>
-                                <td class="text-center"><?=$value->namaKategoriManajemen?></td>
-                                <td class="text-center"><?=$value->namaSumberDana?></td>
-                                <td class="text-center"><?=number_format($value->biaya, 0, ',', '.')?></td>
+                                <td>
+                                    <?= date('d F Y', strtotime($value->tanggal)) ?>
+                                </td>
+                                <td><?=$value->namaSarana?></td>
+                                <td><?=$value->namaPrasarana?></td>
+                                <td><?=$value->namaStatusLayanan?></td>
+                                <td><?=$value->namaKategoriManajemen?></td>
+                                <td><?=$value->namaSumberDana?></td>
+                                <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('layananAsetIt/restore/'.$value->idSaranaLayananAset) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('layananAsetIt/deletePermanent/'.$value->idSaranaLayananAset) ?>"
+                                    <form
+                                        action="<?= site_url('layananAsetIt/deletePermanent/'.$value->idSaranaLayananAset) ?>"
                                         method="POST" class="d-inline">
                                         
                                         <input type="hidden" name="_method" value="DELETE">

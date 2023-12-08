@@ -430,8 +430,8 @@ $routes->get('profilSekolah/generatePDFDokumen', 'ProfilSekolah::generatePDFDoku
 $routes->get('profilSekolah/exportDokumen', 'ProfilSekolah::exportDokumen');
 $routes->post('profilSekolah/importDokumen', 'ProfilSekolah::importDokumen');
 $routes->get('profilSekolah/trashDokumen', 'ProfilSekolah::trashDokumen');
-$routes->get('profilSekolah/restoreDokumen/(:any)', 'ProfilSekolah::restoreDokumen/$1');
-$routes->get('profilSekolah/restoreDokumen', 'ProfilSekolah::restoreDokumen');
+$routes->get('profilSekolah/restore/(:any)', 'ProfilSekolah::restore/$1');
+$routes->get('profilSekolah/restore', 'ProfilSekolah::restore');
 $routes->get('profilSekolah/(:num)/editDokumen', 'ProfilSekolah::editDokumen/$1');
 $routes->get('profilSekolah/newDokumen', 'ProfilSekolah::newDokumen');
 $routes->get('profilSekolah/print/(:num)', 'ProfilSekolah::print/$1');
