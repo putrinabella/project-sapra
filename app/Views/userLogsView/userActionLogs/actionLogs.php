@@ -14,14 +14,43 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Action Logs</h4>
+        <form action="<?= site_url('viewActions') ?>" onsubmit="return validateForm()" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
+                <input type="text" class="form-control border-primary bg-transparent" id="startYear" name="startYear" placeholder="Start Year" readonly>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endYearPicker">
+                <input type="text" class="form-control border-primary bg-transparent" id="endYear" name="endYear" placeholder="End Year" readonly>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('viewActions') ?>" class="btn btn-secondary btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
     </div>
+
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('viewLogs/generatePDF') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
+    <?php
+                if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
+                    $exportLink = site_url('viewActions/export');
+                    $generatePDFLink = site_url('viewActions/generatePDF');
+                } else {
+                    $startYear = $_GET['startYear'] ?? '';
+                    $endYear = $_GET['endYear'] ?? '';
+                    $exportLink = site_url("viewActions/export?startYear=$startYear&endYear=$endYear");
+                    $generatePDFLink = site_url("viewActions/generatePDF?startYear=$startYear&endYear=$endYear");
+                }
+            ?>
+        <a href="<?= $generatePDFLink ?>" target="_blank" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download"></i>
             Download PDF
         </a>
-        <a href="<?= site_url('viewLogs/export') ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= $exportLink ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download"></i>
             Download Excel
         </a>
@@ -57,6 +86,10 @@
                     <br>
                     <?php endif; ?>
                 </div>
+                <h4 class="text-center py-3">User Action Logs</h4>
+                <?php if (!empty($tableHeading)) : ?>
+                    <p class="text-center"><?= $tableHeading ?></p>
+                <?php endif; ?>
                 <div class="table-responsive">
                     <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
@@ -97,5 +130,26 @@
         </div>
     </div>
 </div>
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+<script>
+    function validateForm() {
+        var startYear = document.getElementById("startYear").value;
+        var endYear = document.getElementById("endYear").value;
+
+        if (startYear.trim() === '' || endYear.trim() === '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please enter both start and end years.',
+                confirmButtonText: 'OK'
+            });
+
+            return false; 
+        }
+
+        return true;
+    }
+</script>
 
 <?= $this->endSection(); ?>

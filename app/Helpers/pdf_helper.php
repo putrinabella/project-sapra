@@ -163,7 +163,7 @@ if (!function_exists('pdfSuratPeminjaman')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -353,7 +353,7 @@ if (!function_exists('pdfProfilSekolah')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -499,7 +499,7 @@ if (!function_exists('pdfLayananAset')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -641,7 +641,7 @@ if (!function_exists('pdfLayananNonAset')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -787,7 +787,7 @@ if (!function_exists('pdfLayananAsetIt')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -933,7 +933,7 @@ if (!function_exists('pdfLayananAsetLab')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1075,7 +1075,7 @@ if (!function_exists('pdfLayananNonAsetLab')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1246,7 +1246,7 @@ if (!function_exists('pdfPemusnahanAset')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1417,7 +1417,7 @@ if (!function_exists('pdfPemusnahanItAset')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1587,7 +1587,7 @@ if (!function_exists('pdfPemusnahanLabAset')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1745,7 +1745,7 @@ if (!function_exists('pdfNonInventaris')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1843,7 +1843,7 @@ if (!function_exists('pdfAsetGeneral')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1941,7 +1941,7 @@ if (!function_exists('pdfAsetItGeneral')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -1998,7 +1998,7 @@ if (!function_exists('pdfRincianAset')) {
 
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
-        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+        $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
         return $pdfData;
     }
@@ -2135,7 +2135,7 @@ if (!function_exists('pdfRincianItAset')) {
 
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
-        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+        $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
         return $pdfData;
     }
@@ -2306,7 +2306,7 @@ if (!function_exists('pdfTagihanAir')) {
             
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
         
-        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+        $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
         return $pdfData;
     }
@@ -2397,7 +2397,7 @@ if (!function_exists('pdfTagihanInternet')) {
             
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
         
-        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+        $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
         return $pdfData;
     }
@@ -2488,12 +2488,136 @@ if (!function_exists('pdfTagihanListrik')) {
             
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
         
-        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+        $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
         return $pdfData;
     }
 }
 
+if (!function_exists('pdfUserAction')) {
+    function pdfUserAction($dataRestore, $dataDelete, $title, $startYear, $endYear) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('User Action Logs');
+        $pdf->SetSubject('User Action Logs');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $dateRange = "";
+        if ($startYear !== null && $endYear !== null) {
+            $startYear = $startYear;
+            $endYear = $endYear;
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        if ($startYear !== '' && $endYear !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startYear . $dateRange . $endYear . '</h4>';
+        }
+
+        if (!empty($dataRestore)) {
+            $html .= generateUserAction($dataRestore, "Action Type: Restore");
+        }
+
+        if (!empty($dataDelete)) {
+            $html .= generateUserAction($dataDelete, "Action Type: Delete");
+        }
+
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+        $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+        return $pdfData;
+    }
+
+    function generateUserAction($data, $status) {
+        $table = <<<EOD
+        <br>
+        <h4>$status</h4>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 20%;"><b>Tanggal</b></th>
+                    <th style="width: 35%;"><b>Identitas</b></th>
+                    <th style="width: 35%;"><b>Action Type</b></th>
+                </tr>
+            </thead>
+            <tbody>
+        EOD;
+
+        foreach ($data as $key => $value) {
+            $table .= '<tr>';
+            $table .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+            $table .= '<td style="width: 20%; text-align: left;">' . date('d F Y, H:i:s', strtotime($value->actionTime)) . '</td>';
+            $table .= '<td style="width: 35%; text-align: left;">' . 
+                            '<table style="width: 100%; padding:5px;">' .
+                                '<tr>' .
+                                    '<td style="width: 40%;">Username</td>' .
+                                    '<td style="width: 10%;">:</td>' .
+                                    '<td style="width: 50%;">' . $value->username . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Nama</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . $value->nama . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Role</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . $value->role . '</td>' .
+                                '</tr>' .
+
+                            '</table>' 
+                    . '</td>';
+            $table .= '<td style="width: 35%; text-align: left;">' . 
+                            '<table style="width: 100%; padding:5px;">' .
+                            '<tr>' .
+                                '<td style="width: 30%;">Action</td>' .
+                                '<td style="width: 10%;">:</td>' .
+                                '<td style="width: 50%;">' . $value->actionType . '</td>' .
+                            '</tr>' .
+                            '<tr>' .
+                                '<td>Detail</td>' .
+                                '<td>:</td>' .
+                            '</tr>' .
+                            '<tr>' .
+                                '<td colspan="3"; style="text-align: justify;" >' . $value->actionDetails . '</td>' .
+                            '</tr>' .
+                        '</table>' 
+                    . '</td>' .
+                    '</tr>';
+        }
+
+        $table .= <<<EOD
+        </tbody>
+    </table>
+    EOD;
+
+        return $table;
+    }
+}
 
 // Not use 
 if (!function_exists('pdfDetailPemusnahanAset')) {
@@ -2597,7 +2721,7 @@ if (!function_exists('pdfDetailPemusnahanAset')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
@@ -2759,7 +2883,7 @@ if (!function_exists('pdfRequestPeminjaman')) {
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
     
-    $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
 
     return $pdfData;
     }
