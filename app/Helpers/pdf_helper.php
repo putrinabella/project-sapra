@@ -208,6 +208,11 @@ if (!function_exists('pdfProfilSekolah')) {
         $tanggalPendirianFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($data->tanggalSkPendirian))];
         $tanggalPendirianFormatted .= ' ' . date('Y', strtotime($data->tanggalSkPendirian));
 
+        $tanggalOperasionalFormatted = $dayNamesIndonesian[date('w', strtotime($data->tanggalSkIzinOperasional))];
+        $tanggalOperasionalFormatted .= ', ' . date('j', strtotime($data->tanggalSkIzinOperasional));
+        $tanggalOperasionalFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($data->tanggalSkIzinOperasional))];
+        $tanggalOperasionalFormatted .= ' ' . date('Y', strtotime($data->tanggalSkIzinOperasional));
+
 
         $yearNow = date('Y');
         $yearNext = date('Y', strtotime('+1 year'));
@@ -244,7 +249,7 @@ if (!function_exists('pdfProfilSekolah')) {
             <tr>
                 <th>Tanggal SK Pendirian</th>
                 <th>:</th>
-                <th>$data->tanggalSkPendirian</th>
+                <th>$tanggalPendirianFormatted</th>
             </tr>
             <tr>
                 <th>SK Izin Operasional</th>
@@ -254,7 +259,7 @@ if (!function_exists('pdfProfilSekolah')) {
             <tr>
                 <th>Tanggal SK Izin Operasional</th>
                 <th>:</th>
-                <th>$data->tanggalSkIzinOperasional</th>
+                <th>$tanggalOperasionalFormatted</th>
             </tr>
         </table>
 
@@ -328,16 +333,16 @@ if (!function_exists('pdfProfilSekolah')) {
             </tr>
         </thead>
     <tbody>
-EOD;
+    EOD;
 
-foreach ($dataDokumenSekolah as $key => $value) {
+    foreach ($dataDokumenSekolah as $key => $value) {
 
-    $html .= '<tr>';
-    $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
-    $html .= '<td style="width: 35%; text-align: left;">' . $value->namaDokumenSekolah . '</td>';
-    $html .= '<td style="width: 55%; text-align: left;">' . $value->linkDokumenSekolah . '</td>';
-    $html .= '</tr>';
-}
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 35%; text-align: left;">' . $value->namaDokumenSekolah . '</td>';
+        $html .= '<td style="width: 55%; text-align: left;">' . $value->linkDokumenSekolah . '</td>';
+        $html .= '</tr>';
+    }
 
     $html .= <<<EOD
         </tbody>
@@ -1942,7 +1947,6 @@ if (!function_exists('pdfAsetItGeneral')) {
     }
 }
 
-
 if (!function_exists('pdfRincianAset')) {
     function pdfRincianAset($dataAsetBagus, $dataAsetRusak, $dataAsetHilang, $title) {
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -2216,6 +2220,280 @@ if (!function_exists('pdfRincianItAset')) {
         return $table;
     }
 }
+
+if (!function_exists('pdfTagihanAir')) {
+    function pdfTagihanAir($data, $title, $startYear, $endYear) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Tagihan Air');
+        $pdf->SetSubject('Tagihan Air');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        $dateRange = "";
+        if ($startYear !== null && $endYear !== null) {
+            $startYear = $startYear;
+            $endYear = $endYear;
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        if ($startYear !== '' && $endYear !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startYear . $dateRange . $endYear . '</h4>';
+        }
+        
+        $html .= <<<EOD
+            <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No.</b></th>
+                    <th style="width: 30%;"><b>Bulan, Tahun</b></th>
+                    <th style="width: 30%;"><b>Pemakaian</b></th>
+                    <th style="width: 30%;"><b>Biaya</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+
+        foreach ($data as $key => $value) {
+            $numericMonth = (int)$value->bulanPemakaianAir;
+            $monthName = $monthNamesIndonesian[$numericMonth];
+        
+            // Format the biaya with Rupiah
+            $formattedBiaya = 'Rp ' . number_format($value->biaya, 0, ',', '.');
+        
+            $html .= '<tr>';
+            $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $monthName . ', ' . $value->tahunPemakaianAir . '</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $value->pemakaianAir . ' kubik</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $formattedBiaya . '</td>';
+            $html .= '</tr>';
+        }
+
+        $html .= <<<EOD
+            </tbody>
+        </table>
+        EOD;
+
+        
+            
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+        
+        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+        return $pdfData;
+    }
+}
+
+if (!function_exists('pdfTagihanInternet')) {
+    function pdfTagihanInternet($data, $title, $startYear, $endYear) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Tagihan Air');
+        $pdf->SetSubject('Tagihan Air');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        $dateRange = "";
+        if ($startYear !== null && $endYear !== null) {
+            $startYear = $startYear;
+            $endYear = $endYear;
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        if ($startYear !== '' && $endYear !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startYear . $dateRange . $endYear . '</h4>';
+        }
+        
+        $html .= <<<EOD
+            <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No.</b></th>
+                    <th style="width: 30%;"><b>Bulan, Tahun</b></th>
+                    <th style="width: 30%;"><b>Pemakaian</b></th>
+                    <th style="width: 30%;"><b>Biaya</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+
+        foreach ($data as $key => $value) {
+            $numericMonth = (int)$value->bulanPemakaianInternet;
+            $monthName = $monthNamesIndonesian[$numericMonth];
+        
+            // Format the biaya with Rupiah
+            $formattedBiaya = 'Rp ' . number_format($value->biaya, 0, ',', '.');
+        
+            $html .= '<tr>';
+            $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $monthName . ', ' . $value->tahunPemakaianInternet . '</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $value->pemakaianInternet . ' GB</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $formattedBiaya . '</td>';
+            $html .= '</tr>';
+        }
+
+        $html .= <<<EOD
+            </tbody>
+        </table>
+        EOD;
+
+        
+            
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+        
+        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+        return $pdfData;
+    }
+}
+
+if (!function_exists('pdfTagihanListrik')) {
+    function pdfTagihanListrik($data, $title, $startYear, $endYear) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Tagihan Listrik');
+        $pdf->SetSubject('Tagihan Listrik');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        $dateRange = "";
+        if ($startYear !== null && $endYear !== null) {
+            $startYear = $startYear;
+            $endYear = $endYear;
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        if ($startYear !== '' && $endYear !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startYear . $dateRange . $endYear . '</h4>';
+        }
+        
+        $html .= <<<EOD
+            <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No.</b></th>
+                    <th style="width: 30%;"><b>Bulan, Tahun</b></th>
+                    <th style="width: 30%;"><b>Pemakaian</b></th>
+                    <th style="width: 30%;"><b>Biaya</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+
+        foreach ($data as $key => $value) {
+            $numericMonth = (int)$value->bulanPemakaianListrik;
+            $monthName = $monthNamesIndonesian[$numericMonth];
+        
+            // Format the biaya with Rupiah
+            $formattedBiaya = 'Rp ' . number_format($value->biaya, 0, ',', '.');
+        
+            $html .= '<tr>';
+            $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $monthName . ', ' . $value->tahunPemakaianListrik . '</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $value->pemakaianListrik . ' kWh</td>';
+            $html .= '<td style="width: 30%; text-align: left;">' . $formattedBiaya . '</td>';
+            $html .= '</tr>';
+        }
+
+        $html .= <<<EOD
+            </tbody>
+        </table>
+        EOD;
+
+        
+            
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+        
+        $pdfData = $pdf->Output('Formulir Peminjaman Aset.pdf', 'S');
+
+        return $pdfData;
+    }
+}
+
 
 // Not use 
 if (!function_exists('pdfDetailPemusnahanAset')) {

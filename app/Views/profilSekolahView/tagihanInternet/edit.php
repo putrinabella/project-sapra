@@ -6,36 +6,28 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Tagihan Internet</h4>
-    </div>
-</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sekolah</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('tagihanInternet')?>">Tagihan Internet</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
+    </ol>
+</nav>
 
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
             <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Edit Data</h4>
-                </div>
-            </div>
-            <div class="card-body">
-                <form action="<?= site_url('tagihanInternet/'.$dataTagihanInternet->idTagihanInternet)?>" method="post" autocomplete="off"  id="custom-validation">
-                    
+                <form action="<?= site_url('tagihanInternet/'.$dataTagihanInternet->idTagihanInternet)?>" method="post"
+                    autocomplete="off" id="custom-validation">
                     <input type="hidden" name="_method" value="PATCH">
-                    <div class="row mb-3">
-                        <label for="pemakaianInternet" class="col-sm-3 col-form-label">Pemakaian Internet</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="pemakaianInternet" name="pemakaianInternet"
-                                placeholder="Masukkan pemakaian internet (dalam GB)" value="<?=$dataTagihanInternet->pemakaianInternet?>">
-                        </div>
-                    </div>
                     <div class="row mb-3">
                         <label for="bulanPemakaianInternet" class="col-sm-3 col-form-label">Bulan</label>
                         <div class="col-sm-9">
-                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" id="bulanPemakaianInternet" name="bulanPemakaianInternet">
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"
+                                id="bulanPemakaianInternet" name="bulanPemakaianInternet">
                                 <option value="" selected disabled hidden>Pilih bulan</option>
                                 <?php
                                 $bulanPemakaianInternetOptions = [
@@ -52,24 +44,36 @@
                                     11 => "November",
                                     12 => "December"
                                 ];
-
                                 $selectedValue = $dataTagihanInternet->bulanPemakaianInternet;
                                 foreach ($bulanPemakaianInternetOptions as $value => $bulan): 
                                     $selected = ($value == $selectedValue) ? 'selected' : '';
                                     ?>
-                                    <option value="<?= $value ?>" <?= $selected ?>><?= $bulan ?></option>
+                                <option value="<?= $value ?>" <?=$selected ?>>
+                                    <?= $bulan ?>
+                                </option>
                                 <?php endforeach;
                                 ?>
                             </select>
+
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="tahunPemakaianInternet" class="col-sm-3 col-form-label">Tahun</label>
                         <div class="col-sm-9">
                             <div class="input-group date datepicker" id="tahunPemakaianInternet">
-                                <input type="number" class="form-control" name="tahunPemakaianInternet" value="<?=$dataTagihanInternet->tahunPemakaianInternet?>">
-                                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+                                <input type="number" class="form-control" name="tahunPemakaianInternet"
+                                    value="<?=$dataTagihanInternet->tahunPemakaianInternet?>">
+                                <span class="input-group-text input-group-addon bg-transparent"><i
+                                        data-feather="calendar"></i></span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="pemakaianInternet" class="col-sm-3 col-form-label">Pemakaian Internet</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="pemakaianInternet" name="pemakaianInternet"
+                                placeholder="Masukkan pemakaian air (dalam kubik)"
+                                value="<?=$dataTagihanInternet->pemakaianInternet?>">
                         </div>
                     </div>
                     <div class="row mb-3">

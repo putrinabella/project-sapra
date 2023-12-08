@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\TagihanAirModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -15,7 +16,9 @@ class TagihanAir extends ResourceController
     
      function __construct() {
         $this->tagihanAirModel = new TagihanAirModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -193,40 +196,26 @@ class TagihanAir extends ResourceController
         return view('profilSekolahView/tagihanAir/trash', $data);
     } 
 
+    
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblTagihanAir')
-                ->set('deleted_at', null, true)
-                ->where(['idTagihanAir' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblTagihanAir')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblTagihanAir', 'idTagihanAir', $id, $this->userActionLogsModel, 'Sekolah - Tagihan Air');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('tagihanAir'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('tagihanAir/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->tagihanAirModel->delete($id, true);
-        return redirect()->to(site_url('tagihanAir/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->tagihanAirModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->tagihanAirModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('tagihanAir/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('tagihanAir/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    } 
+        $affectedRows = deleteData('tblTagihanAir', 'idTagihanAir', $id, $this->userActionLogsModel, 'Sekolah - Tagihan Air');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('tagihanAir'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('tagihanAir/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    }
     
     public function export() {
         $startYear = $this->request->getVar('startYear');
@@ -248,15 +237,20 @@ class TagihanAir extends ResourceController
             $activeWorksheet->setCellValue('C'.($index + 2), $value->tahunPemakaianAir);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->pemakaianAir);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->biaya);
-
+            $activeWorksheet->getStyle('E' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
             $columns = ['A', 'B', 'C', 'D', 'E'];
             
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }        
         }
         
         $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
@@ -405,6 +399,31 @@ class TagihanAir extends ResourceController
 
 
     public function generatePDF() {
+        $startYear = $this->request->getVar('startYear');
+        $endYear = $this->request->getVar('endYear');
+        $dataTagihanAir = $this->tagihanAirModel->getData($startYear, $endYear);
+        $title = "REPORT TAGIHAN AIR";
+        if (!$dataTagihanAir) {
+            return view('error/404');
+        }
+    
+        $data = [
+            'dataTagihanAir' => $dataTagihanAir,
+        ];
+    
+        $pdfData = pdfTagihanAir($dataTagihanAir, $title, $startYear, $endYear);
+    
+        
+        $filename = 'Sekolah - Tagihan Air' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
+
+    public function generatePDF2() {
         $startYear = $this->request->getVar('startYear');
         $endYear = $this->request->getVar('endYear');
         

@@ -1,53 +1,53 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Tagihan Air &verbar; SARPRA </title>
+<title>Tagihan Listrik &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sekolah</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Tagihan Air</li>
+        <li class="breadcrumb-item active" aria-current="page">Tagihan Listrik</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?=site_url('tagihanAir')?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?=site_url('tagihanListrik')?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
-                <input type="text" class="form-control border-primary bg-transparent" id="startYear" name="startYear" placeholder="Start Year" readonly>
+                <input type="text" class="form-control" id="startYear" name="startYear" placeholder="Start Year" readonly>
                 <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endYearPicker">
-                <input type="text" class="form-control border-primary bg-transparent" id="endYear" name="endYear" placeholder="End Year" readonly>
+                <input type="text" class="form-control" id="endYear" name="endYear" placeholder="End Year" readonly>
                 <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('tagihanAir') ?>" class="btn btn-secondary btn-icon ">
+                <a href="<?= site_url('tagihanListrik') ?>" class="btn btn-secondary btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('tagihanAir/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= site_url('tagihanListrik/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
         <div class="dropdown">
             <?php
                 if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
-                    $exportLink = site_url('tagihanAir/export');
-                    $generatePDFLink = site_url('tagihanAir/generatePDF');
+                    $exportLink = site_url('tagihanListrik/export');
+                    $generatePDFLink = site_url('tagihanListrik/generatePDF');
                 } else {
                     $startYear = $_GET['startYear'] ?? '';
                     $endYear = $_GET['endYear'] ?? '';
-                    $exportLink = site_url("tagihanAir/export?startYear=$startYear&endYear=$endYear");
-                    $generatePDFLink = site_url("tagihanAir/generatePDF?startYear=$startYear&endYear=$endYear");
+                    $exportLink = site_url("tagihanListrik/export?startYear=$startYear&endYear=$endYear");
+                    $generatePDFLink = site_url("tagihanListrik/generatePDF?startYear=$startYear&endYear=$endYear");
                 }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
@@ -57,7 +57,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
-                <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
+                <a class="dropdown-item" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
 
@@ -68,11 +68,11 @@
                 Import File
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('tagihanAir/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="<?= site_url('tagihanListrik/createTemplate') ?>">Download Template</a>
                 <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
             </div>
         </div>
-        <a href="<?= site_url('tagihanAir/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('tagihanListrik/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data
         </a>
@@ -107,7 +107,7 @@
                     <br>
                     <?php endif; ?>
                 </div>
-                <h4 class="text-center py-3">Tagihan Pemakaian Air</h4>
+                <h4 class="text-center py-3">Tagihan Pemakaian Listrik</h4>
                 <?php if (!empty($tableHeading)) : ?>
                     <p class="text-center"><?= $tableHeading ?></p>
                 <?php endif; ?>
@@ -117,26 +117,28 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th>Bulan, Tahun</th>
                                 <th>Pemakaian</th>
+                                <th>Bulan</th>
+                                <th>Tahun</th>
                                 <th>Biaya</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataTagihanAir as $key => $value) : ?>
-                            <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td style="text-align:center;">
+                            <?php foreach ($dataTagihanListrik as $key => $value) : ?>
+                            <tr class="text-center" style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
+                                <td>
                                     <?=$key + 1?>
                                 </td>
-                                <td> <?= $value->bulanPemakaianAir;?>, <?= $value->tahunPemakaianAir; ?>  </td>
-                                <td><?= $value->pemakaianAir; ?> m&sup3;</td>
+                                <td><?= $value->pemakaianListrik; ?> kWh</td>
+                                <td> <?= $value->bulanPemakaianListrik; ?> </td>
+                                <td> <?= $value->tahunPemakaianListrik; ?> </td>
                                 <td><?=number_format($value->biaya, 0, ',', '.')?></td>
-                                <td style="text-align:center;">
-                                    <a href="<?=site_url('tagihanAir/'.$value->idTagihanAir.'/edit') ?>"
+                                <td>
+                                    <a href="<?=site_url('tagihanListrik/'.$value->idTagihanListrik.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('tagihanAir/'.$value->idTagihanAir)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idTagihanAir;?>">
+                                    <form action="<?=site_url('tagihanListrik/'.$value->idTagihanListrik)?>"
+                                        method="post" class="d-inline" id="del-<?= $value->idTagihanListrik;?>">
                                         
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
@@ -157,7 +159,7 @@
     <div class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Grafik Tagihan Pemakaian Air</h6>
+                <h6 class="card-title">Grafik Tagihan Pemakaian Listrik</h6>
                 <div id="apexBar"></div>
             </div>
         </div>
@@ -167,8 +169,8 @@
     <div class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Grafik Banyak Pemakaian Air</h6>
-                <div id="apexPemakaianAir"></div> <!-- New chart container -->
+                <h6 class="card-title">Grafik Banyak Pemakaian Listrik</h6>
+                <div id="apexPemakaianListrik"></div> <!-- New chart container -->
             </div>
         </div>
     </div>
@@ -181,7 +183,7 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("tagihanAir/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url("tagihanListrik/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
                 <div class="modal-body">
                     
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
@@ -240,19 +242,19 @@
     <p>No data available for the chart.</p>
 <?php endif; ?>
 
-<?php if (isset($categories) && isset($pemakaianAir)) : ?>
-    <div id="apexPemakaianAir"></div>
+<?php if (isset($categories) && isset($pemakaianListrik)) : ?>
+    <div id="apexPemakaianListrik"></div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            <?php if (isset($categories) && isset($pemakaianAir)) : ?>
-                var pemakaianAirOptions = {
+            <?php if (isset($categories) && isset($pemakaianListrik)) : ?>
+                var pemakaianListrikOptions = {
                     chart: {
                         type: 'bar',
                         height: '320',
                     },
                     series: [{
-                        name: 'Pemakaian Air',
-                        data: <?= json_encode($pemakaianAir); ?>
+                        name: 'Pemakaian Listrik',
+                        data: <?= json_encode($pemakaianListrik); ?>
                     }],
                     xaxis: {
                         type: 'category',
@@ -265,19 +267,19 @@
                         enabled: true,
                         y: {
                             formatter: function (val) {
-                                return val.toLocaleString() + ' m³';
+                                return val.toLocaleString() + ' kWh';
                             }
                         }
                     }
                 };
 
-                var apexPemakaianAirChart = new ApexCharts(document.querySelector("#apexPemakaianAir"), pemakaianAirOptions);
-                apexPemakaianAirChart.render();
+                var apexPemakaianListrikChart = new ApexCharts(document.querySelector("#apexPemakaianListrik"), pemakaianListrikOptions);
+                apexPemakaianListrikChart.render();
             <?php endif; ?>
         });
     </script>
 <?php else : ?>
-    <p>No data available for the Pemakaian Air chart.</p>
+    <p>No data available for the Pemakaian Listrik chart.</p>
 <?php endif; ?>
 
 

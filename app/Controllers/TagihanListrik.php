@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\TagihanListrikModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -15,7 +16,9 @@ class TagihanListrik extends ResourceController
     
      function __construct() {
         $this->tagihanListrikModel = new TagihanListrikModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -193,40 +196,26 @@ class TagihanListrik extends ResourceController
         return view('profilSekolahView/tagihanListrik/trash', $data);
     } 
 
+    
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblTagihanListrik')
-                ->set('deleted_at', null, true)
-                ->where(['idTagihanListrik' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblTagihanListrik')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblTagihanListrik', 'idTagihanListrik', $id, $this->userActionLogsModel, 'Sekolah - Tagihan Listrik');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('tagihanListrik'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('tagihanListrik/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->tagihanListrikModel->delete($id, true);
-        return redirect()->to(site_url('tagihanListrik/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->tagihanListrikModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->tagihanListrikModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('tagihanListrik/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('tagihanListrik/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    } 
+        $affectedRows = deleteData('tblTagihanListrik', 'idTagihanListrik', $id, $this->userActionLogsModel, 'Sekolah - Tagihan Listrik');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('tagihanListrik'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('tagihanListrik/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    }
     
     public function export() {
         $startYear = $this->request->getVar('startYear');
@@ -238,7 +227,7 @@ class TagihanListrik extends ResourceController
         $activeWorksheet->setTitle('TagihanListrik');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Listrik (kWh)',  'Biaya Tagihan'];
+        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Listrik (kubik)',  'Biaya Tagihan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -248,15 +237,20 @@ class TagihanListrik extends ResourceController
             $activeWorksheet->setCellValue('C'.($index + 2), $value->tahunPemakaianListrik);
             $activeWorksheet->setCellValue('D'.($index + 2), $value->pemakaianListrik);
             $activeWorksheet->setCellValue('E'.($index + 2), $value->biaya);
-
+            $activeWorksheet->getStyle('E' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
             $columns = ['A', 'B', 'C', 'D', 'E'];
             
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }        
         }
         
         $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
@@ -283,7 +277,7 @@ class TagihanListrik extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Listrik (kWh)',  'Biaya Tagihan'];
+        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Listrik (kubik)',  'Biaya Tagihan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
         $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
@@ -323,7 +317,7 @@ class TagihanListrik extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Listrik (kWh)',  'Biaya Tagihan'];
+        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Listrik (kubik)',  'Biaya Tagihan'];
         $exampleSheet->fromArray([$headers], NULL, 'A1');
         $exampleSheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -405,6 +399,31 @@ class TagihanListrik extends ResourceController
 
 
     public function generatePDF() {
+        $startYear = $this->request->getVar('startYear');
+        $endYear = $this->request->getVar('endYear');
+        $dataTagihanListrik = $this->tagihanListrikModel->getData($startYear, $endYear);
+        $title = "REPORT TAGIHAN LISTRIK";
+        if (!$dataTagihanListrik) {
+            return view('error/404');
+        }
+    
+        $data = [
+            'dataTagihanListrik' => $dataTagihanListrik,
+        ];
+    
+        $pdfData = pdfTagihanListrik($dataTagihanListrik, $title, $startYear, $endYear);
+    
+        
+        $filename = 'Sekolah - Tagihan Listrik' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
+
+    public function generatePDF2() {
         $startYear = $this->request->getVar('startYear');
         $endYear = $this->request->getVar('endYear');
         

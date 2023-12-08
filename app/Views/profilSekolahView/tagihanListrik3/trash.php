@@ -1,18 +1,13 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Tagihan Internet &verbar; SARPRA </title>
+<title>Recycle Bin Tagihan Listrik &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Sekolah</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('tagihanInternet')?>">Tagihan Internet</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
-    </ol>
-</nav>
+<h4 class="mb-3 mb-md-0">Recyle Bin Data Tagihan Listrik</h4>
+<br>
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -20,19 +15,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('tagihanInternet')?>"
+                        <a href="<?= site_url('tagihanListrik')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('tagihanInternet/restore')?>"
+                        <a href="<?= site_url('tagihanListrik/restore')?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('tagihanInternet/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('tagihanListrik/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             
                             <input type="hidden" name="_method" value="DELETE">
@@ -81,19 +76,19 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataTagihanInternet as $key => $value) : ?>
+                        <?php foreach ($dataTagihanListrik as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td><?= $value->pemakaianInternet; ?> m&sup3;</td>
-                                <td> <?= $value->bulanPemakaianInternet; ?> </td>
-                                <td> <?= $value->tahunPemakaianInternet; ?> </td>
+                                <td><?= $value->pemakaianListrik; ?> m&sup3;</td>
+                                <td> <?= $value->bulanPemakaianListrik; ?> </td>
+                                <td> <?= $value->tahunPemakaianListrik; ?> </td>
                                 <td><?=number_format($value->biaya, 0, ',', '.')?></td>
                                 <td class="text-center">
-                                    <a href="<?=site_url('tagihanInternet/restore/'.$value->idTagihanInternet) ?>"
+                                    <a href="<?=site_url('tagihanListrik/restore/'.$value->idTagihanListrik) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form action="<?= site_url('tagihanInternet/deletePermanent/'.$value->idTagihanInternet) ?>"
+                                    <form action="<?= site_url('tagihanListrik/deletePermanent/'.$value->idTagihanListrik) ?>"
                                         method="POST" class="d-inline">
                                         
                                         <input type="hidden" name="_method" value="DELETE">

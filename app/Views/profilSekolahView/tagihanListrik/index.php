@@ -16,11 +16,11 @@
     <div>
         <form action="<?=site_url('tagihanListrik')?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
-                <input type="text" class="form-control" id="startYear" name="startYear" placeholder="Start Year" readonly>
+                <input type="text" class="form-control border-primary bg-transparent" id="startYear" name="startYear" placeholder="Start Year" readonly>
                 <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endYearPicker">
-                <input type="text" class="form-control" id="endYear" name="endYear" placeholder="End Year" readonly>
+                <input type="text" class="form-control border-primary bg-transparent" id="endYear" name="endYear" placeholder="End Year" readonly>
                 <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
@@ -57,7 +57,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= $exportLink ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= $generatePDFLink ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= $generatePDFLink ?>">Download as PDF</a>
             </div>
         </div>
 
@@ -117,24 +117,22 @@
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
+                                <th>Bulan, Tahun</th>
                                 <th>Pemakaian</th>
-                                <th>Bulan</th>
-                                <th>Tahun</th>
                                 <th>Biaya</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
                             <?php foreach ($dataTagihanListrik as $key => $value) : ?>
-                            <tr class="text-center" style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
-                                <td>
+                            <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
+                                <td style="text-align:center;">
                                     <?=$key + 1?>
                                 </td>
+                                <td> <?= $value->bulanPemakaianListrik;?>, <?= $value->tahunPemakaianListrik; ?>  </td>
                                 <td><?= $value->pemakaianListrik; ?> kWh</td>
-                                <td> <?= $value->bulanPemakaianListrik; ?> </td>
-                                <td> <?= $value->tahunPemakaianListrik; ?> </td>
                                 <td><?=number_format($value->biaya, 0, ',', '.')?></td>
-                                <td>
+                                <td style="text-align:center;">
                                     <a href="<?=site_url('tagihanListrik/'.$value->idTagihanListrik.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('tagihanListrik/'.$value->idTagihanListrik)?>"
