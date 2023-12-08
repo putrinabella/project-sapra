@@ -2495,12 +2495,12 @@ if (!function_exists('pdfTagihanListrik')) {
 }
 
 if (!function_exists('pdfUserAction')) {
-    function pdfUserAction($dataRestore, $dataDelete, $title, $startYear, $endYear) {
+    function pdfUserAction($dataRestore, $dataDelete, $title, $startDate, $endDate) {
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Putri Nabella');
-        $pdf->SetTitle('User Action Logs');
-        $pdf->SetSubject('User Action Logs');
+        $pdf->SetTitle('Action Logs');
+        $pdf->SetSubject('Action Logs');
         $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
 
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -2521,19 +2521,41 @@ if (!function_exists('pdfUserAction')) {
         $pdf->SetFont('times', '', 12, '', true);
         $pdf->AddPage();
 
-        $dateRange = "";
-        if ($startYear !== null && $endYear !== null) {
-            $startYear = $startYear;
-            $endYear = $endYear;
+        
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
             $dateRange = ' - ';
         }
+
+
     
         $html = <<<EOD
         <h3 style="text-align: center;"> $title</h3>
         EOD;
         
-        if ($startYear !== '' && $endYear !== '') {
-            $html .= '<h4 style="text-align: center;">' . $startYear . $dateRange . $endYear . '</h4>';
+        if ($startDate !== '' && $endDate !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
         }
 
         if (!empty($dataRestore)) {
@@ -2588,7 +2610,6 @@ if (!function_exists('pdfUserAction')) {
                                     '<td>:</td>' .
                                     '<td>' . $value->role . '</td>' .
                                 '</tr>' .
-
                             '</table>' 
                     . '</td>';
             $table .= '<td style="width: 35%; text-align: left;">' . 
@@ -2616,6 +2637,135 @@ if (!function_exists('pdfUserAction')) {
     EOD;
 
         return $table;
+    }
+}
+
+if (!function_exists('pdfUserLogs')) {
+    function pdfUserLogs($data, $title,  $startDate = null, $endDate = null) {
+        usort($data, function($a, $b) {
+            return strtotime($a->loginTime) - strtotime($b->loginTime);
+        });
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Action Logs');
+        $pdf->SetSubject('Action Logs');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+        <style>
+        
+        </style>
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        // Include date range only when both $startDate and $endDate are not null
+        if ($startDateFormatted !== '' && $endDateFormatted !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+        
+        $html .= <<<EOD
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Tanggal</b></th>
+                    <th style="width: 30%;"><b>Identitas</b></th>
+                    <th style="width: 30%;"><b>Action Type</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $tanggalTimestamp = strtotime($value->loginTime);
+        $formattedTanggal = $dayNamesIndonesian[date('w', $tanggalTimestamp)] . ', ' . date('d', $tanggalTimestamp) . ' ' . $monthNamesIndonesian[date('n', $tanggalTimestamp)] . ' ' . date('Y', $tanggalTimestamp);
+        $html .= '<tr>';
+        $html .= '<td  style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $value->username.  ' (' . $value->role . ')' .'</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $value->actionType. '</td>';
+        // $html .= '<td style="width: 35%; text-align: left;">' .
+        //                 '<table style="width: 100%; padding:5px;">' .
+        //                 '<tr>' .
+        //                     '<td style="width: 40%;">Username</td>' .
+        //                     '<td style="width: 10%;">:</td>' .
+        //                     '<td style="width: 50%;">' . $value->username . '</td>' .
+        //                 '</tr>' .
+        //                 '<tr>' .
+        //                     '<td>Nama</td>' .
+        //                     '<td>:</td>' .
+        //                     '<td>' . $value->nama . '</td>' .
+        //                 '</tr>' .
+        //                 '<tr>' .
+        //                     '<td>Role</td>' .
+        //                     '<td>:</td>' .
+        //                     '<td>' . $value->role . '</td>' .
+        //                 '</tr>' .
+        //             '</table>' .
+        //         '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
     }
 }
 

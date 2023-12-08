@@ -20,29 +20,30 @@ class UserActionLogs extends BaseController
     
     public function viewActions()
     {
-        $startYear = $this->request->getVar('startYear');
-        $endYear = $this->request->getVar('endYear');
-    
-        $formattedStartYear = !empty($startYear) ? $startYear : '';
-        $formattedEndYear = !empty($endYear) ? $endYear : '';
-    
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+
         $tableHeading = "";
-        if (!empty($formattedStartYear) && !empty($formattedEndYear)) {
-            $tableHeading = "Tahun $formattedStartYear - $formattedEndYear";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = " $formattedStartDate - $formattedEndDate";
         }
-    
+        
+
         $data['tableHeading'] = $tableHeading;
-        $data['dataActionLog'] = $this->userActionLogsModel->getAll($startYear, $endYear);
+        $data['dataActionLog'] = $this->userActionLogsModel->getAll($startDate, $endDate);
         return view('userLogsView/userActionLogs/actionLogs', $data);
     }
 
     public function export() {
-        $startYear = $this->request->getVar('startYear');
-        $endYear = $this->request->getVar('endYear');
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
         
-        $data = $this->userActionLogsModel->getData($startYear, $endYear);
-        $dataRestore = $this->userActionLogsModel->getDataRestore($startYear, $endYear);
-        $dataDelete = $this->userActionLogsModel->getDataDelete($startYear, $endYear);
+        $data = $this->userActionLogsModel->getData($startDate, $endDate);
+        $dataRestore = $this->userActionLogsModel->getDataRestore($startDate, $endDate);
+        $dataDelete = $this->userActionLogsModel->getDataDelete($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('User Actions');
@@ -169,10 +170,10 @@ class UserActionLogs extends BaseController
 
 
     public function generatePDF() {
-        $startYear = $this->request->getVar('startYear');
-        $endYear = $this->request->getVar('endYear');
-        $dataRestore = $this->userActionLogsModel->getDataRestore($startYear, $endYear);
-        $dataDelete = $this->userActionLogsModel->getDataDelete($startYear, $endYear);
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+        $dataRestore = $this->userActionLogsModel->getDataRestore($startDate, $endDate);
+        $dataDelete = $this->userActionLogsModel->getDataDelete($startDate, $endDate);
         
         $title = "REPORT USER ACTION";
         
@@ -185,7 +186,7 @@ class UserActionLogs extends BaseController
             'dataDelete' => $dataDelete,
         ];
     
-        $pdfData = pdfUserAction($dataRestore, $dataDelete, $title, $startYear, $endYear);
+        $pdfData = pdfUserAction($dataRestore, $dataDelete, $title, $startDate, $endDate);
     
         
         $filename = 'Logs - User Action' . ".pdf";

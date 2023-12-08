@@ -1,72 +1,93 @@
-<?php 
-    namespace App\Models;
+<?php
 
-    use CodeIgniter\Model;
+namespace App\Models;
 
-    class UserActionLogsModels extends Model
+use CodeIgniter\Model;
+
+class UserActionLogsModels extends Model
+{
+    protected $table            = 'tblUserActionsLogs';
+    protected $primaryKey       = 'id';
+    protected $returnType       = 'object';
+    protected $allowedFields    = ['user_id', 'actionTime', 'actionType', 'actionDetails'];
+
+    function getAll($startDate = null, $endDate = null)
     {
-        protected $table            = 'tblUserActionsLogs';
-        protected $primaryKey       = 'id';
-        protected $returnType       = 'object';
-        protected $allowedFields    = ['user_id', 'actionTime', 'actionType', 'actionDetails'];
-
-        function getAll($startYear = null, $endYear = null) {
-            $builder = $this->db->table($this->table);
-            $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
-            
-            if ($startYear !== null && $endYear !== null) {
-                $builder->where("YEAR(tblUserActionsLogs.actionTime) BETWEEN $startYear AND $endYear");
-            }
-            $builder->orderBy('actionTime', 'desc');
-        
-            $query = $builder->get();
-            return $query->getResult();
+        $builder = $this->db->table($this->table);
+        $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
+        $builder->orderBy('actionTime', 'desc');
+    
+        if ($startDate !== null && $endDate !== null) {
+            $startDateTime = $startDate . ' 00:00:00';
+            $endDateTime = $endDate . ' 23:59:59';
+    
+            $builder->where('tblUserActionsLogs.actionTime >=', $startDateTime);
+            $builder->where('tblUserActionsLogs.actionTime <=', $endDateTime);
         }
-        
-        function getData($startYear = null, $endYear = null) {
-            $builder = $this->db->table($this->table);
-            $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
-            $builder->orderBy('actionTime', 'asc'); 
-                  
-            if ($startYear !== null && $endYear !== null) {
-                $builder->where("YEAR(tblUserActionsLogs.actionTime) BETWEEN $startYear AND $endYear");
-            }
-        
-            $query = $builder->get();
-            return $query->getResult();
-        }
-
-        function getDataRestore($startYear = null, $endYear = null) {
-            $builder = $this->db->table($this->table);
-            $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
-            $builder->where('(tblUserActionsLogs.actionType = \'Restore\' OR tblUserActionsLogs.actionType = \'Restore All\')');
-            
-            if ($startYear !== null && $endYear !== null) {
-                $builder->where("YEAR(tblUserActionsLogs.actionTime) BETWEEN $startYear AND $endYear");
-            }
-            
-            $builder->orderBy('actionTime', 'asc');
-            $builder->orderBy('actionType', 'asc');
-            
-            $query = $builder->get();
-            return $query->getResult();
-        }
-        
-        function getDataDelete($startYear = null, $endYear = null) {
-            $builder = $this->db->table($this->table);
-            $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
-            $builder->where('(tblUserActionsLogs.actionType = \'Delete\' OR tblUserActionsLogs.actionType = \'Delete All\')');
-            
-            if ($startYear !== null && $endYear !== null) {
-                $builder->where("YEAR(tblUserActionsLogs.actionTime) BETWEEN $startYear AND $endYear");
-            }
-            
-            $builder->orderBy('actionTime', 'asc');
-            $builder->orderBy('actionType', 'asc');
-            
-            $query = $builder->get();
-            return $query->getResult();
-        }
-        
+    
+        $query = $builder->get();
+        return $query->getResult();
     }
+    
+
+    function getData($startDate = null, $endDate = null)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
+        $builder->orderBy('actionTime', 'asc');
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateTime = $startDate . ' 00:00:00';
+            $endDateTime = $endDate . ' 23:59:59';
+    
+            $builder->where('tblUserActionsLogs.actionTime >=', $startDateTime);
+            $builder->where('tblUserActionsLogs.actionTime <=', $endDateTime);
+        }
+
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataRestore($startDate = null, $endDate = null)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
+        $builder->where('(tblUserActionsLogs.actionType = \'Restore\' OR tblUserActionsLogs.actionType = \'Restore All\')');
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateTime = $startDate . ' 00:00:00';
+            $endDateTime = $endDate . ' 23:59:59';
+    
+            $builder->where('tblUserActionsLogs.actionTime >=', $startDateTime);
+            $builder->where('tblUserActionsLogs.actionTime <=', $endDateTime);
+        }
+
+        $builder->orderBy('actionTime', 'asc');
+        $builder->orderBy('actionType', 'asc');
+
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataDelete($startDate = null, $endDate = null)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
+        $builder->where('(tblUserActionsLogs.actionType = \'Delete\' OR tblUserActionsLogs.actionType = \'Delete All\')');
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateTime = $startDate . ' 00:00:00';
+            $endDateTime = $endDate . ' 23:59:59';
+    
+            $builder->where('tblUserActionsLogs.actionTime >=', $startDateTime);
+            $builder->where('tblUserActionsLogs.actionTime <=', $endDateTime);
+        }
+
+        $builder->orderBy('actionTime', 'asc');
+        $builder->orderBy('actionType', 'asc');
+
+        $query = $builder->get();
+        return $query->getResult();
+    }
+}
 ?>

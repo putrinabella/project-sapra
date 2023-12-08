@@ -15,16 +15,33 @@ class UserLogs extends BaseController
      function __construct() {
         $this->userLoginModel = new UserLogModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf']);
     }
     
     public function viewLogs()
     {
-        $data['dataUserLog'] = $this->userLoginModel->getAll();
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
+        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
+
+        $tableHeading = "";
+        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
+            $tableHeading = " $formattedStartDate - $formattedEndDate";
+        }
+            
+        $data['tableHeading'] = $tableHeading;        
+        $data['dataUserLog'] = $this->userLoginModel->getAll($startDate, $endDate);
+
         return view('userLogsView/userLoginLogs/viewLogs', $data);
     }
 
     public function export() {
-        $data = $this->userLoginModel->getAll();
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+        
+        $data = $this->userLoginModel->getAll($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('User Log');
@@ -45,11 +62,16 @@ class UserLogs extends BaseController
             $columns = ['A', 'B', 'C', 'D', 'E', 'F'];
             
             foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }           
         }
         $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
@@ -69,6 +91,28 @@ class UserLogs extends BaseController
     }
 
     public function generatePDF() {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+        $dataUserLogs = $this->userLoginModel->getAll($startDate, $endDate);
+        
+        $title = "REPORT USER LOGS";
+        
+        if (!$dataUserLogs) {
+            return view('error/404');
+        }
+    
+        $pdfData = pdfUserLogs($dataUserLogs, $title, $startDate, $endDate);
+    
+        
+        $filename = 'Logs - User Logs' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
+    public function generatePDFs() {
         $filePath = APPPATH . 'Views/userLogsView/userLoginLogs/print.php';
     
         if (!file_exists($filePath)) {

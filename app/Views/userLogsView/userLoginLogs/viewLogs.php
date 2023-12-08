@@ -13,15 +13,43 @@
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">User Log</h4>
+<div>
+        <form action="<?= site_url('viewLogs') ?>" onsubmit="return validateForm()" class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
+                <input type="text" class="form-control border-primary bg-transparent" id="startDate" name="startDate" placeholder="Start Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
+                <input type="text" class="form-control border-primary bg-transparent" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
+            </div>
+            <div class="col py-3 p-0 mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary btn-icon me-1">
+                    <i data-feather="filter"></i>
+                </button>
+                <a href="<?= site_url('viewLogs') ?>" class="btn btn-secondary btn-icon ">
+                    <i data-feather="refresh-ccw"></i>
+                </a>
+            </div>
+        </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('viewLogs/generatePDF') ?>" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
+        <?php
+            if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
+                $exportLink = site_url('viewLogs/export');
+                $generatePDFLink = site_url('viewLogs/generatePDF');
+            } else {
+                $startDate = $_GET['startDate'] ?? '';
+                $endDate = $_GET['endDate'] ?? '';
+                $exportLink = site_url("viewLogs/export?startDate=$startDate&endDate=$endDate");
+                $generatePDFLink = site_url("viewLogs/generatePDF?startDate=$startDate&endDate=$endDate");
+            }
+        ?>
+        <a href="<?= $generatePDFLink ?>" target="_blank" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download"></i>
             Download PDF
         </a>
-        <a href="<?= site_url('viewLogs/export') ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
+        <a href="<?= $exportLink ?>" class="btn btn-success btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="download"></i>
             Download Excel
         </a>
@@ -57,6 +85,11 @@
                     <br>
                     <?php endif; ?>
                 </div>
+                <h4 class="text-center py-3">User Logs</h4>
+                <?php if (!empty($tableHeading)) : ?>
+                    <p class="text-center"><?= $tableHeading ?></p>
+                <?php endif; ?>
+                <br>
                 <div class="table-responsive">
                     <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
@@ -95,5 +128,27 @@
         </div>
     </div>
 </div>
+
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+<script>
+    function validateForm() {
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+
+        if (startDate.trim() === '' || endDate.trim() === '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please enter both start and end dates.',
+                confirmButtonText: 'OK'
+            });
+
+            return false; 
+        }
+
+        return true;
+    }
+</script>
 
 <?= $this->endSection(); ?>

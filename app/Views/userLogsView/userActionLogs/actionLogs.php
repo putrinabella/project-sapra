@@ -15,12 +15,12 @@
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
         <form action="<?= site_url('viewActions') ?>" onsubmit="return validateForm()" class="d-flex align-items-center flex-wrap text-nowrap">
-            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
-                <input type="text" class="form-control border-primary bg-transparent" id="startYear" name="startYear" placeholder="Start Year" readonly>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
+                <input type="text" class="form-control border-primary bg-transparent" id="startDate" name="startDate" placeholder="Start Date" readonly>
                 <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
             </div>
-            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endYearPicker">
-                <input type="text" class="form-control border-primary bg-transparent" id="endYear" name="endYear" placeholder="End Year" readonly>
+            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
+                <input type="text" class="form-control border-primary bg-transparent" id="endDate" name="endDate" placeholder="End Date" readonly>
                 <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
@@ -35,15 +35,15 @@
     </div>
 
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-    <?php
-                if (empty($_GET['startYear']) && empty($_GET['endYear'])) {
+            <?php
+                if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
                     $exportLink = site_url('viewActions/export');
                     $generatePDFLink = site_url('viewActions/generatePDF');
                 } else {
-                    $startYear = $_GET['startYear'] ?? '';
-                    $endYear = $_GET['endYear'] ?? '';
-                    $exportLink = site_url("viewActions/export?startYear=$startYear&endYear=$endYear");
-                    $generatePDFLink = site_url("viewActions/generatePDF?startYear=$startYear&endYear=$endYear");
+                    $startDate = $_GET['startDate'] ?? '';
+                    $endDate = $_GET['endDate'] ?? '';
+                    $exportLink = site_url("viewActions/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("viewActions/generatePDF?startDate=$startDate&endDate=$endDate");
                 }
             ?>
         <a href="<?= $generatePDFLink ?>" target="_blank" class="btn btn-primary btn-icon-text me-2 mb-2 mb-md-0">
@@ -134,14 +134,14 @@
 <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
 <script>
     function validateForm() {
-        var startYear = document.getElementById("startYear").value;
-        var endYear = document.getElementById("endYear").value;
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
 
-        if (startYear.trim() === '' || endYear.trim() === '') {
+        if (startDate.trim() === '' || endDate.trim() === '') {
             Swal.fire({
                 icon: 'warning',
                 title: 'Validation Error',
-                text: 'Please enter both start and end years.',
+                text: 'Please enter both start and end dates.',
                 confirmButtonText: 'OK'
             });
 
