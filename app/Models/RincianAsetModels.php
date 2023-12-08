@@ -445,7 +445,7 @@ class RincianAsetModels extends Model
 
     // IT - PEMUSNAHAN ASET
 
-    function getDestroyIt() {
+    function getDestroyIt($startDate = null, $endDate = null) {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
@@ -454,6 +454,11 @@ class RincianAsetModels extends Model
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset =', 'Dimusnahkan');
         $builder->where('tblIdentitasSarana.perangkatIT', 1); 
+        $builder->orderBy('tanggalPemusnahan', 'desc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblRincianAset.tanggalPemusnahan >=', $startDate);
+            $builder->where('tblRincianAset.tanggalPemusnahan <=', $endDate);
+        }
         $query = $builder->get();
         return $query->getResult();
     }

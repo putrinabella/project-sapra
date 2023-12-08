@@ -8,8 +8,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('pemusnahanAset')?>">Pemusnahan Aset</a></li>
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('pemusnahanItAset')?>">Pemusnahan Aset</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Data</li>
     </ol>
 </nav>
@@ -20,7 +20,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('pemusnahanAset')?>"
+                        <a href="<?= site_url('pemusnahanItAset')?>"
                             class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back

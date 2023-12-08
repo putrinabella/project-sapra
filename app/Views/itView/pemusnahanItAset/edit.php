@@ -8,8 +8,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('pemusnahanAset')?>">Pemusnahan Aset</a></li>
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('pemusnahanItAset')?>">Pemusnahan Aset</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
     </ol>
 </nav>
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('pemusnahanAset/'.$dataRincianAset->idRincianAset)?>" method="post"
+                <form action="<?= site_url('pemusnahanItAset/'.$dataRincianAset->idRincianAset)?>" method="post"
                     autocomplete="off" id="custom-validation"  enctype="multipart/form-data">
                     
                     <input type="hidden" name="_method" value="PATCH">
@@ -95,7 +95,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
-                            <a href="<?= site_url('pemusnahanAset') ?>" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="<?= site_url('pemusnahanItAset') ?>" class="btn btn-secondary me-2">Cancel</a>
                             <button type="reset" class="btn btn-danger me-2">Reset</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

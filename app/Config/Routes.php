@@ -364,7 +364,6 @@ $routes->get('pemusnahanItAset/generatePDF', 'PemusnahanItAset::generatePDF');
 $routes->get('pemusnahanItAset/export', 'PemusnahanItAset::export');
 $routes->post('pemusnahanItAset/destruction/(:any)', 'PemusnahanItAset::destruction/$1');
 $routes->resource('pemusnahanItAset', ['filter' => 'isLoggedIn']);
-
 // Perangkat IT
 $routes->get('perangkatIt/print/(:num)', 'perangkatIt::print/$1');
 $routes->get('perangkatIt/createTemplate', 'perangkatIt::createTemplate');

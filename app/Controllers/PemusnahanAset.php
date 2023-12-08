@@ -168,10 +168,10 @@ class PemusnahanAset extends ResourceController
                 if ($newSectionAset === 'Dimusnahkan') {
                     return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
+                    return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Aset berhasil dikembalikan');
                 }
             } else {
-                return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
+                return redirect()->to(site_url('pemusnahanAset'))->with('error', 'Aset batal dimusnahkan');
             }
         }
     }

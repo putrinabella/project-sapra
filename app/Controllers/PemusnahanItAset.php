@@ -26,7 +26,7 @@ use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 
-class PemusnahanAset extends ResourceController
+class PemusnahanItAset extends ResourceController
 {
     function __construct() {
         $this->rincianAsetModel = new RincianAsetModels();
@@ -53,9 +53,9 @@ class PemusnahanAset extends ResourceController
         
 
         $data['tableHeading'] = $tableHeading;
-        $data['dataRincianAset'] = $this->rincianAsetModel->getDestroy($startDate, $endDate);
+        $data['dataRincianAset'] = $this->rincianAsetModel->getDestroyIt($startDate, $endDate);
 
-        return view('saranaView/pemusnahanAset/index', $data);
+        return view('itView/pemusnahanItAset/index', $data);
     }
 
     
@@ -82,7 +82,7 @@ class PemusnahanAset extends ResourceController
                     'spesifikasiHtml'           => $spesifikasiHtml,
                     'qrCodeData'                => $qrCodeData
                 ];
-                return view('saranaView/pemusnahanAset/show', $data);
+                return view('itView/pemusnahanItAset/show', $data);
             } else {
                 return view('error/404');
             }
@@ -137,7 +137,7 @@ class PemusnahanAset extends ResourceController
                     'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
                     'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
                 ];
-                return view('saranaView/pemusnahanAset/edit', $data);
+                return view('itView/pemusnahanItAset/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -151,7 +151,7 @@ class PemusnahanAset extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
             $this->rincianAsetModel->update($id, $data);
-            return redirect()->to(site_url('pemusnahanAset'))->with('success', 'Data berhasil diupdate');
+            return redirect()->to(site_url('pemusnahanItAset'))->with('success', 'Data berhasil diupdate');
         } else {
             return view('error/404');
         }
@@ -166,12 +166,12 @@ class PemusnahanAset extends ResourceController
     
             if ($this->rincianAsetModel->updateSectionAset($idRincianAset, $newSectionAset, $namaAkun, $kodeAkun)) {
                 if ($newSectionAset === 'Dimusnahkan') {
-                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
+                    return redirect()->to(site_url('pemusnahanItAset'))->with('success', 'Aset berhasil dimusnahkan');
                 } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
+                    return redirect()->to(site_url('pemusnahanItAset'))->with('success', 'Aset berhasil dikembalikan');
                 }
             } else {
-                return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
+                return redirect()->to(site_url('pemusnahanItAset'))->with('error', 'Aset batal dimusnahkan');
             }
         }
     }
@@ -180,7 +180,7 @@ class PemusnahanAset extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $data = $this->rincianAsetModel->getDestroy($startDate, $endDate);
+        $data = $this->rincianAsetModel->getDestroyIt($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('Pemusnahan Aset');
@@ -255,7 +255,7 @@ class PemusnahanAset extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Pemusnahan Aset.xlsx');
+        header('Content-Disposition: attachment;filename=IT - Pemusnahan Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -264,21 +264,21 @@ class PemusnahanAset extends ResourceController
     public function GeneratePDF() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
-        $dataPemusnahanAset = $this->rincianAsetModel->getDestroy($startDate, $endDate);
+        $dataPemusnahanItAset = $this->rincianAsetModel->getDestroyIt($startDate, $endDate);
         
-        $title = "REPORT PEMUSNAHAN ASET";
-        if (!$dataPemusnahanAset) {
+        $title = "REPORT PEMUSNAHAN ASET IT";
+        if (!$dataPemusnahanItAset) {
             return view('error/404');
         }
     
         $data = [
-            'dataPemusnahanAset' => $dataPemusnahanAset,
+            'dataPemusnahanItAset' => $dataPemusnahanItAset,
         ];
     
-        $pdfData = pdfPemusnahanAset($dataPemusnahanAset, $title, $startDate, $endDate);
+        $pdfData = pdfPemusnahanItAset($dataPemusnahanItAset, $title, $startDate, $endDate);
     
         
-        $filename = 'Sarana - Pemusnahan Aset' . ".pdf";
+        $filename = 'IT - Pemusnahan Aset' . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');

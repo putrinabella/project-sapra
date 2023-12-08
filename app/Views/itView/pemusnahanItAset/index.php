@@ -8,14 +8,14 @@
 
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="#">IT</a></li>
         <li class="breadcrumb-item active" aria-current="page">Pemusnahan Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?= site_url('pemusnahanAset') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?= site_url('pemusnahanItAset') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
@@ -29,7 +29,7 @@
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('pemusnahanAset') ?>" class="btn btn-success btn-icon ">
+                <a href="<?= site_url('pemusnahanItAset') ?>" class="btn btn-success btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
@@ -39,13 +39,13 @@
         <div class="dropdown">
             <?php
                 if (empty($_GET['startDate']) && empty($_GET['endDate'])) {
-                    $exportLink = site_url('pemusnahanAset/export');
-                    $generatePDFLink = site_url('pemusnahanAset/generatePDF');
+                    $exportLink = site_url('pemusnahanItAset/export');
+                    $generatePDFLink = site_url('pemusnahanItAset/generatePDF');
                 } else {
                     $startDate = $_GET['startDate'] ?? '';
                     $endDate = $_GET['endDate'] ?? '';
-                    $exportLink = site_url("pemusnahanAset/export?startDate=$startDate&endDate=$endDate");
-                    $generatePDFLink = site_url("pemusnahanAset/generatePDF?startDate=$startDate&endDate=$endDate");
+                    $exportLink = site_url("pemusnahanItAset/export?startDate=$startDate&endDate=$endDate");
+                    $generatePDFLink = site_url("pemusnahanItAset/generatePDF?startDate=$startDate&endDate=$endDate");
                 }
             ?>
             <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
@@ -146,12 +146,12 @@
                                 <td><?= $value->namaAkun; ?> </td>
                                 <td><?= $value->kodeAkun; ?> </td>
                                 <td class="text-center">
-                                <a href="<?=site_url('pemusnahanAset/'.$value->idRincianAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                    <a href="<?=site_url('pemusnahanAset/'.$value->idRincianAset.'/edit') ?>"
+                                <a href="<?=site_url('pemusnahanItAset/'.$value->idRincianAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
+                                    <a href="<?=site_url('pemusnahanItAset/'.$value->idRincianAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 </td>
                                 <td class="text-center">
-                                    <form action="<?= site_url('pemusnahanAset/destruction/' . $value->idRincianAset) ?>" method="post" class="d-inline">
+                                    <form action="<?= site_url('pemusnahanItAset/destruction/' . $value->idRincianAset) ?>" method="post" class="d-inline">
                                         
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
