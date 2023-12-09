@@ -85,6 +85,24 @@
         }
     }
     
+    if (!function_exists('uploadFile')) {
+        function uploadFile($fieldName)
+        {
+            $request = \Config\Services::request();
+            $file = $request->getFile($fieldName);
     
+            if ($file !== null) {
+                if ($file->isValid() && !$file->hasMoved()) {
+                    $newName = $file->getRandomName();
+                    $file->move(ROOTPATH . 'public/uploads', $newName);
+                    return 'uploads/' . $newName;
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+    }
     
 ?>

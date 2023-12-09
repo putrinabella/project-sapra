@@ -6,6 +6,7 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Models\IdentitasGedungModels; 
 use App\Models\IdentitasLantaiModels; 
 use App\Models\IdentitasPrasaranaModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -18,7 +19,9 @@ class IdentitasPrasarana extends ResourceController
         $this->identitasGedungModel = new IdentitasGedungModels();
         $this->identitasLantaiModel = new IdentitasLantaiModels();
         $this->identitasPrasaranaModel = new IdentitasPrasaranaModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -39,16 +42,47 @@ class IdentitasPrasarana extends ResourceController
         return view('master/identitasPrasaranaView/new', $data);        
     }
 
+    private function uploadFile($fieldName) {
+        $file = $this->request->getFile($fieldName);
+        if ($file !== null) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                $newName = $file->getRandomName();
+                $file->move(ROOTPATH . 'public/uploads', $newName);
+                return 'uploads/' . $newName;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public function create2() {
+        $data = $this->request->getPost();
+        $buktiPath = $this->uploadFile('bukti'); 
+        if ($buktiPath !== null) {
+            $data['bukti'] = $buktiPath;
+
+            $this->saranaLayananAsetModel->insert($data);
+
+            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'File upload failed.');
+        }
+    }
+
     public function create() {
         $data = $this->request->getPost();
-    
         $kodePrasarana = $data['kodePrasarana'];
         $namaPrasarana = $data['namaPrasarana'];
-    
+        $picture = $this->uploadFile('picturePath'); 
+        // var_dump($picture);
+        // die;
         if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
             return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
         } else {
             unset($data['idIdentitasPrasarana']);
+            $data['picturePath'] = $picture;
             $this->identitasPrasaranaModel->insert($data);
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil disimpan');
         }

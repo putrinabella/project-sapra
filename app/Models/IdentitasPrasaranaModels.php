@@ -9,7 +9,7 @@ class IdentitasPrasaranaModels extends Model
     protected $table            = 'tblIdentitasPrasarana';
     protected $primaryKey       = 'idIdentitasPrasarana';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['namaPrasarana', 'luas', 'idIdentitasGedung', 'idIdentitasLantai', 'kodePrasarana' ,'tipe'];
+    protected $allowedFields    = ['namaPrasarana', 'luas', 'idIdentitasGedung', 'idIdentitasLantai', 'kodePrasarana' ,'tipe', 'picturePath'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 

@@ -35,7 +35,7 @@
                     <br>
                     <?php endif; ?>
                 </div>
-                <form action="<?= site_url('identitasPrasarana')?>" method="post" autocomplete="off"  id="custom-validation">
+                <form action="<?= site_url('identitasPrasarana')?>" method="post" autocomplete="off"  id="custom-validation"  enctype="multipart/form-data">
                     
                     <div class="row mb-3">
                         <label for="kodePrasarana" class="col-sm-3 col-form-label">Kode Prasarana</label>
@@ -88,6 +88,13 @@
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="luas" name="luas"
                                 placeholder="Masukkan luas (satuan meter)">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="picturePath" class="col-sm-3 col-form-label">Foto</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" id="picturePath" name="picturePath"
+                                placeholder="Masukkan identitas prasarana">
                         </div>
                     </div>
                     <div class="row mb-3">

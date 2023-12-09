@@ -24,7 +24,11 @@
             <?php foreach ($dataPrasaranaRuangan as $key => $value) : ?>
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
-                    <img src="<?= base_url(); ?>/assets/images/Ruangan.jpeg" class="card-img-top" alt="Foto ruangan">
+                    <?php if ($value->picturePath !== null) : ?>
+                        <img src="<?= base_url($value->picturePath) ?>" class="card-img-top" alt="Foto ruangan">
+                    <?php else : ?>
+                        <img src="<?= base_url(); ?>/assets/images/Ruangan.jpeg" class="card-img-top" alt="Default Foto ruangan">
+                    <?php endif; ?>
                     <div class="card-body">
                         <h5 class="card-title text-center">
                             <?= $value->namaPrasarana ?> (
