@@ -44,6 +44,8 @@ class UserActionLogs extends BaseController
         $data = $this->userActionLogsModel->getData($startDate, $endDate);
         $dataRestore = $this->userActionLogsModel->getDataRestore($startDate, $endDate);
         $dataDelete = $this->userActionLogsModel->getDataDelete($startDate, $endDate);
+        $dataSoftDelete = $this->userActionLogsModel->getDataSoftDelete($startDate, $endDate);
+
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setTitle('User Actions');
@@ -159,6 +161,43 @@ class UserActionLogs extends BaseController
             $deleteSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
+        $softDeleteSheet = $spreadsheet->createSheet();
+        $softDeleteSheet->setTitle('Soft Delete');
+        $softDeleteSheet->getTabColor()->setRGB('DF2E38');
+        $softDeleteSheet->fromArray([$headers], NULL, 'A1');
+        $softDeleteSheet->getStyle('A1:G1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($dataSoftDelete as $index => $value) {           
+            $softDeleteSheet->setCellValue('A'.($index + 2), $index + 1);
+            $softDeleteSheet->setCellValue('B'.($index + 2), date('d F Y', strtotime($value->actionTime)));
+            $softDeleteSheet->setCellValue('C'.($index + 2), date('H:i:s', strtotime($value->actionTime)));
+            $softDeleteSheet->setCellValue('D'.($index + 2), $value->username);
+            $softDeleteSheet->setCellValue('E'.($index + 2), $value->role);
+            $softDeleteSheet->setCellValue('F'.($index + 2), $value->actionType);
+            $softDeleteSheet->setCellValue('G'.($index + 2), $value->actionDetails);
+            
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+            foreach ($columns as $column) {
+                $cellReference = $column . ($index + 2);
+                $alignment = $softDeleteSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }                
+        }
+        $softDeleteSheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $softDeleteSheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $softDeleteSheet->getStyle('A1:G'.$softDeleteSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $softDeleteSheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'G') as $column) {
+            $softDeleteSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -174,19 +213,15 @@ class UserActionLogs extends BaseController
         $endDate = $this->request->getVar('endDate');
         $dataRestore = $this->userActionLogsModel->getDataRestore($startDate, $endDate);
         $dataDelete = $this->userActionLogsModel->getDataDelete($startDate, $endDate);
+        $dataSoftDelete = $this->userActionLogsModel->getDataSoftDelete($startDate, $endDate);
         
         $title = "REPORT USER ACTION";
         
-        if (!$dataRestore && !$dataDelete) {
+        if (!$dataRestore && !$dataDelete && !$dataSoftDelete) {
             return view('error/404');
         }
     
-        $data = [
-            'dataRestore' => $dataRestore,
-            'dataDelete' => $dataDelete,
-        ];
-    
-        $pdfData = pdfUserAction($dataRestore, $dataDelete, $title, $startDate, $endDate);
+        $pdfData = pdfUserAction($dataRestore, $dataDelete, $dataSoftDelete, $title, $startDate, $endDate);
     
         
         $filename = 'Logs - User Action' . ".pdf";

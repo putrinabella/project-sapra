@@ -181,18 +181,6 @@ $routes->delete('identitasKelas/deletePermanent/(:any)', 'IdentitasKelas::delete
 $routes->delete('identitasKelas/deletePermanent', 'IdentitasKelas::deletePermanent');
 $routes->presenter('identitasKelas', ['filter' => 'isLoggedIn']);
 
-// Kelas Siswa
-$routes->get('kategoriPegawai/createTemplate', 'KategoriPegawai::createTemplate');
-$routes->get('kategoriPegawai/generatePDF', 'KategoriPegawai::generatePDF');
-$routes->get('kategoriPegawai/export', 'KategoriPegawai::export');
-$routes->post('kategoriPegawai/import', 'KategoriPegawai::import');
-$routes->get('kategoriPegawai/edit', 'KategoriPegawai::edit');
-$routes->get('kategoriPegawai/trash', 'KategoriPegawai::trash');
-$routes->get('kategoriPegawai/restore/(:any)', 'KategoriPegawai::restore/$1');
-$routes->get('kategoriPegawai/restore', 'KategoriPegawai::restore');
-$routes->delete('kategoriPegawai/deletePermanent/(:any)', 'KategoriPegawai::deletePermanent/$1');
-$routes->delete('kategoriPegawai/deletePermanent', 'KategoriPegawai::deletePermanent');
-$routes->presenter('kategoriPegawai', ['filter' => 'isLoggedIn']);
 
 // Data Siswa
 $routes->get('dataSiswa/createTemplate', 'DataSiswa::createTemplate');

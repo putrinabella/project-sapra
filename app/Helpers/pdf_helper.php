@@ -2495,7 +2495,7 @@ if (!function_exists('pdfTagihanListrik')) {
 }
 
 if (!function_exists('pdfUserAction')) {
-    function pdfUserAction($dataRestore, $dataDelete, $title, $startDate, $endDate) {
+    function pdfUserAction($dataRestore, $dataDelete, $dataSoftDelete, $title, $startDate, $endDate) {
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Putri Nabella');
@@ -2556,6 +2556,10 @@ if (!function_exists('pdfUserAction')) {
         
         if ($startDate !== '' && $endDate !== '') {
             $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+
+        if (!empty($dataSoftDelete)) {
+            $html .= generateUserAction($dataSoftDelete, "Action Type: Soft Delete");
         }
 
         if (!empty($dataRestore)) {

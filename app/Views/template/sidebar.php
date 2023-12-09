@@ -286,9 +286,6 @@
                         <a href="<?= site_url('kategoriMep') ?>" class="nav-link">Kategori MEP </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= site_url('kategoriPegawai') ?>" class="nav-link">Kategori Pegawai</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="<?= site_url('sumberDana') ?>" class="nav-link">Sumber Dana</a>
                     </li>
                     <li class="nav-item">

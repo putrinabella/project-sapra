@@ -15,7 +15,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-  <!-- <link href="<?= base_url(); ?>/assets/fonts/roboto/Roboto-Regular.ttf" rel="stylesheet"> -->
   <!-- End fonts -->
 
   <!-- core:css -->
@@ -28,7 +27,6 @@
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/sweetalert2/sweetalert2.min.css">
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/prismjs/themes/prism.css">
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/select2/select2.min.css">
-  <!-- <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/dropify/dist/dropify.min.css"> -->
   <link rel="stylesheet" href="<?= base_url(); ?>/assets/vendors/mdi/css/materialdesignicons.min.css">
   <!-- End plugin css for this page -->
 
@@ -140,8 +138,6 @@
       <!-- partial:partials/_footer.html -->
       <footer
         class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
-        <!-- <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://github.com/putrinabella/project-sapra"
-            target="_blank">Meraki</a>.</p> -->
         <p class="text-muted mb-1 mb-md-0">Copyright © 2023 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             target="_blank">Meraki</a>.</p>
         <!-- <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart"></i></p> -->
@@ -170,7 +166,6 @@
   <script src="<?= base_url(); ?>/assets/vendors/prismjs/prism.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/clipboard/clipboard.min.js"></script>
   <script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
-  <!-- <script src="<?= base_url(); ?>/assets/vendors/dropify/dist/dropify.min.js"></script> -->
   <script src="<?= base_url(); ?>/assets/vendors/apexcharts/apexcharts.min.js"></script>
   <!-- End plugin js for this page -->
 
@@ -190,7 +185,6 @@
   <script src="<?= base_url(); ?>/assets/js/data-table.js"></script>
   <script src="<?= base_url(); ?>/assets/js/sweet-alert.js"></script>
   <script src="<?= base_url(); ?>/assets/js/select2.js"></script>
-  <!-- <script src="<?= base_url(); ?>/assets/js/dropify.js"></script> -->
   <script src="<?= base_url(); ?>/assets/js/custom.js"></script>
   <!-- End custom js for this page -->
 

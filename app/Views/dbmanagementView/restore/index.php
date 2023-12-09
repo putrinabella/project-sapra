@@ -40,15 +40,35 @@
                     <br>
                     <?php endif; ?>
                 </div>
-                <div>
+                <div class="row">
+                    <div class="col-6">
+                        <form action="<?= site_url('restoreDatabase') ?>" method="post" enctype="multipart/form-data">
+                            <input class="form-control" type="file" name="database" id="database" accept=".sql"
+                                required>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Restore Database</button>
+                        </form>
+                    </div>
+                    <div class="col-6" style="text-align: justify;">
+                        <strong>Peringatan:</strong> Hanya file database yang sebelumnya dapat dibackup melalui website
+                        ini yang dapat direstore.
+                        <p>Silakan pilih file database yang sesuai dengan backup yang dihasilkan oleh layanan kami.
+                            Dalam upaya memastikan integritas dan keamanan data, restore hanya dapat dilakukan
+                            menggunakan file backup yang dihasilkan secara internal melalui website ini.</p>
+                        <br>
+                        <b>Catatan:</b> Anda tidak dapat melakukan restore menggunakan file database dari aplikasi lain
+                        seperti
+                        SQLyog atau phpMyAdmin. Pastikan menggunakan file backup yang dihasilkan melalui fungsi backup
+                        di dalam webiste ini.
+                    </div>
+                </div>
+                <!-- <div>
                     <form action="<?= site_url('restoreDatabase') ?>" method="post" enctype="multipart/form-data">
-                    
-                        <!-- <input type="file" name="database" id="myDropify" accept=".sql" required /> -->
-                        <input type="file" name="database" id="database" accept=".sql" required>
+                        <input class="form-control" type="file" name="database" id="database" accept=".sql" required>
                         <br>
                         <button type="submit" class="btn btn-primary">Restore Database</button>
                     </form>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

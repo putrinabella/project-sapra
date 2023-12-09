@@ -331,13 +331,6 @@ class ManajemenPeminjamanModels extends Model
         $result = $query->getRow();
         return $result ? $result->namaSiswa : null;
     }
-    function getNamaPegawai($asalPeminjam) {
-        $builder = $this->db->table('tblDataPegawai');
-        $builder->where('idDataPegawai', $asalPeminjam);
-        $query = $builder->get();
-        $result = $query->getRow();
-        return $result ? $result->namaPegawai : null;
-    }
 
     function getNamaKelas($asalPeminjam) {
         $builder = $this->db->table('tblDataSiswa');        
@@ -347,15 +340,4 @@ class ManajemenPeminjamanModels extends Model
         $result = $query->getRow();
         return $result ? $result->namaKelas : null;
     }
-
-    function getNamaKategoriPegawai($asalPeminjam) {
-        $builder = $this->db->table('tblDataPegawai');
-        $builder->join('tblKategoriPegawai', 'tblKategoriPegawai.idKategoriPegawai = tblDataPegawai.idKategoriPegawai');
-        $builder->where('idDataPegawai', $asalPeminjam);
-        $query = $builder->get();
-        $result = $query->getRow();
-        return $result ? $result->namaKategoriPegawai : null;
-    }
-
-
 }

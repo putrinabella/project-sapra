@@ -89,5 +89,25 @@ class UserActionLogsModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
+    function getDataSoftDelete($startDate = null, $endDate = null)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblUser', 'tblUser.idUser = tblUserActionsLogs.user_id');
+        $builder->where('tblUserActionsLogs.actionType', 'Soft Delete');
+        if ($startDate !== null && $endDate !== null) {
+            $startDateTime = $startDate . ' 00:00:00';
+            $endDateTime = $endDate . ' 23:59:59';
+    
+            $builder->where('tblUserActionsLogs.actionTime >=', $startDateTime);
+            $builder->where('tblUserActionsLogs.actionTime <=', $endDateTime);
+        }
+
+        $builder->orderBy('actionTime', 'asc');
+        $builder->orderBy('actionType', 'asc');
+
+        $query = $builder->get();
+        return $query->getResult();
+    }
 }
 ?>

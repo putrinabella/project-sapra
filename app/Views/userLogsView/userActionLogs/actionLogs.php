@@ -114,6 +114,8 @@
                                         <span class="badge bg-primary"><?= $value->actionType ?></span>
                                     <?php elseif ($value->actionType === 'Delete' || $value->actionType === 'Delete All') : ?>
                                         <span class="badge bg-danger"><?= $value->actionType ?></span>
+                                    <?php elseif ($value->actionType === 'Soft Delete') : ?>
+                                        <span class="badge bg-warning"><?= $value->actionType ?></span>
                                     <?php else : ?>
                                         <?= $value->actionType ?>
                                     <?php endif; ?>

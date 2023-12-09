@@ -294,6 +294,7 @@ class DataPeminjaman extends ResourceController
             $this->detailManajemenPeminjamanModel->delete($data->idDetailManajemenPeminjaman);
         }
         $this->dataPeminjamanModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Laboratorium - Peminjaman dengan id $id");
         return redirect()->to(site_url('dataPeminjaman'));
     }
 
