@@ -9,6 +9,7 @@ use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\LoginFilter;
+use App\Filters\RoleFilter;
 
 class Filters extends BaseConfig
 {
@@ -26,6 +27,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'isLoggedIn'    => LoginFilter::class,
+        'roleFilter'    => RoleFilter::class,
 
     ];
 
@@ -38,6 +40,8 @@ class Filters extends BaseConfig
      */
     public array $globals = [
         'before' => [
+            'isLoggedIn',
+            'roleFilter',
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
@@ -100,6 +104,11 @@ class Filters extends BaseConfig
                 'manajemenPeminjaman/*',
                 
             ]
-        ]
+        ],
+        'roleFilter' => [
+            'before' => [
+                'viewLogs', 
+            ],
+        ],
     ];
 }

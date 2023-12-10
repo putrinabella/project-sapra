@@ -65,6 +65,7 @@ $routes->delete('identitasSarana/deletePermanent', 'IdentitasSarana::deletePerma
 $routes->presenter('identitasSarana', ['filter' => 'isLoggedIn']);
 
 // Identitas Prasarana
+
 $routes->get('identitasPrasarana/createTemplate', 'IdentitasPrasarana::createTemplate');
 $routes->get('identitasPrasarana/generatePDF', 'IdentitasPrasarana::generatePDF');
 $routes->get('identitasPrasarana/export', 'IdentitasPrasarana::export');
