@@ -7,52 +7,18 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class RoleFilter implements FilterInterface
-{
-    public function before(RequestInterface $request, $arguments = null)
-{
-    if (!session('id_user')) {
-        return redirect()->to(site_url('login'));
+{  
+    public function before(RequestInterface $request, $arguments = null) {
+        if (!session('id_user')) {
+            return redirect()->to(site_url('login'));
+        }
+        
+        $allowedRoles = ['Super Admin', 'Admin IT', 'Admin Sarpra', 'Laboran'];
+        if ( !in_array(session('role'), $allowedRoles)) {
+            return redirect()->to(site_url('404'));
+        }
     }
 
-    // Check if the user has the required role to access the route
-    $requiredRoles = $arguments['roles'] ?? [];
-    
-    // If no roles are specified for the route, allow access
-    if (empty($requiredRoles)) {
-        return;
-    }
-
-    $userRole = session('role');
-
-    // Check if the user has one of the required roles
-    if (!in_array($userRole, $requiredRoles)) {
-        // Redirect the user to a page or show an error
-        return redirect()->to(site_url('access-denied'));
-    }
-}
-
-    // public function before(RequestInterface $request, $arguments = null)
-    // {
-    //     if(!session('id_user')) {
-    //         return redirect()->to(site_url('login'));
-    //     } 
-
-    //     // Check if the user has the required role to access the route
-    //     $requiredRole = $arguments['role'] ?? null;
-
-    //     if (!$requiredRole) {
-    //         // If no role is specified for the route, allow access
-    //         return;
-    //     }
-
-    //     $userRole = session('role');
-
-    //     // Check if the user has the required role
-    //     if ($userRole !== $requiredRole) {
-    //         // Redirect the user to a page or show an error
-    //         return redirect()->to(site_url('access-denied'));
-    //     }
-    // }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {

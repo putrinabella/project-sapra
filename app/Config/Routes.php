@@ -12,9 +12,15 @@ $routes->get('createDatabase', function () {
     }
 });
 
+// 404
+
+$routes->get('404', 'Auth::error');
+
+
 // USER ROUTES
 
 // Login 
+
 $routes->get('login', 'Auth::login');
 $routes->get('auth', 'Auth::index');
 $routes->post('loginProcess', 'Auth::loginProcess');
@@ -49,7 +55,9 @@ $routes->get('manajemenUser/restore/(:any)', 'ManajemenUser::restore/$1');
 $routes->get('manajemenUser/restore', 'ManajemenUser::restore');
 $routes->delete('manajemenUser/deletePermanent/(:any)', 'ManajemenUser::deletePermanent/$1');
 $routes->delete('manajemenUser/deletePermanent', 'ManajemenUser::deletePermanent');
-$routes->resource('manajemenUser', ['filter' => 'isLoggedIn']);
+$routes->resource('manajemenUser', ['filter' => 'roleFilter']);
+
+
 
 // Identitas Sarana
 $routes->get('identitasSarana/createTemplate', 'IdentitasSarana::createTemplate');

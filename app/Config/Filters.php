@@ -28,7 +28,6 @@ class Filters extends BaseConfig
         'secureheaders' => SecureHeaders::class,
         'isLoggedIn'    => LoginFilter::class,
         'roleFilter'    => RoleFilter::class,
-
     ];
 
     /**
@@ -40,8 +39,8 @@ class Filters extends BaseConfig
      */
     public array $globals = [
         'before' => [
-            'isLoggedIn',
-            'roleFilter',
+            // 'isLoggedIn',
+            // 'roleFilter',
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
@@ -105,10 +104,9 @@ class Filters extends BaseConfig
                 
             ]
         ],
-        'roleFilter' => [
-            'before' => [
-                'viewLogs', 
-            ],
+        'roleFilter' => ['before' => [
+                'manajemenUser/*',  
+            ]
         ],
     ];
 }

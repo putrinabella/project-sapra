@@ -13,6 +13,10 @@ class Auth extends BaseController
         return redirect()->to(site_url('login'));
     }
 
+    public function error() {
+        return view('error/404');
+    }
+
     public function login() {
         if (session('id_user')) {
             return redirect()->to(site_url('home'));
