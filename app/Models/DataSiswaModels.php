@@ -24,7 +24,7 @@ class DataSiswaModels extends Model
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
         $builder->where('tblDataSiswa.deleted_at', NULL);
-        $builder->where('tblDataSiswa.idIdentitasKelas !=', 0);
+        $builder->where('tblDataSiswa.idIdentitasKelas !=', 1);
         $query = $builder->get();
         return $query->getResult();
     }
@@ -32,7 +32,7 @@ class DataSiswaModels extends Model
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
         $builder->where('tblDataSiswa.deleted_at', NULL);
-        $builder->where('tblDataSiswa.idIdentitasKelas =', 0);
+        $builder->where('tblDataSiswa.idIdentitasKelas =', 1);
         $query = $builder->get();
         return $query->getResult();
     }

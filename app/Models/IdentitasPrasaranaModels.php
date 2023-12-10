@@ -63,6 +63,19 @@ class IdentitasPrasaranaModels extends Model
             return null; 
         }
     }
+
+    public function searchPrasarana($query) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
+        $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
+        $builder->like('tblIdentitasPrasarana.namaPrasarana', $query);
+        $builder->where('tblIdentitasPrasarana.deleted_at', null);
+        $query = $builder->get();
+    
+        return $query->getResult();
+    }
+    
+
     
 
     // function getPaginated($num, $keyword = null) {

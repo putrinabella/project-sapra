@@ -57,27 +57,11 @@ class IdentitasPrasarana extends ResourceController
         }
     }
 
-    public function create2() {
-        $data = $this->request->getPost();
-        $buktiPath = $this->uploadFile('bukti'); 
-        if ($buktiPath !== null) {
-            $data['bukti'] = $buktiPath;
-
-            $this->saranaLayananAsetModel->insert($data);
-
-            return redirect()->to(site_url('saranaLayananAset'))->with('success', 'Data berhasil disimpan');
-        } else {
-            return redirect()->back()->withInput()->with('error', 'File upload failed.');
-        }
-    }
-
     public function create() {
         $data = $this->request->getPost();
         $kodePrasarana = $data['kodePrasarana'];
         $namaPrasarana = $data['namaPrasarana'];
         $picture = $this->uploadFile('picturePath'); 
-        // var_dump($picture);
-        // die;
         if ($this->identitasPrasaranaModel->isDuplicate($kodePrasarana, $namaPrasarana)) {
             return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
         } else {
@@ -128,6 +112,19 @@ class IdentitasPrasarana extends ResourceController
                     return redirect()->to(site_url('identitasPrasarana'))->with('error', 'Gagal update karena nama prasarana duplikat!');
                 }
             }
+            $newPicture = $this->uploadFile('picturePath');
+            
+            // Remove the old picture if a new one is uploaded
+            if ($newPicture) {
+                $oldPicturePath = $existingData->picturePath;
+                if ($oldPicturePath && file_exists(ROOTPATH . 'public/' . $oldPicturePath)) {
+                    unlink(ROOTPATH . 'public/' . $oldPicturePath);
+                }
+    
+                // Save the new picture path to the data array
+                $data['picturePath'] = $newPicture;
+            }
+
             $this->identitasPrasaranaModel->update($id, $data);
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil diupdate');
         } else {
@@ -532,6 +529,17 @@ class IdentitasPrasarana extends ResourceController
         $dompdf->render();
         $filename = 'Data Master - Identitas Prasarana.pdf';
         $dompdf->stream($filename);
+    }
+
+    public function search() {
+    $searchQuery = $this->request->getGet('searchFor'); 
+
+    // Add logic to fetch search results based on the query
+    // Modify the following line according to your data retrieval logic
+    $data['dataPrasaranaRuangan'] = $this->identitasPrasaranaModel->searchPrasarana($searchQuery);
+
+    // Load the view with the search results
+    return view('prasaranaView/ruangan/index', $data);
     }
 }
 

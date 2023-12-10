@@ -94,7 +94,7 @@
                         <label for="picturePath" class="col-sm-3 col-form-label">Foto</label>
                         <div class="col-sm-9">
                             <input type="file" class="form-control" id="picturePath" name="picturePath"
-                                placeholder="Masukkan identitas prasarana">
+                                placeholder="Masukkan foto prasarana">
                         </div>
                     </div>
                     <div class="row mb-3">
