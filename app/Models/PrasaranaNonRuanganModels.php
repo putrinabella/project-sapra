@@ -63,4 +63,16 @@ class PrasaranaNonRuanganModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
+    public function searchPrasarana($namaPrasarana) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
+        $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
+        $builder->like('tblIdentitasPrasarana.namaPrasarana', $namaPrasarana);
+        $builder->where('tblIdentitasPrasarana.deleted_at', null);
+        $builder->where('tblIdentitasPrasarana.tipe', 'Non Ruangan'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
 }

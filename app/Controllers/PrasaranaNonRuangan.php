@@ -35,6 +35,14 @@ class PrasaranaNonRuangan extends ResourceController
         $data['dataPrasaranaNonRuangan'] = $this->prasaranaNonRuanganModel->getRuangan();
         return view('prasaranaView/nonRuangan/index', $data);
     }
+
+    public function search() {
+        if ($this->request->isAJAX()) {
+            $namaPrasarana = $this->request->getVar('namaPrasarana');
+            $result = $this->prasaranaNonRuanganModel->searchPrasarana($namaPrasarana);
+            return $this->response->setJSON($result);
+        }
+    }
     
     public function show($id = null) {
         if ($id != null) {

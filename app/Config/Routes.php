@@ -65,7 +65,6 @@ $routes->delete('identitasSarana/deletePermanent', 'IdentitasSarana::deletePerma
 $routes->presenter('identitasSarana', ['filter' => 'isLoggedIn']);
 
 // Identitas Prasarana
-$routes->get('prasaranaSearch', 'IdentitasPrasarana::search');
 $routes->get('identitasPrasarana/createTemplate', 'IdentitasPrasarana::createTemplate');
 $routes->get('identitasPrasarana/generatePDF', 'IdentitasPrasarana::generatePDF');
 $routes->get('identitasPrasarana/export', 'IdentitasPrasarana::export');
@@ -309,11 +308,13 @@ $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 // PRASARANA
 
 // Ruangan
+$routes->post('prasaranaRuangan/search', 'PrasaranaRuangan::search');
 $routes->get('prasaranaRuangan/print/(:num)', 'PrasaranaRuangan::print/$1');
 $routes->get('prasaranaRuangan/showInfo/(:num)', 'PrasaranaRuangan::showInfo/$1');
 $routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
 
 // Non Ruangan
+$routes->post('prasaranaNonRuangan/search', 'PrasaranaNonRuangan::search');
 $routes->get('prasaranaNonRuangan/print/(:num)', 'PrasaranaNonRuangan::print/$1');
 $routes->get('prasaranaNonRuangan/showInfo/(:num)', 'PrasaranaNonRuangan::showInfo/$1');
 $routes->resource('prasaranaNonRuangan', ['filter' => 'isLoggedIn']);

@@ -37,6 +37,14 @@ class PrasaranaRuangan extends ResourceController
         return view('prasaranaView/ruangan/index', $data);
     }
     
+    public function search() {
+        if ($this->request->isAJAX()) {
+            $namaPrasarana = $this->request->getVar('namaPrasarana');
+            $result = $this->prasaranaRuanganModel->searchPrasarana($namaPrasarana);
+            return $this->response->setJSON($result);
+        }
+    }
+
     public function show($id = null) {
         if ($id != null) {
             $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);

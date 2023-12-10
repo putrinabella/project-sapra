@@ -91,13 +91,12 @@
                     <div class="row mb-3">
                         <label for="picturePath" class="col-sm-3 col-form-label">Foto</label>
                         <div class="col-sm-9">
+                            <?php if ($dataIdentitasPrasarana->picturePath): ?>
                             <div class="row">
                                 <div class="col-sm-8">
                                     <b>Current Image:</b>
-                                    <?php if ($dataIdentitasPrasarana->picturePath): ?>
                                     <img src="<?= base_url($dataIdentitasPrasarana->picturePath) ?>" alt="Current Image"
                                         style="max-width:100%;">
-                                    <?php endif; ?>
                                 </div>
                                 <div class="col-sm-4">
                                     <br>
@@ -111,6 +110,12 @@
                                         accept="image/*">
                                 </div>
                             </div>
+                            <?php else: ?>
+                            <div>
+                                <input type="file" class="form-control" id="picturePath" name="picturePath"
+                                    accept="image/*">
+                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="row mb-3">

@@ -530,16 +530,5 @@ class IdentitasPrasarana extends ResourceController
         $filename = 'Data Master - Identitas Prasarana.pdf';
         $dompdf->stream($filename);
     }
-
-    public function search() {
-    $searchQuery = $this->request->getGet('searchFor'); 
-
-    // Add logic to fetch search results based on the query
-    // Modify the following line according to your data retrieval logic
-    $data['dataPrasaranaRuangan'] = $this->identitasPrasaranaModel->searchPrasarana($searchQuery);
-
-    // Load the view with the search results
-    return view('prasaranaView/ruangan/index', $data);
-    }
 }
 

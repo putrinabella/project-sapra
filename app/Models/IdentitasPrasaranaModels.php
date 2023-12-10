@@ -63,47 +63,4 @@ class IdentitasPrasaranaModels extends Model
             return null; 
         }
     }
-
-    public function searchPrasarana($query) {
-        $builder = $this->db->table($this->table);
-        $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
-        $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
-        $builder->like('tblIdentitasPrasarana.namaPrasarana', $query);
-        $builder->where('tblIdentitasPrasarana.deleted_at', null);
-        $query = $builder->get();
-    
-        return $query->getResult();
-    }
-    
-
-    
-
-    // function getPaginated($num, $keyword = null) {
-    //     $builder = $this->builder();
-    //     $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
-    //     $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
-    //     $builder->where('tblIdentitasPrasarana.deleted_at', null);
-    //     $data = [
-    //         'dataIdentitasPrasarana' => $this->paginate($num),
-    //         'pager' => $this->pager,
-    //     ];
-    //     return $data;
-    // }
-
-    // function updateKodePrasarana($id) {
-    //     $builder = $this->db->table($this->table);
-    //     $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
-    //                     " G", LPAD(idIdentitasGedung, 2, "0"), 
-    //                     " L", LPAD(idIdentitasLantai, 2, "0"))', false);
-    //     $builder->where('idIdentitasPrasarana', $id);
-    //     $builder->update();
-    // }
-
-    // function setKodePrasarana() {
-    //     $builder = $this->db->table($this->table);
-    //     $builder->set('kodePrasarana', 'CONCAT("P", LPAD(idIdentitasPrasarana, 3, "0"), 
-    //                     " G", LPAD(idIdentitasGedung, 2, "0"), 
-    //                     " L", LPAD(idIdentitasLantai, 2, "0"))', false);
-    //     $builder->update();
-    // }
 }

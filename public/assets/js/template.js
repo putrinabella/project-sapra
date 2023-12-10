@@ -132,7 +132,7 @@
     // Extract the second segment of the path
     var current = pathSegments[1] || "default"; // "rincianAset" or "default" if not present
 
-    console.log(current); // Output: "rincianAset"
+    // console.log(current); // Output: "rincianAset"
 
 
     // var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');

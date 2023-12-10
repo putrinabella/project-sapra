@@ -22,6 +22,19 @@ class PrasaranaRuanganModels extends Model
         return $query->getResult();
     }
 
+    public function searchPrasarana($namaPrasarana) {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblIdentitasGedung', 'tblIdentitasGedung.idIdentitasGedung = tblIdentitasPrasarana.idIdentitasGedung');
+        $builder->join('tblIdentitasLantai', 'tblIdentitasLantai.idIdentitasLantai = tblIdentitasPrasarana.idIdentitasLantai');
+        $builder->like('tblIdentitasPrasarana.namaPrasarana', $namaPrasarana);
+        $builder->where('tblIdentitasPrasarana.deleted_at', null);
+        $builder->where('tblIdentitasPrasarana.tipe', 'Ruangan'); 
+        $query = $builder->get();
+        return $query->getResult();
+    }
+    
+
+    
     function getIdentitasGedung($idIdentitasPrasarana) {
         $builder = $this->db->table($this->table);
         $builder->select('tblIdentitasGedung.namaGedung');
