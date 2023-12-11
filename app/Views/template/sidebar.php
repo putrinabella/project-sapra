@@ -77,6 +77,9 @@
                         <a href="<?= site_url('laboratorium') ?>" class="nav-link">Laboratorium</a>
                     </li>
                     <li class="nav-item">
+                        <a href="<?= site_url('asetLabGeneral') ?>" class="nav-link">Data General</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">Data Rincian Aset</a>
                     </li>
                     <li class="nav-item">

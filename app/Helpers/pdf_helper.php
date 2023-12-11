@@ -1947,6 +1947,105 @@ if (!function_exists('pdfAsetItGeneral')) {
     }
 }
 
+if (!function_exists('pdfAsetLabGeneral')) {
+    function pdfAsetLabGeneral($data, $title) {
+
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Lab - Data General');
+        $pdf->SetSubject('Lab - Data General');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+    
+
+        $totalAset = 0;
+        $asetBagus = 0;
+        $asetRusak = 0;
+        $asetHilang = 0;
+        foreach ($data as $value) {
+            $totalAset += $value->jumlahAset;
+            $asetBagus += $value->jumlahBagus;
+            $asetRusak += $value->jumlahRusak;
+            $asetHilang += $value->jumlahHilang;
+        }
+
+        $html = <<<EOD
+        <style>
+        
+        </style>
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        $html .= <<<EOD
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Nama</b></th>
+                    <th style="width: 15%;"><b>Aset Bagus</b></th>
+                    <th style="width: 15%;"><b>Aset Rusak</b></th>
+                    <th style="width: 15%;"><b>Aset Hilang</b></th>
+                    <th style="width: 15%;"><b>Total Aset</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 30%; text-align: left;">' . $value->namaSarana. '</td>';
+        $html .= '<td style="width: 15%; text-align: center;">' . ($value->jumlahBagus != 0 ? $value->jumlahBagus : '-') . '</td>';
+        $html .= '<td style="width: 15%; text-align: center;">' . ($value->jumlahRusak != 0 ? $value->jumlahRusak : '-') . '</td>';
+        $html .= '<td style="width: 15%; text-align: center;">' . ($value->jumlahHilang != 0 ? $value->jumlahHilang : '-') . '</td>';
+        $html .= '<td style="width: 15%; text-align: center;">' . ($value->jumlahAset != 0 ? $value->jumlahAset : '-') . '</td>';
+        
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        <tr>
+            <td colspan=2; style="width: 40%;"><b>Total</b></td>
+            <td style="width: 15%;"><b>$asetBagus buah</b></td>
+            <td style="width: 15%;"><b>$asetRusak buah</b></td>
+            <td style="width: 15%;"><b>$asetHilang buah</b></td>
+            <td style="width: 15%;"><b>$totalAset buah</b></td>
+        </tr>
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+
 if (!function_exists('pdfRincianAset')) {
     function pdfRincianAset($dataAsetBagus, $dataAsetRusak, $dataAsetHilang, $title) {
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

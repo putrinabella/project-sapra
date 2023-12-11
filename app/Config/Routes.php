@@ -318,7 +318,6 @@ $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 
 // Ruangan
 $routes->post('prasaranaRuangan/search', 'PrasaranaRuangan::search');
-// $routes->get('prasaranaRuangan/print/(:num)', 'PrasaranaRuangan::GeneratePDF/$1');
 $routes->get('prasaranaRuangan/print/(:num)', 'PrasaranaRuangan::print/$1');
 $routes->get('prasaranaRuangan/showInfo/(:num)', 'PrasaranaRuangan::showInfo/$1');
 $routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
@@ -483,6 +482,14 @@ $routes->delete('tagihanInternet/deletePermanent', 'TagihanInternet::deletePerma
 $routes->resource('tagihanInternet', ['filter' => 'isLoggedIn']);
 
 // LABORATORIUM
+
+
+// Data General Aset Lab
+$routes->get('asetLabGeneral/dataAset/(:num)', 'AsetLabGeneral::info/$1');
+$routes->get('asetLabGeneral/(:num)', 'AsetLabGeneral::show/$1');
+$routes->get('asetLabGeneral/generatePDF', 'AsetLabGeneral::GeneratePDF');
+$routes->get('asetLabGeneral/export', 'AsetLabGeneral::Export');
+$routes->get('asetLabGeneral', 'AsetLabGeneral::view');
 
 // Data Rincian Aset
 $routes->get('generateLabQRDoc', 'RincianLabAset::generateLabQRDoc');
