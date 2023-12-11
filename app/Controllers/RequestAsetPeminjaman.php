@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\RequestPeminjamanModels;
+use App\Models\RequestAsetPeminjamanModels;
 use App\Models\IdentitasSaranaModels;
 use App\Models\SumberDanaModels;
 use App\Models\KategoriManajemenModels;
@@ -17,13 +17,13 @@ use Dompdf\Options;
 use Parsedown;
 use App\Helpers\PdfHelper;
 
-class RequestPeminjaman extends ResourceController
+class RequestAsetPeminjaman extends ResourceController
 {
 
     function __construct()
     {
         $this->manajemenPeminjamanModel = new ManajemenPeminjamanModels();
-        $this->requestPeminjamanModel = new RequestPeminjamanModels();
+        $this->requestAsetPeminjamanModel = new RequestAsetPeminjamanModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
         $this->kategoriManajemenModel = new KategoriManajemenModels();
@@ -48,23 +48,23 @@ class RequestPeminjaman extends ResourceController
         
 
         $data['tableHeading'] = $tableHeading;
-        $data['dataRequestPeminjaman'] = $this->requestPeminjamanModel->getAll($startDate, $endDate);
+        $data['dataRequestAsetPeminjaman'] = $this->requestAsetPeminjamanModel->getAll($startDate, $endDate);
 
-        return view('labView/requestPeminjaman/index', $data);
+        return view('saranaView/requestAsetPeminjaman/index', $data);
     }
 
     public function show($id = null)
     {
         if ($id != null) {
-            $dataRequestPeminjaman = $this->requestPeminjamanModel->find($id);
-            $dataItemDipinjam = $this->requestPeminjamanModel->getBorrowItems($dataRequestPeminjaman->idRequestPeminjaman);
-            if (is_object($dataRequestPeminjaman)) {
+            $dataRequestAsetPeminjaman = $this->requestAsetPeminjamanModel->find($id);
+            $dataItemDipinjam = $this->requestAsetPeminjamanModel->getBorrowItems($dataRequestAsetPeminjaman->idRequestAsetPeminjaman);
+            if (is_object($dataRequestAsetPeminjaman)) {
                 $data = [
-                    'dataRequestPeminjaman' => $dataRequestPeminjaman,
+                    'dataRequestAsetPeminjaman' => $dataRequestAsetPeminjaman,
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                     'dataItemDipinjam' => $dataItemDipinjam,
                 ];
-                return view('labView/requestPeminjaman/show', $data);
+                return view('saranaView/requestAsetPeminjaman/show', $data);
             } else {
                 return view('error/404');
             }
@@ -76,17 +76,17 @@ class RequestPeminjaman extends ResourceController
     public function edit($id = null)
     {
         if ($id != null) {
-            $dataRequestPeminjaman = $this->requestPeminjamanModel->find($id);
-            $dataItemDipinjam = $this->requestPeminjamanModel->getBorrowItems($dataRequestPeminjaman->idRequestPeminjaman);
+            $dataRequestAsetPeminjaman = $this->requestAsetPeminjamanModel->find($id);
+            $dataItemDipinjam = $this->requestAsetPeminjamanModel->getBorrowItems($dataRequestAsetPeminjaman->idRequestAsetPeminjaman);
             // var_dump($dataItemDipinjam);
             // die;
-            if (is_object($dataRequestPeminjaman)) {
+            if (is_object($dataRequestAsetPeminjaman)) {
                 $data = [
-                    'dataRequestPeminjaman' => $dataRequestPeminjaman,
+                    'dataRequestAsetPeminjaman' => $dataRequestAsetPeminjaman,
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                     'dataItemDipinjam' => $dataItemDipinjam,
                 ];
-                return view('labView/requestPeminjaman/edit', $data);
+                return view('saranaView/requestAsetPeminjaman/edit', $data);
             } else {
                 return view('error/404');
             }
@@ -109,19 +109,19 @@ class RequestPeminjaman extends ResourceController
             ];
 
             $getIdManajemenPeminjaman = [
-                'idRequestPeminjaman' => $data['idRequestPeminjaman'],
+                'idRequestAsetPeminjaman' => $data['idRequestAsetPeminjaman'],
             ];
 
             foreach ($loanStatuses as $index => $loanStatus) {
                 $idRincianLabAset = $idRincianLabAsets[$index];
 
-                $this->requestPeminjamanModel->updateReturnStatus($idRincianLabAset, $loanStatus);
-                $this->requestPeminjamanModel->updateReturnSectionAset($idRincianLabAset);
-                $this->requestPeminjamanModel->updateDetailReturnStatus($idRincianLabAset, $getIdManajemenPeminjaman, $loanStatus);
+                $this->requestAsetPeminjamanModel->updateReturnStatus($idRincianLabAset, $loanStatus);
+                $this->requestAsetPeminjamanModel->updateReturnSectionAset($idRincianLabAset);
+                $this->requestAsetPeminjamanModel->updateDetailReturnStatus($idRincianLabAset, $getIdManajemenPeminjaman, $loanStatus);
             }
             die;
-            $this->requestPeminjamanModel->update($id, $updateData);
-            return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
+            $this->requestAsetPeminjamanModel->update($id, $updateData);
+            return redirect()->to(site_url('requestAsetPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
         } else {
             return view('error/404');
         }
@@ -131,7 +131,7 @@ class RequestPeminjaman extends ResourceController
     public function processLoan() {
         $data = $this->request->getPost();
         $idRincianLabAset = $_POST['selectedRows'];
-        $idRequestPeminjaman = $data['idRequestPeminjaman'];
+        $idRequestAsetPeminjaman = $data['idRequestAsetPeminjaman'];
         $sectionAsetValue = 'Dipinjam';
         $requestStatus = 'Approve';
         
@@ -145,46 +145,46 @@ class RequestPeminjaman extends ResourceController
                     'idRincianLabAset' => $idRincianAset,
                     'idManajemenPeminjaman' => $idManajemenPeminjaman,
                 ];
-                $this->requestPeminjamanModel->approveDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus, $idRincianLabAset);
+                $this->requestAsetPeminjamanModel->approveDetailRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus, $idRincianLabAset);
                 // die;
                 $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
                 $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
                 
             }
-            $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
+            $this->requestAsetPeminjamanModel->updateRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus);
 
             return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Peminjaman sudah disetujui');
         } else {
-            return redirect()->to(site_url('requestPeminjaman'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('requestAsetPeminjaman'))->with('error', 'Semua field harus terisi');
         }
     }
 
-    public function rejectLoan($idRequestPeminjaman) {
+    public function rejectLoan($idRequestAsetPeminjaman) {
         $requestStatus = 'Reject';
-        $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
-        return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Request peminjaman berhasil ditolak');
+        $this->requestAsetPeminjamanModel->updateRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus);
+        return redirect()->to(site_url('requestAsetPeminjaman'))->with('success', 'Request peminjaman berhasil ditolak');
     }
 
     public function print($id = null) {
-        $dataRequestPeminjaman = $this->requestPeminjamanModel->findHistory($id);
-        $dataRincianLabAset = $this->requestPeminjamanModel->getRincianItem($id);
+        $dataRequestAsetPeminjaman = $this->requestAsetPeminjamanModel->findHistory($id);
+        $dataRincianLabAset = $this->requestAsetPeminjamanModel->getRincianItem($id);
     
-        if (!$dataRequestPeminjaman || empty($dataRincianLabAset)) {
+        if (!$dataRequestAsetPeminjaman || empty($dataRincianLabAset)) {
             return view('error/404');
         }
     
         $data = [
-            'dataRequestPeminjaman' => $dataRequestPeminjaman,
+            'dataRequestAsetPeminjaman' => $dataRequestAsetPeminjaman,
             'dataIdentitasLab' => $this->identitasLabModel->findAll(),
             'dataRincianLabAset' => $dataRincianLabAset,
         ];
     
     
-        $pdfData = pdfSuratPeminjaman($dataRequestPeminjaman, $dataRincianLabAset);
+        $pdfData = pdfSuratPeminjaman($dataRequestAsetPeminjaman, $dataRincianLabAset);
     
-        $tanggal = date('d F Y', strtotime($dataRequestPeminjaman->tanggal));
+        $tanggal = date('d F Y', strtotime($dataRequestAsetPeminjaman->tanggal));
         
-        $filename = 'Formulir Peminjaman Aset - ' . $dataRequestPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
+        $filename = 'Formulir Peminjaman Aset - ' . $dataRequestAsetPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');
@@ -197,11 +197,11 @@ class RequestPeminjaman extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $requestPeminjaman = $this->requestPeminjamanModel->findAllHistory($startDate, $endDate);
+        $requestAsetPeminjaman = $this->requestAsetPeminjamanModel->findAllHistory($startDate, $endDate);
 
     
-        if (empty($requestPeminjaman)) {
-            return redirect()->to(site_url('requestPeminjaman'))->with('error', 'Tidak ada dokumen untuk didownload');
+        if (empty($requestAsetPeminjaman)) {
+            return redirect()->to(site_url('requestAsetPeminjaman'))->with('error', 'Tidak ada dokumen untuk didownload');
         }
     
         $zip = new \ZipArchive();
@@ -211,24 +211,24 @@ class RequestPeminjaman extends ResourceController
             return view('error/500'); 
         }
     
-        foreach ($requestPeminjaman as $peminjaman) {
-            $dataRequestPeminjaman = $this->requestPeminjamanModel->findHistory($peminjaman->idRequestPeminjaman);
-            $dataRincianLabAset = $this->requestPeminjamanModel->getRincianItem($peminjaman->idRequestPeminjaman);
+        foreach ($requestAsetPeminjaman as $peminjaman) {
+            $dataRequestAsetPeminjaman = $this->requestAsetPeminjamanModel->findHistory($peminjaman->idRequestAsetPeminjaman);
+            $dataRincianLabAset = $this->requestAsetPeminjamanModel->getRincianItem($peminjaman->idRequestAsetPeminjaman);
     
-            if (!$dataRequestPeminjaman || empty($dataRincianLabAset)) {
+            if (!$dataRequestAsetPeminjaman || empty($dataRincianLabAset)) {
                 continue;
             }
     
             $data = [
-                'dataRequestPeminjaman' => $dataRequestPeminjaman,
+                'dataRequestAsetPeminjaman' => $dataRequestAsetPeminjaman,
                 'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                 'dataRincianLabAset' => $dataRincianLabAset,
             ];
     
-            $pdfData = pdfSuratPeminjaman($dataRequestPeminjaman, $dataRincianLabAset);
-            $tanggal = date('d F Y', strtotime($dataRequestPeminjaman->tanggal));
+            $pdfData = pdfSuratPeminjaman($dataRequestAsetPeminjaman, $dataRincianLabAset);
+            $tanggal = date('d F Y', strtotime($dataRequestAsetPeminjaman->tanggal));
             
-            $filename = 'Formulir Peminjaman Aset - ' . $dataRequestPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
+            $filename = 'Formulir Peminjaman Aset - ' . $dataRequestAsetPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
     
             $zip->addFromString($filename, $pdfData);
         }
@@ -246,15 +246,15 @@ class RequestPeminjaman extends ResourceController
     
     public function delete($id = null)
     {
-        $this->requestPeminjamanModel->delete($id);
-        return redirect()->to(site_url('requestPeminjaman'));
+        $this->requestAsetPeminjamanModel->delete($id);
+        return redirect()->to(site_url('requestAsetPeminjaman'));
     }
 
     public function export() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $dataRequest = $this->requestPeminjamanModel->getDataRequest($startDate, $endDate);
+        $dataRequest = $this->requestAsetPeminjamanModel->getDataRequest($startDate, $endDate);
         $spreadsheet = new Spreadsheet();
         $requestSheet = $spreadsheet->getActiveSheet();
         $requestSheet->setTitle('Request');
@@ -305,7 +305,7 @@ class RequestPeminjaman extends ResourceController
             $requestSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
-        $dataApprove = $this->requestPeminjamanModel->getDataApprove($startDate, $endDate);
+        $dataApprove = $this->requestAsetPeminjamanModel->getDataApprove($startDate, $endDate);
         $approveSheet = $spreadsheet->createSheet();
         $approveSheet->setTitle('Approve');
         $approveSheet->getTabColor()->setRGB('5D9C59');
@@ -353,7 +353,7 @@ class RequestPeminjaman extends ResourceController
             $approveSheet->getColumnDimension($column)->setAutoSize(true);
         }
 
-        $dataReject = $this->requestPeminjamanModel->getDataReject($startDate, $endDate);
+        $dataReject = $this->requestAsetPeminjamanModel->getDataReject($startDate, $endDate);
         $rejectSheet = $spreadsheet->createSheet();
         $rejectSheet->setTitle('Reject');
         $rejectSheet->getTabColor()->setRGB('DF2E38');
@@ -400,7 +400,7 @@ class RequestPeminjaman extends ResourceController
         $spreadsheet->setActiveSheetIndex(0);
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Laboratorium - Request Peminjaman.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Request Peminjaman.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -410,18 +410,18 @@ class RequestPeminjaman extends ResourceController
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
 
-        $dataRequest = $this->requestPeminjamanModel->getDataRequest($startDate, $endDate);
-        $dataApprove = $this->requestPeminjamanModel->getDataApprove($startDate, $endDate);
-        $dataReject = $this->requestPeminjamanModel->getDataReject($startDate, $endDate);
+        $dataRequest = $this->requestAsetPeminjamanModel->getDataRequest($startDate, $endDate);
+        $dataApprove = $this->requestAsetPeminjamanModel->getDataApprove($startDate, $endDate);
+        $dataReject = $this->requestAsetPeminjamanModel->getDataReject($startDate, $endDate);
 
         $title = "REPORT REQUEST PEMINJAMAN";
         if (!$dataRequest && !$dataApprove && !$dataReject) {
             return view('error/404');
         }
     
-        $pdfData = pdfRequestPeminjaman($dataRequest, $dataApprove, $dataReject, $title, $startDate, $endDate);
+        $pdfData = pdfRequestAsetPeminjaman($dataRequest, $dataApprove, $dataReject, $title, $startDate, $endDate);
     
-        $filename = 'Laboratorium - Request Peminjaman' . ".pdf";
+        $filename = 'Sarana - Request Peminjaman' . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');

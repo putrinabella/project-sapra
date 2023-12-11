@@ -28,12 +28,12 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
+            <a class="nav-link" data-bs-toggle="collapse" href="#saranaManajemenPeminjaman" role="button" aria-expanded="false" aria-controls="saranaManajemenPeminjaman">
                 <i class="link-icon" data-feather="user-check"></i>
                 <span class="link-title">Peminjaman</span>
                 <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
-            <div class="collapse" id="manajemenPeminjaman">
+            <div class="collapse" id="saranaManajemenPeminjaman">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
                         <a href="<?= site_url('requestAsetPeminjaman') ?>" class="nav-link">Request Peminjaman </a>

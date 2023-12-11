@@ -73,6 +73,43 @@ class RequestPeminjaman extends ResourceController
         }
     }
 
+    public function processLoan() {
+        $data = $this->request->getPost();
+        $idRincianLabAset = $_POST['selectedRows'];
+        $idRequestPeminjaman = $data['idRequestPeminjaman'];
+        $sectionAsetValue = 'Dipinjam';
+        $requestStatus = 'Approve';
+        
+        if (!empty($data['asalPeminjam'])) {
+            $this->manajemenPeminjamanModel->insert($data);
+            $idManajemenPeminjaman = $this->db->insertID();
+            
+            foreach ($idRincianLabAset as $idRincianAset) {
+                // die;
+                $detailData = [
+                    'idRincianLabAset' => $idRincianAset,
+                    'idManajemenPeminjaman' => $idManajemenPeminjaman,
+                ];
+                $this->requestPeminjamanModel->approveDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus, $idRincianLabAset);
+                // die;
+                $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
+                $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
+                
+            }
+            $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
+
+            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Peminjaman sudah disetujui');
+        } else {
+            return redirect()->to(site_url('requestPeminjaman'))->with('error', 'Semua field harus terisi');
+        }
+    }
+
+    public function rejectLoan($idRequestPeminjaman) {
+        $requestStatus = 'Reject';
+        $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
+        return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Request peminjaman berhasil ditolak');
+    }
+
     public function edit($id = null)
     {
         if ($id != null) {
@@ -126,43 +163,24 @@ class RequestPeminjaman extends ResourceController
             return view('error/404');
         }
     }
-    
-    
-    public function processLoan() {
-        $data = $this->request->getPost();
-        $idRincianLabAset = $_POST['selectedRows'];
-        $idRequestPeminjaman = $data['idRequestPeminjaman'];
-        $sectionAsetValue = 'Dipinjam';
-        $requestStatus = 'Approve';
-        
-        if (!empty($data['asalPeminjam'])) {
-            $this->manajemenPeminjamanModel->insert($data);
-            $idManajemenPeminjaman = $this->db->insertID();
-            
-            foreach ($idRincianLabAset as $idRincianAset) {
-                // die;
-                $detailData = [
-                    'idRincianLabAset' => $idRincianAset,
-                    'idManajemenPeminjaman' => $idManajemenPeminjaman,
+
+    public function getLoanHistory($id = null) {
+        if ($id != null) {
+            $dataRequestPeminjaman = $this->requestPeminjamanModel->findHistory($id);
+            $dataRincianLabAset = $this->requestPeminjamanModel->getRincianLabAset($id);
+            if (is_object($dataRequestPeminjaman)) {
+                $data = [
+                    'dataRequestPeminjaman' => $dataRequestPeminjaman,
+                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+                    'dataRincianLabAset' => $dataRincianLabAset,
                 ];
-                $this->requestPeminjamanModel->approveDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus, $idRincianLabAset);
-                // die;
-                $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
-                $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
-                
+                return view('labView/requestPeminjaman/show', $data);
+            } else {
+                return view('error/404');
             }
-            $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
-
-            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Peminjaman sudah disetujui');
         } else {
-            return redirect()->to(site_url('requestPeminjaman'))->with('error', 'Semua field harus terisi');
+            return view('error/404');
         }
-    }
-
-    public function rejectLoan($idRequestPeminjaman) {
-        $requestStatus = 'Reject';
-        $this->requestPeminjamanModel->updateRequestPeminjaman($idRequestPeminjaman, $requestStatus);
-        return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Request peminjaman berhasil ditolak');
     }
 
     public function print($id = null) {
@@ -249,6 +267,50 @@ class RequestPeminjaman extends ResourceController
         $this->requestPeminjamanModel->delete($id);
         return redirect()->to(site_url('requestPeminjaman'));
     }
+
+    public function trash()
+    {
+        $data['dataRequestPeminjaman'] = $this->requestPeminjamanModel->onlyDeleted()->getRecycle();
+        return view('labView/requestPeminjaman/trash', $data);
+    }
+
+    public function restore($id = null)
+    {
+        $this->db = \Config\Database::connect();
+        if ($id != null) {
+            $this->db->table('tblManajemenPeminjaman')
+                ->set('deleted_at', null, true)
+                ->where(['idRequestPeminjaman' => $id])
+                ->update();
+        } else {
+            $this->db->table('tblManajemenPeminjaman')
+                ->set('deleted_at', null, true)
+                ->where('deleted_at is NOT NULL', NULL, FALSE)
+                ->update();
+        }
+        if ($this->db->affectedRows() > 0) {
+            return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Data berhasil direstore');
+        }
+        return redirect()->to(site_url('requestPeminjaman/trash'))->with('error', 'Tidak ada data untuk direstore');
+    }
+
+    public function deletePermanent($id = null)
+    {
+        if ($id != null) {
+            $this->requestPeminjamanModel->delete($id, true);
+            return redirect()->to(site_url('requestPeminjaman/trash'))->with('success', 'Data berhasil dihapus permanen');
+        } else {
+            $countInTrash = $this->requestPeminjamanModel->onlyDeleted()->countAllResults();
+
+            if ($countInTrash > 0) {
+                $this->requestPeminjamanModel->onlyDeleted()->purgeDeleted();
+                return redirect()->to(site_url('requestPeminjaman/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
+            } else {
+                return redirect()->to(site_url('requestPeminjaman/trash'))->with('error', 'Tempat sampah sudah kosong!');
+            }
+        }
+    }
+
 
     public function export() {
         $startDate = $this->request->getVar('startDate');
@@ -404,6 +466,23 @@ class RequestPeminjaman extends ResourceController
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
+    }
+
+    public function changeStatus($idRicianLabAset)
+    {
+        $newSectionAset = $this->request->getPost('sectionAset');
+        $namaAkun = $this->request->getPost('namaAkun');
+        $kodeAkun = $this->request->getPost('kodeAkun');
+
+        if ($this->rincianAsetModel->updateSectionAset($idRicianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
+            if ($newSectionAset === 'Dimusnahkan') {
+                return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dimusnahkan');
+            } elseif ($newSectionAset === 'None') {
+                return redirect()->to(site_url('rincianAset'))->with('success', 'Aset berhasil dikembalikan');
+            }
+        } else {
+            return redirect()->to(site_url('rincianAset'))->with('error', 'Aset batal dimusnahkan');
+        }
     }
 
     public function generatePDF() {

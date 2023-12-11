@@ -267,7 +267,46 @@ $routes->get('pemusnahanAset/export', 'PemusnahanAset::export');
 $routes->post('pemusnahanAset/destruction/(:any)', 'PemusnahanAset::destruction/$1');
 $routes->resource('pemusnahanAset', ['filter' => 'isLoggedIn']);
 
-// Data Inventaris
+// SARANA - PEMINJAMAN ASET
+
+// Request Peminjaman
+$routes->get('requestAsetPeminjaman/generatePDF', 'RequestAsetPeminjaman::generatePDF');
+$routes->get('requestAsetPeminjaman/export', 'RequestAsetPeminjaman::export');
+$routes->post('requestAsetPeminjaman/processLoan', 'RequestAsetPeminjaman::processLoan');
+$routes->get('requestAsetPeminjaman/rejectLoan/(:any)', 'RequestAsetPeminjaman::rejectLoan/$1');
+$routes->resource('requestAsetPeminjaman', ['filter' => 'isLoggedIn']);
+
+// Data Peminjaman
+$routes->get('dataAsetPeminjaman/print/(:num)', 'DataAsetPeminjaman::print/$1');
+$routes->get('dataAsetPeminjaman/printAll', 'DataAsetPeminjaman::printAll');
+$routes->get('dataAsetPeminjaman/generatePDF', 'DataAsetPeminjaman::generatePDF');
+$routes->get('dataAsetPeminjaman/export', 'DataAsetPeminjaman::export');
+$routes->get('dataAsetPeminjaman/trash', 'DataAsetPeminjaman::trash');
+$routes->get('dataAsetPeminjaman/restore/(:any)', 'DataAsetPeminjaman::restore/$1');
+$routes->get('dataAsetPeminjaman/restore', 'DataAsetPeminjaman::restore');
+$routes->get('dataAsetPeminjaman/history/(:any)', 'DataAsetPeminjaman::getLoanHistory/$1');
+$routes->post('dataAsetPeminjaman/revokeLoan/(:any)', 'DataAsetPeminjaman::revokeLoan/$1');
+$routes->delete('dataAsetPeminjaman/deletePermanent/(:any)', 'DataAsetPeminjaman::deletePermanent/$1');
+$routes->delete('dataAsetPeminjaman/deletePermanent', 'DataAsetPeminjaman::deletePermanent');
+$routes->resource('dataAsetPeminjaman', ['filter' => 'laboranFilter']);
+
+// Manajemen Peminjaman
+$routes->post('getNama', 'ManajemenAsetPeminjaman::getNama');
+$routes->get('manajemenAsetPeminjaman/loan/(:num)', 'ManajemenAsetPeminjaman::loan/$1');
+$routes->get('manajemenAsetPeminjaman/print/(:num)', 'ManajemenAsetPeminjaman::print/$1');
+$routes->get('manajemenAsetPeminjaman/showUser/(:num)', 'ManajemenAsetPeminjaman::showUser/$1');
+$routes->get('manajemenAsetPeminjaman/getKodeLab/(:num)', 'ManajemenAsetPeminjaman::getKodeLab/$1');
+$routes->post('manajemenAsetPeminjaman/getRincianLabAsetByLab', 'ManajemenAsetPeminjaman::getRincianLabAsetByLab');
+$routes->post('manajemenAsetPeminjaman/addLoan', 'ManajemenAsetPeminjaman::addLoan');
+$routes->post('manajemenAsetPeminjaman/getRole', 'ManajemenAsetPeminjaman::getRole');
+$routes->post('manajemenAsetPeminjaman/getFilterOptions', 'ManajemenAsetPeminjaman::getFilterOptions');
+$routes->post('manajemenAsetPeminjaman/getSaranaByLab', 'ManajemenAsetPeminjaman::getSaranaByLab');
+$routes->post('manajemenAsetPeminjaman/getKodeBySarana', 'ManajemenAsetPeminjaman::getKodeBySarana');
+$routes->delete('manajemenAsetPeminjaman/deletePermanent/(:any)', 'ManajemenAsetPeminjaman::deletePermanent/$1');
+$routes->delete('manajemenAsetPeminjaman/deletePermanent', 'ManajemenAsetPeminjaman::deletePermanent');
+$routes->resource('manajemenAsetPeminjaman', ['filter' => 'isLoggedIn']);
+
+// SARANA - DATA INVENTARIS
 $routes->get('dataNonInventaris/createTemplate', 'DataNonInventaris::createTemplate');
 $routes->get('dataNonInventaris/generatePDF', 'DataNonInventaris::generatePDF');
 $routes->get('dataNonInventaris/export', 'DataNonInventaris::export');
@@ -588,21 +627,19 @@ $routes->resource('dataPeminjaman', ['filter' => 'laboranFilter']);
 // Request Peminjaman
 $routes->get('requestPeminjaman/generatePDF', 'RequestPeminjaman::generatePDF');
 $routes->get('requestPeminjaman/export', 'RequestPeminjaman::export');
-$routes->get('requestPeminjaman/trash', 'RequestPeminjaman::trash');
-$routes->get('requestPeminjaman/restore/(:any)', 'RequestPeminjaman::restore/$1');
-$routes->get('requestPeminjaman/restore', 'RequestPeminjaman::restore');
-// $routes->get('dataLabPeminjaman', 'RequestPeminjaman::user');
-$routes->get('requestPeminjaman/history/(:any)', 'RequestPeminjaman::getLoanHistory/$1');
 $routes->post('requestPeminjaman/processLoan', 'RequestPeminjaman::processLoan');
 $routes->get('requestPeminjaman/rejectLoan/(:any)', 'RequestPeminjaman::rejectLoan/$1');
-$routes->post('returnItems/changeStatus/(:any)', 'RequestPeminjaman::changeStatus/$1');
-$routes->post('returnItems/changeSectionAset/(:any)', 'RequestPeminjaman::changeSectionAset/$1');
-$routes->delete('requestPeminjaman/deletePermanent/(:any)', 'RequestPeminjaman::deletePermanent/$1');
-$routes->delete('requestPeminjaman/deletePermanent', 'RequestPeminjaman::deletePermanent');
 $routes->resource('requestPeminjaman', ['filter' => 'isLoggedIn']);
+// $routes->get('requestPeminjaman/trash', 'RequestPeminjaman::trash');
+// $routes->get('requestPeminjaman/restore/(:any)', 'RequestPeminjaman::restore/$1');
+// $routes->get('requestPeminjaman/restore', 'RequestPeminjaman::restore');
+// $routes->get('requestPeminjaman/history/(:any)', 'RequestPeminjaman::getLoanHistory/$1');
+// $routes->post('returnItems/changeStatus/(:any)', 'RequestPeminjaman::changeStatus/$1');
+// $routes->post('returnItems/changeSectionAset/(:any)', 'RequestPeminjaman::changeSectionAset/$1');
+// $routes->delete('requestPeminjaman/deletePermanent/(:any)', 'RequestPeminjaman::deletePermanent/$1');
+// $routes->delete('requestPeminjaman/deletePermanent', 'RequestPeminjaman::deletePermanent');
 
 // Manajemen Peminjaman
-// User
 $routes->post('getNama', 'ManajemenPeminjaman::getNama');
 $routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');

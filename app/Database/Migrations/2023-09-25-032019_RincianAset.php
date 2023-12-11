@@ -19,6 +19,10 @@ class RincianAset extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'idManajemenAsetPeminjaman' => [
+                'type' => 'INT',
+                'constraint' => 3,
+            ],
             'idIdentitasSarana' => [
                 'type' => 'INT',
                 'constraint' => 3,

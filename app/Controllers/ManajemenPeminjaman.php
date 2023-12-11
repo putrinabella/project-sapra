@@ -305,9 +305,9 @@ class ManajemenPeminjaman extends ResourceController
                 ];
                 $this->db->table('tblDetailRequestPeminjaman')->insert($detailData);
             }
-            return redirect()->to(site_url('dataLabPeminjaman'))->with('success', 'Data berhasil disimpan');
+            return redirect()->to(site_url('peminjamanDataUser'))->with('success', 'Data berhasil disimpan');
         } else {
-            return redirect()->to(site_url('dataLabPeminjaman'))->with('error', 'Semua field harus terisi');
+            return redirect()->to(site_url('peminjamanDataUser'))->with('error', 'Semua field harus terisi');
         }
     }
 
@@ -328,9 +328,9 @@ class ManajemenPeminjaman extends ResourceController
     //             $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
     //             $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
     //         }
-    //         return redirect()->to(site_url('dataLabPeminjaman'))->with('success', 'Data berhasil disimpan');
+    //         return redirect()->to(site_url('peminjamanDataUser'))->with('success', 'Data berhasil disimpan');
     //     } else {
-    //         return redirect()->to(site_url('dataLabPeminjaman'))->with('error', 'Semua field harus terisi');
+    //         return redirect()->to(site_url('peminjamanDataUser'))->with('error', 'Semua field harus terisi');
     //     }
     // }
 }
