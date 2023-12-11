@@ -125,20 +125,7 @@ class PrasaranaRuangan extends ResourceController
             $dataInfoPrasarana->namaLantai = $this->prasaranaRuanganModel->getIdentitasLantai($dataPrasaranaRuangan->idIdentitasPrasarana)->namaLantai;
             $dataSarana = $this->prasaranaRuanganModel->getSaranaByPrasaranaId($dataPrasaranaRuangan->idIdentitasPrasarana);
             $dataGeneral = $this->prasaranaRuanganModel->getDataBySarana($id);
-            // var_dump($dataGeneral);
-            // die;
 
-            // $dataAsetItBagus = $this->rincianAsetModel->getDataItBagus();
-            // $dataAsetItRusak = $this->rincianAsetModel->getDataItRusak();
-            // $dataAsetItHilang = $this->rincianAsetModel->getDataItHilang();
-            
-            // $title = "REPORT RINCIAN ASET IT";
-            
-            // if (!$dataAsetItBagus && !$dataAsetItRusak && !$dataAsetItHilang) {
-            //     return view('error/404');
-            // }
-    
-        
             $pdfData = pdfAsetRuangan($dataPrasaranaRuangan, $dataInfoPrasarana, $dataGeneral);
         
             
@@ -153,73 +140,4 @@ class PrasaranaRuangan extends ResourceController
             return view('error/404');
         }
     }
-    // function print($id = null) {
-    //     if ($id != null) {
-    //         $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);
-    
-    //         if (is_object($dataPrasaranaRuangan)) {
-    
-    //             $dataInfoPrasarana = $this->prasaranaRuanganModel->getIdentitasGedung($dataPrasaranaRuangan->idIdentitasPrasarana);
-    //             $dataInfoPrasarana->namaLantai = $this->prasaranaRuanganModel->getIdentitasLantai($dataPrasaranaRuangan->idIdentitasPrasarana)->namaLantai;
-    //             $dataSarana = $this->prasaranaRuanganModel->getSaranaByPrasaranaId($dataPrasaranaRuangan->idIdentitasPrasarana);
-    
-    //             $data = [
-    //                 'dataPrasaranaRuangan'  => $dataPrasaranaRuangan,
-    //                 'dataInfoPrasarana'     => $dataInfoPrasarana,
-    //                 'dataSarana'            => $dataSarana,
-    //             ];
-    
-    //             $html = view('prasaranaView/Ruangan/print', $data); 
-    
-    //             $options = new Options();
-    //             $options->set('isHtml5ParserEnabled', true);
-    //             $options->set('isPhpEnabled', true);
-    
-    //             $dompdf = new Dompdf($options);
-    //             $dompdf->loadHtml($html);
-    //             $dompdf->setPaper('A4', 'landscape');
-    //             $dompdf->render();
-    //             $namaPrasarana = $data['dataPrasaranaRuangan']->namaPrasarana;
-    //             $filename = "Prasarana - $namaPrasarana.pdf";
-    //             $dompdf->stream($filename);
-    //         } else {
-    //             return view('error/404');
-    //         }
-    //     } else {
-    //         return view('error/404');
-    //     }
-    // }
-
-    public function generatePDF($id = null) {
-        $dataPrasaranaRuangan = $this->prasaranaRuanganModel->find($id);
-        var_dump($dataPrasaranaRuangan);
-        die;
-        $dataAsetItBagus = $this->rincianAsetModel->getDataItBagus();
-        $dataAsetItRusak = $this->rincianAsetModel->getDataItRusak();
-        $dataAsetItHilang = $this->rincianAsetModel->getDataItHilang();
-        
-        $title = "REPORT RINCIAN ASET IT";
-        
-        if (!$dataAsetItBagus && !$dataAsetItRusak && !$dataAsetItHilang) {
-            return view('error/404');
-        }
-    
-        $data = [
-            'dataAsetItBagus' => $dataAsetItBagus,
-            'dataAsetItRusak' => $dataAsetItRusak,
-            'dataAsetItHilang' => $dataAsetItHilang,
-        ];
-    
-        $pdfData = pdfRincianItAset($dataAsetItBagus, $dataAsetItRusak, $dataAsetItHilang, $title);
-    
-        
-        $filename = 'IT - Rincian Aset' . ".pdf";
-        
-        $response = $this->response;
-        $response->setHeader('Content-Type', 'application/pdf');
-        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
-        $response->setBody($pdfData);
-        $response->send();
-    }
-
 }

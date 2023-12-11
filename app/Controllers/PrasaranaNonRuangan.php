@@ -29,6 +29,7 @@ class PrasaranaNonRuangan extends ResourceController
         $this->identitasLantaiModel = new IdentitasLantaiModels();
         $this->rincianAsetModel = new RincianAsetModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf']);
     }
 
     public function index() {
@@ -119,36 +120,22 @@ class PrasaranaNonRuangan extends ResourceController
 
     function print($id = null) {
         if ($id != null) {
-            $dataPrasaranaNonRuangan = $this->prasaranaNonRuanganModel->find($id);
-    
-            if (is_object($dataPrasaranaNonRuangan)) {
-    
-                $dataInfoPrasarana = $this->prasaranaNonRuanganModel->getIdentitasGedung($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-                $dataInfoPrasarana->namaLantai = $this->prasaranaNonRuanganModel->getIdentitasLantai($dataPrasaranaNonRuangan->idIdentitasPrasarana)->namaLantai;
-                $dataSarana = $this->prasaranaNonRuanganModel->getSaranaByPrasaranaId($dataPrasaranaNonRuangan->idIdentitasPrasarana);
-    
-                $data = [
-                    'dataPrasaranaNonRuangan'  => $dataPrasaranaNonRuangan,
-                    'dataInfoPrasarana'     => $dataInfoPrasarana,
-                    'dataSarana'            => $dataSarana,
-                ];
-    
-                $html = view('prasaranaView/nonRuangan/print', $data); 
-    
-                $options = new Options();
-                $options->set('isHtml5ParserEnabled', true);
-                $options->set('isPhpEnabled', true);
-    
-                $dompdf = new Dompdf($options);
-                $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'portrait');
-                $dompdf->render();
-                $namaPrasarana = $data['dataPrasaranaNonRuangan']->namaPrasarana;
-                $filename = "Prasarana - $namaPrasarana.pdf";
-                $dompdf->stream($filename);
-            } else {
-                return view('error/404');
-            }
+            $dataPrasaranaRuangan = $this->prasaranaNonRuanganModel->find($id);
+            $dataInfoPrasarana = $this->prasaranaNonRuanganModel->getIdentitasGedung($dataPrasaranaRuangan->idIdentitasPrasarana);
+            $dataInfoPrasarana->namaLantai = $this->prasaranaNonRuanganModel->getIdentitasLantai($dataPrasaranaRuangan->idIdentitasPrasarana)->namaLantai;
+            $dataSarana = $this->prasaranaNonRuanganModel->getSaranaByPrasaranaId($dataPrasaranaRuangan->idIdentitasPrasarana);
+            $dataGeneral = $this->prasaranaNonRuanganModel->getDataBySarana($id);
+
+            $pdfData = pdfAsetRuangan($dataPrasaranaRuangan, $dataInfoPrasarana, $dataGeneral);
+        
+            
+            $filename = 'IT - Rincian Aset' . ".pdf";
+            
+            $response = $this->response;
+            $response->setHeader('Content-Type', 'application/pdf');
+            $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+            $response->setBody($pdfData);
+            $response->send();
         } else {
             return view('error/404');
         }

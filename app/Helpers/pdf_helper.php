@@ -2819,8 +2819,8 @@ if (!function_exists('pdfAsetRuangan')) {
         <p style="padding-top: 10px; text-align: center;"><b>
         DAFTAR INVENTARIS RUANGAN SMK TELKOM BANJARBARU TAHUN $yearNow/$yearNext
         </b></p>
-        <h2 style="text-align: center; text-transform: uppercase; text-decoration: underline">$dataPrasaranaRuangan->kodePrasarana
-        <br>$dataPrasaranaRuangan->namaPrasarana</h2>
+        <h3 style="text-align: center; text-transform: uppercase; text-decoration: underline">$dataPrasaranaRuangan->kodePrasarana
+        <br>$dataPrasaranaRuangan->namaPrasarana</h3>
         <table style="padding-top: 10px; width: 100%;">
             <tr>
                 <th style="width: 15%;">Gedung</th>
@@ -2835,17 +2835,17 @@ if (!function_exists('pdfAsetRuangan')) {
             <tr>
                 <th style="width: 15%;">Luas</th>
                 <th style="width: 2%;">:</th>
-                <th>$dataPrasaranaRuangan->luas</th>
+                <th>$dataPrasaranaRuangan->luas&nbsp;m&sup2;</th>
             </tr>
         </table>
         <br>
         <br>
-        <table border="1" style="width: 100%; padding:5px; text-align: center;">
+        <table border="1" style="width: 100%; padding:5px; text-align: center; border-collapse: collapse;" >
             <thead>
                 <tr>
-                <th rowspan="2" style="width: 8%; "><b>No.</b></th>
-                <th rowspan="2" style="width: 41%; "><b>Nama Barang</b></th>
-                <th rowspan="2" style="width: 15%; "><b>Jumlah</b></th>
+                <th rowspan="2" style="width: 8%;"><b>No.</b></th>
+                <th rowspan="2" style="width: 41%;"><b>Nama Barang</b></th>
+                <th rowspan="2" style="width: 15%;"><b>Jumlah</b></th>
                 <th style="width: 16%; "><b>Kondisi</b></th>
                 <th rowspan="2" style="width: 20%;"><b>Keterangan</b></th>
                 </tr>
@@ -2891,7 +2891,22 @@ if (!function_exists('pdfAsetRuangan')) {
             <th style="width: 35%;">(Nama ketua sarpra)</th>
         </tr>
     </table>
-
+    <br>
+    <br>
+    <br>
+    <b>Catatan:</b>
+    <ol>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+        <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+        <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</li>
+        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</li>
+        <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</li>
+        <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</li>
+        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</li>
+        <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+        <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+    </ol>
     EOD;
         
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);

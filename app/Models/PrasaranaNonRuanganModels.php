@@ -75,4 +75,21 @@ class PrasaranaNonRuanganModels extends Model
         return $query->getResult();
     }
     
+    function getDataBySarana($id = null) {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->select('tblIdentitasSarana.*');
+        $builder->select('COUNT(*) AS jumlahTotal', false);
+        $builder->select('SUM(1) AS jumlahAset', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Bagus" THEN 1 ELSE 0 END) AS jumlahBagus', false);
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Rusak" THEN 1 ELSE 0 END) AS jumlahRusak', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.status = "Hilang" THEN 1 ELSE 0 END) AS jumlahHilang', false); 
+        $builder->select('SUM(CASE WHEN tblRincianAset.sectionAset = "Dipinjam" THEN 1 ELSE 0 END) AS jumlahDipinjam', false); 
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.idIdentitasPrasarana =', $id);
+        $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
+        $query = $builder->get();
+        return $query->getResult();
+    }
 }
