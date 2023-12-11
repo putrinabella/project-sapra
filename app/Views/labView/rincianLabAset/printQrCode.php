@@ -4,37 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selected QR Code</title>
+    <title>QR Code Rincian Aset Lab </title>
 </head>
 
 <body>
     <div class="card overflow-hidden">
         <div class="card-body">
-            <table class="table" style="max-width: 90%; margin: 0 auto; padding: 0;">
+            <table>
                 <tr>
                     <?php $count = 0; ?>
                     <?php foreach ($data['dataRincianLabAset'] as $key => $value) : ?>
                     <td style="padding: 0;">
-                        <table style="width: 100%; border-collapse: collapse;">
+                        <table
+                            style="width: 100%; border-collapse: collapse; margin: 0 auto; padding: 10px; border: 1px dashed #000;">
                             <tr>
-                                <td style="width: 30%;">
+                                <td style="width: 30%; padding: 10 0 10 10;">
                                     <div class="image-container">
                                         <?php if (!empty($value->qrCodeData)) : ?>
                                         <img src="<?= $value->qrCodeData ?>" alt="QR Code" style="max-width: 100px;">
                                         <?php else : ?>
-                                        (no image)
+                                        (QR Code not found)
                                         <?php endif; ?>
                                     </div>
                                 </td>
-                                <td style="width: 70%; vertical-align: top; padding: 0 10px;">
+                                <td style="width: 70%; vertical-align: top; padding:10 5 10 10;">
                                     <?= $value->kodeRincianLabAset ?>
                                     <br>
                                     <?= $value->namaLab ?>
                                     <br>
                                     <?= $value->namaSarana ?>
                                     <br>
-                                    <?= $value->tahunPengadaan ?>
+                                    Tahun Pengadaan:
+                                    <?= ($value->tahunPengadaan == 0 || $value->tahunPengadaan == '0000') ? '-' : $value->tahunPengadaan ?>
                                     <br>
+                                    Sumber Dana:
                                     <?= $value->namaSumberDana ?>
                                 </td>
                             </tr>

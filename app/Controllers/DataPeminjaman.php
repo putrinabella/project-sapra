@@ -58,32 +58,6 @@ class DataPeminjaman extends ResourceController
 
         return view('labView/dataPeminjaman/index', $data);
     }
-    
-    public function user()
-    {
-        $startDate = $this->request->getVar('startDate');
-        $endDate = $this->request->getVar('endDate');
-        $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
-
-        $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
-        $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
-
-        $tableHeading = "";
-        if (!empty($formattedStartDate) && !empty($formattedEndDate)) {
-            $tableHeading = " $formattedStartDate - $formattedEndDate";
-        }
-
-        $dataPeminjaman = $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate, $idUser);
-        $dataRequest = $this->requestPeminjamanModel->getDataRequestUser($startDate, $endDate, $idUser);
-
-        $dataUser = array_merge($dataPeminjaman, $dataRequest);
-
-        $data = [
-            'tableHeading' => $tableHeading,
-            'dataUser' => $dataUser,
-        ];
-        return view('labView/dataPeminjaman/user', $data);
-    }
 
     public function edit($id = null)
     {
@@ -160,44 +134,6 @@ class DataPeminjaman extends ResourceController
                     'dataRincianLabAset' => $dataRincianLabAset,
                 ];
                 return view('labView/dataPeminjaman/show', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
-    }
-
-    public function getUserLoanHistory($id = null) {
-        if ($id != null) {
-            $dataDataPeminjaman = $this->dataPeminjamanModel->findHistory($id);
-            $dataRincianLabAset = $this->dataPeminjamanModel->getRincianLabAset($id);
-            if (is_object($dataDataPeminjaman)) {
-                $data = [
-                    'dataDataPeminjaman' => $dataDataPeminjaman,
-                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-                    'dataRincianLabAset' => $dataRincianLabAset,
-                ];
-                return view('labView/dataPeminjaman/showUser', $data);
-            } else {
-                return view('error/404');
-            }
-        } else {
-            return view('error/404');
-        }
-    }
-
-    public function getuserRequestDetail($id = null) {
-        if ($id != null) {
-            $dataRequestPeminjaman = $this->requestPeminjamanModel->find($id);
-            $dataItemDipinjam = $this->requestPeminjamanModel->getBorrowItems($dataRequestPeminjaman->idRequestPeminjaman);
-            if (is_object($dataRequestPeminjaman)) {
-                $data = [
-                    'dataRequestPeminjaman' => $dataRequestPeminjaman,
-                    'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-                    'dataItemDipinjam' => $dataItemDipinjam,
-                ];
-                return view('labView/dataPeminjaman/userRequestDetail', $data);
             } else {
                 return view('error/404');
             }

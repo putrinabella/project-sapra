@@ -19,6 +19,7 @@ class RincianLabAsetModels extends Model
         return $builder->where('kodeRincianLabAset', $kodeRincianLabAset)
             ->countAllResults() > 0;
     }
+
     public function getSelectedRows($selectedRows) {
         $builder = $this->db->table($this->table);
         $builder->select('tblRincianLabAset.*, tblIdentitasSarana.*, tblSumberDana.*, tblKategoriManajemen.*, tblIdentitasLab.*');
@@ -166,12 +167,6 @@ class RincianLabAsetModels extends Model
         return $query->getResult();
     }
     
-    function calculateTotalSarana($saranaLayak, $saranaRusak) {
-        $saranaLayak = intval($saranaLayak);
-        $saranaRusak = intval($saranaRusak);
-        $totalSarana = $saranaLayak + $saranaRusak;
-        return $totalSarana;
-    }
 
     public function updateSectionAset($idRincianLabAset, $newSectionAset, $namaAkun, $kodeAkun) {
         if (in_array($newSectionAset, ["Dipinjam", "Dimusnahkan", "None"])) {

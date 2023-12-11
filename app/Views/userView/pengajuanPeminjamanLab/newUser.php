@@ -11,14 +11,14 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('peminjamanUser') ?>" class="btn btn-icon-text btn-outline-primary me-2">
+                    <a href="<?= site_url('pengajuanLabPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
                         <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Form Peminjaman</h4>
                     <div></div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('peminjamanUser/addLoan') ?>" method="POST"
+                <form action="<?= site_url('pengajuanLabPeminjaman/addLoan') ?>" method="POST"
                     enctype="multipart/form-data" id="custom-validation">
                     <div class="row">
                         <div class="col-12">

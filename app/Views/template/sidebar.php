@@ -28,6 +28,26 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
+                <i class="link-icon" data-feather="user-check"></i>
+                <span class="link-title">Peminjaman</span>
+                <i class="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div class="collapse" id="manajemenPeminjaman">
+                <ul class="nav sub-menu">
+                    <li class="nav-item">
+                        <a href="<?= site_url('requestAsetPeminjaman') ?>" class="nav-link">Request Peminjaman </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('dataAsetPeminjaman') ?>" class="nav-link">Data Peminjaman </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('manajemenAsetPeminjaman') ?>" class="nav-link">Pengajuan Peminjaman</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
             <a href="<?= site_url('dataNonInventaris') ?>" class="nav-link">
                 <i class="link-icon" data-feather="inbox"></i>
                 <span class="link-title">Non Inventaris</span>
@@ -89,12 +109,12 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#manajemenPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenPeminjaman">
+            <a class="nav-link" data-bs-toggle="collapse" href="#manajemenLabPeminjaman" role="button" aria-expanded="false" aria-controls="manajemenLabPeminjaman">
                 <i class="link-icon" data-feather="user-check"></i>
                 <span class="link-title">Peminjaman</span>
                 <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
-            <div class="collapse" id="manajemenPeminjaman">
+            <div class="collapse" id="manajemenLabPeminjaman">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
                         <a href="<?= site_url('requestPeminjaman') ?>" class="nav-link">Request Peminjaman </a>
@@ -343,16 +363,16 @@
         </li>
     <?php } ?>
 
-    <?php if (session()->get('role') == 'User' || session()->get('role') == 'Siswa' || session()->get('role') == 'Karyawan') { ?>
-        <li class="nav-item nav-category">Pengajuan Peminjaman</li>
+    <?php if (session()->get('role') == 'User') { ?>
+        <li class="nav-item nav-category">Laboratorium</li>
         <li class="nav-item">
-            <a href="<?= site_url('peminjamanUser') ?>" class="nav-link">
+            <a href="<?= site_url('pengajuanLabPeminjaman') ?>" class="nav-link">
                 <i class="link-icon" data-feather="edit"></i>
                 <span class="link-title">Input Peminjaman</span>
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= site_url('peminjamanDataUser') ?>" class="nav-link">
+            <a href="<?= site_url('dataLabPeminjaman') ?>" class="nav-link">
                 <i class="link-icon" data-feather="file-text"></i>
                 <span class="link-title">Daftar Peminjaman</span>
             </a>

@@ -1,20 +1,21 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Manajemen Aset Laboratorium &verbar; SARPRA </title>
+<title>Rincian Aset &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
+
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Manajemen Aset Laboratorium</li>
+        <li class="breadcrumb-item active" aria-current="page">Rincian Aset</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <h4 class="mb-3 mb-md-0">Manajemen Aset Laboratorium</h4>
+        <h4 class="mb-3 mb-md-0">Rincian Aset</h4>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
         <div class="dropdown">
@@ -22,12 +23,13 @@
                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('generateLabQRDoc') ?>">Generate All</a>
-                <a class="dropdown-item" href="#" id="generateSelectedLabQR">Generate Selected</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('generateLabQRDoc') ?>">Generate All</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('generateSelectedLabQR') ?>" id="generateSelectedLabQR">Generate Selected</a>
             </div>
         </div>
         <form action="<?= site_url('rincianLabAset/generateAndSetKodeRincianLabAset') ?>" method="post">
-            <button type="submit" class="btn btn-primary btn-icon-text mdi mdi-key me-2 mb-2 mb-md-0" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click for generate kode aset"></button>
+            <button type="submit" class="btn btn-primary btn-icon-text mdi mdi-key me-2 mb-2 mb-md-0"
+                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click for generate kode aset"></button>
         </form>
         <a href="<?= site_url('rincianLabAset/trash') ?>" class="btn btn-danger btn-icon-text me-2 mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="trash"></i>
@@ -41,7 +43,8 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('rincianLabAset/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('rincianLabAset/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('rincianLabAset/generatePDF') ?>">Download as
+                    PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -147,7 +150,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td><?=$value->namaSumberDana?></td>
-                                <td>
+                                <td class="text-center">
                                     <?php 
                                         if($value->tahunPengadaan == 0 || 0000) {
                                             echo "Tidak diketahui"; 
@@ -168,9 +171,8 @@
                                         class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     <a href="<?=site_url('rincianLabAset/'.$value->idRincianLabAset.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('rincianLabAset/'.$value->idRincianLabAset)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idRincianLabAset;?>">
-                                        
+                                    <form action="<?=site_url('rincianLabAset/'.$value->idRincianLabAset)?>" method="post"
+                                        class="d-inline" id="del-<?= $value->idRincianLabAset;?>">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?"
@@ -178,14 +180,10 @@
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
-                                    <a href="<?= site_url('QRBarcode/' . $value->kodeRincianLabAset) ?>" target="_blank"
-                                        class="btn btn-success mdi mdi-qrcode-scan"
-                                        data-kode="<?= $value->kodeRincianLabAset ?>">
-                                    </a>
                                 </td>
                                 <td class="text-center">
                                     <form
-                                        action="<?= site_url('pemusnahanLabAset/destruction/' . $value->idRincianLabAset) ?>"
+                                        action="<?= site_url('pemusnahanAset/destruction/' . $value->idRincianLabAset) ?>"
                                         method="post" class="d-inline">
                                         <div class="form-group">
                                             <div class="d-flex align-items-center">
@@ -226,7 +224,7 @@
             <form action="<?=site_url(" rincianLabAset/import")?>" method="POST" enctype="multipart/form-data"
                 id="custom-validation">
                 <div class="modal-body">
-                    
+
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">
@@ -237,6 +235,9 @@
         </div>
     </div>
 </div>
+
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -270,9 +271,15 @@
 
             if (selectedRows.length > 0) {
                 const selectedRowsQueryParam = selectedRows.join(',');
-                window.location.href = '<?= site_url('generateSelectedLabQR') ?>/' + selectedRowsQueryParam;
+                window.open('<?= site_url('generateSelectedLabQR') ?>/' + selectedRowsQueryParam, '_blank');
+
             } else {
-                alert('No rows selected for QR code generation.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak ada data',
+                    text: 'Silahkan pilih minimal satu data!',
+                    confirmButtonText: 'OK',
+                });
             }
         });
 

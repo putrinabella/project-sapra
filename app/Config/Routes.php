@@ -571,11 +571,6 @@ $routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
 // MANAJEMEN PEMINJAMAN
 
 // Data Peminjaman
-$routes->get('peminjamanDataUser/print/(:num)', 'DataPeminjaman::print/$1');
-$routes->get('peminjamanDataUser', 'DataPeminjaman::user');
-$routes->get('peminjamanDataUser/userDetail/(:any)', 'DataPeminjaman::getUserLoanHistory/$1');
-$routes->get('peminjamanDataUser/userRequestHistory/(:any)', 'DataPeminjaman::getuserRequestDetail/$1');
-
 $routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
 $routes->get('dataPeminjaman/printAll', 'DataPeminjaman::printAll');
 $routes->get('dataPeminjaman/generatePDF', 'DataPeminjaman::generatePDF');
@@ -596,7 +591,7 @@ $routes->get('requestPeminjaman/export', 'RequestPeminjaman::export');
 $routes->get('requestPeminjaman/trash', 'RequestPeminjaman::trash');
 $routes->get('requestPeminjaman/restore/(:any)', 'RequestPeminjaman::restore/$1');
 $routes->get('requestPeminjaman/restore', 'RequestPeminjaman::restore');
-$routes->get('peminjamanDataUser', 'RequestPeminjaman::user');
+// $routes->get('dataLabPeminjaman', 'RequestPeminjaman::user');
 $routes->get('requestPeminjaman/history/(:any)', 'RequestPeminjaman::getLoanHistory/$1');
 $routes->post('requestPeminjaman/processLoan', 'RequestPeminjaman::processLoan');
 $routes->get('requestPeminjaman/rejectLoan/(:any)', 'RequestPeminjaman::rejectLoan/$1');
@@ -608,10 +603,6 @@ $routes->resource('requestPeminjaman', ['filter' => 'isLoggedIn']);
 
 // Manajemen Peminjaman
 // User
-
-$routes->get('peminjamanUser/loanUser/(:num)', 'ManajemenPeminjaman::loanUser/$1');
-$routes->post('peminjamanUser/addLoan', 'ManajemenPeminjaman::addLoanUser');
-$routes->get('peminjamanUser', 'ManajemenPeminjaman::user');
 $routes->post('getNama', 'ManajemenPeminjaman::getNama');
 $routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');
@@ -633,38 +624,15 @@ $routes->get('backup', 'DatabaseManagement::backup');
 $routes->get('restore', 'DatabaseManagement::restoreView');
 $routes->post('restoreDatabase', 'DatabaseManagement::restore');
 
-// Restore
+// USER - LAB
 
-// $routes->get('generateItQRDoc', 'RincianAset::generateItQRDoc');
-// $routes->add('generateSelectedItQR/(:any)', 'RincianAset::generateSelectedItQR/$1');
-// $routes->get('pemusnahanItAset', 'RincianAset::pemusnahanItAset');
-// $routes->get('rincianItAset/generatePDF', 'RincianAset::generateItPDF');
-// $routes->get('rincianItAset/export', 'RincianAset::exportIt');
-// $routes->get('dataItSarana', 'RincianAset::dataItSarana');
-// $routes->get('dataItSaranaDetail/(:num)', 'PerangkatIt::show/$1');
-// $routes->get('dataItSarana/generatePDF', 'RincianAset::dataItSaranaGeneratePDF');
-// $routes->get('dataItSarana/export', 'RincianAset::dataItSaranaExport');
-// $routes->get('dataItSarana/trash', 'RincianAset::trashIt');
-// $routes->get('dataRincianItSarana', 'RincianAset::dataRincianItSarana');
-// $routes->get('dataItSarana/createTemplate', 'RincianAset::createItTemplate');
-// $routes->get('dataItSarana/new', 'RincianAset::newIt');
-// $routes->get('dataItSarana/show/(:any)', 'RincianAset::showIt/$1');
-// $routes->post('dataItSarana/create', 'RincianAset::createIt');
-// $routes->get('dataItSarana/editPemusnahanIt/(:any)', 'RincianAset::editPemusnahanIt/$1');
-// $routes->get('dataItSarana/restore/(:any)', 'RincianAset::restoreIt/$1');
-// $routes->get('dataItSarana/restore', 'RincianAset::restoreIt');
-// $routes->get('pemusnahanItAset/dataDestroyaGeneratePDF', 'RincianAset::dataDestroyaGenerateItPDF');
-// $routes->get('pemusnahanItAset/exportDestroyFile', 'RincianAset::exportDestroyItFile');
-// $routes->get('dataItSarana/(:any)/edit', 'RincianAset::editIt/$1');
-// $routes->patch('dataItSarana/(:any)', 'RincianAset::updateIt/$1');
-// $routes->post('dataItSarana/import', 'RincianAset::importIt');
-// $routes->post('dataItSarana/generateAndSetKodeRincianItAset', 'RincianAset::generateAndSetKodeRincianItAset');
-// $routes->post('pemusnahanItAset/delete/(:any)', 'RincianAset::pemusnahanItAsetDelete/$1');
-// $routes->post('dataItSarana/generateKode', 'RincianAset::generateKode');
-// $routes->post('dataItSarana/(:any)/updateKode', 'RincianAset::generateKode');
-// $routes->post('dataItSarana/checkDuplicate', 'RincianAset::checkDuplicate');
-// $routes->patch('pemusnahanItAset/updatePemusnahan/(:any)', 'RincianAset::updateItPemusnahan/$1');
-// $routes->post('dataItSarana/(:any)/updateCheckDuplicate', 'RincianAset::checkDuplicate');
-// $routes->delete('dataItSarana/deletePermanent/(:any)', 'RincianAset::deletePermanentIt/$1');
-// $routes->delete('dataItSarana/deletePermanent', 'RincianAset::deletePermanentIt');
-// $routes->delete('dataItSarana/(:any)', 'RincianAset::deleteIt/$1');
+// Data Peminjaman Lab
+$routes->get('dataLabPeminjaman/print/(:num)', 'UserDataLabPeminjaman::print/$1');
+$routes->get('dataLabPeminjaman', 'UserDataLabPeminjaman::user');
+$routes->get('dataLabPeminjaman/userDetail/(:any)', 'UserDataLabPeminjaman::getUserLoanHistory/$1');
+$routes->get('dataLabPeminjaman/userRequestHistory/(:any)', 'UserDataLabPeminjaman::getuserRequestDetail/$1');
+
+// Pengajuan Peminjaman lab
+$routes->get('pengajuanLabPeminjaman/loanUser/(:num)', 'UserPengajuanLabPeminjaman::loanUser/$1');
+$routes->post('pengajuanLabPeminjaman/addLoan', 'UserPengajuanLabPeminjaman::addLoanUser');
+$routes->get('pengajuanLabPeminjaman', 'UserPengajuanLabPeminjaman::user');

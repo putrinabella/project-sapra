@@ -41,7 +41,7 @@
                                 <?= $value->luas; ?> m&sup2
                             </span>
                         </p>
-                        <a href="<?= site_url('peminjamanUser/loanUser/' . $value->idIdentitasLab) ?>" class="btn btn-primary">Ajukan Peminjaman</a>
+                        <a href="<?= site_url('pengajuanLabPeminjaman/loanUser/' . $value->idIdentitasLab) ?>" class="btn btn-primary">Ajukan Peminjaman</a>
                     </div>
                 </div>
             </div>

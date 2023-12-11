@@ -39,7 +39,7 @@
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
-        <a href="<?= site_url('peminjamanUser') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('pengajuanLabPeminjaman') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Ajukan Peminjaman
         </a>

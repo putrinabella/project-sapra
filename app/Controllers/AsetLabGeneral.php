@@ -144,7 +144,7 @@ class AsetLabGeneral extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Data General Aset.xlsx');
+        header('Content-Disposition: attachment;filename=Laboratorium - Data General Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -165,39 +165,13 @@ class AsetLabGeneral extends ResourceController
         $pdfData = pdfAsetLabGeneral($asetLabGeneral, $title);
     
         
-        $filename = 'Sarana - Data General Aset' . ".pdf";
+        $filename = 'Laboratorium - Data General Aset' . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');
         $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
         $response->setBody($pdfData);
         $response->send();
-    }
-    
-    public function generatePDF2() {
-        $filePath = APPPATH . 'Views/labView/asetLabGeneral/printGeneral.php';
-    
-        if (!file_exists($filePath)) {
-            return view('error/404');
-        }
-
-        $data['asetLabGeneral'] = $this->rincianLabAsetModel->getDataBySarana();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
-    
-        $includeFile($filePath, $data);
-    
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Sarana - Rincian Aset General Report.pdf';
-        $dompdf->stream($filename);
     }
 
     private function generateFileId($url) {

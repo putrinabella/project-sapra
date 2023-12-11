@@ -11,7 +11,7 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('peminjamanDataUser') ?>" class="btn btn-icon-text btn-outline-primary me-2">
+                    <a href="<?= site_url('dataLabPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
                         <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Request Peminjaman</h4>
                     <div></div>

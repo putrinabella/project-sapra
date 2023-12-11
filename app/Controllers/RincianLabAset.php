@@ -130,28 +130,28 @@ class RincianLabAset extends ResourceController
         return view('labView/rincianLabAset/dataSarana', $data);
     }
 
-    public function pemusnahanLabAset() {
-        $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getDestroy();
-        return view('labView/rincianLabAset/dataPemusnahanLabAset', $data);
-    }
+    // public function pemusnahanLabAset() {
+    //     $data['dataRincianLabAset'] = $this->rincianLabAsetModel->getDestroy();
+    //     return view('labView/rincianLabAset/dataPemusnahanLabAset', $data);
+    // }
 
-    public function pemusnahanLabAsetDelete($idRincianLabAset) {
-        if ($this->request->getMethod(true) === 'POST') {
-            $newSectionAset = $this->request->getPost('sectionAset');
-            $namaAkun = $this->request->getPost('namaAkun'); 
-            $kodeAkun = $this->request->getPost('kodeAkun'); 
+    // public function pemusnahanLabAsetDelete($idRincianLabAset) {
+    //     if ($this->request->getMethod(true) === 'POST') {
+    //         $newSectionAset = $this->request->getPost('sectionAset');
+    //         $namaAkun = $this->request->getPost('namaAkun'); 
+    //         $kodeAkun = $this->request->getPost('kodeAkun'); 
     
-            if ($this->rincianLabAsetModel->updateSectionAset($idRincianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
-                if ($newSectionAset === 'Dimusnahkan') {
-                    return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Aset berhasil dimusnahkan');
-                } elseif ($newSectionAset === 'None') {
-                    return redirect()->to(site_url('rincianLabAset'))->with('success', 'Aset berhasil dikembalikan');
-                }
-            } else {
-                return redirect()->to(site_url('rincianLabAset'))->with('error', 'Aset batal dimusnahkan');
-            }
-        }
-    }
+    //         if ($this->rincianLabAsetModel->updateSectionAset($idRincianLabAset, $newSectionAset, $namaAkun, $kodeAkun)) {
+    //             if ($newSectionAset === 'Dimusnahkan') {
+    //                 return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Aset berhasil dimusnahkan');
+    //             } elseif ($newSectionAset === 'None') {
+    //                 return redirect()->to(site_url('rincianLabAset'))->with('success', 'Aset berhasil dikembalikan');
+    //             }
+    //         } else {
+    //             return redirect()->to(site_url('rincianLabAset'))->with('error', 'Aset batal dimusnahkan');
+    //         }
+    //     }
+    // }
     
     public function dataSaranaDetail($id = null) {
         $data['dataSarana'] = $this->rincianLabAsetModel->getDataBySaranaDetail($id);
@@ -296,16 +296,6 @@ class RincianLabAset extends ResourceController
         }
     }
 
-    public function updatePemusnahanLab($id = null) {
-        if ($id != null) {
-            $data = $this->request->getPost();
-            $this->rincianLabAsetModel->update($id, $data);
-            return redirect()->to(site_url('pemusnahanLabAset'))->with('success', 'Data berhasil diupdate');
-        } else {
-            return view('error/404');
-        }
-    }
-    
 
     public function delete($id = null) {
         $this->rincianLabAsetModel->delete($id);
@@ -360,9 +350,13 @@ class RincianLabAset extends ResourceController
     
     public function export() {
         $data = $this->rincianLabAsetModel->getAll();
+        $dataAsetBagus = $this->rincianLabAsetModel->getDataBagus();
+        $dataAsetRusak = $this->rincianLabAsetModel->getDataRusak();
+        $dataAsetHilang = $this->rincianLabAsetModel->getDataHilang();
+
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Rincian Aset');
+        $activeWorksheet->setTitle('Data Aset');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
         $headers = ['No.', 'Kode Aset', 'Lokasi', 'Kategori Barang','Spesifikasi Barang', 'Status', 'Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti'];
@@ -370,11 +364,7 @@ class RincianLabAset extends ResourceController
         $activeWorksheet->getStyle('A1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         foreach ($data as $index => $value) {
-            $spesifikasiMarkup = $value->spesifikasi; 
-            $parsedown = new Parsedown();
-            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-            
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeRincianLabAset);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaLab);
@@ -382,34 +372,32 @@ class RincianLabAset extends ResourceController
             $activeWorksheet->setCellValue('E'.($index + 2), $value->namaSarana);
             $activeWorksheet->setCellValue('F'.($index + 2), $value->status);
             $activeWorksheet->setCellValue('G'.($index + 2), $value->namaSumberDana);
-            $activeWorksheet->setCellValue('H'.($index + 2), $value->tahunPengadaan);
+            $activeWorksheet->setCellValue('H'.($index + 2), $tahunPengadaan);
             $activeWorksheet->setCellValue('I'.($index + 2), $value->hargaBeli);
             $activeWorksheet->setCellValue('J'.($index + 2), $value->merk);
             $activeWorksheet->setCellValue('K'.($index + 2), $value->noSeri);
             $activeWorksheet->setCellValue('L'.($index + 2), $value->warna);
-            $activeWorksheet->setCellValue('M'.($index + 2), $spesifikasiText);
-            $linkCell = 'N' . ($index + 2);
+            $activeWorksheet->setCellValue('M' . ($index + 2), $value->spesifikasi);
+            $activeWorksheet->getStyle('M' . ($index + 2))->getAlignment()->setWrapText(true);
             $linkValue = $value->bukti; 
             $linkTitle = 'Click here'; 
-
             $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
-            $activeWorksheet->setCellValue($linkCell, $hyperlinkFormula);
-        
+            $activeWorksheet->setCellValue('N'.($index + 2), $hyperlinkFormula);
             
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'N'];
-
+            $activeWorksheet->getStyle('I' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'N'];
             foreach ($columns as $column) {
-                $alignment = $activeWorksheet->getStyle($column . ($index + 2))->getAlignment();
-                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-            
-                if ($column === 'M') {
-                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-                } else {
+                $cellReference = $column . ($index + 2);
+                $alignment = $activeWorksheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
                     $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
                 }
-            }
+            }              
         }
-
         
         $activeWorksheet->getStyle('A1:N1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $activeWorksheet->getStyle('A1:N1')->getFont()->setBold(true);
@@ -417,12 +405,184 @@ class RincianLabAset extends ResourceController
         $activeWorksheet->getStyle('A:N')->getAlignment()->setWrapText(true);
     
         foreach (range('A', 'N') as $column) {
-            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            if ($column === 'M') {
+                $activeWorksheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
+            }
         }
     
+        $asetBagusSheet = $spreadsheet->createSheet();
+        $asetBagusSheet->setTitle('Aset Bagus');
+        $asetBagusSheet->getTabColor()->setRGB('DF2E38');
+        $headerData = ['No.', 'Kode Aset', 'Lokasi', 'Kategori Barang','Spesifikasi Barang', 'Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti'];
+        $asetBagusSheet->fromArray([$headerData], NULL, 'A1');
+        $asetBagusSheet->getStyle('A1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        foreach ($dataAsetBagus as $index => $value) {
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
+            $asetBagusSheet->setCellValue('A'.($index + 2), $index + 1);
+            $asetBagusSheet->setCellValue('B'.($index + 2), $value->kodeRincianLabAset);
+            $asetBagusSheet->setCellValue('C'.($index + 2), $value->namaLab);
+            $asetBagusSheet->setCellValue('D'.($index + 2), $value->namaKategoriManajemen);
+            $asetBagusSheet->setCellValue('E'.($index + 2), $value->namaSarana);
+            $asetBagusSheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
+            $asetBagusSheet->setCellValue('G'.($index + 2), $tahunPengadaan);
+            $asetBagusSheet->setCellValue('H'.($index + 2), $value->hargaBeli);
+            $asetBagusSheet->setCellValue('I'.($index + 2), $value->merk);
+            $asetBagusSheet->setCellValue('J'.($index + 2), $value->noSeri);
+            $asetBagusSheet->setCellValue('K'.($index + 2), $value->warna);
+            $asetBagusSheet->setCellValue('L' . ($index + 2), $value->spesifikasi);
+            $asetBagusSheet->getStyle('L' . ($index + 2))->getAlignment()->setWrapText(true);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $asetBagusSheet->setCellValue('M'.($index + 2), $hyperlinkFormula);
+            
+            $asetBagusSheet->getStyle('H' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M'];
+            
+            foreach ($columns as $column) {
+                $cellReference = $column . ($index + 2);
+                $alignment = $asetBagusSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
+        }
+        
+        $asetBagusSheet->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $asetBagusSheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $asetBagusSheet->getStyle('A1:M'.$asetBagusSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $asetBagusSheet->getStyle('A:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'M') as $column) {
+            if ($column === 'L') {
+                $asetBagusSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $asetBagusSheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+
+        
+        $asetRusakSheet = $spreadsheet->createSheet();
+        $asetRusakSheet->setTitle('Aset Rusak');
+        $asetRusakSheet->getTabColor()->setRGB('DF2E38');
+        $asetRusakSheet->fromArray([$headerData], NULL, 'A1');
+        $asetRusakSheet->getStyle('A1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($dataAsetRusak as $index => $value) {
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
+            $asetRusakSheet->setCellValue('A'.($index + 2), $index + 1);
+            $asetRusakSheet->setCellValue('B'.($index + 2), $value->kodeRincianLabAset);
+            $asetRusakSheet->setCellValue('C'.($index + 2), $value->namaLab);
+            $asetRusakSheet->setCellValue('D'.($index + 2), $value->namaKategoriManajemen);
+            $asetRusakSheet->setCellValue('E'.($index + 2), $value->namaSarana);
+            $asetRusakSheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
+            $asetRusakSheet->setCellValue('G'.($index + 2), $tahunPengadaan);
+            $asetRusakSheet->setCellValue('H'.($index + 2), $value->hargaBeli);
+            $asetRusakSheet->setCellValue('I'.($index + 2), $value->merk);
+            $asetRusakSheet->setCellValue('J'.($index + 2), $value->noSeri);
+            $asetRusakSheet->setCellValue('K'.($index + 2), $value->warna);
+            $asetRusakSheet->setCellValue('L' . ($index + 2), $value->spesifikasi);
+            $asetRusakSheet->getStyle('L' . ($index + 2))->getAlignment()->setWrapText(true);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $asetRusakSheet->setCellValue('M'.($index + 2), $hyperlinkFormula);
+
+            $asetRusakSheet->getStyle('H' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M'];
+            
+            foreach ($columns as $column) {
+                $cellReference = $column . ($index + 2);
+                $alignment = $asetRusakSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
+        }
+        
+        $asetRusakSheet->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $asetRusakSheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $asetRusakSheet->getStyle('A1:M'.$asetRusakSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $asetRusakSheet->getStyle('A:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'M') as $column) {
+            if ($column === 'L') {
+                $asetRusakSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $asetRusakSheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+
+        $asetHilangSheet = $spreadsheet->createSheet();
+        $asetHilangSheet->setTitle('Aset Hilang');
+        $asetHilangSheet->getTabColor()->setRGB('DF2E38');
+        $asetHilangSheet->fromArray([$headerData], NULL, 'A1');
+        $asetHilangSheet->getStyle('A1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        
+        foreach ($dataAsetHilang as $index => $value) {
+            $tahunPengadaan = ($value->tahunPengadaan == 0 || $value->tahunPengadaan == "0000") ? "Tidak diketahui" : $value->tahunPengadaan;
+            $asetHilangSheet->setCellValue('A'.($index + 2), $index + 1);
+            $asetHilangSheet->setCellValue('B'.($index + 2), $value->kodeRincianLabAset);
+            $asetHilangSheet->setCellValue('C'.($index + 2), $value->namaLab);
+            $asetHilangSheet->setCellValue('D'.($index + 2), $value->namaKategoriManajemen);
+            $asetHilangSheet->setCellValue('E'.($index + 2), $value->namaSarana);
+            $asetHilangSheet->setCellValue('F'.($index + 2), $value->namaSumberDana);
+            $asetHilangSheet->setCellValue('G'.($index + 2), $tahunPengadaan);
+            $asetHilangSheet->setCellValue('H'.($index + 2), $value->hargaBeli);
+            $asetHilangSheet->setCellValue('I'.($index + 2), $value->merk);
+            $asetHilangSheet->setCellValue('J'.($index + 2), $value->noSeri);
+            $asetHilangSheet->setCellValue('K'.($index + 2), $value->warna);
+            $asetHilangSheet->setCellValue('L' . ($index + 2), $value->spesifikasi);
+            $asetHilangSheet->getStyle('L' . ($index + 2))->getAlignment()->setWrapText(true);
+            $linkValue = $value->bukti; 
+            $linkTitle = 'Click here'; 
+            $hyperlinkFormula = '=HYPERLINK("' . $linkValue . '", "' . $linkTitle . '")';
+            $asetHilangSheet->setCellValue('M'.($index + 2), $hyperlinkFormula);
+
+            $asetHilangSheet->getStyle('H' . ($index + 2))->getNumberFormat()->setFormatCode("Rp#,##0");
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M'];
+            
+            foreach ($columns as $column) {
+                $cellReference = $column . ($index + 2);
+                $alignment = $asetHilangSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
+        }
+        
+        $asetHilangSheet->getStyle('A1:M1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $asetHilangSheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $asetHilangSheet->getStyle('A1:M'.$asetHilangSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $asetHilangSheet->getStyle('A:M')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'M') as $column) {
+            if ($column === 'L') {
+                $asetHilangSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $asetHilangSheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+        
+
+        $spreadsheet->setActiveSheetIndex(0);
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Laboratorium - Rincian Aset.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Rincian Aset.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -440,7 +600,7 @@ class RincianLabAset extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
-        $headerInputTable = ['No.', 'Kode Rincian Aset', 'ID Identitas Lab', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status (Bagus, Rusak, Hilang)', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
+        $headerInputTable = ['No.', 'Status', 'ID Identitas Lab', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status (Bagus, Rusak, Hilang)', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -461,7 +621,7 @@ class RincianLabAset extends ResourceController
         $activeWorksheet->getStyle('AC1:AE1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         foreach ($data as $index => $value) {
-            if ($index >= 1) {
+            if ($index >= 3) {
                 break;
             }
 
@@ -474,20 +634,10 @@ class RincianLabAset extends ResourceController
             $dataValidation->setErrorTitle('Input error');
             $dataValidation->setError('Value is not in list.');
             $dataValidation->setFormula1('"Bagus,Rusak,Hilang"'); 
-            // work
-            // $generateID = '=CONCAT("TS-BJB ", IF(D' . ($index + 2) . ' = U' . ($index + 2) . ', W' . ($index + 2) . ', D' . ($index + 2) . '), " ", IF(C' . ($index + 2) . ' = Q' . ($index + 2) . ', S' . ($index + 2) . ', C' . ($index + 2) . '), " ", IF(H' . ($index + 2) . ' = AC' . ($index + 2) . ', AE' . ($index + 2) . ', H' . ($index + 2) . '), " ",  IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", IF(E' . ($index + 2) . ' = Y' . ($index + 2) . ', AA' . ($index + 2) . ', E' . ($index + 2) . '), " ", TEXT(F' . ($index + 2) . ', "000"))';
-            
-            $kategoriBarangKode = '=IFERROR(INDEX($W$2:$W$' . (count($keyKategoriManajemen) + 1) . ', MATCH(D' . ($index + 2) . ', $U$2:$U$' . (count($keyKategoriManajemen) + 1) . ', 0)), D' . ($index + 2) . ')';
-            $ruanganKode        = '=IFERROR(INDEX($S$2:$S$' . (count($keyLab) + 1) . ', MATCH(C' . ($index + 2) . ', $Q$2:$Q$' . (count($keyLab) + 1) . ', 0)), C' . ($index + 2) . ')';
-            $sumberDanaKode     = '=IFERROR(INDEX($AE$2:$AE$' . (count($keySumberDana) + 1) . ', MATCH(H' . ($index + 2) . ', $AC$2:$AC$' . (count($keySumberDana) + 1) . ', 0)), H' . ($index + 2) . ')';
-            $tahunKode          = '=IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2))';
-            $spesifikasiKode    = '=IFERROR(INDEX($AA$2:$AA$' . (count($keySarana) + 1) . ', MATCH(E' . ($index + 2) . ', $Y$2:$Y$' . (count($keySarana) + 1) . ', 0)), E' . ($index + 2) . ')';
-            $nomorBarangKode    = '=TEXT(F' . ($index + 2) . ', "000")';
 
-            $generateID = '=CONCAT("TS-BJB ", IFERROR(INDEX($W$2:$W$' . (count($keyKategoriManajemen) + 1) . ', MATCH(D' . ($index + 2) . ', $U$2:$U$' . (count($keyKategoriManajemen) + 1) . ', 0)), D' . ($index + 2) . '), " ", IFERROR(INDEX($S$2:$S$' . (count($keyLab) + 1) . ', MATCH(C' . ($index + 2) . ', $Q$2:$Q$' . (count($keyLab) + 1) . ', 0)), C' . ($index + 2) . '), " ", IFERROR(INDEX($AE$2:$AE$' . (count($keySumberDana) + 1) . ', MATCH(H' . ($index + 2) . ', $AC$2:$AC$' . (count($keySumberDana) + 1) . ', 0)), H' . ($index + 2) . '), " ", IF(I' . ($index + 2) . ' = 0, "XX", RIGHT(TEXT(I' . ($index + 2) . ', "0000"), 2)), " ", IFERROR(INDEX($AA$2:$AA$' . (count($keySarana) + 1) . ', MATCH(E' . ($index + 2) . ', $Y$2:$Y$' . (count($keySarana) + 1) . ', 0)), E' . ($index + 2) . '), " ", TEXT(F' . ($index + 2) . ', "000"))';
             $generateStatus = '=IF(OR(ISBLANK(C' . ($index + 2) . '), ISBLANK(D' . ($index + 2) . '), ISBLANK(E' . ($index + 2) . '), ISBLANK(F' . ($index + 2) . '), ISBLANK(H' . ($index + 2) . '), ISBLANK(I' . ($index + 2) . '), ISBLANK(J' . ($index + 2) . '), ISBLANK(K' . ($index + 2) . '), ISBLANK(L' . ($index + 2) . '), ISBLANK(M' . ($index + 2) . '), ISBLANK(N' . ($index + 2) . '), ISBLANK(O' . ($index + 2) . ')), "ERROR: empty data", "CORRECT: fill up")';
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $generateID);
+            $activeWorksheet->setCellValue('B'.($index + 2), $generateStatus);
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
@@ -500,7 +650,6 @@ class RincianLabAset extends ResourceController
             $activeWorksheet->setCellValue('M'.($index + 2), '');
             $activeWorksheet->setCellValue('N'.($index + 2), '');
             $activeWorksheet->setCellValue('O'.($index + 2), '');
-            $activeWorksheet->setCellValue('P'.($index + 2), $generateStatus);
             
             $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
             foreach ($columns as $column) {
@@ -636,7 +785,7 @@ class RincianLabAset extends ResourceController
         $exampleSheet = $spreadsheet->createSheet();
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
-        $headerExampleTable =  ['No.', 'Kode Rincian Aset', 'ID Identitas Lab', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
+        $headerExampleTable =  ['No.', 'Status', 'ID Identitas Lab', 'ID Kategori Manajemen','ID Identitas Sarana', 'Nomor Barang', 'Status', 'ID Sumber Dana', 'Tahun Pengadaan', 'Harga Beli', 'Merek' , 'Nomor Seri', 'Warna', 'Spesifikasi', 'Bukti (GDRIVE LINK)'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -644,13 +793,9 @@ class RincianLabAset extends ResourceController
             if ($index >= 3) {
                 break;
             }
-            $spesifikasiMarkup = $value->spesifikasi; 
-            $parsedown = new Parsedown();
-            $spesifikasiHtml = $parsedown->text($spesifikasiMarkup);
-            $spesifikasiText = $this->htmlConverter($spesifikasiHtml);
-
+            $generateStatus = '=IF(OR(ISBLANK(C' . ($index + 2) . '), ISBLANK(D' . ($index + 2) . '), ISBLANK(E' . ($index + 2) . '), ISBLANK(F' . ($index + 2) . '), ISBLANK(H' . ($index + 2) . '), ISBLANK(I' . ($index + 2) . '), ISBLANK(J' . ($index + 2) . '), ISBLANK(K' . ($index + 2) . '), ISBLANK(L' . ($index + 2) . '), ISBLANK(M' . ($index + 2) . '), ISBLANK(N' . ($index + 2) . '), ISBLANK(O' . ($index + 2) . ')), "ERROR: empty data", "CORRECT: fill up")';
             $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->kodeRincianLabAset);
+            $exampleSheet->setCellValue('B'.($index + 2), $generateStatus);
             $exampleSheet->setCellValue('C'.($index + 2), $value->idIdentitasLab);
             $exampleSheet->setCellValue('D'.($index + 2), $value->idKategoriManajemen);
             $exampleSheet->setCellValue('E'.($index + 2), $value->idIdentitasSarana);
@@ -662,30 +807,41 @@ class RincianLabAset extends ResourceController
             $exampleSheet->setCellValue('K'.($index + 2), $value->merk);
             $exampleSheet->setCellValue('L'.($index + 2), $value->noSeri);
             $exampleSheet->setCellValue('M'.($index + 2), $value->warna);
-            $exampleSheet->setCellValue('N'.($index + 2), $spesifikasiText);
+            $exampleSheet->setCellValue('N'.($index + 2), $value->spesifikasi);
             $exampleSheet->setCellValue('O'.($index + 2), $value->bukti);
             
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' ,'J', 'K', 'L', 'M', 'N', 'O'];
+            
             foreach ($columns as $column) {
-                $exampleSheet->getStyle($column . ($index + 2))
-                    ->getAlignment()
-                    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }    
+                $cellReference = $column . ($index + 2);
+                $alignment = $exampleSheet->getStyle($cellReference)->getAlignment();
+                $alignment->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+                if ($column === 'A') {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                } else {
+                    $alignment->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                    
+                }
+            }              
         }
-
+        
+        $exampleSheet->getStyle('A1:O1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
         $exampleSheet->getStyle('A1:O1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:O1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
         $exampleSheet->getStyle('A1:O'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $exampleSheet->getStyle('A:O')->getAlignment()->setWrapText(true);
-        
+    
         foreach (range('A', 'O') as $column) {
-            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+            if ($column === 'N' || $column === 'O') {
+                $exampleSheet->getColumnDimension($column)->setWidth(40); 
+            } else {
+                $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+            }
         }
 
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Laboratorium - Rincian Aset Template.xlsx');
+        header('Content-Disposition: attachment;filename=Rincian Aset Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -708,7 +864,7 @@ class RincianLabAset extends ResourceController
                     continue;
                 }
                 
-                $kodeRincianLabAset        = $value[1] ?? null;
+                $kodeRincianLabAset        = "";
                 $idIdentitasLab   = $value[2] ?? null;
                 $idKategoriManajemen    = $value[3] ?? null;
                 $idIdentitasSarana      = $value[4] ?? null;
@@ -722,8 +878,7 @@ class RincianLabAset extends ResourceController
                 $warna                  = $value[12] ?? null;
                 $spesifikasi            = $value[13] ?? null;
                 $bukti                  = $value[14] ?? null;
-                $statusData                 = $value[15] ?? null;
-
+                $statusData             = $value[1] ?? null;
                 $data = [
                     'kodeRincianLabAset' => $kodeRincianLabAset,
                     'idIdentitasLab' => $idIdentitasLab,
@@ -746,8 +901,8 @@ class RincianLabAset extends ResourceController
                     return redirect()->to(site_url('rincianLabAset'))->with('error', 'Pastika semua data sudah terisi');
                 } else if ($statusData == "CORRECT: fill up") {
                     $this->rincianLabAsetModel->insert($data);
+                    $this->generateAndSetKodeRincianLabAset();
                 }
-
             }
             return redirect()->to(site_url('rincianLabAset'))->with('success', 'Data berhasil diimport');
         } else {
@@ -1002,13 +1157,30 @@ class RincianLabAset extends ResourceController
         $filename = 'Aset Laboratorium -  Data Pemusnahan Report.pdf';
         $dompdf->stream($filename);
     }
+    
+    public function generateQRCode($kodeRincianLabAset)    {
+        $writer = new PngWriter();
+        $qrCode = QrCode::create($kodeRincianLabAset)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(300)
+            ->setMargin(10)
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+
+        $result = $writer->write($qrCode);
+
+        $dataUrl = $result->getDataUri();
+
+        return $dataUrl;
+    }
 
     public function generateSelectedLabQR($selectedRows) {
         $selectedRows = explode(',', $selectedRows); 
         $dataRincianLabAset = $this->rincianLabAsetModel->getSelectedRows($selectedRows);
     
         if (empty($selectedRows)) {
-            return redirect()->to('rincianLabAset')->with('error', 'No rows selected for QR code generation.');
+            return redirect()->to(site_url('rincianLabAset'))->with('error', 'No rows selected for QR code generation.');
         }
     
         $data = [
@@ -1039,28 +1211,9 @@ class RincianLabAset extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $filename = 'Laboratorium - Selected QR Code Rincian Aset .pdf';
-        $dompdf->stream($filename);
+        $filename = 'Sarana - Selected QR Code Rincian Aset .pdf';
+        $dompdf->stream($filename, array("Attachment" => false));
     }
-
-    
-    public function generateQRCode($kodeRincianLabAset)    {
-        $writer = new PngWriter();
-        $qrCode = QrCode::create($kodeRincianLabAset)
-            ->setEncoding(new Encoding('UTF-8'))
-            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-            ->setSize(300)
-            ->setMargin(10)
-            ->setForegroundColor(new Color(0, 0, 0))
-            ->setBackgroundColor(new Color(255, 255, 255));
-
-        $result = $writer->write($qrCode);
-
-        $dataUrl = $result->getDataUri();
-
-        return $dataUrl;
-    }
-
 
     public function generateLabQRDoc() {
         $dataRincianLabAset = $this->rincianLabAsetModel->getAll();
@@ -1093,7 +1246,7 @@ class RincianLabAset extends ResourceController
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $filename = 'Laboratorium - QR Code Rincian Aset.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Sarana - QR Code Rincian Aset.pdf';
+        $dompdf->stream($filename, array("Attachment" => false));
     }
 }
