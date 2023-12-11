@@ -6,14 +6,14 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class RoleFilter implements FilterInterface
+class LaboranFilter implements FilterInterface
 {  
     public function before(RequestInterface $request, $arguments = null) {
         if (!session('id_user')) {
             return redirect()->to(site_url('login'));
         }
         
-        $allowedRoles = ['Super Admin', 'Admin IT', 'Admin Sarpra', 'Laboran'];
+        $allowedRoles = ['Super Admin', 'Laboran'];
         if ( !in_array(session('role'), $allowedRoles)) {
             return redirect()->to(site_url('404'));
         }

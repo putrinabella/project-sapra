@@ -50,12 +50,12 @@ $routes->get('manajemenUser/generatePDF', 'ManajemenUser::generatePDF');
 $routes->get('manajemenUser/export', 'ManajemenUser::export');
 $routes->post('manajemenUser/import', 'ManajemenUser::import');
 $routes->get('manajemenUser/edit', 'ManajemenUser::edit');
-$routes->get('manajemenUser/trash', 'ManajemenUser::trash');
+// $routes->get('manajemenUser/trash', 'ManajemenUser::trash');
 $routes->get('manajemenUser/restore/(:any)', 'ManajemenUser::restore/$1');
 $routes->get('manajemenUser/restore', 'ManajemenUser::restore');
 $routes->delete('manajemenUser/deletePermanent/(:any)', 'ManajemenUser::deletePermanent/$1');
 $routes->delete('manajemenUser/deletePermanent', 'ManajemenUser::deletePermanent');
-$routes->resource('manajemenUser', ['filter' => 'roleFilter']);
+$routes->resource('manajemenUser', ['filter' => 'superAdminFilter']);
 
 
 
@@ -335,7 +335,7 @@ $routes->get('asetItGeneral/dataItAset/(:num)', 'AsetItGeneral::info/$1');
 $routes->get('asetItGeneral/(:num)', 'AsetItGeneral::show/$1');
 $routes->get('asetItGeneral/generatePDF', 'AsetItGeneral::GeneratePDF');
 $routes->get('asetItGeneral/export', 'AsetItGeneral::Export');
-$routes->get('asetItGeneral', 'AsetItGeneral::view');
+$routes->get('asetItGeneral', 'AsetItGeneral::view', ['filter' => 'adminItFilter']);
 
 // Data Rincian Aset IT
 $routes->get('rincianItAset/generateQRDoc', 'RincianItAset::generateQRDoc');
@@ -355,21 +355,22 @@ $routes->post('rincianItAset/checkDuplicate', 'RincianItAset::checkDuplicate');
 $routes->post('rincianItAset/(:any)/updateCheckDuplicate', 'RincianItAset::checkDuplicate');
 $routes->delete('rincianItAset/deletePermanent/(:any)', 'RincianItAset::deletePermanent/$1');
 $routes->delete('rincianItAset/deletePermanent', 'RincianItAset::deletePermanent');
-$routes->resource('rincianItAset', ['filter' => 'isLoggedIn']);
+$routes->resource('rincianItAset', ['filter' => 'adminItFilter']);
 
 // Pemusnahan Aset IT
 $routes->get('pemusnahanItAset/print/(:any)', 'PemusnahanItAset::print/$1');
 $routes->get('pemusnahanItAset/generatePDF', 'PemusnahanItAset::generatePDF');
 $routes->get('pemusnahanItAset/export', 'PemusnahanItAset::export');
 $routes->post('pemusnahanItAset/destruction/(:any)', 'PemusnahanItAset::destruction/$1');
-$routes->resource('pemusnahanItAset', ['filter' => 'isLoggedIn']);
-// Perangkat IT
+$routes->resource('pemusnahanItAset', ['filter' => 'adminItFilter']);
+
+// Perangkat IT (NOT USE)!!!!
 $routes->get('perangkatIt/print/(:num)', 'perangkatIt::print/$1');
 $routes->get('perangkatIt/createTemplate', 'perangkatIt::createTemplate');
 $routes->get('perangkatIt/generatePDF', 'perangkatIt::generatePDF');
 $routes->get('perangkatIt/export', 'perangkatIt::export');
 $routes->get('perangkatIt/rincian/(:num)', 'perangkatIt::rincian/$1');
-$routes->resource('perangkatIt', ['filter' => 'isLoggedIn']);
+$routes->resource('perangkatIt', ['filter' => 'adminItFilter']);
 
 // Layanan Aset IT
 $routes->get('layananAsetIt/createTemplate', 'LayananAsetIt::createTemplate');
@@ -382,7 +383,7 @@ $routes->get('layananAsetIt/restore/(:any)', 'LayananAsetIt::restore/$1');
 $routes->get('layananAsetIt/restore', 'LayananAsetIt::restore');
 $routes->delete('layananAsetIt/deletePermanent/(:any)', 'LayananAsetIt::deletePermanent/$1');
 $routes->delete('layananAsetIt/deletePermanent', 'LayananAsetIt::deletePermanent');
-$routes->resource('layananAsetIt', ['filter' => 'isLoggedIn']);
+$routes->resource('layananAsetIt', ['filter' => 'adminItFilter']);
 
 // Website
 $routes->get('website/createTemplate', 'Website::createTemplate');
@@ -395,7 +396,7 @@ $routes->get('website/restore/(:any)', 'Website::restore/$1');
 $routes->get('website/restore', 'Website::restore');
 $routes->delete('website/deletePermanent/(:any)', 'Website::deletePermanent/$1');
 $routes->delete('website/deletePermanent', 'Website::deletePermanent');
-$routes->resource('website', ['filter' => 'isLoggedIn']);
+$routes->resource('website', ['filter' => 'adminItFilter']);
 
 // Sosial Media
 $routes->get('sosialMedia/createTemplate', 'SosialMedia::createTemplate');
@@ -408,7 +409,7 @@ $routes->get('sosialMedia/restore/(:any)', 'SosialMedia::restore/$1');
 $routes->get('sosialMedia/restore', 'SosialMedia::restore');
 $routes->delete('sosialMedia/deletePermanent/(:any)', 'SosialMedia::deletePermanent/$1');
 $routes->delete('sosialMedia/deletePermanent', 'SosialMedia::deletePermanent');
-$routes->resource('sosialMedia', ['filter' => 'isLoggedIn']);
+$routes->resource('sosialMedia', ['filter' => 'adminItFilter']);
 
 // Aplikasi 
 $routes->get('aplikasi/createTemplate', 'Aplikasi::createTemplate');
@@ -421,7 +422,7 @@ $routes->get('aplikasi/restore/(:any)', 'Aplikasi::restore/$1');
 $routes->get('aplikasi/restore', 'Aplikasi::restore');
 $routes->delete('aplikasi/deletePermanent/(:any)', 'Aplikasi::deletePermanent/$1');
 $routes->delete('aplikasi/deletePermanent', 'Aplikasi::deletePermanent');
-$routes->resource('aplikasi', ['filter' => 'isLoggedIn']);
+$routes->resource('aplikasi', ['filter' => 'adminItFilter']);
 
 // Profil Sekolah
 $routes->get('profilSekolah/createTemplateDokumen', 'ProfilSekolah::createTemplateDokumen');
@@ -487,12 +488,12 @@ $routes->get('generateLabQRDoc', 'RincianLabAset::generateLabQRDoc');
 $routes->add('generateSelectedLabQR/(:any)', 'RincianLabAset::generateSelectedLabQR/$1');
 $routes->get('QRBarcode/(:segment)', 'QRBarcode::generateQRCode/$1');
 
-// $routes->get('pemusnahanLabAsetDetail/(:num)', 'RincianLabAset::pemusnahanLabAsetDetail/$1');
-// $routes->get('pemusnahanLabAset', 'RincianLabAset::pemusnahanLabAset');
+
 $routes->get('dataSaranaDetail/(:num)', 'RincianLabAset::dataSaranaDetail/$1');
 $routes->get('dataSarana', 'RincianLabAset::dataSarana');
 $routes->get('dataSarana/generatePDF', 'RincianLabAset::dataSaranaGeneratePDF');
 $routes->get('dataSarana/export', 'RincianLabAset::dataSaranaExport');
+
 $routes->get('rincianLabAset/createTemplate', 'RincianLabAset::createTemplate');
 $routes->get('rincianLabAset/print/(:num)', 'RincianLabAset::print/$1');
 $routes->get('rincianLabAset/generatePDF', 'RincianLabAset::generatePDF');
@@ -510,7 +511,7 @@ $routes->post('rincianLabAset/checkDuplicate', 'RincianLabAset::checkDuplicate')
 $routes->post('rincianLabAset/(:any)/updateCheckDuplicate', 'RincianLabAset::checkDuplicate');
 $routes->delete('rincianLabAset/deletePermanent/(:any)', 'RincianLabAset::deletePermanent/$1');
 $routes->delete('rincianLabAset/deletePermanent', 'RincianLabAset::deletePermanent');
-$routes->resource('rincianLabAset', ['filter' => 'isLoggedIn']);
+$routes->resource('rincianLabAset', ['filter' => 'laboranFilter']);
 
 // Pemusnahan Aset Lab
 $routes->get('pemusnahanLabAset/print/(:any)', 'PemusnahanLabAset::print/$1');
@@ -522,7 +523,8 @@ $routes->resource('pemusnahanLabAset', ['filter' => 'isLoggedIn']);
 // Laboratorium
 $routes->get('laboratorium/print/(:num)', 'Laboratorium::print/$1');
 $routes->get('laboratorium/showInfo/(:num)', 'Laboratorium::showInfo/$1');
-$routes->resource('laboratorium', ['filter' => 'isLoggedIn']);
+$routes->resource('laboratorium',  ['filter' => 'laboranFilter']);
+
 
 // MANAJEMEN LAYANAN
 
@@ -565,6 +567,7 @@ $routes->get('peminjamanDataUser/print/(:num)', 'DataPeminjaman::print/$1');
 $routes->get('peminjamanDataUser', 'DataPeminjaman::user');
 $routes->get('peminjamanDataUser/userDetail/(:any)', 'DataPeminjaman::getUserLoanHistory/$1');
 $routes->get('peminjamanDataUser/userRequestHistory/(:any)', 'DataPeminjaman::getuserRequestDetail/$1');
+
 $routes->get('dataPeminjaman/print/(:num)', 'DataPeminjaman::print/$1');
 $routes->get('dataPeminjaman/printAll', 'DataPeminjaman::printAll');
 $routes->get('dataPeminjaman/generatePDF', 'DataPeminjaman::generatePDF');
@@ -576,7 +579,7 @@ $routes->get('dataPeminjaman/history/(:any)', 'DataPeminjaman::getLoanHistory/$1
 $routes->post('dataPeminjaman/revokeLoan/(:any)', 'DataPeminjaman::revokeLoan/$1');
 $routes->delete('dataPeminjaman/deletePermanent/(:any)', 'DataPeminjaman::deletePermanent/$1');
 $routes->delete('dataPeminjaman/deletePermanent', 'DataPeminjaman::deletePermanent');
-$routes->resource('dataPeminjaman',  ['filter' => 'roleFilter']);
+$routes->resource('dataPeminjaman', ['filter' => 'laboranFilter']);
 
 
 // Request Peminjaman
@@ -598,16 +601,16 @@ $routes->resource('requestPeminjaman', ['filter' => 'isLoggedIn']);
 // Manajemen Peminjaman
 // User
 
+$routes->get('peminjamanUser/loanUser/(:num)', 'ManajemenPeminjaman::loanUser/$1');
+$routes->post('peminjamanUser/addLoan', 'ManajemenPeminjaman::addLoanUser');
+$routes->get('peminjamanUser', 'ManajemenPeminjaman::user');
 $routes->post('getNama', 'ManajemenPeminjaman::getNama');
 $routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
-$routes->get('peminjamanUser/loanUser/(:num)', 'ManajemenPeminjaman::loanUser/$1');
 $routes->get('manajemenPeminjaman/print/(:num)', 'ManajemenPeminjaman::print/$1');
 $routes->get('manajemenPeminjaman/showUser/(:num)', 'ManajemenPeminjaman::showUser/$1');
-$routes->get('peminjamanUser', 'ManajemenPeminjaman::user');
 $routes->get('manajemenPeminjaman/getKodeLab/(:num)', 'ManajemenPeminjaman::getKodeLab/$1');
 $routes->post('manajemenPeminjaman/getRincianLabAsetByLab', 'ManajemenPeminjaman::getRincianLabAsetByLab');
 $routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
-$routes->post('peminjamanUser/addLoan', 'ManajemenPeminjaman::addLoanUser');
 $routes->post('manajemenPeminjaman/getRole', 'ManajemenPeminjaman::getRole');
 $routes->post('manajemenPeminjaman/getFilterOptions', 'ManajemenPeminjaman::getFilterOptions');
 $routes->post('manajemenPeminjaman/getSaranaByLab', 'ManajemenPeminjaman::getSaranaByLab');

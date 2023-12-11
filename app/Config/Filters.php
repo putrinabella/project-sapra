@@ -9,7 +9,10 @@ use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\LoginFilter;
-use App\Filters\RoleFilter;
+use App\Filters\SuperAdminFilter;
+use App\Filters\LaboranFilter;
+use App\Filters\AdminItFilter;
+use App\Filters\AdminSarpraFilter;
 
 class Filters extends BaseConfig
 {
@@ -22,12 +25,15 @@ class Filters extends BaseConfig
      */
     public array $aliases = [
         // 'csrf'          => CSRF::class,
-        'toolbar'       => DebugToolbar::class,
-        'honeypot'      => Honeypot::class,
-        'invalidchars'  => InvalidChars::class,
-        'secureheaders' => SecureHeaders::class,
-        'isLoggedIn'    => LoginFilter::class,
-        'roleFilter'    => RoleFilter::class,
+        'toolbar'               => DebugToolbar::class,
+        'honeypot'              => Honeypot::class,
+        'invalidchars'          => InvalidChars::class,
+        'secureheaders'         => SecureHeaders::class,
+        'isLoggedIn'            => LoginFilter::class,
+        'superAdminFilter'      => SuperAdminFilter::class,
+        'laboranFilter'         => LaboranFilter::class,
+        'adminItFilter'         => AdminItFilter::class,
+        'adminSarpraFilter'     => AdminSarpraFilter::class,
     ];
 
     /**
@@ -40,7 +46,7 @@ class Filters extends BaseConfig
     public array $globals = [
         'before' => [
             // 'isLoggedIn',
-            // 'roleFilter',
+            // 'superAdminFilter',
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
@@ -104,8 +110,22 @@ class Filters extends BaseConfig
                 
             ]
         ],
-        'roleFilter' => ['before' => [
+        'laboranFilter' => ['before' => [
                 'dataPeminjaman/*',  
+            ]
+        ],
+        'adminItFilter' => ['before' => [
+                'rincianItAset/*',  
+                'asetItGeneral/*',  
+                'pemusnahanItAset/*',  
+                'layananAsetIt/*',  
+                'aplikasi/*',  
+                'sosialMedia/*',  
+                'website/*',  
+            ]
+        ],
+        'adminSarpraFilter' => ['before' => [
+                'asetGeneral/*',  
             ]
         ],
     ];
