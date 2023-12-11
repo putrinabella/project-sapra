@@ -917,7 +917,6 @@ class RincianItAset extends ResourceController
         $response->send();
     }
 
-
     public function print($id = null) {
         $dataRincianItAset = $this->rincianAsetModel->find($id);
         

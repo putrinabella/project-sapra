@@ -318,6 +318,7 @@ $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 
 // Ruangan
 $routes->post('prasaranaRuangan/search', 'PrasaranaRuangan::search');
+// $routes->get('prasaranaRuangan/print/(:num)', 'PrasaranaRuangan::GeneratePDF/$1');
 $routes->get('prasaranaRuangan/print/(:num)', 'PrasaranaRuangan::print/$1');
 $routes->get('prasaranaRuangan/showInfo/(:num)', 'PrasaranaRuangan::showInfo/$1');
 $routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
