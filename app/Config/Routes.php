@@ -2,9 +2,6 @@
 
 use CodeIgniter\Router\RouteCollection;
 
-/**
- * @var RouteCollection $routes
- */
 $routes->get('createDatabase', function () {
     $forge = \Config\Database::forge();
     if ($forge->createDatabase('dbmanajemensapra')) {

@@ -45,28 +45,6 @@
 <div class="col-12 col-xl-12 grid-margin stretch-card">
     <div class="card overflow-hidden">
         <div class="card-body">
-            <div>
-                <?php if (session()->getFlashdata('success')) : ?>
-                <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
-                    <div class="alert-body">
-                        <b>Success!</b>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
-                        <?= session()->getFlashdata('success') ?>
-                    </div>
-                </div>
-                <br>
-                <?php endif; ?>
-                <?php if (session()->getFlashdata('error')) : ?>
-                <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
-                    <div class="alert-body">
-                        <b>Error!</b>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
-                        <?= session()->getFlashdata('error') ?>
-                    </div>
-                </div>
-                <br>
-                <?php endif; ?>
-            </div>
             <h4 class="text-center py-3">Data Peminjaman</h4>
             <?php if (!empty($tableHeading)) : ?>
             <p class="text-center">
