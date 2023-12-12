@@ -8,7 +8,7 @@ use App\Models\IdentitasSaranaModels;
 use App\Models\SumberDanaModels;
 use App\Models\KategoriManajemenModels;
 use App\Models\IdentitasLabModels;
-use App\Models\ManajemenPeminjamanModels;
+use App\Models\ManajemenAsetPeminjamanModels;
 use App\Models\DataSiswaModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -22,7 +22,7 @@ class RequestAsetPeminjaman extends ResourceController
 
     function __construct()
     {
-        $this->manajemenPeminjamanModel = new ManajemenPeminjamanModels();
+        $this->manajemenAsetPeminjamanModel = new ManajemenAsetPeminjamanModels();
         $this->requestAsetPeminjamanModel = new RequestAsetPeminjamanModels();
         $this->identitasSaranaModel = new IdentitasSaranaModels();
         $this->sumberDanaModel = new SumberDanaModels();
@@ -101,23 +101,23 @@ class RequestAsetPeminjaman extends ResourceController
             var_dump($data);
             die;
             $loanStatuses = $data['loanStatus'];
-            $idRincianLabAsets = $data['idRincianLabAset'];
+            $idRincianAsets = $data['idRincianAset'];
             $updateData = [
                 'loanStatus' => 'Pengembalian',
                 'namaPenerima' => $data['namaPenerima'],
                 'tanggalPengembalian' => $data['tanggalPengembalian'],
             ];
 
-            $getIdManajemenPeminjaman = [
+            $getIdManajemenAsetPeminjaman = [
                 'idRequestAsetPeminjaman' => $data['idRequestAsetPeminjaman'],
             ];
 
             foreach ($loanStatuses as $index => $loanStatus) {
-                $idRincianLabAset = $idRincianLabAsets[$index];
+                $idRincianAset = $idRincianAsets[$index];
 
-                $this->requestAsetPeminjamanModel->updateReturnStatus($idRincianLabAset, $loanStatus);
-                $this->requestAsetPeminjamanModel->updateReturnSectionAset($idRincianLabAset);
-                $this->requestAsetPeminjamanModel->updateDetailReturnStatus($idRincianLabAset, $getIdManajemenPeminjaman, $loanStatus);
+                $this->requestAsetPeminjamanModel->updateReturnStatus($idRincianAset, $loanStatus);
+                $this->requestAsetPeminjamanModel->updateReturnSectionAset($idRincianAset);
+                $this->requestAsetPeminjamanModel->updateDetailReturnStatus($idRincianAset, $getIdManajemenAsetPeminjaman, $loanStatus);
             }
             die;
             $this->requestAsetPeminjamanModel->update($id, $updateData);
@@ -130,30 +130,27 @@ class RequestAsetPeminjaman extends ResourceController
     
     public function processLoan() {
         $data = $this->request->getPost();
-        $idRincianLabAset = $_POST['selectedRows'];
+        $idRincianAset = $_POST['selectedRows'];
         $idRequestAsetPeminjaman = $data['idRequestAsetPeminjaman'];
         $sectionAsetValue = 'Dipinjam';
         $requestStatus = 'Approve';
         
         if (!empty($data['asalPeminjam'])) {
-            $this->manajemenPeminjamanModel->insert($data);
-            $idManajemenPeminjaman = $this->db->insertID();
-            
-            foreach ($idRincianLabAset as $idRincianAset) {
-                // die;
+            $this->manajemenAsetPeminjamanModel->insert($data);
+            $idManajemenAsetPeminjaman = $this->db->insertID();
+            foreach ($idRincianAset as $idData) {
                 $detailData = [
-                    'idRincianLabAset' => $idRincianAset,
-                    'idManajemenPeminjaman' => $idManajemenPeminjaman,
+                    'idRincianAset' => $idData,
+                    'idManajemenAsetPeminjaman' => $idManajemenAsetPeminjaman,
                 ];
-                $this->requestAsetPeminjamanModel->approveDetailRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus, $idRincianLabAset);
-                // die;
-                $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
-                $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
+                $this->requestAsetPeminjamanModel->approveDetailRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus, $idRincianAset);
+                $this->manajemenAsetPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
+                $this->db->table('tblDetailManajemenAsetPeminjaman')->insert($detailData);
                 
             }
             $this->requestAsetPeminjamanModel->updateRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus);
 
-            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Peminjaman sudah disetujui');
+            return redirect()->to(site_url('dataAsetPeminjaman'))->with('success', 'Peminjaman sudah disetujui');
         } else {
             return redirect()->to(site_url('requestAsetPeminjaman'))->with('error', 'Semua field harus terisi');
         }
@@ -167,20 +164,20 @@ class RequestAsetPeminjaman extends ResourceController
 
     public function print($id = null) {
         $dataRequestAsetPeminjaman = $this->requestAsetPeminjamanModel->findHistory($id);
-        $dataRincianLabAset = $this->requestAsetPeminjamanModel->getRincianItem($id);
+        $dataRincianAsetAset = $this->requestAsetPeminjamanModel->getRincianItem($id);
     
-        if (!$dataRequestAsetPeminjaman || empty($dataRincianLabAset)) {
+        if (!$dataRequestAsetPeminjaman || empty($dataRincianAsetAset)) {
             return view('error/404');
         }
     
         $data = [
             'dataRequestAsetPeminjaman' => $dataRequestAsetPeminjaman,
             'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-            'dataRincianLabAset' => $dataRincianLabAset,
+            'dataRincianAsetAset' => $dataRincianAsetAset,
         ];
     
     
-        $pdfData = pdfSuratPeminjaman($dataRequestAsetPeminjaman, $dataRincianLabAset);
+        $pdfData = pdfSuratPeminjaman($dataRequestAsetPeminjaman, $dataRincianAsetAset);
     
         $tanggal = date('d F Y', strtotime($dataRequestAsetPeminjaman->tanggal));
         
@@ -213,19 +210,19 @@ class RequestAsetPeminjaman extends ResourceController
     
         foreach ($requestAsetPeminjaman as $peminjaman) {
             $dataRequestAsetPeminjaman = $this->requestAsetPeminjamanModel->findHistory($peminjaman->idRequestAsetPeminjaman);
-            $dataRincianLabAset = $this->requestAsetPeminjamanModel->getRincianItem($peminjaman->idRequestAsetPeminjaman);
+            $dataRincianAsetAset = $this->requestAsetPeminjamanModel->getRincianItem($peminjaman->idRequestAsetPeminjaman);
     
-            if (!$dataRequestAsetPeminjaman || empty($dataRincianLabAset)) {
+            if (!$dataRequestAsetPeminjaman || empty($dataRincianAsetAset)) {
                 continue;
             }
     
             $data = [
                 'dataRequestAsetPeminjaman' => $dataRequestAsetPeminjaman,
                 'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-                'dataRincianLabAset' => $dataRincianLabAset,
+                'dataRincianAsetAset' => $dataRincianAsetAset,
             ];
     
-            $pdfData = pdfSuratPeminjaman($dataRequestAsetPeminjaman, $dataRincianLabAset);
+            $pdfData = pdfSuratPeminjaman($dataRequestAsetPeminjaman, $dataRincianAsetAset);
             $tanggal = date('d F Y', strtotime($dataRequestAsetPeminjaman->tanggal));
             
             $filename = 'Formulir Peminjaman Aset - ' . $dataRequestAsetPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
@@ -271,7 +268,7 @@ class RequestAsetPeminjaman extends ResourceController
             $requestSheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             $requestSheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
             $requestSheet->setCellValue('E' . ($index + 2), $value->namaKelas);
-            $requestSheet->setCellValue('F' . ($index + 2), $value->kodeRincianLabAset);
+            $requestSheet->setCellValue('F' . ($index + 2), $value->kodeRincianAsetAset);
             $requestSheet->setCellValue('G' . ($index + 2), $value->namaSarana);
             $requestSheet->setCellValue('H' . ($index + 2), $value->namaLab);
             $requestSheet->setCellValue('I' . ($index + 2), $value->status);
@@ -320,7 +317,7 @@ class RequestAsetPeminjaman extends ResourceController
             $approveSheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             $approveSheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
             $approveSheet->setCellValue('E' . ($index + 2), $value->namaKelas);
-            $approveSheet->setCellValue('F' . ($index + 2), $value->kodeRincianLabAset);
+            $approveSheet->setCellValue('F' . ($index + 2), $value->kodeRincianAsetAset);
             $approveSheet->setCellValue('G' . ($index + 2), $value->namaSarana);
             $approveSheet->setCellValue('H' . ($index + 2), $value->namaLab);
             $approveSheet->setCellValue('I' . ($index + 2), $value->status);
@@ -369,7 +366,7 @@ class RequestAsetPeminjaman extends ResourceController
             $rejectSheet->setCellValueExplicit('C' . ($index + 2), $value->nis, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             $rejectSheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
             $rejectSheet->setCellValue('E' . ($index + 2), $value->namaKelas);
-            $rejectSheet->setCellValue('F' . ($index + 2), $value->kodeRincianLabAset);
+            $rejectSheet->setCellValue('F' . ($index + 2), $value->kodeRincianAsetAset);
             $rejectSheet->setCellValue('G' . ($index + 2), $value->namaSarana);
             $rejectSheet->setCellValue('H' . ($index + 2), $value->namaLab);
             $rejectSheet->setCellValue('I' . ($index + 2), $value->status);
@@ -400,7 +397,7 @@ class RequestAsetPeminjaman extends ResourceController
         $spreadsheet->setActiveSheetIndex(0);
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Sarana - Request Peminjaman.xlsx');
+        header('Content-Disposition: attachment;filename=Laboratorium - Request Peminjaman.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -421,7 +418,7 @@ class RequestAsetPeminjaman extends ResourceController
     
         $pdfData = pdfRequestAsetPeminjaman($dataRequest, $dataApprove, $dataReject, $title, $startDate, $endDate);
     
-        $filename = 'Sarana - Request Peminjaman' . ".pdf";
+        $filename = 'Laboratorium - Request Peminjaman' . ".pdf";
         
         $response = $this->response;
         $response->setHeader('Content-Type', 'application/pdf');

@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
         <li class="breadcrumb-item"><a href="<?= site_url('requestAsetPeminjaman')?>">Request Peminjaman</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
     </ol>
@@ -64,8 +64,8 @@
                     <div class="row mb-3">
                         <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab"
-                                value="<?= $dataRequestAsetPeminjaman->namaLab ?>" readonly>
+                            <input type="text" class="form-control bg-transparent" id="namaPrasarana" name="namaPrasarana"
+                                value="<?= $dataRequestAsetPeminjaman->namaPrasarana ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -111,14 +111,14 @@
                                         <td style="width: 5%">
                                             <?php if ($value->sectionAset !== "Dipinjam" && $value->sectionAset !== "Dimusnahkan") : ?>
                                                 <input type="checkbox" class="form-check-input row-select"
-                                                    name="selectedRows[]" value="<?= $value->idRincianLabAset ?>">
+                                                    name="selectedRows[]" value="<?= $value->idRincianAset ?>">
                                             <?php endif; ?>
                                         </td>
                                         <td class="d-none">
-                                            <?= $value->idRincianLabAset; ?>
+                                            <?= $value->idRincianAset; ?>
                                         </td>
                                         <td style="width: 22%">
-                                            <?= $value->kodeRincianLabAset; ?>
+                                            <?= $value->kodeRincianAset; ?>
                                         </td>
                                         <td>
                                             <?= $value->namaSarana; ?>

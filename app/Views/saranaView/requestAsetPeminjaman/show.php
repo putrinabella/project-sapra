@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
         <li class="breadcrumb-item"><a href="<?= site_url('requestAsetPeminjaman')?>">Request Peminjaman</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Data</li>
     </ol>

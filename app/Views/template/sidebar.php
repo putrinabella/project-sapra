@@ -377,6 +377,19 @@
                 <span class="link-title">Daftar Peminjaman</span>
             </a>
         </li>
+        <li class="nav-item nav-category">Sarpra</li>
+        <li class="nav-item">
+            <a href="<?= site_url('pengajuanPeminjaman') ?>" class="nav-link">
+                <i class="link-icon" data-feather="edit"></i>
+                <span class="link-title">Input Peminjaman</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('peminjamanAset') ?>" class="nav-link">
+                <i class="link-icon" data-feather="file-text"></i>
+                <span class="link-title">Daftar Peminjaman</span>
+            </a>
+        </li>
     <?php } ?>
 
     <?php if (session()->get('role') == 'Admin Sarpra') { ?>

@@ -38,11 +38,10 @@ class UserDataLabPeminjaman extends ResourceController
         $dataPeminjaman = $this->dataPeminjamanModel->getDataSiswa($startDate, $endDate, $idUser);
         $dataRequest = $this->requestPeminjamanModel->getDataRequestUser($startDate, $endDate, $idUser);
 
-        $dataUser = array_merge($dataPeminjaman, $dataRequest);
-
         $data = [
             'tableHeading' => $tableHeading,
-            'dataUser' => $dataUser,
+            'dataPeminjaman' => $dataPeminjaman,
+            'dataRequest' => $dataRequest,
         ];
         return view('userView/dataPeminjamanLab/user', $data);
     }
@@ -113,18 +112,18 @@ class UserDataLabPeminjaman extends ResourceController
         $response->send();
     }
 
-    public function revokeLoan($idManajemenPeminjaman = null) {
-        if ($idManajemenPeminjaman != null) {
-            $dataItemDipinjam = $this->dataPeminjamanModel->getBorrowItems($idManajemenPeminjaman);
-
-            foreach ($dataItemDipinjam as $data) {
-                $this->dataPeminjamanModel->updateReturnSectionAset($data->idRincianLabAset);
+    public function revokeLoan($idRequestPeminjaman = null) {
+        if ($idRequestPeminjaman != null) {
+            $dataItemRequest = $this->dataPeminjamanModel->getRequestItems($idRequestPeminjaman);
+            
+            foreach ($dataItemRequest as $data) {
+                $this->dataPeminjamanModel->updateRequestSectionAset($data->idDetailRequestPeminjaman);
             }
-            $this->dataPeminjamanModel->updateRevokeLoan($idManajemenPeminjaman);
-            return redirect()->to(site_url('dataPeminjaman'))->with('success', 'Peminjaman berhasil dibatalkan');
+
+            $this->dataPeminjamanModel->updateRevokeRequest($idRequestPeminjaman);
+            return redirect()->to(site_url('dataLabPeminjaman'))->with('success', 'Request berhasil dibatalkan');
         } else {
             return view('error/404');
         }
     }
-
 }

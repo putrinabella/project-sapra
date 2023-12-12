@@ -28,6 +28,7 @@ class DataSiswaModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+    
     function getAllPegawai() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');

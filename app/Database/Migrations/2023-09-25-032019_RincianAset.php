@@ -22,6 +22,7 @@ class RincianAset extends Migration
             'idManajemenAsetPeminjaman' => [
                 'type' => 'INT',
                 'constraint' => 3,
+                'null' => true,
             ],
             'idIdentitasSarana' => [
                 'type' => 'INT',

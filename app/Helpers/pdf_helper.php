@@ -65,7 +65,7 @@ if (!function_exists('pdfSuratPeminjaman')) {
         $tanggalFormatted .= ', ' . date('j', strtotime($dataDataPeminjaman->tanggal));
         $tanggalFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($dataDataPeminjaman->tanggal))];
         $tanggalFormatted .= ' ' . date('Y', strtotime($dataDataPeminjaman->tanggal));
-
+        $letterDate = date('j', strtotime($dataDataPeminjaman->tanggal)) . ' ' . $monthNamesIndonesian[date('n', strtotime($dataDataPeminjaman->tanggal))] . ' ' . date('Y', strtotime($dataDataPeminjaman->tanggal));
 
         $yearNow = date('Y');
         $yearNext = date('Y', strtotime('+1 year'));
@@ -73,36 +73,36 @@ if (!function_exists('pdfSuratPeminjaman')) {
         <p style="text-align: right;">No Peminjaman: $dataDataPeminjaman->idManajemenPeminjaman </p>
         <h3 style="text-align: center;">SURAT PERMOHONAN PEMINJAMAN ALAT LAB $yearNow/$yearNext</h3>
         <p style="padding-top: 10px;">Saya yang bertanda tangan di bawah ini: </p>
-        <table style="padding-top: 10px;">
+        <table style="padding-top: 10px;  width: 100%;">
             <tr>
-                <th style="width: 200px;">Nama</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->namaSiswa</th>
+                <th style="width: 30%;">Nama</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataPeminjaman->namaSiswa</th>
             </tr>
             <tr>
-                <th style="width: 200px;">NIS/NIK</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->nis</th>
+                <th style="width: 30%;">NIS/NIK</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataPeminjaman->nis</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Kelas/Karyawan</th>
-                <th style="width: 20px;">:</th>
+                <th style="width: 30%;">Kelas/Karyawan</th>
+                <th style="width: 5%;">:</th>
                 <th>$dataDataPeminjaman->namaKelas</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Keperluan Alat</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->keperluanAlat</th>
+                <th style="width: 30%;">Keperluan Alat</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataPeminjaman->keperluanAlat</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Hari, Tanggal Pinjam</th>
-                <th style="width: 20px;">:</th>
-                <th>$tanggalFormatted</th>
+                <th style="width: 30%;">Hari, Tanggal Pinjam</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$tanggalFormatted</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Lama Pinjam</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataPeminjaman->lamaPinjam Hari</th>
+                <th style="width: 30%;">Lama Pinjam</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataPeminjaman->lamaPinjam Hari</th>
             </tr>
         </table>
 
@@ -139,7 +139,7 @@ if (!function_exists('pdfSuratPeminjaman')) {
     <table style="padding-top: 10px;">
         <tr>
             <th style="width: 60%;"></th>
-            <th style="width: 40%;">Banjarbaru, $dataDataPeminjaman->tanggal</th>
+            <th style="width: 40%;">Banjarbaru, $letterDate</th>
         </tr>
         <tr>
             <th style="width: 60%;"></th>
@@ -207,6 +207,7 @@ if (!function_exists('pdfSuratAsetPeminjaman')) {
         $tanggalFormatted .= ', ' . date('j', strtotime($dataDataAsetPeminjaman->tanggal));
         $tanggalFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($dataDataAsetPeminjaman->tanggal))];
         $tanggalFormatted .= ' ' . date('Y', strtotime($dataDataAsetPeminjaman->tanggal));
+        $letterDate = date('j', strtotime($dataDataAsetPeminjaman->tanggal)) . ' ' . $monthNamesIndonesian[date('n', strtotime($dataDataAsetPeminjaman->tanggal))] . ' ' . date('Y', strtotime($dataDataAsetPeminjaman->tanggal));
 
 
         $yearNow = date('Y');
@@ -215,36 +216,36 @@ if (!function_exists('pdfSuratAsetPeminjaman')) {
         <p style="text-align: right;">No Peminjaman: $dataDataAsetPeminjaman->idManajemenAsetPeminjaman </p>
         <h3 style="text-align: center;">SURAT PERMOHONAN PEMINJAMAN ALAT $yearNow/$yearNext</h3>
         <p style="padding-top: 10px;">Saya yang bertanda tangan di bawah ini: </p>
-        <table style="padding-top: 10px;">
+        <table style="padding-top: 10px;  width: 100%;" >
             <tr>
-                <th style="width: 200px;">Nama</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataAsetPeminjaman->namaSiswa</th>
+                <th style="width: 30%;">Nama</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataAsetPeminjaman->namaSiswa</th>
             </tr>
             <tr>
-                <th style="width: 200px;">NIS/NIK</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataAsetPeminjaman->nis</th>
+                <th style="width: 30%;">NIS/NIK</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataAsetPeminjaman->nis</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Kelas/Karyawan</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataAsetPeminjaman->namaKelas</th>
+                <th style="width: 30%;">Kelas/Karyawan</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataAsetPeminjaman->namaKelas</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Keperluan Alat</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataAsetPeminjaman->keperluanAlat</th>
+                <th style="width: 30%;">Keperluan Alat</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataAsetPeminjaman->keperluanAlat</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Hari, Tanggal Pinjam</th>
-                <th style="width: 20px;">:</th>
-                <th>$tanggalFormatted</th>
+                <th style="width: 30%;">Hari, Tanggal Pinjam</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$tanggalFormatted</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Lama Pinjam</th>
-                <th style="width: 20px;">:</th>
-                <th>$dataDataAsetPeminjaman->lamaPinjam Hari</th>
+                <th style="width: 30%;">Lama Pinjam</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$dataDataAsetPeminjaman->lamaPinjam Hari</th>
             </tr>
         </table>
 
@@ -280,7 +281,7 @@ if (!function_exists('pdfSuratAsetPeminjaman')) {
     <table style="padding-top: 10px;">
         <tr>
             <th style="width: 60%;"></th>
-            <th style="width: 40%;">Banjarbaru, $dataDataAsetPeminjaman->tanggal</th>
+            <th style="width: 40%;">Banjarbaru, $letterDate</th>
         </tr>
         <tr>
             <th style="width: 60%;"></th>
@@ -3113,7 +3114,7 @@ if (!function_exists('pdfAsetRuangan')) {
         </tbody>
     </table>
 
-    <table style="padding-top: 20px;">
+    <table style="padding-top: 5%;">
         <tr>
             <th style="width: 65%;"></th>
             <th style="width: 35%;">Banjarbaru, $dateFormatted</th>
@@ -3205,51 +3206,51 @@ if (!function_exists('pdfDetailPemusnahanAset')) {
         
         <h3 style="text-align: center;"> $title</h3>
         <br>
-        <table style="padding-top: 10px;">
+        <table style="padding-top: 10px;  width: 100%;">
             <tr>
-                <th style="width: 200px;">Kode</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->kodeRincianAset</th>
+                <th style="width: 30%;">Kode</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->kodeRincianAset</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Lokasi</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->namaPrasarana</th>
+                <th style="width: 30%;">Lokasi</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->namaPrasarana</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Kategori Barang</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->namaKategoriManajemen</th>
+                <th style="width: 30%;">Kategori Barang</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->namaKategoriManajemen</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Nama Aset</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->namaSarana</th>
+                <th style="width: 30%;">Nama Aset</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->namaSarana</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Merek</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->merk</th>
+                <th style="width: 30%;">Merek</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->merk</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Status Terakhir</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->status</th>
+                <th style="width: 30%;">Status Terakhir</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->status</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Sumber Dana</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->namaSumberDana</th>
+                <th style="width: 30%;">Sumber Dana</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->namaSumberDana</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Tahun Pengadaan</th>
-                <th style="width: 20px;">:</th>
-                <th>$data->tahunPengadaan</th>
+                <th style="width: 30%;">Tahun Pengadaan</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">$data->tahunPengadaan</th>
             </tr>
             <tr>
-                <th style="width: 200px;">Harga Beli</th>
-                <th style="width: 20px;">:</th>
-                <th>Rp$tanggalFormatted</th>
+                <th style="width: 30%;">Harga Beli</th>
+                <th style="width: 5%;">:</th>
+                <th style="width: 65%;">Rp$tanggalFormatted</th>
             </tr>
             <tr>
                 <th><img src="$imageUrl" style="max-width: 800px; height: auto;" alt="Bukti"></th>

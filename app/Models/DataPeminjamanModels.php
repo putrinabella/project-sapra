@@ -23,12 +23,12 @@ class DataPeminjamanModels extends Model
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
+        $builder->orderBy('tblManajemenPeminjaman.tanggal', 'asc'); 
         $builder->orderBy("CASE 
                     WHEN tblManajemenPeminjaman.loanStatus = 'Peminjaman' THEN 1
                     WHEN tblManajemenPeminjaman.loanStatus = 'Pengembalian' THEN 2
                     WHEN tblManajemenPeminjaman.loanStatus = 'Dibatalkan' THEN 3
                     ELSE 4 END", 'asc'); 
-        $builder->orderBy('tblManajemenPeminjaman.tanggal', 'asc'); 
     
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
@@ -50,7 +50,11 @@ class DataPeminjamanModels extends Model
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
-    
+        $builder->orderBy("CASE 
+                    WHEN tblManajemenPeminjaman.loanStatus = 'Peminjaman' THEN 1
+                    WHEN tblManajemenPeminjaman.loanStatus = 'Pengembalian' THEN 2
+                    WHEN tblManajemenPeminjaman.loanStatus = 'Dibatalkan' THEN 3
+                    ELSE 4 END", 'asc'); 
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
             $builder->where('tblManajemenPeminjaman.tanggal <=', $endDate);
@@ -287,4 +291,33 @@ class DataPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
+    // Cancel loan request (user only) =============================================================================================== //
+    
+    public function getRequestItems($idRequestPeminjaman ) {
+        $builder = $this->db->table('tblDetailRequestPeminjaman');
+        $builder->select('*');
+        $builder->where('tblDetailRequestPeminjaman.idRequestPeminjaman', $idRequestPeminjaman);
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    public function updateRevokeRequest($idRequestPeminjaman ) {
+        $builder = $this->db->table('tblRequestPeminjaman');
+        $builder->where('idRequestPeminjaman ', $idRequestPeminjaman )
+            ->set('loanStatus', "Cancel")
+            ->update();
+    }
+
+    public function updateRequestSectionAset($idDetailRequestPeminjaman) {
+        $builder = $this->db->table('tblDetailRequestPeminjaman');
+        $data = [
+            'requestItemStatus' => "Cancel",
+        ];
+        $builder->where('idDetailRequestPeminjaman', $idDetailRequestPeminjaman)
+            ->set($data)
+            ->update();
+    }
+    
+    // End of cancel loan request (user only) ======================================================================================== //
 }

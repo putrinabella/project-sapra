@@ -13,23 +13,28 @@ class RequestAsetPeminjamanModels extends Model
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
-    protected $tableRincianLabAset  = 'tblRincianLabAset';
+    protected $tblRincianAset  = 'tblRincianAset';
 
 
     function getAll($startDate = null, $endDate = null)
     {
         $builder = $this->db->table('tblRequestAsetPeminjaman');
-        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
         $builder->select('(SUM(CASE WHEN tblDetailRequestAsetPeminjaman.requestItemStatus = "Approve" THEN 1 ELSE 0 END)) AS jumlahApprove', false);
         $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
-        $builder->orderBy('tblRequestAsetPeminjaman.loanStatus', 'desc'); 
         $builder->orderBy('tblRequestAsetPeminjaman.tanggal', 'asc'); 
-
+        $builder->orderBy("CASE 
+                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Approve' THEN 1
+                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Request' THEN 2
+                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Reject' THEN 3
+                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Cancel' THEN 4
+                            ELSE 5 END", 'asc'); 
+                            
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblRequestAsetPeminjaman.tanggal >=', $startDate);
             $builder->where('tblRequestAsetPeminjaman.tanggal <=', $endDate);
@@ -43,15 +48,21 @@ class RequestAsetPeminjamanModels extends Model
     function getDataRequestUser($startDate = null, $endDate = null, $idUser)
     {
         $builder = $this->db->table('tblRequestAsetPeminjaman');
-        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.loanStatus !=', 'Approve');
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
-    
+        $builder->orderBy("CASE 
+                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Approve' THEN 1
+                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Request' THEN 2
+                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Reject' THEN 3
+                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Cancel' THEN 4
+                    ELSE 5 END", 'asc'); 
+
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblRequestAsetPeminjaman.tanggal >=', $startDate);
             $builder->where('tblRequestAsetPeminjaman.tanggal <=', $endDate);
@@ -68,8 +79,8 @@ class RequestAsetPeminjamanModels extends Model
     {
         $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
         $builder->select('*');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblRequestAsetPeminjaman', 'tblRequestAsetPeminjaman.idRequestAsetPeminjaman = tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman');
         $builder->where('tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman', $idRequestAsetPeminjaman);
         $query = $builder->get();
@@ -87,33 +98,16 @@ class RequestAsetPeminjamanModels extends Model
     }
 
 
-    public function approveDetailRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus, $idRincianLabAset) {
+    public function approveDetailRequestAsetPeminjaman($idRequestAsetPeminjaman, $requestStatus, $idRincianAset) {
         $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
         $data = [
             'requestItemStatus' => $requestStatus,
         ];
     
         $builder->where('idRequestAsetPeminjaman', $idRequestAsetPeminjaman)
-                ->whereIn('idRincianLabAset', $idRincianLabAset)
+                ->whereIn('idRincianAset', $idRincianAset)
                 ->update($data);
     }
-    
-    // public function rejectDetailRequestAsetPeminjaman($idRequestAsetPeminjaman) {
-    //     $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
-    //     $builder->where('idRequestAsetPeminjaman', $idRequestAsetPeminjaman)
-    //             ->where('requestItemStatus !=', 'Approve');
-    
-    //     $rowsToUpdate = $builder->get()->getResult();
-    
-    //     foreach ($rowsToUpdate as $data) {
-    //         $updateBuilder = $this->db->table('tblDetailRequestAsetPeminjaman');
-    //         $data = [
-    //             'requestItemStatus' => 'Reject',
-    //         ];
-    //         $builder->where('idRequestAsetPeminjaman', $idRequestAsetPeminjaman)
-    //                 ->update($data);
-    //     }
-    // }
     
     function find($id = null, $columns = '*')
     {
@@ -121,9 +115,9 @@ class RequestAsetPeminjamanModels extends Model
         $builder->select($columns);
         $builder->select('COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.' . $this->primaryKey, $id);
@@ -131,38 +125,15 @@ class RequestAsetPeminjamanModels extends Model
         return $query->getRow();
     }
 
-    // function getDataSiswa($startDate = null, $endDate = null, $idUser) {
-    //     $builder = $this->db->table('tblRequestAsetPeminjaman');
-    //     $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
-    //     $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-    //     $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-    //     $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
-    //     $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
-    //     $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
-    //     $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
-    
-    //     if ($startDate !== null && $endDate !== null) {
-    //         $builder->where('tblRequestAsetPeminjaman.tanggal >=', $startDate);
-    //         $builder->where('tblRequestAsetPeminjaman.tanggal <=', $endDate);
-    //     }
-    
-    //     $builder->where('tblRequestAsetPeminjaman.loanStatus', 'Peminjaman');
-    //     $builder->where('tblRequestAsetPeminjaman.asalPeminjam', $idUser);
-    //     $builder->groupBy('tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-    //     $query = $builder->get();
-    
-    //     return $query->getResult();
-    // }
-
     function findHistory($id = null, $columns = '*')
     {
         $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
         $builder->select($columns);
-        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         
@@ -175,11 +146,11 @@ class RequestAsetPeminjamanModels extends Model
     function findAllHistory($startDate = null, $endDate = null, $columns = '*') { 
         $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
         $builder->select($columns);
-        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasLab.namaLab,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblRequestAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.loanStatus =', 'Pengembalian');
@@ -192,27 +163,13 @@ class RequestAsetPeminjamanModels extends Model
         return $query->getResult();
     }
 
-    
-
-    // public function getRincianLabAset($idRequestAsetPeminjaman)
-    // {
-    //     $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
-    //     $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-    //     $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-    //     $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
-    //     $builder->where('tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman', $idRequestAsetPeminjaman);
-    //     $query = $builder->get();
-
-    //     return $query->getResult();
-    // }
-
     public function getRincianItem($idRequestAsetPeminjaman)
     {
         $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->select('tblIdentitasSarana.*, COUNT(tblIdentitasSarana.idIdentitasSarana) as totalAset');
-        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
         $builder->where('tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman', $idRequestAsetPeminjaman);
         $builder->groupBy('tblIdentitasSarana.idIdentitasSarana');
         $query = $builder->get();
@@ -220,31 +177,32 @@ class RequestAsetPeminjamanModels extends Model
         return $query->getResult();
     }
 
-    public function updateReturnStatus($idRincianLabAset, $status)
+    public function updateReturnStatus($idRincianAset, $status)
     {
-        $builder = $this->db->table('tblRincianLabAset');
-        $builder->where('idRincianLabAset', $idRincianLabAset)
+        $builder = $this->db->table('tblRincianAset');
+        $builder->where('idRincianAset', $idRincianAset)
             ->where('sectionAset', "Dipinjam")
             ->set('status', $status)
             ->update();
     }
-    public function updateDetailReturnStatus($idRincianLabAset, $getIdManajemenPeminjaman, $status)
+    
+    public function updateDetailReturnStatus($idRincianAset, $getIdManajemenAsetPeminjaman, $status)
     {
         $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
-        $builder->where('idRincianLabAset', $idRincianLabAset)
-            ->where('idRequestAsetPeminjaman', $getIdManajemenPeminjaman)
+        $builder->where('idRincianAset', $idRincianAset)
+            ->where('idRequestAsetPeminjaman', $getIdManajemenAsetPeminjaman)
             ->set('statusSetelahPengembalian', $status)
             ->update();
     }
 
-    public function updateReturnSectionAset($idRincianLabAset)
+    public function updateReturnSectionAset($idRincianAset)
     {
-        $builder = $this->db->table('tblRincianLabAset');
+        $builder = $this->db->table('tblRincianAset');
         $data = [
             'sectionAset' => "None",
             'idRequestAsetPeminjaman' => null,
         ];
-        $builder->where('idRincianLabAset', $idRincianLabAset)
+        $builder->where('idRincianAset', $idRincianAset)
             ->set($data)
             ->update();
     }
@@ -253,9 +211,9 @@ class RequestAsetPeminjamanModels extends Model
     {
         $builder = $this->db->table($this->table);
         $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
@@ -273,9 +231,9 @@ class RequestAsetPeminjamanModels extends Model
     {
         $builder = $this->db->table($this->table);
         $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
@@ -293,9 +251,9 @@ class RequestAsetPeminjamanModels extends Model
     {
         $builder = $this->db->table($this->table);
         $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
-        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestAsetPeminjaman.idRincianLabAset');
-        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
-        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);

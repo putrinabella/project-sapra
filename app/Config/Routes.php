@@ -647,6 +647,7 @@ $routes->post('restoreDatabase', 'DatabaseManagement::restore');
 // USER - LAB
 
 // Data Peminjaman Lab
+$routes->post('dataLabPeminjaman/revokeLoan/(:any)', 'UserDataLabPeminjaman::revokeLoan/$1');
 $routes->get('dataLabPeminjaman/print/(:num)', 'UserDataLabPeminjaman::print/$1');
 $routes->get('dataLabPeminjaman', 'UserDataLabPeminjaman::user');
 $routes->get('dataLabPeminjaman/userDetail/(:any)', 'UserDataLabPeminjaman::getUserLoanHistory/$1');
@@ -656,3 +657,17 @@ $routes->get('dataLabPeminjaman/userRequestHistory/(:any)', 'UserDataLabPeminjam
 $routes->get('pengajuanLabPeminjaman/loanUser/(:num)', 'UserPengajuanLabPeminjaman::loanUser/$1');
 $routes->post('pengajuanLabPeminjaman/addLoan', 'UserPengajuanLabPeminjaman::addLoanUser');
 $routes->get('pengajuanLabPeminjaman', 'UserPengajuanLabPeminjaman::user');
+
+// USER - SARANA
+
+// Data Peminjaman
+$routes->post('peminjamanAset/revokeLoan/(:any)', 'UserDataPeminjaman::revokeLoan/$1');
+$routes->get('peminjamanAset/print/(:num)', 'UserDataPeminjaman::print/$1');
+$routes->get('peminjamanAset', 'UserDataPeminjaman::user');
+$routes->get('peminjamanAset/userDetail/(:any)', 'UserDataPeminjaman::getUserLoanHistory/$1');
+$routes->get('peminjamanAset/userRequestHistory/(:any)', 'UserDataPeminjaman::getuserRequestDetail/$1');
+
+// Pengajuan Peminjaman
+$routes->get('pengajuanPeminjaman/loanUser/(:num)', 'UserPengajuanPeminjaman::loanUser/$1');
+$routes->post('pengajuanPeminjaman/addLoan', 'UserPengajuanPeminjaman::addLoanUser');
+$routes->get('pengajuanPeminjaman', 'UserPengajuanPeminjaman::user');

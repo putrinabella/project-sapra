@@ -5,10 +5,11 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('pengajuanLabPeminjaman')?>">Pengajuan Peminjaman</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana Prasarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('pengajuanPeminjaman')?>">Pengajuan Peminjaman</a></li>
         <li class="breadcrumb-item active" aria-current="page">Input Data</li>
     </ol>
 </nav>
@@ -18,14 +19,14 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('pengajuanLabPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
+                    <a href="<?= site_url('pengajuanPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
                         <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Form Peminjaman</h4>
                     <div></div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('pengajuanLabPeminjaman/addLoan') ?>" method="POST"
+                <form action="<?= site_url('pengajuanPeminjaman/addLoan') ?>" method="POST"
                     enctype="multipart/form-data" id="custom-validation">
                     <div class="row">
                         <div class="col-12">
@@ -35,10 +36,10 @@
                                     <input type="text" class="form-control bg-transparent" name="tanggal" id="setTanggal" placeholder="Masukkan tanggal" hidden>
                             </div>
                             <div class="row mb-3">
-                                <label for="namaLab" class="col-sm-3 col-form-label">Lokasi</label>
+                                <label for="namaPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab"
-                                        value="<?= $namaLaboratorium->namaLab; ?>" readonly>
+                                    <input type="text" class="form-control bg-transparent" id="namaPrasarana" name="namaPrasarana"
+                                        value="<?= $namaPrasarana->namaPrasarana; ?>" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -99,14 +100,14 @@
                                         </tr>
                                     </thead>
                                     <tbody class="py-2">
-                                        <?php foreach ($dataRincianLabAset as $key => $value) : ?>
+                                        <?php foreach ($dataRincianPrasaranaAset as $key => $value) : ?>
                                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                             <td>
                                                 <input type="checkbox" class="form-check-input row-select"
-                                                    name="selectedRows[]" value="<?= $value->idRincianLabAset ?>">
+                                                    name="selectedRows[]" value="<?= $value->idRincianAset?>">
                                             </td>
                                             <td>
-                                                <?= $value->kodeRincianLabAset ?>
+                                                <?= $value->kodeRincianAset ?>
                                             </td>
                                             <td>
                                                 <?= $value->namaKategoriManajemen ?>

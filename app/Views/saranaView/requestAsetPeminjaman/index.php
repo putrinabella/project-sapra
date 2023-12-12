@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
         <li class="breadcrumb-item active" aria-current="page">Request Peminjaman</li>
     </ol>
 </nav>
@@ -129,7 +129,7 @@
                                 <?= $value->namaKelas; ?>
                             </td>
                             <td>
-                                <?= $value->namaLab ?>
+                                <?= $value->namaPrasarana ?>
                             </td>
                             <td>
                                 <?php if ($value->loanStatus == "Approve") : ?>
@@ -147,6 +147,10 @@
                                 <br>
                                 Approve:
                                 <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '0'; ?>
+                                <?php elseif ($value->loanStatus == "Cancel") : ?>
+                                Request:
+                                <?= $value->jumlahPeminjaman ?>
+                                <br>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -156,6 +160,8 @@
                                 <span class="badge bg-primary">Request</span>
                                 <?php elseif ($value->loanStatus == "Reject") : ?>
                                 <span class="badge bg-danger">Reject</span>
+                                <?php elseif ($value->loanStatus == "Cancel") : ?>
+                                <span class="badge bg-warning">Cancel by User</span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
@@ -163,7 +169,7 @@
                                 <a href="<?= site_url('requestAsetPeminjaman/' . $value->idRequestAsetPeminjaman . '/edit') ?>"
                                     class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                 <?php endif; ?>
-                                <?php if ($value->loanStatus == "Approve"  || $value->loanStatus == "Reject") : ?>
+                                <?php if ($value->loanStatus == "Approve"  || $value->loanStatus == "Reject"  || $value->loanStatus == "Cancel") : ?>
                                 <a href="<?= site_url('requestAsetPeminjaman/' . $value->idRequestAsetPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>

@@ -7,14 +7,14 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana Prasarana</a></li>
         <li class="breadcrumb-item active" aria-current="page">Data Peminjaman</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?= site_url('dataLabPeminjaman') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?= site_url('peminjamanAset') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
@@ -28,14 +28,14 @@
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('dataLabPeminjaman') ?>" class="btn btn-success btn-icon ">
+                <a href="<?= site_url('peminjamanAset') ?>" class="btn btn-success btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
         </form>
     </div>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-        <a href="<?= site_url('pengajuanLabPeminjaman') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+        <a href="<?= site_url('pengajuanPeminjaman') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Ajukan Peminjaman
         </a>
@@ -50,7 +50,7 @@
                 <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
                     <div class="alert-body">
                         <b>Success!</b>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-Prasaranael="btn-close"></button>
                         <?= session()->getFlashdata('success') ?>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                 <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
                     <div class="alert-body">
                         <b>Error!</b>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-Prasaranael="btn-close"></button>
                         <?= session()->getFlashdata('error') ?>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                         </tr>
                     </thead>
                     <tbody class="py-2">
-                        <?php foreach ($dataPeminjaman as $key => $value) : ?>
+                        <?php foreach ($dataAsetPeminjaman as $key => $value) : ?>
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                             <td>
                                 <?= $key + 1 ?>
@@ -100,7 +100,7 @@
                                 <?php echo $formattedDate; ?>
                             </td>
                             <td>
-                                <?= $value->namaLab ?>
+                                <?= $value->namaPrasarana ?>
                             </td>
                             <td class="text-center">
                                 <?= $value->jumlahPeminjaman ?>
@@ -116,15 +116,19 @@
                             </td>
                             <td>
                                 <?php if ($value->loanStatus == "Peminjaman") : ?>
-                                <a href="<?= site_url('dataLabPeminjaman/userDetail/' . $value->idManajemenPeminjaman) ?>"
+                                <a href="<?= site_url('peminjamanAset/userDetail/' . $value->idManajemenAsetPeminjaman) ?>"
                                     class="btn btn-success btn-icon me-2"> <i data-feather="info"></i></a>
-                                <a href="<?= site_url('dataLabPeminjaman/print/' . $value->idManajemenPeminjaman) ?>"
+                                <a href="<?= site_url('peminjamanAset/print/' . $value->idManajemenAsetPeminjaman) ?>"
                                     target="_blank" class="btn btn-secondary btn-icon"> <i
                                         data-feather="printer"></i></a>
                                 <?php endif; ?>
                                 <?php if ($value->loanStatus == "Pengembalian" || $value->loanStatus == "Dibatalkan"): ?>
-                                <a href="<?= site_url('dataLabPeminjaman/userDetail/' . $value->idManajemenPeminjaman) ?>"
+                                <a href="<?= site_url('peminjamanAset/userDetail/' . $value->idManajemenAsetPeminjaman) ?>"
                                     class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
+                                <?php endif; ?>
+                                <?php if ($value->loanStatus == "Request" || $value->loanStatus == "Reject"  || $value->loanStatus == "Approve"): ?>
+                                <a href="<?= site_url('peminjamanAset/userRequestHistory/' . $value->idRequestAsetPeminjaman) ?>"
+                                    class="btn btn-primary btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -136,7 +140,6 @@
     </div>
 </div>
 
-
 <div class="col-12 col-xl-12 grid-margin stretch-card">
     <div class="card overflow-hidden">
         <div class="card-body">
@@ -145,7 +148,7 @@
                 <div class="alert alert-success alert-dismissible show fade" role="alert" id="alert">
                     <div class="alert-body">
                         <b>Success!</b>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-Prasaranael="btn-close"></button>
                         <?= session()->getFlashdata('success') ?>
                     </div>
                 </div>
@@ -155,7 +158,7 @@
                 <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
                     <div class="alert-body">
                         <b>Error!</b>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-Prasaranael="btn-close"></button>
                         <?= session()->getFlashdata('error') ?>
                     </div>
                 </div>
@@ -195,7 +198,7 @@
                                 <?php echo $formattedDate; ?>
                             </td>
                             <td>
-                                <?= $value->namaLab ?>
+                                <?= $value->namaPrasarana ?>
                             </td>
                             <td class="text-center">
                                 <?= $value->jumlahPeminjaman ?>
@@ -212,11 +215,11 @@
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <a href="<?= site_url('dataLabPeminjaman/userRequestHistory/' . $value->idRequestPeminjaman) ?>"
+                                <a href="<?= site_url('peminjamanAset/userRequestHistory/' . $value->idRequestAsetPeminjaman) ?>"
                                 class="btn btn-primary btn-icon"> <i data-feather="info"></i></a>
                                 <?php if ($value->loanStatus == "Request") : ?>
-                                    <form action="<?= site_url('dataLabPeminjaman/revokeLoan/' .  $value->idRequestPeminjaman) ?>"
-                                    method="post" class="d-inline" id="del-<?= $value->idRequestPeminjaman; ?>">
+                                    <form action="<?= site_url('peminjamanAset/revokeLoan/' .  $value->idRequestAsetPeminjaman) ?>"
+                                    method="post" class="d-inline" id="del-<?= $value->idRequestAsetPeminjaman; ?>">
                                     <button class="btn btn-danger btn-icon"
                                         data-confirm="Apakah anda yakin membatalkan request ini?"  data-bs-toggle="tooltip" data-bs-placement="top" title="Batalkan Peminjaman">
                                         <i data-feather="alert-triangle"></i>
@@ -232,6 +235,7 @@
         </div>
     </div>
 </div>
+
 
 
 <?= $this->endSection(); ?>

@@ -8,8 +8,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('dataLabPeminjaman')?>">Data Peminjaman</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana Prasarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('peminjamanAset')?>">Data Peminjaman</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Data</li>
     </ol>
 </nav>
@@ -19,7 +19,7 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('dataLabPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i
+                    <a href="<?= site_url('peminjamanAset') ?>" class="btn btn-icon-text btn-outline-primary me-2"> <i
                             class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Histori Peminjaman</h4>
                     <div></div>
@@ -31,7 +31,7 @@
                     <label for="tanggal" class="col-sm-3 col-form-label" id="tanggal">Tanggal Peminjaman</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" id="tanggal" name="tanggal"
-                            value="<?= date('d F Y', strtotime($dataDataPeminjaman->tanggal)) ?>" readonly>
+                            value="<?= date('d F Y', strtotime($dataPeminjamanAsetUser->tanggal)) ?>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -39,7 +39,7 @@
                         Pengembalian</label>
                     <div class="col-sm-9">
                         <?php
-                        $tanggalPengembalian = !empty($dataDataPeminjaman->tanggalPengembalian) ? date('d F Y', strtotime($dataDataPeminjaman->tanggalPengembalian)) : "Belum dikembalikan";
+                        $tanggalPengembalian = !empty($dataPeminjamanAsetUser->tanggalPengembalian) ? date('d F Y', strtotime($dataPeminjamanAsetUser->tanggalPengembalian)) : "Belum dikembalikan";
                         ?>
                         <input type="text" class="form-control bg-transparent" id="tanggalPengembalian" name="tanggalPengembalian"
                             value="<?= $tanggalPengembalian ?>" readonly>
@@ -49,38 +49,38 @@
                     <label for="idPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" id="idPeminjam" name="idPeminjam"
-                            value="<?= $dataDataPeminjaman->nis ?>" readonly>
+                            value="<?= $dataPeminjamanAsetUser->nis ?>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="namaPeminjam" class="col-sm-3 col-form-label">Nama Peminjam</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control bg-transparent" id="namaPeminjam" name="namaPeminjam" value="<?= $dataDataPeminjaman->namaSiswa ?>" readonly>
-                        <input type="text" class="form-control bg-transparent" id="idManajemenPeminjaman" name="idManajemenPeminjaman"
-                            value="<?= $dataDataPeminjaman->idManajemenPeminjaman ?>" hidden>
+                        <input type="text" class="form-control bg-transparent" id="namaPeminjam" name="namaPeminjam" value="<?= $dataPeminjamanAsetUser->namaSiswa ?>" readonly>
+                        <input type="text" class="form-control bg-transparent" id="idManajemenAsetPeminjaman" name="idManajemenAsetPeminjaman"
+                            value="<?= $dataPeminjamanAsetUser->idManajemenAsetPeminjaman ?>" hidden>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="asalPeminjam" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" id="asalPeminjam" name="asalPeminjam"
-                            value="<?= $dataDataPeminjaman->namaKelas ?>" readonly>
+                            value="<?= $dataPeminjamanAsetUser->namaKelas ?>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi</label>
+                    <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab"
-                            value="<?= $dataDataPeminjaman->namaLab ?>" readonly>
-                        <input type="text" class="form-control bg-transparent" id="idIdentitasLab" name="idIdentitasLab"
-                            value="<?= $dataDataPeminjaman->idIdentitasLab ?>" hidden>
+                        <input type="text" class="form-control bg-transparent" id="namaPrasarana" name="namaPrasarana"
+                            value="<?= $dataPeminjamanAsetUser->namaPrasarana ?>" readonly>
+                        <input type="text" class="form-control bg-transparent" id="idIdentitasPrasarana" name="idIdentitasPrasarana"
+                            value="<?= $dataPeminjamanAsetUser->idIdentitasPrasarana ?>" hidden>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Jumlah Aset Dipinjam</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" id="jumlahPeminjaman" name="jumlahPeminjaman"
-                            value="<?= $dataDataPeminjaman->jumlahPeminjaman ?> Aset" readonly>
+                            value="<?= $dataPeminjamanAsetUser->jumlahPeminjaman ?> Aset" readonly>
                         <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus" value="Pengembalian"
                             hidden>
                     </div>
@@ -89,14 +89,14 @@
                     <label for="keperluanAlat" class="col-sm-3 col-form-label">Keperluan Alat</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" id="keperluanAlat" name="keperluanAlat"
-                            value="<?= $dataDataPeminjaman->keperluanAlat ?>" readonly>
+                            value="<?= $dataPeminjamanAsetUser->keperluanAlat ?>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="lamaPinjam" class="col-sm-3 col-form-label">Lama Pinjam</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" id="lamaPinjam" name="lamaPinjam"
-                            value="<?= $dataDataPeminjaman->lamaPinjam ?> Hari" readonly>
+                            value="<?= $dataPeminjamanAsetUser->lamaPinjam ?> Hari" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -104,7 +104,7 @@
                         Penerima</label>
                     <div class="col-sm-9" id="namaPenerimaContainer">
                         <?php
-                        $namaPenerima = !empty($dataDataPeminjaman->namaPenerima) ? $dataDataPeminjaman->namaPenerima : "-";
+                        $namaPenerima = !empty($dataPeminjamanAsetUser->namaPenerima) ? $dataPeminjamanAsetUser->namaPenerima : "-";
                         ?>
                         <input type="text" class="form-control bg-transparent" id="namaPenerima" name="namaPenerima"
                             value="<?= $namaPenerima ?>" readonly>
@@ -118,7 +118,7 @@
                             <thead>
                                 <tr class="text-center">
                                     <th style="width: 5%;">No.</th>
-                                    <th class="d-none">Id Rincian Lab Aset</th>
+                                    <th class="d-none">Id Rincian  Aset</th>
                                     <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Kategori</th>
@@ -129,16 +129,16 @@
                                 </tr>
                             </thead>
                             <tbody class="py-2">
-                                <?php foreach ($dataRincianLabAset  as $key => $value) : ?>
+                                <?php foreach ($dataRincianAset  as $key => $value) : ?>
                                 <tr style=" vertical-align: middle;">
                                     <td class="text-center">
                                         <?= $key + 1 ?>
                                     </td>
                                     <td class="d-none">
-                                        <?= $value->idRincianLabAset; ?>
+                                        <?= $value->idRincianAset; ?>
                                     </td>
                                     <td>
-                                        <?= $value->kodeRincianLabAset; ?>
+                                        <?= $value->kodeRincianAset; ?>
                                     </td>
                                     <td>
                                         <?= $value->namaSarana; ?>

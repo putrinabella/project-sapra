@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana Prasarana</a></li>
         <li class="breadcrumb-item active" aria-current="page">Pengajuan Peminjaman </li>
     </ol>
 </nav>
@@ -20,20 +20,20 @@
 <div class="row">
     <div class="col-12 col-xl-12 stretch-card">
         <div class="row flex-grow-1">
-            <?php foreach ($dataLaboratorium as $key => $value) : ?>
+            <?php foreach ($dataPrasarana as $key => $value) : ?>
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
-                                            <?php if ($value->picturePath !== null) : ?>
-                        <img src="<?= base_url($value->picturePath) ?>" class="card-img-top" alt="Foto ruangan"
-                            style="max-height: 200px;">
-                        <?php else : ?>
-                        <img src="<?= base_url(); ?>/assets/images/Ruangan.jpeg" class="card-img-top"
-                            alt="Default Foto ruangan" style="max-height: 200px;">
-                        <?php endif; ?>
+                    <?php if ($value->picturePath !== null) : ?>
+                    <img src="<?= base_url($value->picturePath) ?>" class="card-img-top" alt="Foto ruangan"
+                        style="max-height: 200px;">
+                    <?php else : ?>
+                    <img src="<?= base_url(); ?>/assets/images/Ruangan.jpeg" class="card-img-top"
+                        alt="Default Foto ruangan" style="max-height: 200px;">
+                    <?php endif; ?>
                     <div class="card-body">
                         <h5 class="card-title text-center">
-                            <?= $value->namaLab ?> (
-                            <?= $value->kodeLab; ?> )
+                            <?= $value->namaPrasarana ?> (
+                            <?= $value->kodePrasarana; ?> )
                         </h5>
                         <p class="card-text mb-3">
                             <span class="badge rounded-pill border border-primary text-primary">
@@ -47,7 +47,7 @@
                                 <?= $value->luas; ?> m&sup2
                             </span>
                         </p>
-                        <a href="<?= site_url('pengajuanLabPeminjaman/loanUser/' . $value->idIdentitasLab) ?>" class="btn btn-primary">Ajukan Peminjaman</a>
+                        <a href="<?= site_url('pengajuanPeminjaman/loanUser/' . $value->idIdentitasPrasarana) ?>" class="btn btn-primary">Ajukan Peminjaman</a>
                     </div>
                 </div>
             </div>
