@@ -2187,7 +2187,6 @@ if (!function_exists('pdfAsetLabGeneral')) {
     }
 }
 
-
 if (!function_exists('pdfRincianAset')) {
     function pdfRincianAset($dataAsetBagus, $dataAsetRusak, $dataAsetHilang, $title) {
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -2407,6 +2406,143 @@ if (!function_exists('pdfRincianItAset')) {
                                     '<td style="width: 40%;">Lokasi</td>' .
                                     '<td style="width: 5%;">:</td>' .
                                     '<td style="width: 55%;">' . $value->namaPrasarana . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Kategori</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . $value->namaKategoriManajemen . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Aset</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . $value->namaSarana . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Sumber Dana</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . $value->namaSumberDana . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Harga Beli</td>' .
+                                    '<td>:</td>' .
+                                    '<td>Rp' . number_format($value->hargaBeli, 0, ',', '.') . '</td>' .
+                                '</tr>' .  
+                                '<tr>' .
+                                    '<td>Tahun Pengadaan</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . ($value->tahunPengadaan != 0 || 0000 ? $value->tahunPengadaan : 'Tidak diketahui') . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Merek</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . $value->merk . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Warna</td>' .
+                                    '<td>:</td>' .
+                                    '<td>' . $value->warna . '</td>' .
+                                '</tr>' .
+                                '<tr>' .
+                                    '<td>Keterangan</td>' .
+                                    '<td>:</td>' .
+                                    '<td style="text-align: justify;">' . $value->spesifikasi . '</td>' .
+                                '</tr>' .
+                            '</table>' .
+                        '</td>' .
+                    '</tr>';
+        }
+
+        $table .= <<<EOD
+        </tbody>
+    </table>
+    EOD;
+
+        return $table;
+    }
+}
+
+if (!function_exists('pdfRincianLabAset')) {
+    function pdfRincianLabAset($dataAsetBagus, $dataAsetRusak, $dataAsetHilang, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Laboratorium - Rincian Aset');
+        $pdf->SetSubject('Laboratorium - Rincian Aset');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $yearNow = date('Y');
+        $yearNext = date('Y', strtotime('+1 year'));
+
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title $yearNow/$yearNext</h3>
+        EOD;
+
+        // Include table for Status Aset: Bagus only if $dataAsetBagus is not empty
+        if (!empty($dataAsetBagus)) {
+            $html .= generateDataLabAset($dataAsetBagus, "Status Aset: Bagus");
+        }
+
+        // Include table for Status Aset: Rusak only if $dataAsetRusak is not empty
+        if (!empty($dataAsetRusak)) {
+            $html .= generateDataLabAset($dataAsetRusak, "Status Aset: Rusak");
+        }
+
+        // Include table for Status Aset: Hilang only if $dataAsetHilang is not empty
+        if (!empty($dataAsetHilang)) {
+            $html .= generateDataLabAset($dataAsetHilang, "Status Aset: Hilang");
+        }
+
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+        $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+        return $pdfData;
+    }
+
+    // Function to generate a table based on the given data array and title
+    function generateDataLabAset($data, $status) {
+        $table = <<<EOD
+        <br>
+        <h4>$status</h4>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 30%;"><b>Kode</b></th>
+                    <th style="width: 60%;"><b>Penjelasan</b></th>
+                </tr>
+            </thead>
+            <tbody>
+        EOD;
+
+        foreach ($data as $key => $value) {
+            $table .= '<tr>';
+            $table .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+            $table .= '<td style="width: 30%; text-align: left;">' . $value->kodeRincianLabAset . '</td>';
+            $table .= '<td style="width: 60%; text-align: left;">' .
+                            '<table style="width: 100%; padding:5px;">' .
+                                '<tr>' .
+                                    '<td style="width: 40%;">Lokasi</td>' .
+                                    '<td style="width: 5%;">:</td>' .
+                                    '<td style="width: 55%;">' . $value->namaLab . '</td>' .
                                 '</tr>' .
                                 '<tr>' .
                                     '<td>Kategori</td>' .

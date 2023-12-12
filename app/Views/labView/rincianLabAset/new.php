@@ -6,21 +6,18 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Rincian Aset Laboratorium</h4>
-    </div>
-</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('rincianLabAset')?>">Rincian Aset</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Input Data</li>
+    </ol>
+</nav>
 
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Tambah Data</h4>
-                </div>
-            </div>
             <div class="card-body">
                 <form action="<?= site_url('rincianLabAset')?>" method="post" enctype="multipart/form-data"
                     autocomplete="off" id="custom-validation">

@@ -24,11 +24,6 @@
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
-                        <a href="<?= site_url('rincianAset/print/'.$dataRincianAset->idRincianAset)?>"
-                            class="btn btn-outline-success btn-icon-text mb-2 mb-md-0" target="_blank">
-                            <i class="btn-icon-prepend" data-feather="printer"></i>
-                            Print
-                        </a>
                     </div>
                 </div>
                 <div class="text-center">

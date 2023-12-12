@@ -14,16 +14,9 @@
     </ol>
 </nav>
 
-
-
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Tambah Data</h4>
-                </div>
-            </div>
             <div class="card-body">
                 <form action="<?= site_url('rincianAset')?>" method="post" enctype="multipart/form-data"
                     autocomplete="off" id="custom-validation">
