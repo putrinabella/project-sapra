@@ -8,7 +8,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Prasaranaoratorium</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
         <li class="breadcrumb-item"><a href="<?= site_url('dataAsetPeminjaman')?>">Data Peminjaman</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
     </ol>
@@ -139,10 +139,10 @@
                                             <?= $key + 1 ?>
                                         </td>
                                         <td class="d-none">
-                                            <?= $value->idRincianPrasaranaAset; ?>
+                                            <?= $value->idRincianAset; ?>
                                         </td>
                                         <td>
-                                            <?= $value->kodeRincianPrasaranaAset; ?>
+                                            <?= $value->kodeRincianAset; ?>
                                         </td>
                                         <td>
                                             <?= $value->namaSarana; ?>
@@ -163,8 +163,8 @@
                                                 <option value="Rusak">Rusak</option>
                                                 <option value="Hilang">Hilang</option>
                                             </select>
-                                            <input type="hidden" name="idRincianPrasaranaAset[]"
-                                                value="<?= $value->idRincianPrasaranaAset; ?>">
+                                            <input type="hidden" name="idRincianAset[]"
+                                                value="<?= $value->idRincianAset; ?>">
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>

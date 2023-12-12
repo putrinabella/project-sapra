@@ -222,7 +222,7 @@
             var $namaPeminjamSelect = $("#namaPeminjam");
             var $kelasJabatanSelect = $("#kelasJabatan");
             $.ajax({
-                url: "<?= site_url('getNama') ?>",
+                url: "<?= site_url('manajemenPeminjaman/getNama') ?>",
                 type: "POST",
                 data: {
                     asalPeminjam: selectedAsalPeminjam,

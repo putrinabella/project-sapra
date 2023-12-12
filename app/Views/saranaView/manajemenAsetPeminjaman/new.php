@@ -5,7 +5,13 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('manajemenAsetPeminjaman')?>">Pengajuan Peminjaman</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Input Peminjaman</li>
+    </ol>
+</nav>
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
@@ -222,7 +228,7 @@
             var $namaPeminjamSelect = $("#namaPeminjam");
             var $kelasJabatanSelect = $("#kelasJabatan");
             $.ajax({
-                url: "<?= site_url('getNama') ?>",
+                url: "<?= site_url('manajemenAsetPeminjaman/getNama') ?>",
                 type: "POST",
                 data: {
                     asalPeminjam: selectedAsalPeminjam,

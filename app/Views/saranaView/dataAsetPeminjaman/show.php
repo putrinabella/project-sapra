@@ -8,7 +8,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Prasaranaoratorium</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
         <li class="breadcrumb-item"><a href="<?= site_url('dataAsetPeminjaman')?>">Data Peminjaman</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Data</li>
     </ol>
@@ -118,7 +118,7 @@
                             <thead>
                                 <tr class="text-center">
                                     <th style="width: 5%;">No.</th>
-                                    <th class="d-none">Id Rincian Prasarana Aset</th>
+                                    <th class="d-none">Id Rincian Lab Aset</th>
                                     <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Kategori</th>
@@ -129,16 +129,16 @@
                                 </tr>
                             </thead>
                             <tbody class="py-2">
-                                <?php foreach ($dataRincianPrasaranaAset  as $key => $value) : ?>
+                                <?php foreach ($dataRincianAset  as $key => $value) : ?>
                                 <tr style=" vertical-align: middle;">
                                     <td class="text-center">
                                         <?= $key + 1 ?>
                                     </td>
                                     <td class="d-none">
-                                        <?= $value->idRincianPrasaranaAset; ?>
+                                        <?= $value->idRincianAset; ?>
                                     </td>
                                     <td>
-                                        <?= $value->kodeRincianPrasaranaAset; ?>
+                                        <?= $value->kodeRincianAset; ?>
                                     </td>
                                     <td>
                                         <?= $value->namaSarana; ?>

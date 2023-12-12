@@ -43,7 +43,7 @@ class DataAsetPeminjamanModels extends Model
     function getDataSiswa($startDate = null, $endDate = null, $idUser)
     {
         $builder = $this->db->table('tblManajemenAsetPeminjaman');
-        $builder->select('tblManajemenAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblRincianAset.idManajemenAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.*, tblIdentitasKelas.namaKelas,  COUNT(tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenAsetPeminjaman', 'tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman = tblManajemenAsetPeminjaman.idManajemenAsetPeminjaman');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailManajemenAsetPeminjaman.idRincianAset');
         $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
@@ -69,7 +69,7 @@ class DataAsetPeminjamanModels extends Model
     {
         $builder = $this->db->table('tblDetailManajemenAsetPeminjaman');
         $builder->select($columns);
-        $builder->select('tblManajemenAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblRincianAset.idManajemenAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblManajemenAsetPeminjaman', 'tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman = tblManajemenAsetPeminjaman.idManajemenAsetPeminjaman');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailManajemenAsetPeminjaman.idRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -86,7 +86,7 @@ class DataAsetPeminjamanModels extends Model
     function findAllHistory($startDate = null, $endDate = null, $columns = '*') { 
         $builder = $this->db->table('tblDetailManajemenAsetPeminjaman');
         $builder->select($columns);
-        $builder->select('tblManajemenAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblRincianAset.idManajemenAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('tblManajemenAsetPeminjaman.*, tblIdentitasPrasarana.namaPrasarana,  tblDataSiswa.namaSiswa, tblIdentitasKelas.namaKelas,  COUNT(tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblManajemenAsetPeminjaman', 'tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman = tblManajemenAsetPeminjaman.idManajemenAsetPeminjaman');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailManajemenAsetPeminjaman.idRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -252,7 +252,7 @@ class DataAsetPeminjamanModels extends Model
     {
         $builder = $this->db->table($this->table);
         $builder->select($columns);
-        $builder->select('COUNT(tblRincianAset.idManajemenAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('COUNT(tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenAsetPeminjaman', 'tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman = tblManajemenAsetPeminjaman.idManajemenAsetPeminjaman');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailManajemenAsetPeminjaman.idRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
@@ -268,7 +268,7 @@ class DataAsetPeminjamanModels extends Model
     {
         $builder = $this->db->table($this->table);
         $builder->select('tblManajemenAsetPeminjaman.*, tblRincianAset.idIdentitasSarana, tblIdentitasSarana.*, tblIdentitasPrasarana.*, tblDataSiswa.*, tblIdentitasKelas.*');
-        $builder->select('COUNT(tblRincianAset.idManajemenAsetPeminjaman) as jumlahPeminjaman');
+        $builder->select('COUNT(tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman) as jumlahPeminjaman');
         $builder->join('tblDetailManajemenAsetPeminjaman', 'tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman = tblManajemenAsetPeminjaman.idManajemenAsetPeminjaman');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailManajemenAsetPeminjaman.idRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');

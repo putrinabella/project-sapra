@@ -84,7 +84,7 @@ class DataAsetPeminjaman extends ResourceController
         if ($id != null) {
             $data = $this->request->getPost();
             $statuses = $data['status'];
-            $idRincianLabAsets = $data['idRincianLabAset'];
+            $idRincianAsets = $data['idRincianAset'];
             $updateData = [
                 'loanStatus' => 'Pengembalian',
                 'namaPenerima' => $data['namaPenerima'],
@@ -96,11 +96,11 @@ class DataAsetPeminjaman extends ResourceController
             ];
 
             foreach ($statuses as $index => $status) {
-                $idRincianLabAset = $idRincianLabAsets[$index];
+                $idRincianAset = $idRincianAsets[$index];
 
-                $this->dataAsetPeminjamanModel->updateReturnStatus($idRincianLabAset, $status);
-                $this->dataAsetPeminjamanModel->updateReturnSectionAset($idRincianLabAset);
-                $this->dataAsetPeminjamanModel->updateDetailReturnStatus($idRincianLabAset, $getIdManajemenAsetPeminjaman, $status);
+                $this->dataAsetPeminjamanModel->updateReturnStatus($idRincianAset, $status);
+                $this->dataAsetPeminjamanModel->updateReturnSectionAset($idRincianAset);
+                $this->dataAsetPeminjamanModel->updateDetailReturnStatus($idRincianAset, $getIdManajemenAsetPeminjaman, $status);
             }
             $this->dataAsetPeminjamanModel->update($id, $updateData);
             return redirect()->to(site_url('dataAsetPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
@@ -114,7 +114,7 @@ class DataAsetPeminjaman extends ResourceController
             $dataItemDipinjam = $this->dataAsetPeminjamanModel->getBorrowItems($idManajemenAsetPeminjaman);
 
             foreach ($dataItemDipinjam as $data) {
-                $this->dataAsetPeminjamanModel->updateReturnSectionAset($data->idRincianLabAset);
+                $this->dataAsetPeminjamanModel->updateReturnSectionAset($data->idRincianAset);
             }
             $this->dataAsetPeminjamanModel->updateRevokeLoan($idManajemenAsetPeminjaman);
             return redirect()->to(site_url('dataAsetPeminjaman'))->with('success', 'Peminjaman berhasil dibatalkan');
@@ -126,12 +126,12 @@ class DataAsetPeminjaman extends ResourceController
     public function getLoanHistory($id = null) {
         if ($id != null) {
             $dataDataAsetPeminjaman = $this->dataAsetPeminjamanModel->findHistory($id);
-            $dataRincianLabAset = $this->dataAsetPeminjamanModel->getRincianLabAset($id);
+            $dataRincianAset = $this->dataAsetPeminjamanModel->getRincianAset($id);
             if (is_object($dataDataAsetPeminjaman)) {
                 $data = [
                     'dataDataAsetPeminjaman' => $dataDataAsetPeminjaman,
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-                    'dataRincianLabAset' => $dataRincianLabAset,
+                    'dataRincianAset' => $dataRincianAset,
                 ];
                 return view('saranaView/dataAsetPeminjaman/show', $data);
             } else {
@@ -142,22 +142,23 @@ class DataAsetPeminjaman extends ResourceController
         }
     }
 
+
     public function print($id = null) {
         $dataDataAsetPeminjaman = $this->dataAsetPeminjamanModel->findHistory($id);
-        $dataRincianLabAset = $this->dataAsetPeminjamanModel->getRincianItem($id);
+        $dataRincianAset = $this->dataAsetPeminjamanModel->getRincianItem($id);
     
-        if (!$dataDataAsetPeminjaman && !($dataRincianLabAset)) {
+        if (!$dataDataAsetPeminjaman && !($dataRincianAset)) {
             return view('error/404');
         }
     
         $data = [
             'dataDataAsetPeminjaman' => $dataDataAsetPeminjaman,
             'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-            'dataRincianLabAset' => $dataRincianLabAset,
+            'dataRincianAset' => $dataRincianAset,
         ];
     
     
-        $pdfData = pdfSuratPeminjaman($dataDataAsetPeminjaman, $dataRincianLabAset);
+        $pdfData = pdfSuratAsetPeminjaman($dataDataAsetPeminjaman, $dataRincianAset);
     
         $tanggal = date('d F Y', strtotime($dataDataAsetPeminjaman->tanggal));
         
@@ -191,19 +192,19 @@ class DataAsetPeminjaman extends ResourceController
     
         foreach ($dataAsetPeminjaman as $peminjaman) {
             $dataDataAsetPeminjaman = $this->dataAsetPeminjamanModel->findHistory($peminjaman->idManajemenAsetPeminjaman);
-            $dataRincianLabAset = $this->dataAsetPeminjamanModel->getRincianItem($peminjaman->idManajemenAsetPeminjaman);
+            $dataRincianAset = $this->dataAsetPeminjamanModel->getRincianItem($peminjaman->idManajemenAsetPeminjaman);
     
-            if (!$dataDataAsetPeminjaman || empty($dataRincianLabAset)) {
+            if (!$dataDataAsetPeminjaman || empty($dataRincianAset)) {
                 continue;
             }
     
             $data = [
                 'dataDataAsetPeminjaman' => $dataDataAsetPeminjaman,
                 'dataIdentitasLab' => $this->identitasLabModel->findAll(),
-                'dataRincianLabAset' => $dataRincianLabAset,
+                'dataRincianAset' => $dataRincianAset,
             ];
     
-            $pdfData = pdfSuratPeminjaman($dataDataAsetPeminjaman, $dataRincianLabAset);
+            $pdfData = pdfSuratAsetPeminjaman($dataDataAsetPeminjaman, $dataRincianAset);
             $tanggal = date('d F Y', strtotime($dataDataAsetPeminjaman->tanggal));
             
             $filename = 'Formulir Peminjaman Aset - ' . $dataDataAsetPeminjaman->namaSiswa . " (" . $tanggal . ")" . ".pdf";
@@ -230,7 +231,7 @@ class DataAsetPeminjaman extends ResourceController
             $this->detailManajemenAsetPeminjamanModel->delete($data->idDetailManajemenAsetPeminjaman);
         }
         $this->dataAsetPeminjamanModel->delete($id);
-        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Laboratorium - Peminjaman dengan id $id");
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Sarana - Peminjaman dengan id $id");
         return redirect()->to(site_url('dataAsetPeminjaman'));
     }
 
@@ -264,7 +265,7 @@ class DataAsetPeminjaman extends ResourceController
                 ->update();
 
             // Log the restore action
-            activityLogs($this->userActionLogsModel, "Restore", "Melakukan restore data Laboratorium - Peminjaman dengan id $id");
+            activityLogs($this->userActionLogsModel, "Restore", "Melakukan restore data Sarana - Peminjaman dengan id $id");
         } else {
             // Restore all deleted detail records
             $this->db->table('tblDetailManajemenAsetPeminjaman')
@@ -279,7 +280,7 @@ class DataAsetPeminjaman extends ResourceController
                 ->update();
 
                 // Log the restore all action
-                activityLogs($this->userActionLogsModel, "Restore All", "Melakukan restore semua data Laboratorium - Peminjaman");
+                activityLogs($this->userActionLogsModel, "Restore All", "Melakukan restore semua data Sarana - Peminjaman");
         }
         // Check if any rows were affected
         if ($this->db->affectedRows() > 0) {
@@ -309,7 +310,7 @@ class DataAsetPeminjaman extends ResourceController
             $this->dataAsetPeminjamanModel->delete($id, true);
     
             // Log the permanent delete action for the main record
-            activityLogs($this->userActionLogsModel, "Delete", "Melakukan delete data Laboratorium - Peminjaman dengan id $id");
+            activityLogs($this->userActionLogsModel, "Delete", "Melakukan delete data Sarana - Peminjaman dengan id $id");
     
             // Redirect with success message
             return redirect()->to(site_url('dataAsetPeminjaman/trash'))->with('success', 'Data berhasil dihapus permanen');
@@ -326,7 +327,7 @@ class DataAsetPeminjaman extends ResourceController
                 $this->dataAsetPeminjamanModel->onlyDeleted()->purgeDeleted();
     
                 // Log the permanent delete action for all records in the trash
-                activityLogs($this->userActionLogsModel, "Delete All", "Mengosongkan tempat sampah Laboratorium - Peminjaman");
+                activityLogs($this->userActionLogsModel, "Delete All", "Mengosongkan tempat sampah Sarana - Peminjaman");
     
                 // Redirect with success message
                 return redirect()->to(site_url('dataAsetPeminjaman/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
@@ -369,7 +370,7 @@ class DataAsetPeminjaman extends ResourceController
             $activeWorksheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
             $activeWorksheet->setCellValue('E' . ($index + 2), $value->namaKelas);
             $activeWorksheet->setCellValue('F' . ($index + 2), $value->namaSarana);
-            $activeWorksheet->setCellValue('G' . ($index + 2), $value->namaLab);
+            $activeWorksheet->setCellValue('G' . ($index + 2), $value->namaPrasarana);
             $activeWorksheet->setCellValue('H' . ($index + 2), "Bagus");
             $activeWorksheet->setCellValue('I' . ($index + 2), $value->statusSetelahPengembalian);
             $activeWorksheet->setCellValue('J' . ($index + 2), $returnDate);
@@ -425,7 +426,7 @@ class DataAsetPeminjaman extends ResourceController
             $exampleSheet->setCellValue('D' . ($index + 2), $value->namaSiswa);
             $exampleSheet->setCellValue('E' . ($index + 2), $value->namaKelas);
             $exampleSheet->setCellValue('F' . ($index + 2), $value->namaSarana);
-            $exampleSheet->setCellValue('G' . ($index + 2), $value->namaLab);
+            $exampleSheet->setCellValue('G' . ($index + 2), $value->namaPrasarana);
             $exampleSheet->setCellValue('H' . ($index + 2), "Bagus");
     
             // Set cell formatting
@@ -464,7 +465,7 @@ class DataAsetPeminjaman extends ResourceController
     
         // Set headers for file download
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Laboratorium - Data Peminjaman.xlsx');
+        header('Content-Disposition: attachment;filename=Sarana - Data Peminjaman.xlsx');
         header('Cache-Control: max-age=0');
     
         // Save the spreadsheet to output

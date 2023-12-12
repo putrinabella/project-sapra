@@ -8,8 +8,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Prasaranaoratorium</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('dataPeminjaman')?>">Data Peminjaman</a></li>
+        <li class="breadcrumb-item"><a href="#">Sarana</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('dataAsetPeminjaman')?>">Data Peminjaman</a></li>
         <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
     </ol>
 </nav>
@@ -20,19 +20,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('dataPeminjaman') ?>"
+                        <a href="<?= site_url('dataAsetPeminjaman') ?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap text-nowrap">
-                        <a href="<?= site_url('dataPeminjaman/restore') ?>"
+                        <a href="<?= site_url('dataAsetPeminjaman/restore') ?>"
                             class="btn btn-primary btn-icon-text  me-2 mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="cloud-drizzle"></i>
                             Restore All
                         </a>
-                        <form action="<?= site_url('dataPeminjaman/deletePermanent/') ?>" method="POST"
+                        <form action="<?= site_url('dataAsetPeminjaman/deletePermanent/') ?>" method="POST"
                             class="d-inline me-2 mb-2 mb-md-0">
                             
                             <input type="hidden" name="_method" value="DELETE">
@@ -86,7 +86,7 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataDataPeminjaman as $key => $value) : ?>
+                            <?php foreach ($dataDataAsetPeminjaman as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
 
                                 <td class="text-center">
@@ -117,10 +117,10 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="<?= site_url('dataPeminjaman/restore/' . $value->idManajemenPeminjaman) ?>"
+                                    <a href="<?= site_url('dataAsetPeminjaman/restore/' . $value->idManajemenAsetPeminjaman) ?>"
                                         class="btn btn-primary"> Restore</a>
                                     <form
-                                        action="<?= site_url('dataPeminjaman/deletePermanent/' . $value->idManajemenPeminjaman) ?>"
+                                        action="<?= site_url('dataAsetPeminjaman/deletePermanent/' . $value->idManajemenAsetPeminjaman) ?>"
                                         method="POST" class="d-inline">
                                         
                                         <input type="hidden" name="_method" value="DELETE">

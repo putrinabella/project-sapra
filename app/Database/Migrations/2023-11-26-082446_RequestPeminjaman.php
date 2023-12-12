@@ -17,6 +17,7 @@ class RequestPeminjaman extends Migration
             ],
             'tanggal' => [
                 'type' => 'DATE', 
+                'null' => true,
             ],
             'asalPeminjam' => [
                 'type' => 'VARCHAR',
