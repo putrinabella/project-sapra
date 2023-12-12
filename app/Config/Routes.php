@@ -272,8 +272,8 @@ $routes->resource('pemusnahanAset', ['filter' => 'isLoggedIn']);
 // Request Peminjaman
 $routes->get('requestAsetPeminjaman/generatePDF', 'RequestAsetPeminjaman::generatePDF');
 $routes->get('requestAsetPeminjaman/export', 'RequestAsetPeminjaman::export');
-$routes->post('requestAsetPeminjaman/processLoan', 'RequestAsetPeminjaman::processLoan');
 $routes->get('requestAsetPeminjaman/rejectLoan/(:any)', 'RequestAsetPeminjaman::rejectLoan/$1');
+$routes->post('requestAsetPeminjaman/processLoan', 'RequestAsetPeminjaman::processLoan');
 $routes->resource('requestAsetPeminjaman', ['filter' => 'isLoggedIn']);
 
 // Data Peminjaman

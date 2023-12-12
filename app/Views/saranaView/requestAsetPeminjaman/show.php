@@ -62,8 +62,8 @@
                 <div class="row mb-3">
                     <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab"
-                            value="<?= $dataRequestAsetPeminjaman->namaLab ?>" readonly>
+                        <input type="text" class="form-control bg-transparent" id="namaPrasarana" name="namaPrasarana"
+                            value="<?= $dataRequestAsetPeminjaman->namaPrasarana ?>" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -109,7 +109,7 @@
                                         <?= $key + 1 ?>
                                     </td>
                                     <td style="width: 22%">
-                                        <?= $value->kodeRincianLabAset; ?>
+                                        <?= $value->kodeRincianAset; ?>
                                     </td>
                                     <td>
                                         <?= $value->namaSarana; ?>
@@ -123,6 +123,8 @@
                                     <td>
                                         <?php if ($value->requestItemStatus == "Approve") : ?>
                                         Approve
+                                        <?php elseif ($value->requestItemStatus == "Cancel") : ?>
+                                        <span class="badge bg-warning">Cancel by User</span>
                                         <?php else :?>
                                         <span class="badge bg-danger">Reject</span>
                                         <?php endif; ?>

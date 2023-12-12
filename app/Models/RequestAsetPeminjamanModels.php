@@ -185,7 +185,7 @@ class RequestAsetPeminjamanModels extends Model
             ->set('status', $status)
             ->update();
     }
-    
+
     public function updateDetailReturnStatus($idRincianAset, $getIdManajemenAsetPeminjaman, $status)
     {
         $builder = $this->db->table('tblDetailRequestAsetPeminjaman');
@@ -258,6 +258,26 @@ class RequestAsetPeminjamanModels extends Model
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
         $builder->where('tblRequestAsetPeminjaman.loanStatus', "Reject");
+        $builder->orderBy('tblRequestAsetPeminjaman.tanggal', 'asc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblRequestAsetPeminjaman.tanggal >=', $startDate);
+            $builder->where('tblRequestAsetPeminjaman.tanggal <=', $endDate);
+        }
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
+    function getDataCancel($startDate = null, $endDate = null)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblDetailRequestAsetPeminjaman', 'tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman = tblRequestAsetPeminjaman.idRequestAsetPeminjaman');
+        $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
+        $builder->where('tblRequestAsetPeminjaman.loanStatus', "Cancel");
         $builder->orderBy('tblRequestAsetPeminjaman.tanggal', 'asc'); 
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblRequestAsetPeminjaman.tanggal >=', $startDate);

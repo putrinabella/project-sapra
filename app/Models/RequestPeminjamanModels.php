@@ -266,4 +266,24 @@ class RequestPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
+
+    function getDataCancel($startDate = null, $endDate = null)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->join('tblDetailRequestPeminjaman', 'tblDetailRequestPeminjaman.idRequestPeminjaman = tblRequestPeminjaman.idRequestPeminjaman');
+        $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailRequestPeminjaman.idRincianLabAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestPeminjaman.asalPeminjam');
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
+        $builder->where('tblRequestPeminjaman.deleted_at', null);
+        $builder->where('tblRequestPeminjaman.loanStatus', "Cancel");
+        $builder->orderBy('tblRequestPeminjaman.tanggal', 'asc'); 
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblRequestPeminjaman.tanggal >=', $startDate);
+            $builder->where('tblRequestPeminjaman.tanggal <=', $endDate);
+        }
+        $query = $builder->get();
+        return $query->getResult();
+    }
 }

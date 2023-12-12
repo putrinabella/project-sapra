@@ -144,9 +144,6 @@
                                 <?php elseif ($value->loanStatus == "Reject") : ?>
                                 Request:
                                 <?= $value->jumlahPeminjaman ?>
-                                <br>
-                                Approve:
-                                <?= !empty($value->jumlahApprove) ? $value->jumlahApprove : '0'; ?>
                                 <?php elseif ($value->loanStatus == "Cancel") : ?>
                                 Request:
                                 <?= $value->jumlahPeminjaman ?>
