@@ -719,3 +719,14 @@ $routes->post('pengajuanPeminjaman/addLoan', 'UserPengajuanPeminjaman::addLoanUs
 $routes->get('pengajuanPeminjaman', 'UserPengajuanPeminjaman::user');
 // -------------------------------------------- End of pengajuan peminjaman -------------------------------------------- //
 // End of user - sarana peminjaman ======================================================================================== //
+
+// User - Pengaduan =============================================================================================== //
+// ----------------------------------------------- Pengajuan Pengaduan ----------------------------------------------- //
+$routes->post('formPengaduanUser/addLoan', 'UserFormPengaduan::addLoanUser');
+$routes->get('formPengaduanUser/loanUser/(:num)', 'UserFormPengaduan::loanUser/$1');
+$routes->get('formPengaduanUser', 'UserFormPengaduan::pengaduan');
+// -------------------------------------------- End of pengajuan Pengaduan -------------------------------------------- //
+
+// ----------------------------------------------- Daftar Pengaduan ----------------------------------------------- //
+// -------------------------------------------- End of daftar pengaduan -------------------------------------------- //
+// End of user - pengaduan ======================================================================================== //

@@ -393,6 +393,19 @@
                 <span class="link-title">Daftar Peminjaman</span>
             </a>
         </li>
+        <li class="nav-item nav-category">Pengaduan</li>
+        <li class="nav-item">
+            <a href="<?= site_url('formPengaduanUser') ?>" class="nav-link">
+                <i class="link-icon" data-feather="edit"></i>
+                <span class="link-title">Ajukan Pengaduan</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('dataPengaduanUser') ?>" class="nav-link">
+                <i class="link-icon" data-feather="file-text"></i>
+                <span class="link-title">Daftar Pengaduan</span>
+            </a>
+        </li>
     <?php } ?>
 
     <?php if (session()->get('role') == 'Admin Sarpra') { ?>
