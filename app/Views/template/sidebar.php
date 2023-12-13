@@ -309,6 +309,9 @@
                         <a href="<?= site_url('kategoriMep') ?>" class="nav-link">Kategori MEP </a>
                     </li>
                     <li class="nav-item">
+                        <a href="<?= site_url('pertanyaanPengaduan') ?>" class="nav-link">Pertanyaan Pengaduan </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?= site_url('sumberDana') ?>" class="nav-link">Sumber Dana</a>
                     </li>
                     <li class="nav-item">

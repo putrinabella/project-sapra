@@ -237,6 +237,20 @@ $routes->delete('nonInventaris/deletePermanent/(:any)', 'NonInventaris::deletePe
 $routes->delete('nonInventaris/deletePermanent', 'NonInventaris::deletePermanent');
 $routes->resource('nonInventaris', ['filter' => 'isLoggedIn']);
 // -------------------------------------------- End of data non inventaris -------------------------------------------- //
+
+// ----------------------------------------------- Pertanyaan Pengaduan ----------------------------------------------- //
+$routes->get('pertanyaanPengaduan/createTemplate', 'PertanyaanPengaduan::createTemplate');
+$routes->get('pertanyaanPengaduan/generatePDF', 'PertanyaanPengaduan::generatePDF');
+$routes->get('pertanyaanPengaduan/export', 'PertanyaanPengaduan::export');
+$routes->post('pertanyaanPengaduan/import', 'PertanyaanPengaduan::import');
+$routes->get('pertanyaanPengaduan/edit', 'PertanyaanPengaduan::edit');
+$routes->get('pertanyaanPengaduan/trash', 'PertanyaanPengaduan::trash');
+$routes->get('pertanyaanPengaduan/restore/(:any)', 'PertanyaanPengaduan::restore/$1');
+$routes->get('pertanyaanPengaduan/restore', 'PertanyaanPengaduan::restore');
+$routes->delete('pertanyaanPengaduan/deletePermanent/(:any)', 'PertanyaanPengaduan::deletePermanent/$1');
+$routes->delete('pertanyaanPengaduan/deletePermanent', 'PertanyaanPengaduan::deletePermanent');
+$routes->resource('pertanyaanPengaduan', ['filter' => 'isLoggedIn']);
+// -------------------------------------------- End of pertanyaan pengaduan -------------------------------------------- //
 // End of data master ======================================================================================== //
 
 // Sarana - Manajemen Aset =============================================================================================== //

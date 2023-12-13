@@ -12,6 +12,8 @@ class PertanyaanPengaduan extends Migration
             'idPertanyaanPengaduan' => [
                 'type' => 'INT',
                 'constraint' => 3,
+                'unsigned' => true,
+                'auto_increment' => true,
             ],
             'pertanyaanPengaduan' => [
                 'type' => 'TEXT',
