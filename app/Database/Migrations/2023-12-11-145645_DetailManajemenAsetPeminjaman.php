@@ -48,6 +48,6 @@ class DetailManajemenAsetPeminjaman extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('tblDetailDetailManajemenAsetPeminjaman');
+        $this->forge->dropTable('tblDetailManajemenAsetPeminjaman');
     }
 }

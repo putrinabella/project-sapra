@@ -27,13 +27,13 @@ class RequestAsetPeminjamanModels extends Model
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestAsetPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
-        $builder->orderBy('tblRequestAsetPeminjaman.tanggal', 'asc'); 
         $builder->orderBy("CASE 
-                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Approve' THEN 1
-                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Request' THEN 2
+                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Request' THEN 1
+                            WHEN tblRequestAsetPeminjaman.loanStatus = 'Approve' THEN 2
                             WHEN tblRequestAsetPeminjaman.loanStatus = 'Reject' THEN 3
                             WHEN tblRequestAsetPeminjaman.loanStatus = 'Cancel' THEN 4
                             ELSE 5 END", 'asc'); 
+        $builder->orderBy('tblRequestAsetPeminjaman.tanggal', 'asc'); 
                             
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblRequestAsetPeminjaman.tanggal >=', $startDate);
@@ -57,8 +57,8 @@ class RequestAsetPeminjamanModels extends Model
         $builder->where('tblRequestAsetPeminjaman.loanStatus !=', 'Approve');
         $builder->where('tblRequestAsetPeminjaman.deleted_at', null);
         $builder->orderBy("CASE 
-                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Approve' THEN 1
-                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Request' THEN 2
+                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Request' THEN 1
+                    WHEN tblRequestAsetPeminjaman.loanStatus = 'Approve' THEN 2
                     WHEN tblRequestAsetPeminjaman.loanStatus = 'Reject' THEN 3
                     WHEN tblRequestAsetPeminjaman.loanStatus = 'Cancel' THEN 4
                     ELSE 5 END", 'asc'); 

@@ -3249,6 +3249,153 @@ if (!function_exists('pdfAsetRuangan')) {
     $html .= <<<EOD
         </tbody>
     </table>
+    <br>
+    <br>
+    <table style="padding-top: 5%;">
+        <tr>
+            <th style="width: 65%;"></th>
+            <th style="width: 35%;">Banjarbaru, $dateFormatted</th>
+        </tr>
+        <tr>
+            <th style="width: 66%;"></th>
+            <th style="width: 35%;"></th>
+        </tr>
+        <tr>
+            <th style="width: 65%;"></th>
+            <th style="width: 35%;"></th>
+        </tr>
+        <tr>
+            <th style="width: 65%;"></th>
+            <th style="width: 35%;">(Nama ketua sarpra)</th>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    <b>Catatan:</b>
+    <ol>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+        <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+        <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</li>
+        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</li>
+        <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</li>
+        <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</li>
+        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</li>
+        <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+        <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+    </ol>
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdfAsetLaboratorium')) {
+    function pdfAsetLaboratorium($dataLabRuangan, $dataInfoLab, $dataGeneral) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Aset Laboratorium');
+        $pdf->SetSubject('Aset Laboratorium');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $monthNamesIndonesian = [
+            '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        $yearNow = date('Y');
+        $yearNext = date('Y', strtotime('+1 year'));
+        $currentDate = date('d F Y');
+
+        $dateFormatted = '';
+        $dateFormatted .= date('d', strtotime($currentDate)) . ' '; 
+        $dateFormatted .= $monthNamesIndonesian[date('n', strtotime($currentDate))];
+        $dateFormatted .= ' ' . date('Y', strtotime($currentDate));
+
+        $html = <<<EOD
+        <p style="padding-top: 10px; text-align: center;"><b>
+        DAFTAR INVENTARIS RUANGAN SMK TELKOM BANJARBARU TAHUN $yearNow/$yearNext
+        </b></p>
+        <h3 style="text-align: center; text-transform: uppercase; text-decoration: underline">$dataLabRuangan->kodeLab
+        <br>$dataLabRuangan->namaLab</h3>
+        <table style="padding-top: 10px; width: 100%;">
+            <tr>
+                <th style="width: 15%;">Gedung</th>
+                <th style="width: 2%;">:</th>
+                <th>$dataInfoLab->namaGedung</th>
+            </tr>
+            <tr>
+                <th style="width: 15%;">Lantai</th>
+                <th style="width: 2%;">:</th>
+                <th>$dataInfoLab->namaLantai</th>
+            </tr>
+            <tr>
+                <th style="width: 15%;">Luas</th>
+                <th style="width: 2%;">:</th>
+                <th>$dataLabRuangan->luas&nbsp;m&sup2;</th>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <table border="1" style="width: 100%; padding:5px; text-align: center; border-collapse: collapse;" >
+            <thead>
+                <tr>
+                <th rowspan="2" style="width: 8%;"><b>No.</b></th>
+                <th rowspan="2" style="width: 41%;"><b>Nama Barang</b></th>
+                <th rowspan="2" style="width: 15%;"><b>Jumlah</b></th>
+                <th style="width: 16%; "><b>Kondisi</b></th>
+                <th rowspan="2" style="width: 20%;"><b>Keterangan</b></th>
+                </tr>
+                <tr>
+                    <th style="width: 8%;"><b>Baik</b></th>
+                    <th style="width: 8%;"><b>Rusak</b></th>
+                </tr>
+            </thead>
+        <tbody>
+    EOD;
+    
+    foreach ($dataGeneral as $key => $value) {
+        $asetRusak = $value->jumlahRusak + $value->jumlahHilang;
+        $html .= '<tr>';
+        $html .= '<td style="width: 8%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 41%; text-align: left;">' . $value->namaSarana . '</td>';
+        $html .= '<td style="width: 15%;">' . $value->jumlahTotal . '</td>';
+        $html .= '<td style="width: 8%;">' . $value->jumlahBagus . '</td>';
+        $html .= '<td style="width: 8%;">' . $asetRusak. '</td>';
+        $html .= '<td style="width: 20%;"></td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+    <br>
+    <br>
 
     <table style="padding-top: 5%;">
         <tr>

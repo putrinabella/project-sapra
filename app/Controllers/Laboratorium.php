@@ -30,11 +30,20 @@ class Laboratorium extends ResourceController
         $this->identitasLantaiModel = new IdentitasLantaiModels();
         $this->rincianLabAsetModel = new RincianLabAsetModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf']);
     }
 
     public function index() {
         $data['dataLaboratorium'] = $this->laboratoriumModel->getRuangan();
         return view('labView/laboratorium/index', $data);
+    }
+
+    public function search() {
+        if ($this->request->isAJAX()) {
+            $namaLab = $this->request->getVar('namaLab');
+            $result = $this->laboratoriumModel->searchLab($namaLab);
+            return $this->response->setJSON($result);
+        }
     }
     
     public function show($id = null) {
@@ -63,6 +72,29 @@ class Laboratorium extends ResourceController
     }
     
     function print($id = null) {
+        if ($id != null) {
+            $dataLabRuangan = $this->laboratoriumModel->find($id);
+            $dataInfoLab = $this->laboratoriumModel->getIdentitasGedung($dataLabRuangan->idIdentitasLab);
+            $dataInfoLab->namaLantai = $this->laboratoriumModel->getIdentitasLantai($dataLabRuangan->idIdentitasLab)->namaLantai;
+            $dataSarana = $this->laboratoriumModel->getSaranaByLabId($dataLabRuangan->idIdentitasLab);
+            $dataGeneral = $this->laboratoriumModel->getDataBySarana($id);
+
+            $pdfData = pdfAsetLaboratorium($dataLabRuangan, $dataInfoLab, $dataGeneral);
+        
+            $namaLaboratorium = $dataLabRuangan->namaLab;
+            $filename = $namaLaboratorium. ' - Daftar Aset' . ".pdf";
+            
+            $response = $this->response;
+            $response->setHeader('Content-Type', 'application/pdf');
+            $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+            $response->setBody($pdfData);
+            $response->send();
+        } else {
+            return view('error/404');
+        }
+    }
+
+    function print2($id = null) {
         if ($id != null) {
             $dataLaboratorium = $this->laboratoriumModel->find($id);
     

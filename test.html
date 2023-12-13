@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form>
+        <label>
+            <strong>1. How satisfied are you with the website design?</strong><br>
+            <input type="radio" name="question1" value="5"> SP (Sangat Puas)
+            <input type="radio" name="question1" value="4"> P (Puas)
+            <input type="radio" name="question1" value="3"> N (Netral)
+            <input type="radio" name="question1" value="2"> TP (Tidak Puas)
+            <input type="radio" name="question1" value="1"> ST (Sangat Tidak Puas)
+        </label>
+
+        <label>
+            <strong>2. How would you rate the content quality?</strong><br>
+            <input type="radio" name="question2" value="5"> SP (Sangat Puas)
+            <input type="radio" name="question2" value="4"> P (Puas)
+            <input type="radio" name="question2" value="3"> N (Netral)
+            <input type="radio" name="question2" value="2"> TP (Tidak Puas)
+            <input type="radio" name="question2" value="1"> ST (Sangat Tidak Puas)
+        </label>
+
+        <label>
+            <strong>3. How easy was it to find the information you were looking for?</strong><br>
+            <input type="radio" name="question3" value="5"> SP (Sangat Puas)
+            <input type="radio" name="question3" value="4"> P (Puas)
+            <input type="radio" name="question3" value="3"> N (Netral)
+            <input type="radio" name="question3" value="2"> TP (Tidak Puas)
+            <input type="radio" name="question3" value="1"> ST (Sangat Tidak Puas)
+        </label>
+
+        <label>
+            <strong>4. How likely are you to recommend this website to others?</strong><br>
+            <input type="radio" name="question4" value="5"> SP (Sangat Puas)
+            <input type="radio" name="question4" value="4"> P (Puas)
+            <input type="radio" name="question4" value="3"> N (Netral)
+            <input type="radio" name="question4" value="2"> TP (Tidak Puas)
+            <input type="radio" name="question4" value="1"> ST (Sangat Tidak Puas)
+        </label>
+
+        <label>
+            <strong>5. How satisfied are you with the overall user experience?</strong><br>
+            <input type="radio" name="question5" value="5"> SP (Sangat Puas)
+            <input type="radio" name="question5" value="4"> P (Puas)
+            <input type="radio" name="question5" value="3"> N (Netral)
+            <input type="radio" name="question5" value="2"> TP (Tidak Puas)
+            <input type="radio" name="question5" value="1"> ST (Sangat Tidak Puas)
+        </label>
+
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+
+</html>

@@ -585,6 +585,7 @@ $routes->resource('pemusnahanLabAset', ['filter' => 'isLoggedIn']);
 // -------------------------------------------- End of pemusnahan aset laboratorium -------------------------------------------- //
 
 // ----------------------------------------------- Laboratorium ----------------------------------------------- //
+$routes->post('laboratorium/search', 'Laboratorium::search');
 $routes->get('laboratorium/print/(:num)', 'Laboratorium::print/$1');
 $routes->get('laboratorium/showInfo/(:num)', 'Laboratorium::showInfo/$1');
 $routes->resource('laboratorium',  ['filter' => 'laboranFilter']);

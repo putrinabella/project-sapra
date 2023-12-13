@@ -129,7 +129,7 @@ class PrasaranaRuangan extends ResourceController
             $pdfData = pdfAsetRuangan($dataPrasaranaRuangan, $dataInfoPrasarana, $dataGeneral);
         
             
-            $filename = 'IT - Rincian Aset' . ".pdf";
+            $filename = 'Ruangan - Rincian Aset' . ".pdf";
             
             $response = $this->response;
             $response->setHeader('Content-Type', 'application/pdf');

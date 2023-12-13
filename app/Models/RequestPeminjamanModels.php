@@ -27,10 +27,9 @@ class RequestPeminjamanModels extends Model
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblRequestPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblRequestPeminjaman.deleted_at', null);
-        $builder->orderBy('tblRequestPeminjaman.tanggal', 'asc'); 
         $builder->orderBy("CASE 
-                            WHEN tblRequestPeminjaman.loanStatus = 'Approve' THEN 1
-                            WHEN tblRequestPeminjaman.loanStatus = 'Request' THEN 2
+                            WHEN tblRequestPeminjaman.loanStatus = 'Request' THEN 1
+                            WHEN tblRequestPeminjaman.loanStatus = 'Approve' THEN 2
                             WHEN tblRequestPeminjaman.loanStatus = 'Reject' THEN 3
                             WHEN tblRequestPeminjaman.loanStatus = 'Cancel' THEN 4
                             ELSE 5 END", 'asc'); 
@@ -57,8 +56,8 @@ class RequestPeminjamanModels extends Model
         $builder->where('tblRequestPeminjaman.loanStatus !=', 'Approve');
         $builder->where('tblRequestPeminjaman.deleted_at', null);
         $builder->orderBy("CASE 
-                    WHEN tblRequestPeminjaman.loanStatus = 'Approve' THEN 1
-                    WHEN tblRequestPeminjaman.loanStatus = 'Request' THEN 2
+                    WHEN tblRequestPeminjaman.loanStatus = 'Request' THEN 1
+                    WHEN tblRequestPeminjaman.loanStatus = 'Approve' THEN 2
                     WHEN tblRequestPeminjaman.loanStatus = 'Reject' THEN 3
                     WHEN tblRequestPeminjaman.loanStatus = 'Cancel' THEN 4
                     ELSE 5 END", 'asc'); 
