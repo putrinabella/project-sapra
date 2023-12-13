@@ -19,34 +19,23 @@ class FormPengaduan extends Migration
                 'type' => 'INT',
                 'constraint' => 3,
             ],
-            'idPertanyaanPengaduan' => [
-                'type' => 'INT',
-                'constraint' => 3,
+            'statusPengaduan' => [
+                'type' => 'ENUM',
+                'constraint' => ['request', 'process', 'needFeedback', 'done'],
+                'null' => true,
             ],
+            
+            // 'idPertanyaanPengaduan' => [
+            //     'type' => 'INT',
+            //     'constraint' => 3,
+            // ],
             'tanggal' => [
                 'type' => 'DATE',
                 'null' => true,
             ],
-            'sp' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'p' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'n' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'tp' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
-            'st' => [
-                'type' => 'INT',
-                'constraint' => 3,
-            ],
+            // 'isiPengaduan' => [
+            //     'type' => 'MEDIUMTEXT',
+            // ],             
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
