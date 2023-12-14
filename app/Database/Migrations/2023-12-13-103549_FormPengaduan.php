@@ -24,18 +24,14 @@ class FormPengaduan extends Migration
                 'constraint' => ['request', 'process', 'needFeedback', 'done'],
                 'null' => true,
             ],
-            
-            // 'idPertanyaanPengaduan' => [
-            //     'type' => 'INT',
-            //     'constraint' => 3,
-            // ],
             'tanggal' => [
                 'type' => 'DATE',
                 'null' => true,
-            ],
-            // 'isiPengaduan' => [
-            //     'type' => 'MEDIUMTEXT',
-            // ],             
+            ],           
+            'tanggalSelesai' => [
+                'type' => 'DATE',
+                'null' => true,
+            ],           
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

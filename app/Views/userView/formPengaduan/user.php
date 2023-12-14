@@ -18,13 +18,13 @@
             <div class="card-body">
                 <form action="<?= site_url('formPengaduanUser/tambahPengaduan') ?>" method="POST"
                     enctype="multipart/form-data" id="custom-validation">
-                    <?php foreach ($dataPertanyaanPengaduan as $value): ?>
+                    <?php foreach ($dataPertanyaanPengaduan as $key => $value): ?>
                     <input type="text" class="form-control border-0" name="idPertanyaanPengaduan[]"
                         id="idPertanyaanPengaduan" value="<?= $value->idPertanyaanPengaduan; ?>" hidden>
                     <p>
-                        <?= $value->pertanyaanPengaduan; ?>
+                        <?= $key+1 . ". " . $value->pertanyaanPengaduan; ?>
                     </p>
-                    <textarea class="form-control"
+                    <textarea class="form-control" style="margin-left: 15px;"
                         name="isiPengaduan[<?= $value->idPertanyaanPengaduan; ?>]"></textarea>
                     <br>
                     <?php endforeach; ?>

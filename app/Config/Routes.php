@@ -239,18 +239,12 @@ $routes->resource('nonInventaris', ['filter' => 'isLoggedIn']);
 // -------------------------------------------- End of data non inventaris -------------------------------------------- //
 
 // ----------------------------------------------- Pertanyaan Pengaduan ----------------------------------------------- //
-$routes->get('pertanyaanPengaduan/createTemplate', 'PertanyaanPengaduan::createTemplate');
-$routes->get('pertanyaanPengaduan/generatePDF', 'PertanyaanPengaduan::generatePDF');
-$routes->get('pertanyaanPengaduan/export', 'PertanyaanPengaduan::export');
-$routes->post('pertanyaanPengaduan/import', 'PertanyaanPengaduan::import');
-$routes->get('pertanyaanPengaduan/edit', 'PertanyaanPengaduan::edit');
-$routes->get('pertanyaanPengaduan/trash', 'PertanyaanPengaduan::trash');
-$routes->get('pertanyaanPengaduan/restore/(:any)', 'PertanyaanPengaduan::restore/$1');
-$routes->get('pertanyaanPengaduan/restore', 'PertanyaanPengaduan::restore');
-$routes->delete('pertanyaanPengaduan/deletePermanent/(:any)', 'PertanyaanPengaduan::deletePermanent/$1');
-$routes->delete('pertanyaanPengaduan/deletePermanent', 'PertanyaanPengaduan::deletePermanent');
 $routes->resource('pertanyaanPengaduan', ['filter' => 'isLoggedIn']);
 // -------------------------------------------- End of pertanyaan pengaduan -------------------------------------------- //
+
+// ----------------------------------------------- Pertanyaan Feedback ----------------------------------------------- //
+$routes->resource('pertanyaanFeedback', ['filter' => 'isLoggedIn']);
+// -------------------------------------------- End of pertanyaan feedback -------------------------------------------- //
 // End of data master ======================================================================================== //
 
 // Sarana - Manajemen Aset =============================================================================================== //
@@ -342,9 +336,11 @@ $routes->resource('dataNonInventaris', ['filter' => 'isLoggedIn']);
 
 // Sarana - Pengaduan =============================================================================================== //
 // ----------------------------------------------- Data Pengaduan ----------------------------------------------- //
-$routes->post('arsipPengaduan/processPengaduan', 'ArsipPengaduan::processPengaduan');
-$routes->get('arsipPengaduan/detail/(:num)', 'ArsipPengaduan::detail/$1');
-$routes->get('arsipPengaduan', 'ArsipPengaduan::view');
+// $routes->post('arsipPengaduan/processPengaduan', 'ArsipPengaduan::processPengaduan');
+// $routes->get('arsipPengaduan/edit/(:num)', 'ArsipPengaduan::edit/$1');
+// $routes->get('arsipPengaduan/detail/(:num)', 'ArsipPengaduan::detail/$1');
+// $routes->get('arsipPengaduan', 'ArsipPengaduan::view');
+$routes->resource('arsipPengaduan', ['filter' => 'isLoggedIn']);
 // -------------------------------------------- End of data pengaduan -------------------------------------------- //
 
 // ----------------------------------------------- Data Feedback ----------------------------------------------- //
@@ -743,3 +739,10 @@ $routes->get('dataPengaduanUser/detail/(:num)', 'UserDataPengaduan::detail/$1');
 $routes->get('dataPengaduanUser', 'UserDataPengaduan::view');
 // -------------------------------------------- End of daftar pengaduan -------------------------------------------- //
 // End of user - pengaduan ======================================================================================== //
+
+// User - Feedback =============================================================================================== //
+$routes->post('dataFeedbackUser/addFeedback/(:num)', 'UserDataFeedback::addFeedback/$1');
+$routes->get('dataFeedbackUser', 'UserDataFeedback::view');
+$routes->get('dataFeedbackUser/detail/(:num)', 'UserDataFeedback::detail/$1');
+$routes->get('dataFeedbackUser/edit/(:num)', 'UserDataFeedback::edit/$1');
+// End of user - feedback ======================================================================================== //

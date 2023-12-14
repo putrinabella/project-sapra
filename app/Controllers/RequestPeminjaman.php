@@ -92,38 +92,37 @@ class RequestPeminjaman extends ResourceController
         }
     }
 
-    public function update($id = null) {
-        if ($id != null) {
-            $data = $this->request->getPost();
-            var_dump($data);
-            die;
-            $loanStatuses = $data['loanStatus'];
-            $idRincianLabAsets = $data['idRincianLabAset'];
-            $updateData = [
-                'loanStatus' => 'Pengembalian',
-                'namaPenerima' => $data['namaPenerima'],
-                'tanggalPengembalian' => $data['tanggalPengembalian'],
-            ];
+    // public function update($id = null) {
+    //     if ($id != null) {
+    //         $data = $this->request->getPost();
+    //         var_dump($data);
+    //         die;
+    //         $loanStatuses = $data['loanStatus'];
+    //         $idRincianLabAsets = $data['idRincianLabAset'];
+    //         $updateData = [
+    //             'loanStatus' => 'Pengembalian',
+    //             'namaPenerima' => $data['namaPenerima'],
+    //             'tanggalPengembalian' => $data['tanggalPengembalian'],
+    //         ];
 
-            $getIdManajemenPeminjaman = [
-                'idRequestPeminjaman' => $data['idRequestPeminjaman'],
-            ];
+    //         $getIdManajemenPeminjaman = [
+    //             'idRequestPeminjaman' => $data['idRequestPeminjaman'],
+    //         ];
 
-            foreach ($loanStatuses as $index => $loanStatus) {
-                $idRincianLabAset = $idRincianLabAsets[$index];
+    //         foreach ($loanStatuses as $index => $loanStatus) {
+    //             $idRincianLabAset = $idRincianLabAsets[$index];
 
-                $this->requestPeminjamanModel->updateReturnStatus($idRincianLabAset, $loanStatus);
-                $this->requestPeminjamanModel->updateReturnSectionAset($idRincianLabAset);
-                $this->requestPeminjamanModel->updateDetailReturnStatus($idRincianLabAset, $getIdManajemenPeminjaman, $loanStatus);
-            }
-            die;
-            $this->requestPeminjamanModel->update($id, $updateData);
-            return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
-        } else {
-            return view('error/404');
-        }
-    }
-    
+    //             $this->requestPeminjamanModel->updateReturnStatus($idRincianLabAset, $loanStatus);
+    //             $this->requestPeminjamanModel->updateReturnSectionAset($idRincianLabAset);
+    //             $this->requestPeminjamanModel->updateDetailReturnStatus($idRincianLabAset, $getIdManajemenPeminjaman, $loanStatus);
+    //         }
+    //         die;
+    //         $this->requestPeminjamanModel->update($id, $updateData);
+    //         return redirect()->to(site_url('requestPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
+    //     } else {
+    //         return view('error/404');
+    //     }
+    // }
     
     public function processLoan() {
         $data = $this->request->getPost();
@@ -135,15 +134,12 @@ class RequestPeminjaman extends ResourceController
         if (!empty($data['asalPeminjam'])) {
             $this->manajemenPeminjamanModel->insert($data);
             $idManajemenPeminjaman = $this->db->insertID();
-            
-            foreach ($idRincianLabAset as $idRincianLabAset) {
-                // die;
+            foreach ($idRincianLabAset as $idData) {
                 $detailData = [
-                    'idRincianLabAset' => $idRincianLabAset,
+                    'idRincianLabAset' => $idData,
                     'idManajemenPeminjaman' => $idManajemenPeminjaman,
                 ];
                 $this->requestPeminjamanModel->approveDetailRequestPeminjaman($idRequestPeminjaman, $requestStatus, $idRincianLabAset);
-                // die;
                 $this->manajemenPeminjamanModel->updateSectionAset($detailData, $sectionAsetValue);
                 $this->db->table('tblDetailManajemenPeminjaman')->insert($detailData);
                 

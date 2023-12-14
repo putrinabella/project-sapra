@@ -4,30 +4,29 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class FormFeedback extends Migration
+class DetailFormFeedback extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'idFormFeedback' => [
+            'idDetailFormFeedback' => [
                 'type' => 'INT',
                 'constraint' => 3,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'idDataSiswa' => [
+            'idFormFeedback' => [
                 'type' => 'INT',
                 'constraint' => 3,
             ],
-            'statusFeedback' => [
-                'type' => 'ENUM',
-                'constraint' => ['empty', 'done'],
-                'null' => true,
+            'idPertanyaanFeedback' => [
+                'type' => 'INT',
+                'constraint' => 3,
             ],
-            'tanggal' => [
-                'type' => 'DATE',
-                'null' => true,
-            ],           
+            'isiFeedback' => [
+                'type' => 'INT',
+                'constraint' => 3,
+            ],             
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -42,12 +41,12 @@ class FormFeedback extends Migration
             ],
         ]);
 
-        $this->forge->addKey('idFormFeedback', true);
-        $this->forge->createTable('tblFormFeedback');
+        $this->forge->addKey('idDetailFormFeedback', true);
+        $this->forge->createTable('tblDetailFormFeedback');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tblFormFeedback');
+        $this->forge->dropTable('tblDetailFormFeedback');
     }
 }

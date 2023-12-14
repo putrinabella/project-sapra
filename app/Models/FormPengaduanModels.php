@@ -9,7 +9,7 @@ class FormPengaduanModels extends Model
     protected $table            = 'tblFormPengaduan';
     protected $primaryKey       = 'idFormPengaduan';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idFormPengaduan', 'idDataSiswa', 'tanggal', 'statusPengaduan'];
+    protected $allowedFields    = ['idFormPengaduan', 'idDataSiswa', 'tanggal', 'statusPengaduan', 'tanggalSelesai'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -71,11 +71,11 @@ class FormPengaduanModels extends Model
         return $query->getResult();
     }
 
-    function getIdentitasUser($idUser) {
-        $builder = $this->db->table('tblDataSiswa');
-        $builder->join('tblFormPengaduan', 'tblFormPengaduan.idDataSiswa = tblDataSiswa.idDataSiswa');
+    function getIdentitasUser($id) {
+        $builder = $this->db->table('tblFormPengaduan');
+        $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblFormPengaduan.idDataSiswa');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
-        $builder->where('tblFormPengaduan.idDataSiswa', $idUser);
+        $builder->where('tblFormPengaduan.idFormPengaduan', $id);
         $query = $builder->get();
         return $query->getRow();
     }

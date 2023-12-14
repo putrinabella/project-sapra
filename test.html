@@ -94,6 +94,41 @@
 
         <input type="submit" value="Submit">
     </form>
+    <div class="mb-3">
+        <label for="formRange1" class="form-label">Range Input</label>
+        <input type="range" class="form-range" id="formRange1" min="1" max="5" step="1"
+            oninput="updateText(this.value)">
+    </div>
+
+    <div class="mb-3">
+        <label for="selectedText" class="form-label">Selected Text</label>
+        <p id="selectedText"></p>
+    </div>
+
+    <script>
+        function updateText(value) {
+            let selectedTextElement = document.getElementById("selectedText");
+            switch (parseInt(value)) {
+                case 1:
+                    selectedTextElement.innerText = "Sangat Tidak Puas";
+                    break;
+                case 2:
+                    selectedTextElement.innerText = "Tidak Puas";
+                    break;
+                case 3:
+                    selectedTextElement.innerText = "Netral";
+                    break;
+                case 4:
+                    selectedTextElement.innerText = "Puas";
+                    break;
+                case 5:
+                    selectedTextElement.innerText = "Sangat Puas";
+                    break;
+                default:
+                    selectedTextElement.innerText = "";
+            }
+        }
+    </script>
 
 </body>
 

@@ -92,41 +92,43 @@ class RequestAsetPeminjaman extends ResourceController
         }
     }
 
-    public function update($id = null) {
-        if ($id != null) {
-            $data = $this->request->getPost();
-            var_dump($data);
-            die;
-            $loanStatuses = $data['loanStatus'];
-            $idRincianAsets = $data['idRincianAset'];
-            $updateData = [
-                'loanStatus' => 'Pengembalian',
-                'namaPenerima' => $data['namaPenerima'],
-                'tanggalPengembalian' => $data['tanggalPengembalian'],
-            ];
+    // public function update($id = null) {
+    //     if ($id != null) {
+    //         $data = $this->request->getPost();
+    //         var_dump($data);
+    //         die;
+    //         $loanStatuses = $data['loanStatus'];
+    //         $idRincianAsets = $data['idRincianAset'];
+    //         $updateData = [
+    //             'loanStatus' => 'Pengembalian',
+    //             'namaPenerima' => $data['namaPenerima'],
+    //             'tanggalPengembalian' => $data['tanggalPengembalian'],
+    //         ];
 
-            $getIdManajemenAsetPeminjaman = [
-                'idRequestAsetPeminjaman' => $data['idRequestAsetPeminjaman'],
-            ];
+    //         $getIdManajemenAsetPeminjaman = [
+    //             'idRequestAsetPeminjaman' => $data['idRequestAsetPeminjaman'],
+    //         ];
 
-            foreach ($loanStatuses as $index => $loanStatus) {
-                $idRincianAset = $idRincianAsets[$index];
+    //         foreach ($loanStatuses as $index => $loanStatus) {
+    //             $idRincianAset = $idRincianAsets[$index];
 
-                $this->requestAsetPeminjamanModel->updateReturnStatus($idRincianAset, $loanStatus);
-                $this->requestAsetPeminjamanModel->updateReturnSectionAset($idRincianAset);
-                $this->requestAsetPeminjamanModel->updateDetailReturnStatus($idRincianAset, $getIdManajemenAsetPeminjaman, $loanStatus);
-            }
-            die;
-            $this->requestAsetPeminjamanModel->update($id, $updateData);
-            return redirect()->to(site_url('requestAsetPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
-        } else {
-            return view('error/404');
-        }
-    }
+    //             $this->requestAsetPeminjamanModel->updateReturnStatus($idRincianAset, $loanStatus);
+    //             $this->requestAsetPeminjamanModel->updateReturnSectionAset($idRincianAset);
+    //             $this->requestAsetPeminjamanModel->updateDetailReturnStatus($idRincianAset, $getIdManajemenAsetPeminjaman, $loanStatus);
+    //         }
+    //         die;
+    //         $this->requestAsetPeminjamanModel->update($id, $updateData);
+    //         return redirect()->to(site_url('requestAsetPeminjaman'))->with('success', 'Aset berhasil dikembalikan');
+    //     } else {
+    //         return view('error/404');
+    //     }
+    // }
     
     public function processLoan() {
         $data = $this->request->getPost();
         $idRincianAset = $_POST['selectedRows'];
+        // var_dump($idRincianAset);
+        // die;
         $idRequestAsetPeminjaman = $data['idRequestAsetPeminjaman'];
         $sectionAsetValue = 'Dipinjam';
         $requestStatus = 'Approve';

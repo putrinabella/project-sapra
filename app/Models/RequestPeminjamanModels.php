@@ -108,6 +108,7 @@ class RequestPeminjamanModels extends Model
                 ->update($data);
     }
     
+    
     function find($id = null, $columns = '*')
     {
         $builder = $this->db->table($this->table);

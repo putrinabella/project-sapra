@@ -4,24 +4,26 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\FormPengaduanModels;
+use App\Models\FormFeedbackModels;
 use App\Models\DataSiswaModels;
 use App\Models\PertanyaanPengaduanModels;
+use App\Models\PertanyaanFeedbackModels;
 
 
 class ArsipPengaduan extends ResourceController
 {
-
     function __construct()
     {
         $this->formPengaduanModel = new FormPengaduanModels();
+        $this->formFeedbackModel = new FormFeedbackModels();
         $this->dataSiswaModel = new DataSiswaModels();
         $this->pertanyaanPengaduanModel = new PertanyaanPengaduanModels();
+        $this->pertanyaanFeedbackModel = new PertanyaanFeedbackModels();
         $this->db = \Config\Database::connect();
         helper(['pdf','custom']);
     }
 
-    public function view()
-    {
+    public function index() {
         $startDate = $this->request->getVar('startDate');
         $endDate = $this->request->getVar('endDate');
         $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
@@ -42,7 +44,25 @@ class ArsipPengaduan extends ResourceController
         return view('saranaView/dataPengaduan/view', $data);
     }
     
-    public function detail($id) {
+    public function edit($id = null) {
+        if ($id != null) {
+            $dataPengaduan = $this->formPengaduanModel->getDetailDataPengaduan($id);
+            $identitasUser = $this->formPengaduanModel->getIdentitas($id);
+            if (!empty($dataPengaduan)) {
+                $data = [
+                    'dataPengaduan' => $dataPengaduan,
+                    'identitasUser' => $identitasUser
+                ];
+                return view('saranaView/dataPengaduan/edit', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+
+    public function show($id = null) {
         if ($id != null) {
             $dataPengaduan = $this->formPengaduanModel->getDetailDataPengaduan($id);
             $identitasUser = $this->formPengaduanModel->getIdentitas($id);
@@ -60,7 +80,42 @@ class ArsipPengaduan extends ResourceController
         }
     }
 
-    public function processPengaduan() {
-        echo "berhasil";
+    public function update($id = null) {
+        if ($id != null) {
+            $idPertanyaanPengaduanArray = $this->request->getPost('idPertanyaanPengaduan');
+            $idFormPeminjaman = $this->request->getPost('idFormPeminjaman');
+            $dataSiswa = $this->formPengaduanModel->getIdentitas($id);
+            $idDataSiswaValue = $dataSiswa->idDataSiswa;
+            $tanggalSelesai = date('Y-m-d');
+            $statusPengaduan = 'done';
+            $statusFeedback = 'empty';
+
+            $dataPengaduan = [
+                'idDataSiswa' => $idDataSiswaValue,
+                'tanggalSelesai' => $tanggalSelesai,
+                'statusPengaduan' => $statusPengaduan,
+            ];
+            $this->formPengaduanModel->update($id, $dataPengaduan);
+
+            $dataFeedback = [
+                'idDataSiswa' => $idDataSiswaValue,
+                'statusFeedback' => $statusFeedback,
+            ];
+            $this->formFeedbackModel->insert($dataFeedback);
+            $idFormFeedback  = $this->db->insertID();
+            $pertanyaanFeedback = $this->pertanyaanFeedbackModel->findAll();
+            foreach ($pertanyaanFeedback as $value) {
+                $idPertanyaanFeedback =  $value->idPertanyaanFeedback;
+
+                $detailFeedback = [
+                    'idFormFeedback' => $idFormFeedback,
+                    'idPertanyaanFeedback' => $idPertanyaanFeedback,
+                ];
+                $this->db->table('tblDetailFormFeedback')->insert($detailFeedback);
+            }
+            return redirect()->to(site_url('arsipPengaduan'))->with('success', 'Data berhasil diupdate');
+        } else {
+            return view('error/404');
+        }
     }
 }

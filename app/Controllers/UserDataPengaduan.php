@@ -46,7 +46,9 @@ class UserDataPengaduan extends ResourceController
         if ($id != null) {
             $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
             $dataPengaduan = $this->formPengaduanModel->getDetailDataPengaduan($id);
-            $identitasUser = $this->formPengaduanModel->getIdentitasUser($idUser);
+            $identitasUser = $this->formPengaduanModel->getIdentitasUser($id);
+            // var_dump($identitasUser);
+            // die;
             if (!empty($dataPengaduan)) {
                 $data = [
                     'dataPengaduan' => $dataPengaduan,

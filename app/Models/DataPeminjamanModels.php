@@ -23,7 +23,6 @@ class DataPeminjamanModels extends Model
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblManajemenPeminjaman.asalPeminjam');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');  
         $builder->where('tblManajemenPeminjaman.deleted_at', null);
-        $builder->orderBy('tblManajemenPeminjaman.tanggal', 'asc'); 
         $builder->orderBy("CASE 
                     WHEN tblManajemenPeminjaman.loanStatus = 'Peminjaman' THEN 1
                     WHEN tblManajemenPeminjaman.loanStatus = 'Pengembalian' THEN 2

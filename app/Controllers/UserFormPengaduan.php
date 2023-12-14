@@ -53,22 +53,4 @@ class UserFormPengaduan extends ResourceController
         }
         return redirect()->to(site_url('dataPengaduanUser'))->with('success', 'Data berhasil disimpan');
     }
-
-    public function loanUser($id)
-    {
-        $data = [
-            'dataRincianPrasaranaAset' => $this->formPengaduanModel->getDataLoan($id),
-            'dataSiswa' => $this->identitasKelasModel->findAll(),
-            'dataPrasaranaPrasarana' => $this->formPengaduanModel->getPrasaranaPrasarana(),
-            'dataSaranaPrasarana' => $this->formPengaduanModel->getSaranaPrasarana(),
-            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-            'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
-            'namaPrasarana' => $this->formPengaduanModel->getPrasaranaName($id),
-            'namaKelas' => $this->dataSiswaModel->getNamaKelasByUsername(session('username')),
-            'idUser' => $this->dataSiswaModel->getIdByUsername(session('username')),
-        ];
-
-        return view('userView/formPengaduan/newUser', $data);
-    }
-
 }

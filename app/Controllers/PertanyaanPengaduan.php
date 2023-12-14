@@ -8,7 +8,7 @@ use App\Models\PertanyaanPengaduanModels;
 class PertanyaanPengaduan extends ResourceController
 {
     
-     function __construct() {
+    function __construct() {
         $this->pertanyaanPengaduanModel = new PertanyaanPengaduanModels();
         $this->db = \Config\Database::connect();
     }
