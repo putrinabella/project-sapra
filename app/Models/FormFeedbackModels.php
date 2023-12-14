@@ -44,6 +44,32 @@ class FormFeedbackModels extends Model
         $query = $builder->get();
         return $query->getRow();
     }
+    
+    public function getFeedbackPercentages() {
+        $builder = $this->db->table('tblDetailFormFeedback');
+        $builder->select('idFormFeedback, SUM(isiFeedback) as totalFeedback, COUNT(*) as feedbackCount');
+        $builder->groupBy('idFormFeedback');
+        $query = $builder->get();
+    
+        $result = $query->getResult();
+    
+        $points = [];
+    
+        foreach ($result as $row) {
+            $idFormFeedback = $row->idFormFeedback;
+            $totalFeedback = $row->totalFeedback;
+            $feedbackCount = $row->feedbackCount;
+    
+            $mean = ($feedbackCount > 0) ? $totalFeedback / $feedbackCount : 0;
+            $percentage = 100 / $feedbackCount;
+            $point = $mean * $percentage;
+    
+            $points[$idFormFeedback] = $point;
+        }
+    
+        return $points;
+    }
+    
     // End of models for admin view ======================================================================================== //
 
     // Models for user view =============================================================================================== //

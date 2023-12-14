@@ -9,7 +9,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Pengaduan</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('dataFeedbackUser')?>">Data Umpan Balik</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('arsipFeedback')?>">Data Umpan Balik</a></li>
         <li class="breadcrumb-item active" aria-current="page">Detail Data</li>
     </ol>
 </nav>
@@ -19,7 +19,7 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('dataFeedbackUser') ?>" class="btn btn-icon-text btn-outline-primary me-2">
+                    <a href="<?= site_url('arsipFeedback') ?>" class="btn btn-icon-text btn-outline-primary me-2">
                         <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Data Umpan Balik</h4>
                     <div></div>

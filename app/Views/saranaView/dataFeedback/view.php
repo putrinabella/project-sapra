@@ -1,20 +1,20 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Data Pengaduan &verbar; SARPRA </title>
+<title>Data Umpan Balik &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Pengaduan</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data Pengaduan</li>
+        <li class="breadcrumb-item"><a href="#">Umpan Balik</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data Umpan Balik</li>
     </ol>
 </nav>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
-        <form action="<?= site_url('arsipPengaduan') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
+        <form action="<?= site_url('arsipFeedback') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
                 <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
@@ -28,7 +28,7 @@
                 <button type="submit" class="btn btn-primary btn-icon me-1">
                     <i data-feather="filter"></i>
                 </button>
-                <a href="<?= site_url('arsipPengaduan') ?>" class="btn btn-success btn-icon ">
+                <a href="<?= site_url('arsipFeedback') ?>" class="btn btn-success btn-icon ">
                     <i data-feather="refresh-ccw"></i>
                 </a>
             </div>
@@ -61,13 +61,22 @@
                 <br>
                 <?php endif; ?>
             </div>
-            <h4 class="text-center py-3">Data Pengaduan</h4>
+            <h4 class="text-center py-3">Data Umpan Balik</h4>
             <?php if (!empty($tableHeading)) : ?>
             <p class="text-center">
                 <?= $tableHeading ?>
             </p>
             <?php endif; ?>
             <br>
+            <?php
+                $totalKepuasanPercentage = array_sum($feedbackPercentages);
+                $averageKepuasanPercentage = count($feedbackPercentages) > 0 ? $totalKepuasanPercentage / count($feedbackPercentages) : 0;
+                ?>
+            <div class="row mb-3">
+                <p style="font-weight: bold;">Rata-rata Kepuasan:
+                    <?= number_format($averageKepuasanPercentage, 2) ?>%
+                </p>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover" id="dataTable" style="width: 100%;">
                     <thead>
@@ -78,11 +87,12 @@
                             <th>Nama Peminjam</th>
                             <th>Karwayan/Kelas</th>
                             <th>Status</th>
-                            <th style="width: 20%;">Aksi</th>
+                            <th style="width: 15%;">Kepuasan</th>
+                            <th style="width: 10%;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="py-2">
-                        <?php foreach ($dataPengaduan as $key => $value) : ?>
+                        <?php foreach ($dataFeedback as $key => $value) : ?>
                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                             <td>
                                 <?= $key + 1 ?>
@@ -104,23 +114,37 @@
                                 <?= $value->namaKelas ?>
                             </td>
                             <td style="width: 10%">
-                                <?php if ($value->statusPengaduan == "request") : ?>
+                                <?php if ($value->statusFeedback == "request") : ?>
                                 <span class="badge bg-primary">Diajukan</span>
-                                <?php elseif ($value->statusPengaduan == "process") : ?>
+                                <?php elseif ($value->statusFeedback == "process") : ?>
                                 <span class="badge bg-warning">Diproses</span>
-                                <?php elseif ($value->statusPengaduan == "done") : ?>
+                                <?php elseif ($value->statusFeedback == "done") : ?>
                                 <span class="badge bg-info">Selesai</span>
                                 <?php endif; ?>
                             </td>
+                            <td>
+                                <?php
+                                $idFormFeedback = $value->idFormFeedback;
+                                $kepuasanPercentage = isset($feedbackPercentages[$idFormFeedback]) ? $feedbackPercentages[$idFormFeedback] : 0;
+                                ?>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar"
+                                        style="width: <?= $kepuasanPercentage ?>%;"
+                                        aria-valuenow="<?= $kepuasanPercentage ?>" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                        <?= $kepuasanPercentage ?>%
+                                    </div>
+                                </div>
+                            </td>
                             <td class="text-center">
-                                <?php if ($value->statusPengaduan == "request") : ?>
-                                <a href="<?= site_url('arsipPengaduan/'.$value->idFormPengaduan.'/edit') ?>"
+                                <?php if ($value->statusFeedback == "request") : ?>
+                                <a href="<?= site_url('arsipFeedback/'.$value->idFormFeedback.'/edit') ?>"
                                     class="btn btn-primary btn-icon me-2"> <i data-feather="edit-2"></i></a>
-                                <?php elseif ($value->statusPengaduan == "process") : ?>
-                                <a href="<?=site_url('arsipPengaduan/'.$value->idFormPengaduan) ?>"
+                                <?php elseif ($value->statusFeedback == "process") : ?>
+                                <a href="<?=site_url('arsipFeedback/'.$value->idFormFeedback) ?>"
                                     class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                <?php elseif ($value->statusPengaduan == "done") : ?>
-                                <a href="<?=site_url('arsipPengaduan/'.$value->idFormPengaduan) ?>"
+                                <?php elseif ($value->statusFeedback == "done") : ?>
+                                <a href="<?=site_url('arsipFeedback/'.$value->idFormFeedback) ?>"
                                     class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                 <?php endif; ?>
                             </td>

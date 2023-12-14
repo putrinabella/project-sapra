@@ -336,15 +336,11 @@ $routes->resource('dataNonInventaris', ['filter' => 'isLoggedIn']);
 
 // Sarana - Pengaduan =============================================================================================== //
 // ----------------------------------------------- Data Pengaduan ----------------------------------------------- //
-// $routes->post('arsipPengaduan/processPengaduan', 'ArsipPengaduan::processPengaduan');
-// $routes->get('arsipPengaduan/edit/(:num)', 'ArsipPengaduan::edit/$1');
-// $routes->get('arsipPengaduan/detail/(:num)', 'ArsipPengaduan::detail/$1');
-// $routes->get('arsipPengaduan', 'ArsipPengaduan::view');
 $routes->resource('arsipPengaduan', ['filter' => 'isLoggedIn']);
 // -------------------------------------------- End of data pengaduan -------------------------------------------- //
 
 // ----------------------------------------------- Data Feedback ----------------------------------------------- //
-
+$routes->resource('arsipFeedback', ['filter' => 'isLoggedIn']);
 // -------------------------------------------- End of data feedback -------------------------------------------- //
 // End of sarana - pengaduan ======================================================================================== //
 
