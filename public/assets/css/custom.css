@@ -27,3 +27,11 @@
   background-color: #d98100;
   color: white;
 }
+
+.my-border {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  text-align: justify;
+}

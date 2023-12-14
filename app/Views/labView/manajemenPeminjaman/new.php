@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="kategoriPeminjam" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
+                                <label for="kategoriPeminjam" class="col-sm-3 col-form-label">Kelas/Karyawan</label>
                                 <div class="col-sm-9">
                                     <select class="js-example-basic-single form-select select2-hidden-accessible"
                                         data-width="100%" data-select2-id="1" aria-hidden="true" id="kategoriPeminjam"

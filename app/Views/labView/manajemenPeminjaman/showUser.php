@@ -170,7 +170,7 @@
                         <input type="text" class="form-control" id="namaPeminjam" name="namaPeminjam" placeholder="Masukkan nama">
                     </div>
                     <div class="mb-3">
-                        <label for="jenisPeminjam" class="form-label">Karyawan/Siswa</label>
+                        <label for="jenisPeminjam" class="form-label">Kelas/Karyawan</label>
                         <select class="form-control myselect2" id="jenisPeminjam" name="jenisPeminjam"
                             onchange="showHideOptions()">
                             <option value="" readonly>Select here</option>

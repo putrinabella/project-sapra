@@ -26,51 +26,66 @@
                 </div>
             </div>
             <div class="card-body">
-
-                <div class="row mb-3 mt-5">
-                    <h5 class="text-center text-decoration-underline mb-3">Data Aset Dipinjam</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover" style="width: 100%;" id="dataTable">
-                            <thead>
-                                <tr class="text-center">
-                                    <th style="width: 5%;">No.</th>
-                                    <th>Pertanyaan</th>
-                                    <th>Pengaduan</th>
-                                </tr>
-                            </thead>
-                            <tbody class="py-2">
-                                <?php foreach ($dataPengaduan as $key => $value) : ?>
-                                <tr style=" vertical-align: middle;">
-                                    <td>
-                                        <?= $key + 1 ?>
-                                    </td>
-                                    <td style="width: 22%">
-                                        <?= $value->pertanyaanPengaduan; ?>
-                                    </td>
-                                    <td style="width: 22%">
-                                        <?= $value->isiPengaduan; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($value->statusPengaduan == "request") : ?>
-                                        <span class="badge bg-primary">Diajukan</span>
-                                        <?php elseif ($value->statusPengaduan == "process") : ?>
-                                        <span class="badge bg-warning">Diproses</span>
-                                        <?php elseif ($value->statusPengaduan == "done") : ?>
-                                        <span class="badge bg-info">Selesai</span>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                <table class="my-table">
+                    <tr>
+                        <td style="width: 25%;">Tanggal</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                            <?= date('l, j F Y', strtotime($identitasUser->tanggal)) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;">NIS/NIP</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                            <?= $identitasUser->nis ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;">Nama</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                            <?= $identitasUser->namaSiswa ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;">Kelas/Karyawan</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                            <?= $identitasUser->namaKelas ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%;">Status Pengaduan</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                            <?php if ($identitasUser->statusPengaduan == "request") : ?>
+                            <span class="badge bg-primary">Diajukan</span>
+                            <?php elseif ($identitasUser->statusPengaduan == "process") : ?>
+                            <span class="badge bg-warning">Diproses</span>
+                            <?php elseif ($identitasUser->statusPengaduan == "done") : ?>
+                            <span class="badge bg-info">Selesai</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <h5>Isi Pengaduan</h5>
+                <br>
+                <?php foreach ($dataPengaduan as $key => $value): ?>
+                <input type="text" class="form-control border-0" name="idPertanyaanPengaduan[]"
+                    id="idPertanyaanPengaduan" value="<?= $value->idPertanyaanPengaduan; ?>" hidden>
+                <p>
+                    <?= $key+1 . '. ' . $value->pertanyaanPengaduan; ?>
+                </p>
+                <div class="my-border" style="margin-left: 12px ;">
+                    <?= $value->isiPengaduan; ?>
                 </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
 </div>
-<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
-<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
-
 
 <?= $this->endSection(); ?>

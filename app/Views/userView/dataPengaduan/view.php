@@ -91,14 +91,8 @@
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
-                                <?php if ($value->statusPengaduan == "request") : ?>
                                 <a href="<?= site_url('dataPengaduanUser/detail/' . $value->idFormPengaduan) ?>"
                                     class="btn btn-success btn-icon me-2"> <i data-feather="info"></i></a>
-                                <?php endif; ?>
-                                <?php if ($value->statusPengaduan == "Pengembalian" || $value->statusPengaduan == "needFeedback"): ?>
-                                <a href="<?= site_url('dataPengaduanUser/detail/' . $value->idFormPengaduan) ?>"
-                                    class="btn btn-success btn-icon"> <i data-feather="info"></i></a>
-                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

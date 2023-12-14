@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="kelasJabatan" class="col-sm-3 col-form-label">Karyawan/Siswa</label>
+                        <label for="kelasJabatan" class="col-sm-3 col-form-label">Kelas/Karyawan</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control bg-transparent" id="kelasJabatan" name="kelasJabatan"
                                 value="<?= $dataRequestAsetPeminjaman->namaKelas ?>" readonly>

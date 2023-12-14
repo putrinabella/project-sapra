@@ -48,7 +48,7 @@
                     <th>No.</th>
                     <th>Tanggal</th>
                     <th>Nama Peminjam</th>
-                    <th>Karyawan/Siswa</th>
+                    <th>Kelas/Karyawan</th>
                     <th>Status</th>
                     <th>Jumlah Aset</th>
                     <th>Lokasi</th>

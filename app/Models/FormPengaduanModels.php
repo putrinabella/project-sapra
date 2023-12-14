@@ -37,7 +37,7 @@ class FormPengaduanModels extends Model
         return $query->getResult();
     }
 
-    function getDetailDataPengaduan($idUser) {
+    function getDetailDataPengaduan($idFormPengaduan) {
         $builder = $this->db->table('tblFormPengaduan');
         $builder->join('tblDetailFormPengaduan', 'tblDetailFormPengaduan.idFormPengaduan = tblFormPengaduan.idFormPengaduan');
         $builder->join('tblPertanyaanPengaduan', 'tblPertanyaanPengaduan.idPertanyaanPengaduan = tblDetailFormPengaduan.idPertanyaanPengaduan');  
@@ -50,9 +50,18 @@ class FormPengaduanModels extends Model
                     WHEN tblFormPengaduan.statusPengaduan = 'process' THEN 3
                     WHEN tblFormPengaduan.statusPengaduan = 'done' THEN 4
                     ELSE 5 END", 'asc');     
-        $builder->where('tblFormPengaduan.idDataSiswa', $idUser);
+        $builder->where('tblFormPengaduan.idFormPengaduan', $idFormPengaduan);
         $query = $builder->get();
         return $query->getResult();
+    }
+
+    function getIdentitasUser($idUser) {
+        $builder = $this->db->table('tblDataSiswa');
+        $builder->join('tblFormPengaduan', 'tblFormPengaduan.idDataSiswa = tblDataSiswa.idDataSiswa');
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
+        $builder->where('tblFormPengaduan.idDataSiswa', $idUser);
+        $query = $builder->get();
+        return $query->getRow();
     }
     
 }

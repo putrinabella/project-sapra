@@ -43,11 +43,21 @@ class UserDataPengaduan extends ResourceController
     }
     
     public function detail($id) {
-        $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
-        $data = [
-            'dataPengaduan' => $this->formPengaduanModel->getDetailDataPengaduan($idUser),
-        ];
-        return view('userView/dataPengaduan/show', $data);
+        if ($id != null) {
+            $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
+            $dataPengaduan = $this->formPengaduanModel->getDetailDataPengaduan($id);
+            $identitasUser = $this->formPengaduanModel->getIdentitasUser($idUser);
+            if (!empty($dataPengaduan)) {
+                $data = [
+                    'dataPengaduan' => $dataPengaduan,
+                    'identitasUser' => $identitasUser
+                ];
+                return view('userView/dataPengaduan/show', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
     }
-
 }
