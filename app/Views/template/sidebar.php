@@ -48,12 +48,6 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="<?= site_url('dataNonInventaris') ?>" class="nav-link">
-                <i class="link-icon" data-feather="inbox"></i>
-                <span class="link-title">Non Inventaris</span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#layananSaranaUmum" role="button" aria-expanded="false" aria-controls="layananSaranaUmum">
                 <i class="link-icon" data-feather="server"></i>
                 <span class="link-title">Layanan</span>
@@ -69,6 +63,29 @@
                     </li>
                 </ul>
             </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#pengaduanuserpengaduan" role="button" aria-expanded="false" aria-controls="pengaduanuserpengaduan">
+                <i class="link-icon" data-feather="file-text"></i>
+                <span class="link-title">Pengaduan</span>
+                <i class="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div class="collapse" id="pengaduanuserpengaduan">
+                <ul class="nav sub-menu">
+                    <li class="nav-item">
+                        <a href="<?= site_url('arsipPengaduan') ?>" class="nav-link">Data Pengaduan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('arsipFeedback') ?>" class="nav-link">Data Umpan Balik </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="<?= site_url('dataNonInventaris') ?>" class="nav-link">
+                <i class="link-icon" data-feather="inbox"></i>
+                <span class="link-title">Non Inventaris</span>
+            </a>
         </li>
         <li class="nav-item nav-category">Prasarana</li>
         <li class="nav-item">

@@ -340,6 +340,18 @@ $routes->delete('dataNonInventaris/deletePermanent', 'DataNonInventaris::deleteP
 $routes->resource('dataNonInventaris', ['filter' => 'isLoggedIn']);
 // End of sarana - non inventaris ======================================================================================== //
 
+// Sarana - Pengaduan =============================================================================================== //
+// ----------------------------------------------- Data Pengaduan ----------------------------------------------- //
+$routes->post('arsipPengaduan/processPengaduan', 'ArsipPengaduan::processPengaduan');
+$routes->get('arsipPengaduan/detail/(:num)', 'ArsipPengaduan::detail/$1');
+$routes->get('arsipPengaduan', 'ArsipPengaduan::view');
+// -------------------------------------------- End of data pengaduan -------------------------------------------- //
+
+// ----------------------------------------------- Data Feedback ----------------------------------------------- //
+
+// -------------------------------------------- End of data feedback -------------------------------------------- //
+// End of sarana - pengaduan ======================================================================================== //
+
 // Sarana - Layanan Aset =============================================================================================== //
 // ----------------------------------------------- Layanan aset ----------------------------------------------- //
 $routes->post('getKodeRincianAsetBySarana', 'SaranaLayananAset::getKodeRincianAsetBySarana');
@@ -723,7 +735,6 @@ $routes->get('pengajuanPeminjaman', 'UserPengajuanPeminjaman::user');
 // User - Pengaduan =============================================================================================== //
 // ----------------------------------------------- Pengajuan Pengaduan ----------------------------------------------- //
 $routes->post('formPengaduanUser/tambahPengaduan', 'UserFormPengaduan::tambahPengaduan');
-$routes->get('formPengaduanUser/loanUser/(:num)', 'UserFormPengaduan::loanUser/$1');
 $routes->get('formPengaduanUser', 'UserFormPengaduan::pengaduan');
 // -------------------------------------------- End of pengajuan Pengaduan -------------------------------------------- //
 
