@@ -129,10 +129,10 @@
                                 ?>
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar"
-                                        style="width: <?= $kepuasanPercentage ?>%;"
-                                        aria-valuenow="<?= $kepuasanPercentage ?>" aria-valuemin="0"
+                                        style="width: <?= round($kepuasanPercentage, 2) ?>%;"
+                                        aria-valuenow="<?= round($kepuasanPercentage, 2) ?>" aria-valuemin="0"
                                         aria-valuemax="100">
-                                        <?= $kepuasanPercentage ?>%
+                                        <?= round($kepuasanPercentage, 2) ?>%
                                     </div>
                                 </div>
                             </td>

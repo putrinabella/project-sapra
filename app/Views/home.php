@@ -97,7 +97,7 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaRusak ?>
+                                                                                <?= $value->saranaRusak + $value->saranaHilang; ?>
                                                                             </div>
                                                                             <div class="box-label">Rusak</div>
                                                                         </div>
@@ -105,9 +105,9 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaHilang; ?>
+                                                                                <?= $value->saranaDipinjam; ?>
                                                                             </div>
-                                                                            <div class="box-label">Hilang</div>
+                                                                            <div class="box-label">Dipinjam</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -881,7 +881,7 @@
                                 </li>
                             </ul>
                             <div class="tab-content border border-top-0 p-3" id="myTabContent">
-                                <div class="tab-pane fade show active" id="aset" role="tabpanel"
+                            <div class="tab-pane fade show active" id="aset" role="tabpanel"
                                     aria-labelledby="aset-tab">
                                     <div class="row text-center mb-4">
                                         <center>
@@ -923,7 +923,7 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaRusak ?>
+                                                                                <?= $value->saranaRusak + $value->saranaHilang; ?>
                                                                             </div>
                                                                             <div class="box-label">Rusak</div>
                                                                         </div>
@@ -931,9 +931,9 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaHilang; ?>
+                                                                                <?= $value->saranaDipinjam; ?>
                                                                             </div>
-                                                                            <div class="box-label">Hilang</div>
+                                                                            <div class="box-label">Dipinjam</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1563,8 +1563,12 @@
                     <div class="card-body">
                         <div class="example">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item  text-center">
+                                    <a class="nav-link active" id="aset-tab" data-bs-toggle="tab" href="#aset"
+                                        role="tab" aria-controls="aset" aria-selected="true">Aset Sekolah</a>
+                                </li>
                                 <li class="nav-item text-center">
-                                    <a class="nav-link active" id="labAset-tab" data-bs-toggle="tab" href="#labAset"
+                                    <a class="nav-link" id="labAset-tab" data-bs-toggle="tab" href="#labAset"
                                         role="tab" aria-controls="labAset" aria-selected="true">Aset Laboratorium</a>
                                 </li>
                                 <li class="nav-item text-center">
@@ -1573,7 +1577,72 @@
                                 </li>
                             </ul>
                             <div class="tab-content border border-top-0 p-3" id="myTabContent">
-                                <div class="tab-pane fade show active" id="labAset" role="tabpanel"
+                            <div class="tab-pane fade show active" id="aset" role="tabpanel"
+                                    aria-labelledby="aset-tab">
+                                    <div class="row text-center mb-4">
+                                        <center>
+                                            <h5>DATA ASET SMK TELKOM BANJARBARU</h5>
+                                        </center>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-xl-12 stretch-card">
+                                            <div class="row flex-grow-1">
+                                                <?php foreach ($dataRincianAset as $key => $value) : ?>
+                                                <div class="col-md-4 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-7">
+                                                                    <div class="row">
+                                                                        <h6 class="card-title text-center">
+                                                                            <?= $value->namaSarana; ?>
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="row text-center">
+                                                                        <h1>
+                                                                            <?= $value->totalSarana; ?>
+                                                                        </h1>
+                                                                    </div>
+                                                                    <div class="row text-center">
+                                                                        <p>Buah</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5">
+                                                                    <div class="row">
+                                                                        <div class="box">
+                                                                            <div class="box-number">
+                                                                                <?= $value->saranaLayak; ?>
+                                                                            </div>
+                                                                            <div class="box-label">Bagus</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box">
+                                                                            <div class="box-number">
+                                                                                <?= $value->saranaRusak + $value->saranaHilang; ?>
+                                                                            </div>
+                                                                            <div class="box-label">Rusak</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box">
+                                                                            <div class="box-number">
+                                                                                <?= $value->saranaDipinjam; ?>
+                                                                            </div>
+                                                                            <div class="box-label">Dipinjam</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade show" id="labAset" role="tabpanel"
                                     aria-labelledby="labAset-tab">
                                     <div class="row text-center mb-4">
                                         <center>

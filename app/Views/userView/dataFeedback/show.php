@@ -81,14 +81,8 @@
                                 <th>Umpan Balik</th>
                             </tr>
                         </thead>
-                        <tbody class="py-2">
-                            <?php
-                            $totalFeedback = count($dataFeedback);
-                            $sumFeedback = 0;
-                        
-                            foreach ($dataFeedback as $key => $value) :
-                                $sumFeedback += intval($value->isiFeedback);
-                                ?>
+                        <tbody class="py-2">                        
+                            <?php foreach ($dataFeedback as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td>
                                     <?= $key + 1 ?>
@@ -122,15 +116,15 @@
                             </tr>
                             <?php endforeach; ?>
 
-                            <?php if ($totalFeedback > 0) : ?>
                             <?php
-                                $averagePercentage = ($sumFeedback / ($totalFeedback * 5)) * 100; 
-                                $averagePercentage = max(0, min(100, $averagePercentage)); 
+                                $idFormFeedback = $value->idFormFeedback;
+                                $kepuasanPercentage = isset($feedbackPercentages[$idFormFeedback]) ? $feedbackPercentages[$idFormFeedback] : 0;
                                 ?>
+                            <?php if ($kepuasanPercentage > 0) : ?>
                             <tr>
                                 <td colspan="3" style="font-weight: bold;">
                                     Poin Kepuasan:
-                                    <?= round($averagePercentage, 2) ?>%
+                                    <?= round($kepuasanPercentage, 2) ?>%
                                 </td>
                             </tr>
                             <?php else : ?>

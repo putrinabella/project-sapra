@@ -47,10 +47,13 @@ class UserDataFeedback extends ResourceController
         if ($id != null) {
             $dataFeedback = $this->formFeedbackModel->getDetailDataFeedback($id);
             $identitasUser = $this->formFeedbackModel->getIdentitasUser($id);
+            $feedbackPercentages = $this->formFeedbackModel->getFeedbackPercentagesUser($id);
+
             if (!empty($dataFeedback)) {
                 $data = [
                     'dataFeedback' => $dataFeedback,
-                    'identitasUser' => $identitasUser
+                    'identitasUser' => $identitasUser,
+                    'feedbackPercentages' => $feedbackPercentages
                 ];
                 return view('userView/dataFeedback/show', $data);
             } else {
@@ -65,8 +68,6 @@ class UserDataFeedback extends ResourceController
         if ($id != null) {
             $idFormFeedback = $id;
             $dataFeedback = $this->formFeedbackModel->getDetailDataFeedback($id);
-            // var_dump($idFormFeedback);
-            // die;
             $data = [
                 'dataFeedback' => $dataFeedback,
                 'idFormFeedback' => $idFormFeedback,
@@ -80,8 +81,6 @@ class UserDataFeedback extends ResourceController
     public function addFeedback($id = null) {
         $idPertanyaanFeedbackArray = $this->request->getPost('idPertanyaanFeedback');
         $isiFeedbackArray = $this->request->getPost('isiFeedback');
-        // var_dump($isiFeedbackArray);
-        // die;
         $statusFeedback = 'done';
         $tanggal = date('Y-m-d');
 
