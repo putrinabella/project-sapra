@@ -13,6 +13,24 @@ class UserModels extends Model
     // protected $useTimestamps    = true;
     // protected $useSoftDeletes   = true;
 
+    public function getIdByUsername($username) {
+        $builder = $this->db->table($this->table);
+        $builder->select('idUser'); 
+        $builder->where('username', $username);
+        $userData = $builder->get()->getRowArray();
+    
+        return $userData ? $userData['idUser'] : null;
+    }
+
+    public function getProfileUser($username) {
+        $builder = $this->db->table('tblUser');
+        $builder->join('tblDataSiswa', 'tblDataSiswa.nis = tblUser.username ');
+        $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
+        $builder->where('tblDataSiswa.nis', $username);
+        $query = $builder->get();
+        return $query->getRow();
+    }
+
     function getAll() {
         $builder = $this->db->table($this->table);
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblManajemenPeminjaman.idIdentitasSarana');
@@ -35,7 +53,7 @@ class UserModels extends Model
     function find($id = null, $columns = '*') {
         $builder = $this->db->table($this->table);
         $builder->select($columns);        
-        $builder->where($this->primaryKey, $id);
+        $builder->where('idUser', $id);
 
         $query = $builder->get();
         return $query->getRow();

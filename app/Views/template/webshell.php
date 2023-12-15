@@ -79,11 +79,10 @@
           <i data-feather="menu"></i>
         </a>
         <div class="navbar-content">
-        <?php
+          <?php
           $headerPicture = session()->get('mode') === 'dark' ? 'header-dark.png' : 'header-light.png';
           $userPicture = session()->get('mode') === 'dark' ? 'user-dark.png' : 'user-light.png';
         ?>
-
           <img class="" src="<?= base_url(); ?>/assets/images/<?= $headerPicture ?>" alt="Logo SMK TELKOM BJB"
             style="padding-top: 10px; padding-bottom: 10px;">
           <ul class="navbar-nav">
@@ -91,8 +90,8 @@
               <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <div class="d-flex align-items-center">
-                  <img class="wd-30 ht-30 rounded-circle mr-2 pr-2" src="<?= base_url(); ?>/assets/images/<?= $userPicture ?>"
-                    alt="profile">
+                  <img class="wd-30 ht-30 rounded-circle mr-2 pr-2"
+                    src="<?= base_url(); ?>/assets/images/<?= $userPicture ?>" alt="profile">
                 </div>
               </a>
               <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
@@ -116,10 +115,24 @@
                       </label>
                     </div>
                   </li>
+                  <!-- <li class="dropdown-item py-2">
+                    <a href="#" class="text-body ms-0" data-bs-toggle="modal" data-bs-target="#confirmPasswordModal">
+                      <i class="me-2 icon-md" data-feather="edit"></i>
+                      <span>Edit Profile</span>
+                    </a>
+                  </li> -->
+                  <?php if (session()->get('role') == 'User') { ?>
+                  <li class="dropdown-item py-2">
+                    <a href="<?= site_url('profileUser')?>" class="text-body ms-0">
+                      <i class="me-2 icon-md" data-feather="edit"></i>
+                      <span>Edit Profile</span>
+                    </a>
+                  </li>
+                  <?php } ?>
                   <li class="dropdown-item py-2">
                     <a href="<?= site_url('logout') ?>" class="text-body ms-0">
                       <i class="me-2 icon-md" data-feather="log-out"></i>
-                      Log Out
+                      <span>Log Out</span>
                     </a>
                   </li>
                 </ul>
@@ -145,6 +158,55 @@
       <!-- partial -->
 
     </div>
+
+    <!-- Modal for Confirming Old Password -->
+    <div class="modal fade" id="confirmPasswordModal" tabindex="-1" aria-labelledby="confirmPasswordModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmPasswordModalLabel">Confirm your password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="confirmPasswordForm">
+              <div class="mb-3">
+                <label for="oldPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="confirmOldPassword()">Confirm</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Editing Profile -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editProfileForm">
+              <div class="mb-3">
+                <label for="newName" class="form-label">New Name</label>
+                <input type="text" class="form-control" id="newName" name="newName" required>
+              </div>
+              <div class="mb-3">
+                <label for="newPassword" class="form-label">New Password</label>
+                <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="saveChanges()">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 
@@ -209,9 +271,7 @@
         });
       }
     });
-  </script>
 
-  <script>
     document.addEventListener('DOMContentLoaded', function () {
       var modeSwitch = document.getElementById('modeSwitch');
       var modeLabel = document.getElementById('modeLabel');
@@ -222,6 +282,30 @@
       });
     });
   </script>
+  <script>
+    function confirmOldPassword() {
+        var oldPassword = document.getElementById('oldPassword').value;
+
+        $.ajax({
+            type: 'POST',
+            url: '<?= site_url('auth/checkOldPassword') ?>',
+            data: { oldPassword: oldPassword },
+            success: function(response) {
+                if (response.success) {
+                    $('#confirmPasswordModal').modal('hide');
+
+                    $('#editProfileModal').modal('show');
+                } else {
+                    alert('Incorrect old password. Please try again.');
+                }
+            },
+            error: function() {
+                alert('Error checking old password.');
+            }
+        });
+    }
+  </script>
+
 
 </body>
 

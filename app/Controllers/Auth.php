@@ -39,6 +39,7 @@ class Auth extends BaseController
                     'username' => $user->username,
                     'role'     => $user->role,
                     'nama'     => $user->nama,
+                    'password' => $user->password,
                     'mode'     => $mode,
                 ];
                 $session->set($session_data);
@@ -91,6 +92,20 @@ class Auth extends BaseController
             $session->set('mode', $mode);
         }
         return $this->response->setJSON(['mode' => $mode]);
+    }
+    
+    public function checkOldPassword() {
+        $request = service('request');
+        $session = session();
+        
+        $oldPassword = $request->getPost('oldPassword');
+        $userPassword = $session->get('password');
+    
+        if (password_verify($oldPassword, $userPassword)) {
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Incorrect old password']);
+        }
     }
     
     

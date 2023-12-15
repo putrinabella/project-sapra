@@ -22,7 +22,12 @@ $routes->post('loginProcess', 'Auth::loginProcess');
 $routes->get('loginProcess', 'Auth::loginProcess');
 $routes->get('logout', 'Auth::logout');
 $routes->post('updateSessionMode', 'Auth::updateSessionMode');
+// $routes->post('auth/checkOldPassword', 'Auth::checkOldPassword');
 // -------------------------------------------- End of auth routes -------------------------------------------- //
+
+// Profile User =============================================================================================== //
+$routes->resource('profileUser', ['filter' => 'isLoggedIn']);
+// End of profile user ======================================================================================== //
 
 // ----------------------------------------------- User logs ----------------------------------------------- //
 $routes->get('viewLogs', 'UserLogs::viewLogs');
@@ -51,6 +56,7 @@ $routes->post('manajemenUser/import', 'ManajemenUser::import');
 $routes->get('manajemenUser/edit', 'ManajemenUser::edit');
 $routes->get('manajemenUser/restore/(:any)', 'ManajemenUser::restore/$1');
 $routes->get('manajemenUser/restore', 'ManajemenUser::restore');
+$routes->post('manajemenUser/updateUser/(:any)', 'ManajemenUser::updateUser/$1');
 $routes->delete('manajemenUser/deletePermanent/(:any)', 'ManajemenUser::deletePermanent/$1');
 $routes->delete('manajemenUser/deletePermanent', 'ManajemenUser::deletePermanent');
 $routes->resource('manajemenUser', ['filter' => 'superAdminFilter']);

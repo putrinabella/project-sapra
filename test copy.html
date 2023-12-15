@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>User Profile</title>
 </head>
 
@@ -13,21 +14,30 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
         }
 
         .profile-container {
             max-width: 600px;
             margin: 50px auto;
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .profile-header {
+            margin-bottom: 20px;
+        }
+
+        .fa-user-circle {
+            color: #007bff;
         }
 
         h1 {
-            text-align: center;
             color: #333;
+            margin-top: 10px;
         }
 
         .profile-info,
@@ -38,21 +48,25 @@
         label {
             display: block;
             margin-bottom: 8px;
+            color: #495057;
         }
 
         p {
             margin: 0;
+            color: #6c757d;
         }
 
         input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-bottom: 12px;
             box-sizing: border-box;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
         }
 
         button {
-            background-color: #4caf50;
+            background-color: #28a745;
             color: #fff;
             padding: 10px;
             border: none;
@@ -61,11 +75,18 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #218838;
+        }
+
+        .fa-lock {
+            margin-right: 8px;
         }
     </style>
     <div class="profile-container">
-        <h1>User Profile</h1>
+        <div class="profile-header">
+            <i class="fas fa-user-circle fa-5x"></i>
+            <h1>User Profile</h1>
+        </div>
         <div class="profile-info">
             <label for="username">Username:</label>
             <p id="username">JohnDoe</p>
@@ -86,7 +107,7 @@
                 <label for="confirmPassword">Confirm Password:</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
 
-                <button type="submit">Change Password</button>
+                <button type="submit"><i class="fas fa-lock"></i> Change Password</button>
             </form>
         </div>
     </div>

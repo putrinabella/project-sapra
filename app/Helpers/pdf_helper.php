@@ -3266,6 +3266,14 @@ if (!function_exists('pdfAsetRuangan')) {
         </tr>
         <tr>
             <th style="width: 65%;"></th>
+            <th style="width: 35%;"></th>
+        </tr>
+        <tr>
+            <th style="width: 65%;"></th>
+            <th style="width: 35%;"></th>
+        </tr>
+        <tr>
+            <th style="width: 65%;"></th>
             <th style="width: 35%;">(Nama ketua sarpra)</th>
         </tr>
     </table>
@@ -3404,6 +3412,14 @@ if (!function_exists('pdfAsetLaboratorium')) {
         </tr>
         <tr>
             <th style="width: 66%;"></th>
+            <th style="width: 35%;"></th>
+        </tr>
+        <tr>
+            <th style="width: 65%;"></th>
+            <th style="width: 35%;"></th>
+        </tr>
+        <tr>
+            <th style="width: 65%;"></th>
             <th style="width: 35%;"></th>
         </tr>
         <tr>

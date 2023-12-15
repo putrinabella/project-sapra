@@ -441,19 +441,19 @@
     <li class="nav-item nav-category">Pengaduan</li>
     <li class="nav-item">
         <a href="<?= site_url('formPengaduanUser') ?>" class="nav-link">
-            <i class="link-icon" data-feather="edit"></i>
+            <i class="link-icon" data-feather="users"></i>
             <span class="link-title">Ajukan Pengaduan</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="<?= site_url('dataPengaduanUser') ?>" class="nav-link">
-            <i class="link-icon" data-feather="file-text"></i>
+            <i class="link-icon" data-feather="inbox"></i>
             <span class="link-title">Daftar Pengaduan</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="<?= site_url('dataFeedbackUser') ?>" class="nav-link">
-            <i class="link-icon" data-feather="file-text"></i>
+            <i class="link-icon" data-feather="bar-chart-2"></i>
             <span class="link-title">Umpan Balik</span>
         </a>
     </li>

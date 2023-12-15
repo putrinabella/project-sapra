@@ -90,8 +90,6 @@ class ManajemenUser extends ResourceController
             } else {
                 return redirect()->to(site_url('manajemenUser'))->with('error', 'Silahkan isi semua kolom!');
             }
-
-            
         } else {
             return view('error/404');
         }
@@ -101,4 +99,32 @@ class ManajemenUser extends ResourceController
         $this->manajemenUserModel->delete($id);
         return redirect()->to(site_url('manajemenUser'));
     }
+
+    public function updateUser($id = null) {
+        if ($id !== null) {
+            $data = $this->request->getPost();
+
+            if (isset($data['oldPassword']) && isset($data['password'])) {
+
+                $currentUser = $this->manajemenUserModel->find($id);
+                $currentPasswordHash = $currentUser->password; 
+                if (password_verify($data['oldPassword'], $currentPasswordHash)) {
+                    $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
+                    $newPassword = [
+                        'password' => $hashedPassword,
+                    ];
+                    $this->manajemenUserModel->update($id, $newPassword);
+                    
+                    return redirect()->to(site_url('profileUser'))->with('success', 'Password berhasil diperbarui');
+                } else {
+                    return redirect()->to(site_url('profileUser'))->with('error', 'Password lama tidak sesuai');
+                }
+            } else {
+                return redirect()->to(site_url('profileUser'))->with('error', 'Silahkan isi semua kolom!');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+    
 }
