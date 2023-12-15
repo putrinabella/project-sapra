@@ -74,7 +74,9 @@
                                 <td> <?= $value->role; ?> </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('manajemenUser/'.$value->idUser.'/edit') ?>"
-                                        class="btn btn-primary btn-icon">  <i class=" btn-icon-prepend" data-feather="edit-2"></i></a>
+                                        class="btn btn-primary btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change identity">  <i class=" btn-icon-prepend" data-feather="edit-2"></i></a>
+                                    <a href="<?=site_url('manajemenUser/editPassword/'.$value->idUser) ?>"
+                                        class="btn btn-success btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change password">  <i class=" btn-icon-prepend" data-feather="lock"></i></a>
                                     <form action="<?=site_url('manajemenUser/'.$value->idUser)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idUser;?>">
                                         

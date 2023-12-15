@@ -38,18 +38,6 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="password" class="col-sm-3 col-form-label">Password</label>
-                        <div class="col-sm-9">
-                        <input type="text" class="form-control" id="password" name="password" placeholder="Masukkan Password Baru" >
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="konfirmasiPassword" class="col-sm-3 col-form-label">konfirmasi Pasword</label>
-                        <div class="col-sm-9">
-                        <input type="text" class="form-control" id="konfirmasiPassword" name="konfirmasiPassword" placeholder="Masukkan konfirmasi password" >
-                        </div>
-                    </div>
-                    <div class="row mb-3">
                         <label for="role" class="col-sm-3 col-form-label">Role</label>
                         <div class="col-sm-9">
                             <select class="form-select" id="role" name="role">

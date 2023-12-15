@@ -47,7 +47,6 @@ class ManajemenUser extends ResourceController
             return redirect()->to(site_url('manajemenUser'))->with('success', 'Data berhasil disimpan');
         }
     }
-    
 
     public function edit($id = null) {
         if ($id != null) {
@@ -66,27 +65,43 @@ class ManajemenUser extends ResourceController
         }
     }
 
+    public function editPassword($id = null) {
+        if ($id != null) {
+            $dataManajemenUser = $this->manajemenUserModel->find($id);
+    
+            if (is_object($dataManajemenUser)) {
+                $data = [
+                    'dataManajemenUser' => $dataManajemenUser,
+                ];
+                return view('master/manajemenUserView/editPassword', $data);
+            } else {
+                return view('error/404');
+            }
+        } else {
+            return view('error/404');
+        }
+    }
+
     public function update($id = null) {
         if ($id !== null) {
             $data = $this->request->getPost();
             $username = $data['username'];
 
-            if (isset($data['password']) && isset($data['username']) && isset($data['nama']) && isset($data['role'])) {
-                $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
+            $existingData = $this->manajemenUserModel->find($id);
+            if ($existingData->username != $username ) {
                 if ($this->manajemenUserModel->isDuplicate($username)) {
                     return redirect()->to(site_url('manajemenUser'))->with('error', 'Gagal update karena ditemukan duplikat data!');
-                } else {
-                    $updateData = [
-                        'username' => $data['username'],
-                        'nama' => $data['nama'],
-                        'role' => $data['role'],
-                        'password' => $hashedPassword,
-                    ];
-        
-                    $this->manajemenUserModel->update($id, $updateData);
-                    return redirect()->to(site_url('manajemenUser'))->with('success', 'Data berhasil diupdate');
-                }                
-                return redirect()->to(site_url('manajemenUser'))->with('success', 'Data berhasil diperbarui');
+                }
+            } 
+            
+            if (isset($data['username']) && isset($data['nama']) && isset($data['role'])) {
+                $updateData = [
+                    'username' => $data['username'],
+                    'nama' => $data['nama'],
+                    'role' => $data['role'],
+                ];
+                $this->manajemenUserModel->update($id, $updateData);
+                return redirect()->to(site_url('manajemenUser'))->with('success', 'Data berhasil diupdate');
             } else {
                 return redirect()->to(site_url('manajemenUser'))->with('error', 'Silahkan isi semua kolom!');
             }
@@ -98,6 +113,26 @@ class ManajemenUser extends ResourceController
     public function delete($id = null) {
         $this->manajemenUserModel->delete($id);
         return redirect()->to(site_url('manajemenUser'));
+    }
+
+    public function updatePassword($id = null) {
+        if ($id !== null) {
+            $data = $this->request->getPost();
+
+            if (isset($data['password'])) {
+                $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
+                $data = [
+                    'password' => $hashedPassword,
+                ];
+
+                $this->manajemenUserModel->update($id, $data);
+                return redirect()->to(site_url('manajemenUser'))->with('success', 'Password berhasil diubah!');
+            } else {
+                return redirect()->to(site_url('manajemenUser'))->with('error', 'Silahkan isi semua kolom!');
+            }
+        } else {
+            return view('error/404');
+        }
     }
 
     public function updateUser($id = null) {

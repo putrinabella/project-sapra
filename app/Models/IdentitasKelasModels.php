@@ -15,7 +15,7 @@ class IdentitasKelasModels extends Model
 
     function getAll() {
         $builder = $this->db->table($this->table);
-        $builder->where('tblIdentitasKelas.idIdentitasKelas !=', 0);
+        $builder->where('tblIdentitasKelas.idIdentitasKelas !=', 1);
         $query = $builder->get();
         return $query->getResult();
     }
