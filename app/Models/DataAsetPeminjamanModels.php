@@ -28,7 +28,9 @@ class DataAsetPeminjamanModels extends Model
                     WHEN tblManajemenAsetPeminjaman.loanStatus = 'Pengembalian' THEN 2
                     WHEN tblManajemenAsetPeminjaman.loanStatus = 'Dibatalkan' THEN 3
                     ELSE 4 END", 'asc'); 
-    
+        $builder->orderBy('tblManajemenAsetPeminjaman.tanggal', "asc");
+        $builder->orderBy('tblIdentitasKelas.namaKelas', "asc");
+
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblManajemenAsetPeminjaman.tanggal >=', $startDate);
             $builder->where('tblManajemenAsetPeminjaman.tanggal <=', $endDate);
@@ -66,8 +68,6 @@ class DataAsetPeminjamanModels extends Model
         return $query->getResult();
     }
     
-    
-
     function findHistory($id = null, $columns = '*')
     {
         $builder = $this->db->table('tblDetailManajemenAsetPeminjaman');
@@ -123,13 +123,13 @@ class DataAsetPeminjamanModels extends Model
         return $query->getResult();
     }
     
-
     public function getRincianAset($idManajemenAsetPeminjaman)
     {
         $builder = $this->db->table('tblDetailManajemenAsetPeminjaman');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailManajemenAsetPeminjaman.idRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblDetailManajemenAsetPeminjaman.idManajemenAsetPeminjaman', $idManajemenAsetPeminjaman);
         $query = $builder->get();
 
@@ -161,12 +161,12 @@ class DataAsetPeminjamanModels extends Model
         return $query->getResult();
     }
 
-
     function getBorrowItems($idManajemenAsetPeminjaman)
     {
         $builder = $this->db->table('tblRincianAset');
         $builder->select('*');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->where('tblRincianAset.idManajemenAsetPeminjaman', $idManajemenAsetPeminjaman);
         $query = $builder->get();
         return $query->getResult();
@@ -250,7 +250,6 @@ class DataAsetPeminjamanModels extends Model
         return $query->getResult();
     }
     
-
     function find($id = null, $columns = '*')
     {
         $builder = $this->db->table($this->table);

@@ -56,6 +56,10 @@ class DataAsetPeminjaman extends ResourceController
         $data['tableHeading'] = $tableHeading;
         $data['dataDataAsetPeminjaman'] = $this->dataAsetPeminjamanModel->getAll($startDate, $endDate);
 
+        // Untuk data peminjaman spesifik (peminjaman berdasarkan lokasi)
+        // return view('saranaView/dataAsetPeminjaman/dataAsetPeminjamanSpesifik/index', $data);
+
+        // Untuk data peminjaman general (peminjaman tidak berdasarkan lokasi)
         return view('saranaView/dataAsetPeminjaman/index', $data);
     }
 
@@ -70,6 +74,10 @@ class DataAsetPeminjaman extends ResourceController
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                     'dataItemDipinjam' => $dataItemDipinjam,
                 ];
+                // Untuk data peminjaman spesifik (peminjaman berdasarkan lokasi)
+                // return view('saranaView/dataAsetPeminjaman/dataAsetPeminjamanSpesifik/edit', $data);
+
+                // Untuk data peminjaman general (peminjaman tidak berdasarkan lokasi)
                 return view('saranaView/dataAsetPeminjaman/edit', $data);
             } else {
                 return view('error/404');
@@ -133,6 +141,10 @@ class DataAsetPeminjaman extends ResourceController
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                     'dataRincianAset' => $dataRincianAset,
                 ];
+                // Untuk data peminjaman spesifik (peminjaman berdasarkan lokasi)
+                // return view('saranaView/dataAsetPeminjaman/dataAsetPeminjamanSpesifik/show', $data);
+
+                // Untuk data peminjaman general (peminjaman tidak berdasarkan lokasi)
                 return view('saranaView/dataAsetPeminjaman/show', $data);
             } else {
                 return view('error/404');

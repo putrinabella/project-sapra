@@ -68,6 +68,7 @@ class ManajemenAsetPeminjamanModels extends Model
         $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('tblRincianAset.sectionAset =', 'None');
         $builder->where('tblRincianAset.status =', 'Bagus');
+        $builder->orderBy('tblIdentitasSarana.namaSarana', 'asc'); 
         $query = $builder->get();
         return $query->getResult();
     }

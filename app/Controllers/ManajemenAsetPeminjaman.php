@@ -38,11 +38,26 @@ class ManajemenAsetPeminjaman extends ResourceController
 
     public function index()
     {
-        $data = [
-            'dataManajemenAsetPeminjaman' => $this->manajemenAsetPeminjamanModel->getAll(),
-            'dataPrasarana' => $this->prasaranaModel->getRuangan(),
-        ];
+        // Untuk menampilkan pengajuan peminjaman beradasarkan lokasi 
+        // Aset ditampilkan berdasarkan lokasinya
 
+        // $data = [
+        //     'dataManajemenAsetPeminjaman' => $this->manajemenAsetPeminjamanModel->getAll(),
+        //     'dataPrasarana' => $this->prasaranaModel->getRuangan(),
+        // ];
+        // return view('saranaView/manajemenAsetPeminjaman/manajemenAsetPeminjamanSpesifik/index', $data);
+
+        // Untuk menampilkan pengajuan peminjaman general
+        // Semua aset yang tersedia ditampilkan
+
+        $data = [
+            'dataSiswa' => $this->identitasKelasModel->findAll(),
+            'dataPrasaranaPrasarana' => $this->manajemenAsetPeminjamanModel->getPrasaranaPrasarana(),
+            'dataSaranaPrasarana' => $this->manajemenAsetPeminjamanModel->getSaranaPrasarana(),
+            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+            'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+            'dataRincianAset' => $this->manajemenAsetPeminjamanModel->getData()
+        ];
         return view('saranaView/manajemenAsetPeminjaman/index', $data);
     }
 
@@ -58,7 +73,7 @@ class ManajemenAsetPeminjaman extends ResourceController
             'namaPrasarana' => $this->manajemenAsetPeminjamanModel->getPrasaranaName($id),
         ];
 
-        return view('saranaView/manajemenAsetPeminjaman/new', $data);
+        return view('saranaView/manajemenAsetPeminjaman/manajemenAsetPeminjamanSpesifik/new', $data);
     }
 
     public function getRole()

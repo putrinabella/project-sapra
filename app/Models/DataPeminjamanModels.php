@@ -68,8 +68,6 @@ class DataPeminjamanModels extends Model
         return $query->getResult();
     }
     
-    
-
     function findHistory($id = null, $columns = '*')
     {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
@@ -125,7 +123,6 @@ class DataPeminjamanModels extends Model
         return $query->getResult();
     }
     
-
     public function getRincianLabAset($idManajemenPeminjaman)
     {
         $builder = $this->db->table('tblDetailManajemenPeminjaman');
@@ -163,7 +160,6 @@ class DataPeminjamanModels extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-
 
     function getBorrowItems($idManajemenPeminjaman)
     {
@@ -254,7 +250,6 @@ class DataPeminjamanModels extends Model
         return $query->getResult();
     }
     
-
     function find($id = null, $columns = '*')
     {
         $builder = $this->db->table($this->table);

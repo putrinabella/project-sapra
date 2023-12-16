@@ -28,7 +28,9 @@
             <div class="card-body">
                 <form action="<?= site_url('dataAsetPeminjaman/' . $dataDataAsetPeminjaman->idManajemenAsetPeminjaman) ?>"
                     method="post" autocomplete="off" id="custom-validation" enctype="multipart/form-data">
+
                     <input type="hidden" name="_method" value="PATCH">
+
                     <div class="row mb-3">
                         <label for="idPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
                         <div class="col-sm-9">
@@ -54,13 +56,27 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label for="idIdentitasPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bg-transparent" id="namaPrasarana" name="namaPrasarana"
+                                value="<?= $dataDataAsetPeminjaman->namaPrasarana ?>" readonly>
+                            <input type="text" class="form-control bg-transparent" id="idIdentitasPrasarana"
+                                name="idIdentitasPrasarana" value="<?= $dataDataAsetPeminjaman->idIdentitasPrasarana ?>" hidden>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Tujuan</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"
+                                value="Pengembalian" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Jumlah Aset Dipinjam</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control bg-transparent" id="jumlahPeminjaman"
                                 name="jumlahPeminjaman" value="<?= $dataDataAsetPeminjaman->jumlahPeminjaman ?> Aset"
                                 readonly>
-                            <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"
-                                value="Pengembalian" hidden>
                             <input type="text" class="form-control bg-transparent" id="loanStatus" name="loanStatus"
                                 value="Pengembalian" hidden>
                         </div>
@@ -110,7 +126,6 @@
                                         <th class="d-none">Id Rincian Prasarana Aset</th>
                                         <th>Kode</th>
                                         <th>Nama</th>
-                                        <th>Lokasi</th>
                                         <th>Merk</th>
                                         <th>Warna</th>
                                         <th>Harga Beli</th>
@@ -131,9 +146,6 @@
                                         </td>
                                         <td>
                                             <?= $value->namaSarana; ?>
-                                        </td>
-                                        <td>
-                                            <?= $value->namaPrasarana; ?> 
                                         </td>
                                         <td>
                                             <?= $value->merk; ?>

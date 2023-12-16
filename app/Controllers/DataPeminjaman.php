@@ -56,6 +56,10 @@ class DataPeminjaman extends ResourceController
         $data['tableHeading'] = $tableHeading;
         $data['dataDataPeminjaman'] = $this->dataPeminjamanModel->getAll($startDate, $endDate);
 
+        // Untuk data peminjaman spesifik (peminjaman berdasarkan lokasi)
+        // return view('labView/dataPeminjaman/dataPeminjamanSpesifik/index', $data);
+
+        // Untuk data peminjaman general (peminjaman tidak berdasarkan lokasi)
         return view('labView/dataPeminjaman/index', $data);
     }
 

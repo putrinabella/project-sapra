@@ -110,6 +110,7 @@
                             <th>NIS/NIP</th>
                             <th>Nama Peminjam</th>
                             <th>Karwayan/Siswa</th>
+                            <th>Lokasi</th>
                             <th>Jumlah Aset Dipinjam</th>
                             <th>Status</th>
                             <th style="width: 20%;">Aksi</th>
@@ -136,6 +137,9 @@
                             </td>
                             <td class="text-left">
                                 <?= $value->namaKelas; ?>
+                            </td>
+                            <td>
+                                <?= $value->namaPrasarana ?>
                             </td>
                             <td class="text-center">
                                 <?= $value->jumlahPeminjaman ?>
