@@ -68,6 +68,15 @@
                     </div>
                 </div>
                 <div class="row mb-3">
+                    <label for="idIdentitasLab" class="col-sm-3 col-form-label">Lokasi</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control bg-transparent" id="namaLab" name="namaLab"
+                            value="<?= $dataDataPeminjaman->namaLab ?>" readonly>
+                        <input type="text" class="form-control bg-transparent" id="idIdentitasLab" name="idIdentitasLab"
+                            value="<?= $dataDataPeminjaman->idIdentitasLab ?>" hidden>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label for="jumlahPeminjaman" class="col-sm-3 col-form-label">Jumlah Aset Dipinjam</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control bg-transparent" id="jumlahPeminjaman" name="jumlahPeminjaman"
@@ -112,7 +121,7 @@
                                     <th class="d-none">Id Rincian Lab Aset</th>
                                     <th>Kode</th>
                                     <th>Nama</th>
-                                    <th>Lokasi</th>
+                                    <th>Kategori</th>
                                     <th>Merk</th>
                                     <th>Warna</th>
                                     <th>Kondisi Awal</th>
@@ -135,7 +144,7 @@
                                         <?= $value->namaSarana; ?>
                                     </td>
                                     <td>
-                                        <?= $value->namaLab; ?>
+                                        <?= $value->namaKategoriManajemen; ?>
                                     </td>
                                     <td>
                                         <?= $value->merk; ?>

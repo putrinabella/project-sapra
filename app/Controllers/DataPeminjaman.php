@@ -70,6 +70,10 @@ class DataPeminjaman extends ResourceController
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                     'dataItemDipinjam' => $dataItemDipinjam,
                 ];
+                // Untuk data peminjaman spesifik (peminjaman berdasarkan lokasi)
+                // return view('labView/dataPeminjaman/dataPeminjamanSpesifik/edit', $data);
+
+                // Untuk data peminjaman general (peminjaman tidak berdasarkan lokasi)
                 return view('labView/dataPeminjaman/edit', $data);
             } else {
                 return view('error/404');
@@ -133,6 +137,10 @@ class DataPeminjaman extends ResourceController
                     'dataIdentitasLab' => $this->identitasLabModel->findAll(),
                     'dataRincianLabAset' => $dataRincianLabAset,
                 ];
+                // Untuk data peminjaman spesifik (peminjaman berdasarkan lokasi)
+                // return view('labView/dataPeminjaman/dataPeminjamanSpesifik/show', $data);
+
+                // Untuk data peminjaman general (peminjaman tidak berdasarkan lokasi)
                 return view('labView/dataPeminjaman/show', $data);
             } else {
                 return view('error/404');

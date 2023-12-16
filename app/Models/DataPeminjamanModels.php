@@ -28,6 +28,8 @@ class DataPeminjamanModels extends Model
                     WHEN tblManajemenPeminjaman.loanStatus = 'Pengembalian' THEN 2
                     WHEN tblManajemenPeminjaman.loanStatus = 'Dibatalkan' THEN 3
                     ELSE 4 END", 'asc'); 
+        $builder->orderBy('tblManajemenPeminjaman.tanggal', "asc");
+        $builder->orderBy('tblIdentitasKelas.namaKelas', "asc");
     
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblManajemenPeminjaman.tanggal >=', $startDate);
@@ -130,6 +132,7 @@ class DataPeminjamanModels extends Model
         $builder->join('tblRincianLabAset', 'tblRincianLabAset.idRincianLabAset = tblDetailManajemenPeminjaman.idRincianLabAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
         $builder->where('tblDetailManajemenPeminjaman.idManajemenPeminjaman', $idManajemenPeminjaman);
         $query = $builder->get();
 
@@ -167,6 +170,7 @@ class DataPeminjamanModels extends Model
         $builder = $this->db->table('tblRincianLabAset');
         $builder->select('*');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
         $builder->where('tblRincianLabAset.idManajemenPeminjaman', $idManajemenPeminjaman);
         $query = $builder->get();
         return $query->getResult();

@@ -8,7 +8,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Sarana</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Pengajuan Peminjaman</li>
+        <li class="breadcrumb-item"><a href="<?= site_url('manajemenAsetPeminjaman')?>">Pengajuan Peminjaman</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Input Peminjaman</li>
     </ol>
 </nav>
 <div class="row">
@@ -16,14 +17,14 @@
         <div class="card overflow-hidden">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="<?= site_url('manajemenPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
+                    <a href="<?= site_url('manajemenAsetPeminjaman') ?>" class="btn btn-icon-text btn-outline-primary me-2">
                         <i class="btn-icon-prepend" data-feather="arrow-left"></i>Back</a>
                     <h4 class="text-center">Form Peminjaman</h4>
                     <div></div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="<?= site_url('manajemenPeminjaman/addLoan') ?>" method="POST"
+                <form action="<?= site_url('manajemenAsetPeminjaman/addLoan') ?>" method="POST"
                     enctype="multipart/form-data" id="custom-validation">
                     <div class="row">
                         <div class="col-12">
@@ -115,23 +116,20 @@
                                         </tr>
                                     </thead>
                                     <tbody class="py-2">
-                                        <?php foreach ($dataRincianLabAset as $key => $value) : ?>
+                                        <?php foreach ($dataRincianAset as $key => $value) : ?>
                                         <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                             <td>
                                                 <input type="checkbox" class="form-check-input row-select"
-                                                    name="selectedRows[]" value="<?= $value->idRincianLabAset?>">
+                                                    name="selectedRows[]" value="<?= $value->idRincianAset?>">
                                             </td>
                                             <td>
-                                                <?= $value->kodeRincianLabAset?>
+                                                <?= $value->kodeRincianAset?>
                                             </td>
                                             <td>
                                                 <?= $value->namaKategoriManajemen ?>
                                             </td>
                                             <td>
                                                 <?= $value->namaSarana ?>
-                                            </td>
-                                            <td>
-                                                <?= $value->namaLab; ?> 
                                             </td>
                                             <td>
                                                 <?= $value->merk ?>
@@ -191,7 +189,7 @@
             $kelasJabatanSelect.val("");
 
             $.ajax({
-                url: "<?= site_url('manajemenPeminjaman/getRole') ?>",
+                url: "<?= site_url('manajemenAsetPeminjaman/getRole') ?>",
                 type: "POST",
                 data: {
                     kategoriPeminjam: selectedKategoriPeminjam,
@@ -205,9 +203,9 @@
                         $asalPeminjamSelect.append("<option value='' selected disabled hidden>Pilih Opsi</option>");
                         $.each(response, function (key, value) {
                             if (selectedKategoriPeminjam === 'siswa') {
-                                $asalPeminjamSelect.append("<option value='" + value.idDataSiswa + "'>" + value.nis + " (" + value.namaSiswa + ") "+ "</option>");
+                                $asalPeminjamSelect.append("<option value='" + value.idDataSiswa + "'>" + value.nis + "</option>");
                             } else if (selectedKategoriPeminjam === 'karyawan') {
-                                $asalPeminjamSelect.append("<option value='" + value.idDataSiswa + "'>" + value.nis + " (" + value.namaSiswa + ") "+ "</option>");
+                                $asalPeminjamSelect.append("<option value='" + value.idDataSiswa + "'>" + value.nis + "</option>");
                             }
                         });
                     }
@@ -224,7 +222,7 @@
             var $namaPeminjamSelect = $("#namaPeminjam");
             var $kelasJabatanSelect = $("#kelasJabatan");
             $.ajax({
-                url: "<?= site_url('manajemenPeminjaman/getNama') ?>",
+                url: "<?= site_url('manajemenAsetPeminjaman/getNama') ?>",
                 type: "POST",
                 data: {
                     asalPeminjam: selectedAsalPeminjam,
