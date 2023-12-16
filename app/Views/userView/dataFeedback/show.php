@@ -68,12 +68,10 @@
                         <td style="width: 25%;">Status Umpan Balik</td>
                         <td style="width: 2%;">:</td>
                         <td>
-                            <?php if ($identitasUser->statusFeedback == "request") : ?>
-                            <span class="badge bg-primary">Diajukan</span>
-                            <?php elseif ($identitasUser->statusFeedback == "process") : ?>
-                            <span class="badge bg-warning">Diproses</span>
+                            <?php if ($identitasUser->statusFeedback == "empty") : ?>
+                            <span class="badge bg-warning">Belum diisi</span>
                             <?php elseif ($identitasUser->statusFeedback == "done") : ?>
-                            <span class="badge bg-info">Selesai</span>
+                            <span class="badge bg-primary">Sudah diisi</span>
                             <?php endif; ?>
                         </td>
                     </tr>

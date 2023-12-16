@@ -15,40 +15,6 @@ $(document).ready(function () {
   $.validator.addMethod("validDate", function(value, element) {
     return !/Invalid|NaN/.test(new Date(value).toString());
   }, "Tanggal tidak valid");
-
-  //   $("#modalPemusnahan").validate({
-  //     rules: {
-  //         kodeAkun: {
-  //             required: true,
-  //         },
-  //         bukti: {
-  //             required: true,
-  //             googleDriveLink: true,
-  //         },
-  //     },
-  //     messages: {
-  //         kodeAkun: {
-  //             required: "Silahkan masukkan kode akun",
-  //         },
-  //         bukti: {
-  //             required: "Silahkan masukkan bukti",
-  //             googleDriveLink: "Input harus berupa Google Drive Link",
-  //         },
-  //     },
-  //     errorPlacement: function (label, element) {
-  //         label.addClass("mt-1 tx-13 text-danger");
-  //         label.insertAfter(element);
-  //     },
-  //     highlight: function (element, errorClass) {
-  //         $(element).parent().addClass("validation-error");
-  //         $(element).addClass("border-danger");
-  //     },
-  //     unhighlight: function (element, errorClass) {
-  //         $(element).parent().removeClass("validation-error");
-  //         $(element).removeClass("border-danger");
-  //         $(element).addClass("border-success");
-  //     },
-  // });
   $("#custom-validation").validate({
     rules: {
       username: {
@@ -298,7 +264,13 @@ $(document).ready(function () {
       bukti: {
         required: true,
         googleDriveLink: true, 
-    },
+      },
+      isiPengaduan: {
+        required: true,
+      }, 
+      isiFeedback: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -549,6 +521,12 @@ $(document).ready(function () {
         required: "Silahkan masukkan Google Drive Link",
         googleDriveLink: "Input harus berupa Google Drive Link",
       },
+      isiPengaduan: {
+        required: "Silahkan masukkan isi pengaduan",
+      }, 
+      isiFeedback: {
+        required: "Silahkan masukkan umpan balik",
+      }, 
     },
     errorPlacement: function (label, element) {
       // var errorContainer = element.closest('.col-sm-9');

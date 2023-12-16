@@ -25,14 +25,42 @@
                         <?= $key+1 . ". " . $value->pertanyaanPengaduan; ?>
                     </p>
                     <textarea class="form-control" style="margin-left: 15px;"
-                        name="isiPengaduan[<?= $value->idPertanyaanPengaduan; ?>]"></textarea>
+                        name="isiPengaduan[<?= $value->idPertanyaanPengaduan; ?>]" required></textarea>
                     <br>
                     <?php endforeach; ?>
-                    <button type="submit" class="btn btn-primary">Submit </button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#submitBtn').click(function () {
+            var isValid = true;
+
+            $('textarea').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    return false; 
+                }
+            });
+
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Silahkan input pengaduan Anda!',
+                });
+            } else {
+                $('#custom-validation').submit();
+            }
+        });
+    });
+</script>
 
 <?= $this->endSection(); ?>

@@ -42,6 +42,7 @@ class FormFeedbackModels extends Model
         $builder = $this->db->table('tblFormFeedback');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblFormFeedback.idDataSiswa');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
+        $builder->join('tblFormPengaduan', 'tblFormPengaduan.idFormPengaduan = tblFormFeedback.idFormPengaduan');
         $builder->where('tblFormFeedback.idFormFeedback', $id);
         $query = $builder->get();
         return $query->getRow();
@@ -50,6 +51,7 @@ class FormFeedbackModels extends Model
     public function getFeedbackPercentages() {
         $builder = $this->db->table('tblDetailFormFeedback');
         $builder->select('idFormFeedback, SUM(isiFeedback) as totalFeedback, COUNT(*) as feedbackCount');
+        // $builder->where('tblDetailFormFeedback.idFormFeedback', $id);
         $builder->groupBy('idFormFeedback');
         $query = $builder->get();
     

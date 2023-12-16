@@ -35,6 +35,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td style="width: 25%;">Kode Pengaduan</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                        <a href="<?= base_url('dataPengaduanUser/detail/' . $identitasUser->idFormPengaduan) ?>">
+                            <?= $identitasUser->kodeFormPengaduan ?>
+                        </a>
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="width: 25%;">NIS/NIP</td>
                         <td style="width: 2%;">:</td>
                         <td>
@@ -59,12 +68,10 @@
                         <td style="width: 25%;">Status Umpan Balik</td>
                         <td style="width: 2%;">:</td>
                         <td>
-                            <?php if ($identitasUser->statusFeedback == "request") : ?>
-                            <span class="badge bg-primary">Diajukan</span>
-                            <?php elseif ($identitasUser->statusFeedback == "process") : ?>
-                            <span class="badge bg-warning">Diproses</span>
+                            <?php if ($identitasUser->statusFeedback == "empty") : ?>
+                            <span class="badge bg-warning">Belum diisi</span>
                             <?php elseif ($identitasUser->statusFeedback == "done") : ?>
-                            <span class="badge bg-info">Selesai</span>
+                            <span class="badge bg-primary">Sudah diisi</span>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -81,14 +88,8 @@
                                 <th>Umpan Balik</th>
                             </tr>
                         </thead>
-                        <tbody class="py-2">
-                            <?php
-                            $totalFeedback = count($dataFeedback);
-                            $sumFeedback = 0;
-                        
-                            foreach ($dataFeedback as $key => $value) :
-                                $sumFeedback += intval($value->isiFeedback);
-                                ?>
+                        <tbody class="py-2">                        
+                            <?php foreach ($dataFeedback as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td>
                                     <?= $key + 1 ?>
@@ -122,15 +123,15 @@
                             </tr>
                             <?php endforeach; ?>
 
-                            <?php if ($totalFeedback > 0) : ?>
                             <?php
-                                $averagePercentage = ($sumFeedback / ($totalFeedback * 5)) * 100; 
-                                $averagePercentage = max(0, min(100, $averagePercentage)); 
+                                $idFormFeedback = $value->idFormFeedback;
+                                $kepuasanPercentage = isset($feedbackPercentages[$idFormFeedback]) ? $feedbackPercentages[$idFormFeedback] : 0;
                                 ?>
+                            <?php if ($kepuasanPercentage > 0) : ?>
                             <tr>
                                 <td colspan="3" style="font-weight: bold;">
                                     Poin Kepuasan:
-                                    <?= round($averagePercentage, 2) ?>%
+                                    <?= round($kepuasanPercentage, 2) ?>%
                                 </td>
                             </tr>
                             <?php else : ?>

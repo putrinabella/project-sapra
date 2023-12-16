@@ -67,10 +67,12 @@ class ArsipFeedback extends ResourceController
         if ($id != null) {
             $dataFeedback = $this->formFeedbackModel->getDetailDataFeedback($id);
             $identitasUser = $this->formFeedbackModel->getIdentitas($id);
+            $feedbackPercentages = $this->formFeedbackModel->getFeedbackPercentagesUser($id);
             if (!empty($dataFeedback)) {
                 $data = [
                     'dataFeedback' => $dataFeedback,
-                    'identitasUser' => $identitasUser
+                    'identitasUser' => $identitasUser,
+                    'feedbackPercentages' => $feedbackPercentages
                 ];
                 return view('saranaView/dataFeedback/show', $data);
             } else {

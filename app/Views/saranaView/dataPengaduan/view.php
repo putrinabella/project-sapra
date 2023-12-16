@@ -74,6 +74,7 @@
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
+                            <th>Kode Pengaduan</th>
                             <th>NIS/NIP</th>
                             <th>Nama</th>
                             <th>Karwayan/Kelas</th>
@@ -93,6 +94,9 @@
                                 ?>
                             <td data-sort="<?= strtotime($originalDate) ?>">
                                 <?php echo $formattedDate; ?>
+                            </td>
+                            <td>
+                                <?= $value->kodeFormPengaduan; ?> 
                             </td>
                             <td>
                                 <?= $value->nis ?>

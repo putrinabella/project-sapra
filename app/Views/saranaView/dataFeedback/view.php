@@ -79,6 +79,7 @@
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
+                            <th>Kode Pengaduan</th>
                             <th>NIS/NIP</th>
                             <th>Nama</th>
                             <th>Karwayan/Kelas</th>
@@ -101,9 +102,14 @@
                                     $formattedDate = '-';
                                 }
                                 ?>
-                                <td data-sort="<?= !empty($originalDate) ? strtotime($originalDate) : 0 ?>">
-                                    <?php echo $formattedDate; ?>
-                                </td>
+                            <td data-sort="<?= !empty($originalDate) ? strtotime($originalDate) : 0 ?>">
+                                <?php echo $formattedDate; ?>
+                            </td>
+                            <td>
+                                <a href="<?= base_url('arsipPengaduan/' . $value->idFormPengaduan) ?>">
+                                    <?= $value->kodeFormPengaduan ?>
+                                </a>
+                            </td>
                             <td>
                                 <?= $value->nis ?>
                             </td>
@@ -135,16 +141,8 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <?php if ($value->statusFeedback == "request") : ?>
-                                <a href="<?= site_url('arsipFeedback/'.$value->idFormFeedback.'/edit') ?>"
-                                    class="btn btn-primary btn-icon me-2"> <i data-feather="edit-2"></i></a>
-                                <?php elseif ($value->statusFeedback == "process") : ?>
-                                <a href="<?=site_url('arsipFeedback/'.$value->idFormFeedback) ?>"
-                                    class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                <?php elseif ($value->statusFeedback == "done") : ?>
-                                <a href="<?=site_url('arsipFeedback/'.$value->idFormFeedback) ?>"
-                                    class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
-                                <?php endif; ?>
+                            <a href="<?=site_url('arsipFeedback/'.$value->idFormFeedback) ?>"
+                                    class="btn btn-primary btn-icon me-2"> <i data-feather="info"></i></a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

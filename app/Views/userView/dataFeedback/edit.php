@@ -60,12 +60,10 @@
                         <td style="width: 25%;">Status Umpan Balik</td>
                         <td style="width: 2%;">:</td>
                         <td>
-                            <?php if ($identitasUser->statusFeedback == "request") : ?>
-                            <span class="badge bg-primary">Diajukan</span>
-                            <?php elseif ($identitasUser->statusFeedback == "process") : ?>
-                            <span class="badge bg-warning">Diproses</span>
+                            <?php if ($identitasUser->statusFeedback == "empty") : ?>
+                            <span class="badge bg-warning">Belum diisi</span>
                             <?php elseif ($identitasUser->statusFeedback == "done") : ?>
-                            <span class="badge bg-info">Selesai</span>
+                            <span class="badge bg-primary">Sudah diisi</span>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -119,15 +117,40 @@
                         </div>
                     </div>
                     <?php endforeach; ?>
-                    <button type="submit" class="btn btn-primary">Submit </button>
+                    <button type="button" class="btn btn-primary" id="submitBtn">Submit</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<script src="<?= base_url(); ?>/assets/vendors/jquery/jquery-3.7.1.min.js"></script>
+<script src="<?= base_url(); ?>/assets/vendors/select2/select2.min.js"></script>
+
 <script>
-    // Any additional JavaScript code can be added here if needed
+    $(document).ready(function () {
+        $('#submitBtn').click(function () {
+            var isValid = true;
+
+            $('input[type=radio]').each(function () {
+                var name = $(this).attr('name');
+                if ($('input[name="' + name + '"]:checked').length === 0) {
+                    isValid = false;
+                    return false; // exit the loop
+                }
+            });
+
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Silahkan isi umpan balik anda',
+                });
+            } else {
+                $('#custom-validation').submit();
+            }
+        });
+    });
 </script>
 
 <?= $this->endSection(); ?>
