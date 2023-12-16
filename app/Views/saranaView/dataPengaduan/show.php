@@ -35,6 +35,13 @@
                         </td>
                     </tr>
                     <tr>
+                        <td style="width: 25%;">Kode Pengaduan</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                            <?= $identitasUser->kodeFormPengaduan ?>
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="width: 25%;">NIS/NIP</td>
                         <td style="width: 2%;">:</td>
                         <td>

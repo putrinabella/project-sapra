@@ -83,7 +83,7 @@ class ArsipPengaduan extends ResourceController
     public function update($id = null) {
         if ($id != null) {
             $idPertanyaanPengaduanArray = $this->request->getPost('idPertanyaanPengaduan');
-            $idFormPeminjaman = $this->request->getPost('idFormPeminjaman');
+            $idFormPengaduan = $this->request->getPost('idFormPengaduan');
             $dataSiswa = $this->formPengaduanModel->getIdentitas($id);
             $idDataSiswaValue = $dataSiswa->idDataSiswa;
             $tanggalSelesai = date('Y-m-d');
@@ -100,6 +100,7 @@ class ArsipPengaduan extends ResourceController
             $dataFeedback = [
                 'idDataSiswa' => $idDataSiswaValue,
                 'statusFeedback' => $statusFeedback,
+                'idFormPengaduan' => $idFormPengaduan,
             ];
             $this->formFeedbackModel->insert($dataFeedback);
             $idFormFeedback  = $this->db->insertID();

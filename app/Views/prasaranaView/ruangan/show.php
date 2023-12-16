@@ -74,6 +74,7 @@
                                     <th>Kategori Aset</th>
                                     <th>Nama Aset</th>
                                     <th>Status</th>
+                                    <th>Keterediaan</th>
                                     <th>Sumber Dana</th>
                                     <th>Tahun Pengadaan</th>
                                     <th>Harga Beli</th>
@@ -88,12 +89,33 @@
                                     <td class="text-center">
                                         <?=$key + 1?>
                                     </td>
-                                    <td class="text-center"><?=$value->kodeRincianAset?></td>
+                                    <td><?=$value->kodeRincianAset?></td>
                                     <td><?=$value->namaKategoriManajemen?></td>
                                     <td><?=$value->namaSarana?></td>
-                                    <td><?=$value->status?></td>
+                                    <td class="text-center">
+                                    <?php if ($value->status == "Rusak") : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Hilang"): ?>
+                                    <span class="badge bg-danger">
+                                    <?= $value->status; ?> 
+                                    </span>
+                                    <?php elseif ($value->status == "Bagus"): ?>
+                                    <?= $value->status; ?> 
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php if ($value->sectionAset == "None") : ?>
+                                        Tersedia
+                                    <?php else : ?>
+                                    <span class="badge bg-warning">
+                                        <?= $value->sectionAset; ?> 
+                                    </span>
+                                    <?php endif; ?>
+                                </td>
                                     <td><?=$value->namaSumberDana?></td>
-                                    <td  class="text-center">
+                                    <td>
                                     <?php 
                                         if($value->tahunPengadaan == 0 || 0000) {
                                             echo "Tidak diketahui"; 
@@ -105,7 +127,7 @@
                                 <td><?=number_format($value->hargaBeli, 0, ',', '.')?></td>
                                 <td><?=$value->merk?></td>
                                 <td><?=$value->warna?></td>
-                                    <td class="text-center">
+                                    <td>
                                         <a href="<?=site_url('prasaranaRuangan/showInfo/'.$value->idRincianAset) ?>" class="btn btn-secondary btn-icon"> <i data-feather="info"></i></a>
                                     </td>
                                 </tr>

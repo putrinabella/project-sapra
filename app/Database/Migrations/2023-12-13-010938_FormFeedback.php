@@ -15,6 +15,10 @@ class FormFeedback extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'idFormPengaduan' => [
+                'type' => 'INT',
+                'constraint' => 3,
+            ],
             'idDataSiswa' => [
                 'type' => 'INT',
                 'constraint' => 3,

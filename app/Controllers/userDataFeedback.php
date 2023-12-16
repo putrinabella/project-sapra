@@ -26,7 +26,9 @@ class UserDataFeedback extends ResourceController
         $endDate = $this->request->getVar('endDate');
         $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
         $dataFeedback = $this->formFeedbackModel->getData($startDate, $endDate, $idUser);
- 
+        $feedbackPercentages = $this->formFeedbackModel->getFeedbackPercentages();
+        $averageFeedbackPercentages = $this->formFeedbackModel->getAverageFeedbackPercentages();
+        
         $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
         $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';
 
@@ -38,6 +40,8 @@ class UserDataFeedback extends ResourceController
         $data = [
             'tableHeading' => $tableHeading,
             'dataFeedback' => $dataFeedback,
+            'feedbackPercentages' => $feedbackPercentages,
+            'averageFeedbackPercentages' => $averageFeedbackPercentages,
         ];
 
         return view('userView/dataFeedback/view', $data);
@@ -68,8 +72,10 @@ class UserDataFeedback extends ResourceController
         if ($id != null) {
             $idFormFeedback = $id;
             $dataFeedback = $this->formFeedbackModel->getDetailDataFeedback($id);
+            $identitasUser = $this->formFeedbackModel->getIdentitasUser($id);
             $data = [
                 'dataFeedback' => $dataFeedback,
+                'identitasUser' => $identitasUser,
                 'idFormFeedback' => $idFormFeedback,
             ];
             return view('userView/dataFeedback/edit', $data);

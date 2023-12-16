@@ -9,7 +9,7 @@ class FormPengaduanModels extends Model
     protected $table            = 'tblFormPengaduan';
     protected $primaryKey       = 'idFormPengaduan';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idFormPengaduan', 'idDataSiswa', 'tanggal', 'statusPengaduan', 'tanggalSelesai'];
+    protected $allowedFields    = ['idFormPengaduan', 'kodeFormPengaduan', 'idDataSiswa', 'tanggal', 'statusPengaduan', 'tanggalSelesai'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -27,6 +27,7 @@ class FormPengaduanModels extends Model
                     WHEN tblFormPengaduan.statusPengaduan = 'process' THEN 3
                     WHEN tblFormPengaduan.statusPengaduan = 'done' THEN 4
                     ELSE 5 END", 'asc');     
+        $builder->orderBy('tblFormPengaduan.tanggal', 'asc');
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblFormPengaduan.tanggal >=', $startDate);
             $builder->where('tblFormPengaduan.tanggal <=', $endDate);
@@ -60,6 +61,7 @@ class FormPengaduanModels extends Model
                     WHEN tblFormPengaduan.statusPengaduan = 'process' THEN 3
                     WHEN tblFormPengaduan.statusPengaduan = 'done' THEN 4
                     ELSE 5 END", 'asc');     
+        $builder->orderBy('tblFormPengaduan.tanggal', 'asc');
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblFormPengaduan.tanggal >=', $startDate);
             $builder->where('tblFormPengaduan.tanggal <=', $endDate);

@@ -35,11 +35,15 @@ class UserFormPengaduan extends ResourceController
         $tanggal = date('Y-m-d');
         $idDataSiswa = $this->dataSiswaModel->getIdByUsername(session('username'));
         $statusPengaduan = 'request';
+        $username = session('username');
+        $numericPart = substr(mt_rand() . uniqid(), 0, 8); 
+        $kodeFormPengaduan = 'TS-BJB/C-' . $username . '/' . $numericPart;
 
         $dataPengaduan = [
             'idDataSiswa' => $idDataSiswa,
             'tanggal' => $tanggal,
             'statusPengaduan' => $statusPengaduan,
+            'kodeFormPengaduan' => $kodeFormPengaduan,
         ];
         $this->formPengaduanModel->insert($dataPengaduan);
         $idFormPengaduan = $this->db->insertID();

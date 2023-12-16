@@ -52,9 +52,7 @@
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
-                            <th>NIS/NIP</th>
-                            <th>Nama Peminjam</th>
-                            <th>Karwayan/Kelas</th>
+                            <th>Kode Pengaduan</th>
                             <th>Status</th>
                             <th style="width: 20%;">Aksi</th>
                         </tr>
@@ -72,15 +70,7 @@
                             <td data-sort="<?= strtotime($originalDate) ?>">
                                 <?php echo $formattedDate; ?>
                             </td>
-                            <td>
-                                <?= $value->nis ?>
-                            </td>
-                            <td class="text-center">
-                                <?= $value->namaSiswa ?>
-                            </td>
-                            <td class="text-center">
-                                <?= $value->namaKelas ?>
-                            </td>
+                            <td> <?= $value->kodeFormPengaduan; ?> </td>
                             <td style="width: 10%">
                                 <?php if ($value->statusPengaduan == "request") : ?>
                                 <span class="badge bg-primary">Diajukan</span>

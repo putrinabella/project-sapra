@@ -38,6 +38,13 @@
                             </td>
                         </tr>
                         <tr>
+                            <td style="width: 25%;">Kode Pengaduan</td>
+                            <td style="width: 2%;">:</td>
+                            <td>
+                                <?= $identitasUser->kodeFormPengaduan ?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td style="width: 25%;">NIS/NIP</td>
                             <td style="width: 2%;">:</td>
                             <td>
@@ -86,7 +93,7 @@
                         <?= $value->isiPengaduan; ?>
                     </div>
                     <?php endforeach; ?>
-                    <input type="hidden" name="idFormPengaduan" value="<?= $identitasUser->idFormPengaduan; ?> ">
+                    <input type="hidden" name="idFormPengaduan" value="<?= $identitasUser->idFormPengaduan;?>">
                     <div class="row mb-3">
                         <div class="col-sm-12 text-end">
                             <button type="submit" class="btn btn-primary">Mark as Done</button>

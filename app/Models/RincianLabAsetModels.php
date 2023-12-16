@@ -129,6 +129,7 @@ class RincianLabAsetModels extends Model
         $builder = $this->db->table('tblRincianLabAset');
         $builder->select('COUNT(*) as count');
         $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianLabAset.deleted_at', null); 
         $builder->where('idIdentitasSarana', $idIdentitasSarana);
         $builder->where('status', 'Bagus');
         $query = $builder->get();
@@ -141,6 +142,7 @@ class RincianLabAsetModels extends Model
         $builder = $this->db->table('tblRincianLabAset');
         $builder->select('COUNT(*) as count');
         $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianLabAset.deleted_at', null); 
         $builder->where('idIdentitasSarana', $idIdentitasSarana);
         $builder->where('status', 'Rusak');
         $query = $builder->get();
@@ -153,6 +155,7 @@ class RincianLabAsetModels extends Model
         $builder = $this->db->table('tblRincianLabAset');
         $builder->select('COUNT(*) as count');
         $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianLabAset.deleted_at', null); 
         $builder->where('idIdentitasSarana', $idIdentitasSarana);
         $builder->where('status', 'Hilang');
         $query = $builder->get();
@@ -224,7 +227,7 @@ class RincianLabAsetModels extends Model
         $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
         $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
         $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
-        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.deleted_at', null);  
         $builder->where('tblRincianLabAset.sectionAset !=', 'Dimusnahkan');
         $builder->where('tblRincianLabAset.status =', 'Hilang');
         $builder->orderBy('tblRincianLabAset.kodeRincianLabAset', 'asc'); 

@@ -9,7 +9,7 @@ class FormFeedbackModels extends Model
     protected $table            = 'tblFormFeedback';
     protected $primaryKey       = 'idFormFeedback';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['idFormFeedback', 'idDataSiswa', 'tanggal', 'statusFeedback'];
+    protected $allowedFields    = ['idFormFeedback', 'idDataSiswa', 'tanggal', 'statusFeedback', 'idFormPengaduan'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -17,6 +17,7 @@ class FormFeedbackModels extends Model
     function getAll($startDate = null, $endDate = null) {
         $builder = $this->db->table('tblFormFeedback');
         $builder->join('tblDetailFormFeedback', 'tblDetailFormFeedback.idFormFeedback = tblFormFeedback.idFormFeedback');
+        $builder->join('tblFormPengaduan', 'tblFormPengaduan.idFormPengaduan = tblFormFeedback.idFormPengaduan');
         $builder->join('tblPertanyaanFeedback', 'tblPertanyaanFeedback.idPertanyaanFeedback = tblDetailFormFeedback.idPertanyaanFeedback');  
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblFormFeedback.idDataSiswa');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
@@ -27,6 +28,7 @@ class FormFeedbackModels extends Model
                     WHEN tblFormFeedback.statusFeedback = 'process' THEN 3
                     WHEN tblFormFeedback.statusFeedback = 'done' THEN 4
                     ELSE 3 END", 'asc');     
+        $builder->orderBy('tblFormFeedback.tanggal', 'asc');
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblFormFeedback.tanggal >=', $startDate);
             $builder->where('tblFormFeedback.tanggal <=', $endDate);
@@ -69,6 +71,35 @@ class FormFeedbackModels extends Model
     
         return $points;
     }
+
+    public function getAverageFeedbackPercentages() {
+        $builder = $this->db->table('tblDetailFormFeedback');
+        $builder->select('idFormFeedback, SUM(isiFeedback) as totalFeedback, COUNT(*) as feedbackCount');
+        $builder->where('tblDetailFormFeedback.isiFeedback!=', null);
+        $builder->groupBy('idFormFeedback');
+        $query = $builder->get();
+    
+        $result = $query->getResult();
+    
+        $points = [];
+    
+        foreach ($result as $row) {
+            $idFormFeedback = $row->idFormFeedback;
+            $totalFeedback = $row->totalFeedback;
+            $feedbackCount = $row->feedbackCount;
+    
+            $mean = ($feedbackCount > 0) ? $totalFeedback / $feedbackCount : 0;
+            $percentage = ($feedbackCount > 0) ? (100 / $feedbackCount) : 0;
+            $point = $mean * $percentage;
+    
+            $points[$idFormFeedback] = (float) $point;
+        }
+    
+        $overallAverage = count($points) > 0 ? array_sum($points) / count($points) : 0;
+    
+        return $overallAverage;
+    }
+    
     
     // End of models for admin view ======================================================================================== //
 
@@ -76,6 +107,7 @@ class FormFeedbackModels extends Model
     function getData($startDate = null, $endDate = null, $idUser) {
         $builder = $this->db->table('tblFormFeedback');
         $builder->join('tblDetailFormFeedback', 'tblDetailFormFeedback.idFormFeedback = tblFormFeedback.idFormFeedback');
+        $builder->join('tblFormPengaduan', 'tblFormPengaduan.idFormPengaduan = tblFormFeedback.idFormPengaduan');
         $builder->join('tblPertanyaanFeedback', 'tblPertanyaanFeedback.idPertanyaanFeedback = tblDetailFormFeedback.idPertanyaanFeedback');  
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblFormFeedback.idDataSiswa');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
@@ -86,6 +118,7 @@ class FormFeedbackModels extends Model
                     WHEN tblFormFeedback.statusFeedback = 'process' THEN 3
                     WHEN tblFormFeedback.statusFeedback = 'done' THEN 4
                     ELSE 3 END", 'asc');     
+        $builder->orderBy('tblFormFeedback.tanggal', 'asc');
         if ($startDate !== null && $endDate !== null) {
             $builder->where('tblFormFeedback.tanggal >=', $startDate);
             $builder->where('tblFormFeedback.tanggal <=', $endDate);
@@ -100,6 +133,7 @@ class FormFeedbackModels extends Model
     function getIdentitasUser($id) {
         $builder = $this->db->table('tblFormFeedback');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblFormFeedback.idDataSiswa');
+        $builder->join('tblFormPengaduan', 'tblFormPengaduan.idFormPengaduan = tblFormFeedback.idFormPengaduan');
         $builder->join('tblIdentitasKelas', 'tblIdentitasKelas.idIdentitasKelas = tblDataSiswa.idIdentitasKelas');
         $builder->where('tblFormFeedback.idFormFeedback', $id);
         $query = $builder->get();

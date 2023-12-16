@@ -75,7 +75,7 @@
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
                             <th>NIS/NIP</th>
-                            <th>Nama Peminjam</th>
+                            <th>Nama</th>
                             <th>Karwayan/Kelas</th>
                             <th>Status</th>
                             <th style="width: 20%;">Aksi</th>

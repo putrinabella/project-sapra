@@ -46,16 +46,20 @@
             </p>
             <?php endif; ?>
             <br>
+            <div class="row mb-3">
+                <p style="font-weight: bold;">Rata-rata Kepuasan:
+                    <?= number_format($averageFeedbackPercentages, 2) ?>%
+                </p>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover" id="dataTable" style="width: 100%;">
                     <thead>
                         <tr class="text-center">
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
-                            <th>NIS/NIP</th>
-                            <th>Nama Peminjam</th>
-                            <th>Karwayan/Kelas</th>
+                            <th>Kode Pengaduan</th>
                             <th>Status</th>
+                            <th>Kepuasan</th>
                             <th style="width: 20%;">Aksi</th>
                         </tr>
                     </thead>
@@ -66,24 +70,20 @@
                                 <?= $key + 1 ?>
                             </td>
                             <?php
-                                $originalDate = $value->tanggal;
-                                if (!empty($originalDate)) {
-                                    $formattedDate = date('d F Y', strtotime($originalDate));
-                                } else {
-                                    $formattedDate = '-';
-                                }
-                                ?>
-                                <td data-sort="<?= !empty($originalDate) ? strtotime($originalDate) : 0 ?>">
-                                    <?php echo $formattedDate; ?>
-                                </td>
+                            $originalDate = $value->tanggal;
+                            if (!empty($originalDate)) {
+                                $formattedDate = date('d F Y', strtotime($originalDate));
+                            } else {
+                                $formattedDate = '-';
+                            }
+                            ?>
+                            <td data-sort="<?= !empty($originalDate) ? strtotime($originalDate) : 0 ?>">
+                                <?php echo $formattedDate; ?>
+                            </td>
                             <td>
-                                <?= $value->nis ?>
-                            </td>
-                            <td class="text-center">
-                                <?= $value->namaSiswa ?>
-                            </td>
-                            <td class="text-center">
-                                <?= $value->namaKelas ?>
+                                <a href="<?= base_url('dataPengaduanUser/detail/' . $value->idFormPengaduan) ?>">
+                                    <?= $value->kodeFormPengaduan ?>
+                                </a>
                             </td>
                             <td style="width: 10%">
                                 <?php if ($value->statusFeedback == "empty") : ?>
@@ -91,6 +91,20 @@
                                 <?php elseif ($value->statusFeedback == "done") : ?>
                                 <span class="badge bg-primary">Sudah diisi</span>
                                 <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php
+                                $idFormFeedback = $value->idFormFeedback;
+                                $kepuasanPercentage = isset($feedbackPercentages[$idFormFeedback]) ? $feedbackPercentages[$idFormFeedback] : 0;
+                                ?>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar"
+                                        style="width: <?= round($kepuasanPercentage, 2) ?>%;"
+                                        aria-valuenow="<?= round($kepuasanPercentage, 2) ?>" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                        <?= round($kepuasanPercentage, 2) ?>%
+                                    </div>
+                                </div>
                             </td>
                             <td class="text-center">
                                 <?php if ($value->statusFeedback == "empty") : ?>

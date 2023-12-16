@@ -68,13 +68,9 @@
             </p>
             <?php endif; ?>
             <br>
-            <?php
-                $totalKepuasanPercentage = array_sum($feedbackPercentages);
-                $averageKepuasanPercentage = count($feedbackPercentages) > 0 ? $totalKepuasanPercentage / count($feedbackPercentages) : 0;
-                ?>
             <div class="row mb-3">
                 <p style="font-weight: bold;">Rata-rata Kepuasan:
-                    <?= number_format($averageKepuasanPercentage, 2) ?>%
+                    <?= number_format($averageFeedbackPercentages, 2) ?>%
                 </p>
             </div>
             <div class="table-responsive">
@@ -84,7 +80,7 @@
                             <th style="width: 5%;">No.</th>
                             <th>Tanggal</th>
                             <th>NIS/NIP</th>
-                            <th>Nama Peminjam</th>
+                            <th>Nama</th>
                             <th>Karwayan/Kelas</th>
                             <th>Status</th>
                             <th style="width: 15%;">Kepuasan</th>
@@ -99,11 +95,15 @@
                             </td>
                             <?php
                                 $originalDate = $value->tanggal;
-                                $formattedDate = date('d F Y', strtotime($originalDate));
+                                if (!empty($originalDate)) {
+                                    $formattedDate = date('d F Y', strtotime($originalDate));
+                                } else {
+                                    $formattedDate = '-';
+                                }
                                 ?>
-                            <td data-sort="<?= strtotime($originalDate) ?>">
-                                <?php echo $formattedDate; ?>
-                            </td>
+                                <td data-sort="<?= !empty($originalDate) ? strtotime($originalDate) : 0 ?>">
+                                    <?php echo $formattedDate; ?>
+                                </td>
                             <td>
                                 <?= $value->nis ?>
                             </td>
@@ -114,12 +114,10 @@
                                 <?= $value->namaKelas ?>
                             </td>
                             <td style="width: 10%">
-                                <?php if ($value->statusFeedback == "request") : ?>
-                                <span class="badge bg-primary">Diajukan</span>
-                                <?php elseif ($value->statusFeedback == "process") : ?>
-                                <span class="badge bg-warning">Diproses</span>
+                                <?php if ($value->statusFeedback == "empty") : ?>
+                                <span class="badge bg-warning">Belum diisi</span>
                                 <?php elseif ($value->statusFeedback == "done") : ?>
-                                <span class="badge bg-info">Selesai</span>
+                                <span class="badge bg-primary">Sudah diisi</span>
                                 <?php endif; ?>
                             </td>
                             <td>

@@ -129,6 +129,7 @@ class RincianAsetModels extends Model
         $builder = $this->db->table('tblRincianAset');
         $builder->select('COUNT(*) as count');
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.deleted_at', null); 
         $builder->where('idIdentitasSarana', $idIdentitasSarana);
         $builder->where('status', 'Bagus');
         $query = $builder->get();
@@ -141,6 +142,7 @@ class RincianAsetModels extends Model
         $builder = $this->db->table('tblRincianAset');
         $builder->select('COUNT(*) as count');
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.deleted_at', null); 
         $builder->where('idIdentitasSarana', $idIdentitasSarana);
         $builder->where('status', 'Rusak');
         $query = $builder->get();
@@ -153,6 +155,7 @@ class RincianAsetModels extends Model
         $builder = $this->db->table('tblRincianAset');
         $builder->select('COUNT(*) as count');
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
+        $builder->where('tblRincianAset.deleted_at', null); 
         $builder->where('idIdentitasSarana', $idIdentitasSarana);
         $builder->where('status', 'Hilang');
         $query = $builder->get();

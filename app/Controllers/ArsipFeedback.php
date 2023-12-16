@@ -39,7 +39,8 @@ class ArsipFeedback extends ResourceController
         $data = [
             'tableHeading' => $tableHeading,
             'dataFeedback' => $this->formFeedbackModel->getAll($startDate, $endDate, $idUser),
-            'feedbackPercentages' => $this->formFeedbackModel->getFeedbackPercentages()
+            'feedbackPercentages' => $this->formFeedbackModel->getFeedbackPercentages(),
+            'averageFeedbackPercentages' => $this->formFeedbackModel->getAverageFeedbackPercentages(),
         ];
         return view('saranaView/dataFeedback/view', $data);
     }

@@ -35,6 +35,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td style="width: 25%;">Kode Pengaduan</td>
+                        <td style="width: 2%;">:</td>
+                        <td>
+                        <a href="<?= base_url('dataPengaduanUser/detail/' . $identitasUser->idFormPengaduan) ?>">
+                            <?= $identitasUser->kodeFormPengaduan ?>
+                        </a>
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="width: 25%;">NIS/NIP</td>
                         <td style="width: 2%;">:</td>
                         <td>

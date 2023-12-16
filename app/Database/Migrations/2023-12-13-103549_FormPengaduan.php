@@ -15,6 +15,10 @@ class FormPengaduan extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'kodeFormPengaduan' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'idDataSiswa' => [
                 'type' => 'INT',
                 'constraint' => 3,

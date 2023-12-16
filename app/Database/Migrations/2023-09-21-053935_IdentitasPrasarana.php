@@ -41,6 +41,10 @@ class IdentitasPrasarana extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'picturePath' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
