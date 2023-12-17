@@ -9,8 +9,6 @@ use App\Models\IdentitasPrasaranaModels;
 use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 
 class IdentitasPrasarana extends ResourceController
 {
@@ -136,6 +134,7 @@ class IdentitasPrasarana extends ResourceController
 
     public function delete($id = null) {
         $this->identitasPrasaranaModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Identitas Prasarana dengan id $id");
         return redirect()->to(site_url('identitasPrasarana'));
     }
 
@@ -145,40 +144,25 @@ class IdentitasPrasarana extends ResourceController
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblIdentitasPrasarana')
-                ->set('deleted_at', null, true)
-                ->where(['idIdentitasPrasarana' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblIdentitasPrasarana')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblIdentitasPrasarana', 'idIdentitasPrasarana', $id, $this->userActionLogsModel, 'Master - Identitas Prasarana');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('identitasPrasarana/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->identitasPrasaranaModel->delete($id, true);
-        return redirect()->to(site_url('identitasPrasarana/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->identitasPrasaranaModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->identitasPrasaranaModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('identitasPrasarana/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('identitasPrasarana/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
-
+        $affectedRows = deleteData('tblIdentitasPrasarana', 'idIdentitasPrasarana', $id, $this->userActionLogsModel, 'Master - Identitas Prasarana');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('identitasPrasarana'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('identitasPrasarana/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    } 
+    
     public function export() {
         $data = $this->identitasPrasaranaModel->getAll();
         $keyGedung = $this->identitasGedungModel->findAll();
@@ -503,32 +487,23 @@ class IdentitasPrasarana extends ResourceController
         }
     }
     
-
-
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/identitasPrasaranaView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataIdentitasPrasarana = $this->identitasPrasaranaModel->getAll();
+        $title = "MASTER - IDENTITAS RUANGAN";
+        
+        if (!$dataIdentitasPrasarana) {
             return view('error/404');
         }
-
-        $data['dataidentitasPrasarana'] = $this->identitasPrasaranaModel->getAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfMasterIdentitasPrasarana($dataIdentitasPrasarana, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
-        $dompdf->render();
-        $filename = 'Data Master - Identitas Prasarana.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Master - Identitas Prasarana' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }
 

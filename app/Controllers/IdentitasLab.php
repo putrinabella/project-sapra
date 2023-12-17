@@ -6,6 +6,7 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Models\IdentitasGedungModels; 
 use App\Models\IdentitasLantaiModels; 
 use App\Models\IdentitasLabModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -18,7 +19,9 @@ class IdentitasLab extends ResourceController
         $this->identitasGedungModel = new IdentitasGedungModels();
         $this->identitasLantaiModel = new IdentitasLantaiModels();
         $this->identitasLabModel = new IdentitasLabModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -103,8 +106,10 @@ class IdentitasLab extends ResourceController
     
 
 
+
     public function delete($id = null) {
         $this->identitasLabModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Identitas Laboraotrium dengan id $id");
         return redirect()->to(site_url('identitasLab'));
     }
 
@@ -114,39 +119,24 @@ class IdentitasLab extends ResourceController
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblIdentitasLab')
-                ->set('deleted_at', null, true)
-                ->where(['idIdentitasLab' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblIdentitasLab')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblIdentitasLab', 'idIdentitasLab', $id, $this->userActionLogsModel, 'Master - Identitas Laboraotriumoratorium');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('identitasLab/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->identitasLabModel->delete($id, true);
-        return redirect()->to(site_url('identitasLab/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->identitasLabModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->identitasLabModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('identitasLab/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('identitasLab/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
+        $affectedRows = deleteData('tblIdentitasLab', 'idIdentitasLab', $id, $this->userActionLogsModel, 'Master - Identitas Laboratorium');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('identitasLab/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    } 
 
     public function export() {
         $data = $this->identitasLabModel->getAll();
@@ -192,7 +182,7 @@ class IdentitasLab extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Data Master - Identitas Lab.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Identitas Laboratorium.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -226,7 +216,7 @@ class IdentitasLab extends ResourceController
         $activeWorksheet->fromArray([$headerLantaiID], NULL, 'O1');
         $activeWorksheet->getStyle('O1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
-        $headerLabID = ['ID Identitas Lab', 'Nama Lab'];
+        $headerLabID = ['ID Identitas Laboratorium', 'Nama Lab'];
         $activeWorksheet->fromArray([$headerLabID], NULL, 'R1');
         $activeWorksheet->getStyle('R1:S1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -394,7 +384,7 @@ class IdentitasLab extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Identitas Lab Example.xlsx');
+        header('Content-Disposition: attachment;filename=Identitas Laboraotrium Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -469,31 +459,23 @@ class IdentitasLab extends ResourceController
     }
     
 
-
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/identitasLabView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataIdentitasLab = $this->identitasLabModel->getAll();
+        $title = "MASTER - IDENTITAS LABORATORIUM";
+        
+        if (!$dataIdentitasLab) {
             return view('error/404');
         }
-
-        $data['dataidentitasLab'] = $this->identitasLabModel->getAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfMasterIdentitasLab($dataIdentitasLab, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
-        $dompdf->render();
-        $filename = 'Data Master - Identitas Lab.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Master - Identitas Laboratorium' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }
 

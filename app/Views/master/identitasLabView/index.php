@@ -8,7 +8,7 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Data Master</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Identitas Lab</li>
+        <li class="breadcrumb-item active" aria-current="page">Identitas Laboratorium</li>
     </ol>
 </nav>
 
@@ -29,7 +29,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('identitasLab/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('identitasLab/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('identitasLab/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
