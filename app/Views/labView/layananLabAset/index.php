@@ -107,7 +107,7 @@
                     <br>
                     <?php endif; ?>
                 </div>
-                <h4 class="text-center py-3">Data Layanan Aset Laboratorium</h4>
+                <h4 class="text-center py-3">Layanan Aset Laboratorium</h4>
                 <?php if (!empty($tableHeading)) : ?>
                 <p class="text-center">
                     <?= $tableHeading ?>

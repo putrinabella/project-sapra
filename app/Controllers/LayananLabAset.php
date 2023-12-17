@@ -186,6 +186,7 @@ class LayananLabAset extends ResourceController
 
     public function delete($id = null) {
         $this->layananLabAsetModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Laboratorium - Layanan Aset dengan id $id");
         return redirect()->to(site_url('layananLabAset'));
     }
 

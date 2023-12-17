@@ -567,7 +567,7 @@ $routes->get('asetLabGeneral/dataAset/(:num)', 'AsetLabGeneral::info/$1');
 $routes->get('asetLabGeneral/(:num)', 'AsetLabGeneral::show/$1');
 $routes->get('asetLabGeneral/generatePDF', 'AsetLabGeneral::GeneratePDF');
 $routes->get('asetLabGeneral/export', 'AsetLabGeneral::Export');
-$routes->get('asetLabGeneral', 'AsetLabGeneral::view');
+$routes->get('asetLabGeneral', 'AsetLabGeneral::view', ['filter' => 'laboranFilter']);
 // -------------------------------------------- End of aset general laboratorium -------------------------------------------- //
 
 // ----------------------------------------------- Rincian aset laboratorium ----------------------------------------------- //
@@ -598,7 +598,7 @@ $routes->get('pemusnahanLabAset/print/(:any)', 'PemusnahanLabAset::print/$1');
 $routes->get('pemusnahanLabAset/generatePDF', 'PemusnahanLabAset::generatePDF');
 $routes->get('pemusnahanLabAset/export', 'PemusnahanLabAset::export');
 $routes->post('pemusnahanLabAset/destruction/(:any)', 'PemusnahanLabAset::destruction/$1');
-$routes->resource('pemusnahanLabAset', ['filter' => 'isLoggedIn']);
+$routes->resource('pemusnahanLabAset', ['filter' => 'laboranFilter']);
 // -------------------------------------------- End of pemusnahan aset laboratorium -------------------------------------------- //
 
 // ----------------------------------------------- Laboratorium ----------------------------------------------- //
@@ -626,7 +626,7 @@ $routes->get('layananLabAset/restore/(:any)', 'LayananLabAset::restore/$1');
 $routes->get('layananLabAset/restore', 'LayananLabAset::restore');
 $routes->delete('layananLabAset/deletePermanent/(:any)', 'LayananLabAset::deletePermanent/$1');
 $routes->delete('layananLabAset/deletePermanent', 'LayananLabAset::deletePermanent');
-$routes->resource('layananLabAset', ['filter' => 'isLoggedIn']);
+$routes->resource('layananLabAset', ['filter' => 'laboranFilter']);
 // -------------------------------------------- End of layanan aset laboratorium -------------------------------------------- //
 
 // ----------------------------------------------- Layanan non aset laboratorium ----------------------------------------------- //
@@ -640,7 +640,7 @@ $routes->get('layananLabNonAset/restore/(:any)', 'LayananLabNonAset::restore/$1'
 $routes->get('layananLabNonAset/restore', 'LayananLabNonAset::restore');
 $routes->delete('layananLabNonAset/deletePermanent/(:any)', 'LayananLabNonAset::deletePermanent/$1');
 $routes->delete('layananLabNonAset/deletePermanent', 'LayananLabNonAset::deletePermanent');
-$routes->resource('layananLabNonAset', ['filter' => 'isLoggedIn']);
+$routes->resource('layananLabNonAset', ['filter' => 'laboranFilter']);
 // -------------------------------------------- End of layanan non aset laboratorium -------------------------------------------- //
 // End of laboratorium - layanan ======================================================================================== //
 
@@ -665,7 +665,7 @@ $routes->get('requestPeminjaman/generatePDF', 'RequestPeminjaman::generatePDF');
 $routes->get('requestPeminjaman/export', 'RequestPeminjaman::export');
 $routes->post('requestPeminjaman/processLoan', 'RequestPeminjaman::processLoan');
 $routes->get('requestPeminjaman/rejectLoan/(:any)', 'RequestPeminjaman::rejectLoan/$1');
-$routes->resource('requestPeminjaman', ['filter' => 'isLoggedIn']);
+$routes->resource('requestPeminjaman', ['filter' => 'laboranFilter']);
 // -------------------------------------------- End of request peminjaman laboratorium-------------------------------------------- //
 
 // ----------------------------------------------- Manajemen peminjaman laboratorium ----------------------------------------------- //
@@ -673,7 +673,7 @@ $routes->get('manajemenPeminjaman/loan/(:num)', 'ManajemenPeminjaman::loan/$1');
 $routes->post('manajemenPeminjaman/getNama', 'ManajemenPeminjaman::getNama');
 $routes->post('manajemenPeminjaman/addLoan', 'ManajemenPeminjaman::addLoan');
 $routes->post('manajemenPeminjaman/getRole', 'ManajemenPeminjaman::getRole');
-$routes->resource('manajemenPeminjaman', ['filter' => 'isLoggedIn']);
+$routes->resource('manajemenPeminjaman', ['filter' => 'laboranFilter']);
 // -------------------------------------------- End of manajemen peminjaman laboratorium -------------------------------------------- //
 
 // Backup and Restore =============================================================================================== //

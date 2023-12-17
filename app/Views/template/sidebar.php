@@ -372,17 +372,35 @@
     <li class="nav-item">
         <a href="<?= site_url('laboratorium') ?>" class="nav-link">
             <i class="link-icon" data-feather="home"></i>
-            <span class="link-title">Aset Laboratorium</span>
+            <span class="link-title">Laboratorium</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('asetLabGeneral') ?>" class="nav-link">
+            <i class="link-icon" data-feather="folder"></i>
+            <span class="link-title">Data General</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="<?= site_url('rincianLabAset') ?>" class="nav-link">
-            <i class="link-icon" data-feather="folder"></i>
-            <span class="link-title">Rincian Aset</span>
+            <i class="link-icon" data-feather="archive"></i>
+            <span class="link-title">Data Rincian Aset</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('pemusnahanLabAset') ?>" class="nav-link">
+            <i class="link-icon" data-feather="trash"></i>
+            <span class="link-title">Pemusnahan Aset</span>
         </a>
     </li>
 
-    <li class="nav-item nav-category">Pengajuan Peminjaman</li>
+    <li class="nav-item nav-category">Peminjaman</li>
+    <li class="nav-item">
+        <a href="<?= site_url('requestPeminjaman') ?>" class="nav-link">
+            <i class="link-icon" data-feather="user-plus"></i>
+            <span class="link-title">Request Peminjaman</span>
+        </a>
+    </li>
     <li class="nav-item">
         <a href="<?= site_url('dataPeminjaman') ?>" class="nav-link">
             <i class="link-icon" data-feather="user-check"></i>
@@ -391,21 +409,21 @@
     </li>
     <li class="nav-item">
         <a href="<?= site_url('manajemenPeminjaman') ?>" class="nav-link">
-            <i class="link-icon" data-feather="edit"></i>
-            <span class="link-title">Input Peminjaman</span>
+            <i class="link-icon" data-feather="users"></i>
+            <span class="link-title">Pengajuan Peminjaman</span>
         </a>
     </li>
 
-    <li class="nav-item nav-category">Manajemen Layanan</li>
+    <li class="nav-item nav-category">Layanan</li>
     <li class="nav-item">
         <a href="<?= site_url('layananLabAset') ?>" class="nav-link">
-            <i class="link-icon" data-feather="book"></i>
+            <i class="link-icon" data-feather="list"></i>
             <span class="link-title">Layanan Aset</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="<?= site_url('layananLabNonAset') ?>" class="nav-link">
-            <i class="link-icon" data-feather="archive"></i>
+            <i class="link-icon" data-feather="list"></i>
             <span class="link-title">Layanan Non Aset</span>
         </a>
     </li>
@@ -581,12 +599,6 @@
         </a>
     </li>
     <li class="nav-item nav-category">Layanan</li>
-    <!-- <li class="nav-item">
-            <a href="<?= site_url('perangkatIt') ?>" class="nav-link">
-                <i class="link-icon" data-feather="wifi"></i>
-                <span class="link-title">Perangkat IT</span>
-            </a>
-        </li> -->
     <li class="nav-item">
         <a href="<?= site_url('layananAsetIt') ?>" class="nav-link">
             <i class="link-icon" data-feather="list"></i>

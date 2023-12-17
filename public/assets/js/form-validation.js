@@ -289,6 +289,15 @@ $(document).ready(function () {
       kategoriPeminjam: {
         required: true,
       }, 
+      idNonInventaris: {
+        required: true,
+      }, 
+      idIdentitasLab: {
+        required: true,
+      }, 
+      idKategoriMep: {
+        required: true,
+      }, 
       namaPeminjam: {
         required: true,
       }, 
@@ -573,6 +582,15 @@ $(document).ready(function () {
         required: "Silahkan masukkan keterangan",
       }, 
       kategoriPeminjam: {
+        required: "Silahkan pilih sebuah opsi",
+      }, 
+      idNonInventaris: {
+        required: "Silahkan pilih sebuah opsi",
+      }, 
+      idIdentitasLab: {
+        required: "Silahkan pilih sebuah opsi",
+      }, 
+      idKategoriMep: {
         required: "Silahkan pilih sebuah opsi",
       }, 
       namaPeminjam: {
