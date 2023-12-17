@@ -29,7 +29,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('dataPegawai/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('dataPegawai/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('dataPegawai/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">

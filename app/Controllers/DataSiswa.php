@@ -9,8 +9,6 @@ use App\Models\ManajemenUserModels;
 use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Parsedown;
 
 class DataSiswa extends ResourceController
@@ -22,7 +20,7 @@ class DataSiswa extends ResourceController
         $this->manajemenUserModel = new ManajemenUserModels();
         $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
-        helper(['custom']);
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -138,6 +136,7 @@ class DataSiswa extends ResourceController
 
     public function delete($id = null) {
         $this->dataSiswaModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Data Siswa dengan id $id");
         return redirect()->to(site_url('dataSiswa'));
     }
 
@@ -147,27 +146,8 @@ class DataSiswa extends ResourceController
         return view('master/dataSiswaView/trash', $data);
     } 
 
-    // public function restore($id = null) {
-    //     $this->db = \Config\Database::connect();
-    //     if($id != null) {
-    //         $this->db->table('tblDataSiswa')
-    //             ->set('deleted_at', null, true)
-    //             ->where(['idDataSiswa' => $id])
-    //             ->update();
-    //     } else {
-    //         $this->db->table('tblDataSiswa')
-    //             ->set('deleted_at', null, true)
-    //             ->where('deleted_at is NOT NULL', NULL, FALSE)
-    //             ->update();
-    //         }
-    //     if($this->db->affectedRows() > 0) {
-    //         return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil direstore');
-    //     } 
-    //     return redirect()->to(site_url('dataSiswa/trash'))->with('error', 'Tidak ada data untuk direstore');
-    // } 
-
     public function restore($id = null) {
-        $affectedRows = restoreData('tblDataSiswa', 'idDataSiswa', $id, $this->userActionLogsModel, 'Data Siswa');
+        $affectedRows = restoreData('tblDataSiswa', 'idDataSiswa', $id, $this->userActionLogsModel, 'Master - Data Siswa');
     
         if ($affectedRows > 0) {
             return redirect()->to(site_url('dataSiswa'))->with('success', 'Data berhasil direstore');
@@ -176,9 +156,6 @@ class DataSiswa extends ResourceController
         return redirect()->to(site_url('dataSiswa/trash'))->with('error', 'Tidak ada data untuk direstore');
     }
     
-
-    
-
     public function deletePermanent($id = null) {
         if($id != null) {
             $existingData = $this->dataSiswaModel->withDeleted()->find($id);
@@ -191,7 +168,8 @@ class DataSiswa extends ResourceController
                 if ($idUser !== null) {
                     $this->manajemenUserModel->delete($idUser);
                 }
-    
+                
+                activityLogs($this->userActionLogsModel, "Delete", "Melakukan soft delete data Master - Data Siswa dengan id $id");
                 $this->dataSiswaModel->delete($id, true);
     
                 return redirect()->to(site_url('dataSiswa/trash'))->with('success', 'Data berhasil dihapus permanen');
@@ -203,6 +181,7 @@ class DataSiswa extends ResourceController
         
             if ($countInTrash > 0) {
                 // $this->dataSiswaModel->onlyDeleted()->purgeDeleted();
+                activityLogs($this->userActionLogsModel, "Delete All", "Mengosongkan tempat sampah Master - Data Siswa");
                 $this->dataSiswaModel->purgeDeletedWithUser();
                 return redirect()->to(site_url('dataSiswa/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
             } else {
@@ -254,7 +233,7 @@ class DataSiswa extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - Data Siswa.xlsx');
+        header('Content-Disposition: attachment;filename=Master - Data Siswa.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -372,7 +351,7 @@ class DataSiswa extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - Data Siswa Example.xlsx');
+        header('Content-Disposition: attachment;filename=Master - Data Siswa Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -429,28 +408,26 @@ class DataSiswa extends ResourceController
 
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/dataSiswaView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataSiswa = $this->dataSiswaModel->getAll();
+
+        $title = "MASTER - DATA SISWA";
+        if (!$dataSiswa) {
             return view('error/404');
         }
-
-        $data['dataDataSiswa'] = $this->dataSiswaModel->getAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $data = [
+            'dataSiswa' => $dataSiswa,
+        ];
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Profil - DataSiswa Report.pdf';
-        $dompdf->stream($filename);
+        $pdfData = pdfMasterDataSiswa($dataSiswa, $title);
+    
+        
+        $filename = 'Master - Data Siswa' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }
