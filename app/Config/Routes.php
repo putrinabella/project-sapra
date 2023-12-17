@@ -26,7 +26,7 @@ $routes->post('updateSessionMode', 'Auth::updateSessionMode');
 // -------------------------------------------- End of auth routes -------------------------------------------- //
 
 // Profile User =============================================================================================== //
-$routes->resource('profileUser', ['filter' => 'superAdminFilter']);
+$routes->resource('profileUser', ['filter' => 'isLoggedIn']);
 // End of profile user ======================================================================================== //
 
 // ----------------------------------------------- User logs ----------------------------------------------- //
@@ -728,7 +728,7 @@ $routes->get('dataPengaduanUser', 'UserDataPengaduan::view');
 
 // User - Feedback =============================================================================================== //
 $routes->post('dataFeedbackUser/addFeedback/(:num)', 'UserDataFeedback::addFeedback/$1');
-$routes->get('dataFeedbackUser', 'UserDataFeedback::view');
 $routes->get('dataFeedbackUser/detail/(:num)', 'UserDataFeedback::detail/$1');
 $routes->get('dataFeedbackUser/edit/(:num)', 'UserDataFeedback::edit/$1');
+$routes->get('dataFeedbackUser', 'UserDataFeedback::view');
 // End of user - feedback ======================================================================================== //

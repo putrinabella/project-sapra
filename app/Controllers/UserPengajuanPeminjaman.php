@@ -29,18 +29,35 @@ class UserPengajuanPeminjaman extends ResourceController
 
     public function user()
     {
-        $data = [
-            'dataManajemenAsetPeminjaman' => $this->manajemenAsetPeminjamanModel->getAll(),
-            'dataPrasarana' => $this->prasaranaModel->getRuangan(),
-        ];
+        // Untuk menampilkan pengajuan peminjaman beradasarkan lokasi 
+        // Aset ditampilkan berdasarkan lokasinya
 
-        return view('userView/pengajuanPeminjaman/user', $data);
+        // $data = [
+        //     'dataManajemenAsetPeminjaman' => $this->manajemenAsetPeminjamanModel->getAll(),
+        //     'dataPrasarana' => $this->prasaranaModel->getRuangan(),
+        // ];
+        // return view('userView/pengajuanPeminjaman/user', $data);
+
+        // Untuk menampilkan pengajuan peminjaman general
+        // Semua aset yang tersedia ditampilkan
+
+        $data = [
+            'dataRincianAset' => $this->manajemenAsetPeminjamanModel->getDataLoanGeneral(),
+            'dataSiswa' => $this->identitasKelasModel->findAll(),
+            'dataPrasaranaPrasarana' => $this->manajemenAsetPeminjamanModel->getPrasaranaPrasarana(),
+            'dataSaranaPrasarana' => $this->manajemenAsetPeminjamanModel->getSaranaPrasarana(),
+            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+            'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
+            'namaKelas' => $this->dataSiswaModel->getNamaKelasByUsername(session('username')),
+            'idUser' => $this->dataSiswaModel->getIdByUsername(session('username')),
+        ];
+        return view('userView/pengajuanPeminjaman/index', $data);
     }
     
     public function loanUser($id)
     {
         $data = [
-            'dataRincianPrasaranaAset' => $this->manajemenAsetPeminjamanModel->getDataLoan($id),
+            'dataRincianAset' => $this->manajemenAsetPeminjamanModel->getDataLoan($id),
             'dataSiswa' => $this->identitasKelasModel->findAll(),
             'dataPrasaranaPrasarana' => $this->manajemenAsetPeminjamanModel->getPrasaranaPrasarana(),
             'dataSaranaPrasarana' => $this->manajemenAsetPeminjamanModel->getSaranaPrasarana(),

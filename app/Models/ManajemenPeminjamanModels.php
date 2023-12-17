@@ -318,6 +318,20 @@ class ManajemenPeminjamanModels extends Model
         return $query->getResult();
     }
 
+    function getDataLoanGeneral()
+    {
+        $builder = $this->db->table('tblRincianLabAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianLabAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianLabAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianLabAset.idKategoriManajemen');
+        $builder->join('tblIdentitasLab', 'tblIdentitasLab.idIdentitasLab = tblRincianLabAset.idIdentitasLab');
+        $builder->where('tblRincianLabAset.deleted_at', null);
+        $builder->where('tblRincianLabAset.sectionAset =', 'None');
+        $builder->where('tblRincianLabAset.status =', 'Bagus');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
     function getLabName($idIdentitasLab) {
         $builder = $this->db->table('tblIdentitasLab');
         $builder->where('idIdentitasLab', $idIdentitasLab);

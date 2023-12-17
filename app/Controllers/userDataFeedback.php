@@ -27,7 +27,7 @@ class UserDataFeedback extends ResourceController
         $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
         $dataFeedback = $this->formFeedbackModel->getData($startDate, $endDate, $idUser);
         $feedbackPercentages = $this->formFeedbackModel->getFeedbackPercentages();
-        $averageFeedbackPercentages = $this->formFeedbackModel->getAverageFeedbackPercentages();
+        $averageFeedbackPercentages = $this->formFeedbackModel->getAverageFeedbackPercentagesUser($idUser);
         
         $formattedStartDate = !empty($startDate) ? date('d F Y', strtotime($startDate)) : '';
         $formattedEndDate = !empty($endDate) ? date('d F Y', strtotime($endDate)) : '';

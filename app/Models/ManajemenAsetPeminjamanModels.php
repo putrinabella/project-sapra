@@ -88,6 +88,20 @@ class ManajemenAsetPeminjamanModels extends Model
         return $query->getResult();
     }
 
+    function getDataLoanGeneral()
+    {
+        $builder = $this->db->table('tblRincianAset');
+        $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblSumberDana', 'tblSumberDana.idSumberDana = tblRincianAset.idSumberDana');
+        $builder->join('tblKategoriManajemen', 'tblKategoriManajemen.idKategoriManajemen = tblRincianAset.idKategoriManajemen');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
+        $builder->where('tblRincianAset.deleted_at', null);
+        $builder->where('tblRincianAset.sectionAset =', 'None');
+        $builder->where('tblRincianAset.status =', 'Bagus');
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
     function getPrasaranaName($idIdentitasPrasarana) {
         $builder = $this->db->table('tblIdentitasPrasarana');
         $builder->where('idIdentitasPrasarana', $idIdentitasPrasarana);

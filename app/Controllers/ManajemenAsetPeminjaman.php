@@ -94,8 +94,6 @@ class ManajemenAsetPeminjaman extends ResourceController
         $data = $this->request->getPost();
         $idRincianAset = $_POST['selectedRows'];
         $sectionAsetValue = 'Dipinjam';
-// var_dump($data);
-// die;
         if (!empty($data['asalPeminjam'])) {
             $tmp = $this->manajemenAsetPeminjamanModel->insert($data);
             $idManajemenAsetPeminjaman = $this->db->insertID();

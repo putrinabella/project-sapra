@@ -59,7 +59,11 @@ class UserDataPeminjaman extends ResourceController
                     'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
                     'dataRincianAset' => $dataRincianAset,
                 ];
-                return view('userView/dataPeminjaman/showUser', $data);
+                // Untuk data spesifik per lokasi
+                // return view('userView/dataPeminjaman/showUser', $data);
+
+                // Untuk data general
+                return view('userView/dataPeminjaman/showUserGeneral', $data);
             } else {
                 return view('error/404');
             }
@@ -78,7 +82,11 @@ class UserDataPeminjaman extends ResourceController
                     'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),
                     'dataItemDipinjam' => $dataItemDipinjam,
                 ];
-                return view('userView/dataPeminjaman/userRequestDetail', $data);
+                // Untuk peminjaman spesifik per lokasi
+                // return view('userView/dataPeminjaman/userRequestDetail', $data);
+
+                // Untuk peminjaman general 
+                return view('userView/dataPeminjaman/userRequestGeneral', $data);
             } else {
                 return view('error/404');
             }

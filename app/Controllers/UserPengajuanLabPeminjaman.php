@@ -29,12 +29,30 @@ class UserPengajuanLabPeminjaman extends ResourceController
 
     public function user()
     {
+        // Untuk menampilkan pengajuan peminjaman beradasarkan lokasi 
+        // Aset ditampilkan berdasarkan lokasinya
+
+        // $data = [
+        //     'dataManajemenPeminjaman' => $this->manajemenPeminjamanModel->getAll(),
+        //     'dataLaboratorium' => $this->laboratoriumModel->getRuangan(),
+        // ];
+        // return view('userView/pengajuanPeminjamanLab/user', $data);
+
+        // Untuk menampilkan pengajuan peminjaman general
+        // Semua aset yang tersedia ditampilkan
+
         $data = [
-            'dataManajemenPeminjaman' => $this->manajemenPeminjamanModel->getAll(),
-            'dataLaboratorium' => $this->laboratoriumModel->getRuangan(),
+            'dataRincianLabAset' => $this->manajemenPeminjamanModel->getDataLoanGeneral(),
+            'dataSiswa' => $this->identitasKelasModel->findAll(),
+            'dataPrasaranaLab' => $this->manajemenPeminjamanModel->getPrasaranaLab(),
+            'dataSaranaLab' => $this->manajemenPeminjamanModel->getSaranaLab(),
+            'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
+            'dataIdentitasLab' => $this->identitasLabModel->findAll(),
+            'namaKelas' => $this->dataSiswaModel->getNamaKelasByUsername(session('username')),
+            'idUser' => $this->dataSiswaModel->getIdByUsername(session('username')),
         ];
 
-        return view('userView/pengajuanPeminjamanLab/user', $data);
+        return view('userView/pengajuanPeminjamanLab/index', $data);
     }
     
     public function loanUser($id)

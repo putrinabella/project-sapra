@@ -657,7 +657,6 @@ $(document).ready(function () {
       }, 
     },
     errorPlacement: function (label, element) {
-      // var errorContainer = element.closest('.col-sm-9');
       if (element.closest('.col-sm-9').length > 0) {
           errorContainer = element.closest('.col-sm-9');
       } else if (element.closest('.col-sm-12').length > 0) {
@@ -667,15 +666,6 @@ $(document).ready(function () {
       }
       label.addClass('error mt-1 tx-13 text-danger');
       label.appendTo(errorContainer);
-      // var newRow = $("<div class='row mb-2 error-row'></div>").insertAfter(element.closest(".row"));
-      // var emptyCol = $("<div class='col-sm-3'></div>");
-      // var errorCol = $("<div class='col-sm-9'></div>");
-      // label.addClass("error mt-1 tx-13 text-danger");
-      // label.appendTo(errorCol);
-      // newRow.append(emptyCol).append(errorCol);
-
-      // label.addClass("mt-1 tx-13 text-danger");
-      // label.insertAfter(element);
     },
     highlight: function (element, errorClass) {
       $(element).parent().addClass("validation-error");

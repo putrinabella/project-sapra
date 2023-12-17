@@ -81,6 +81,7 @@ class RequestAsetPeminjamanModels extends Model
         $builder->select('*');
         $builder->join('tblRincianAset', 'tblRincianAset.idRincianAset = tblDetailRequestAsetPeminjaman.idRincianAset');
         $builder->join('tblIdentitasSarana', 'tblIdentitasSarana.idIdentitasSarana = tblRincianAset.idIdentitasSarana');
+        $builder->join('tblIdentitasPrasarana', 'tblIdentitasPrasarana.idIdentitasPrasarana = tblRincianAset.idIdentitasPrasarana');
         $builder->join('tblRequestAsetPeminjaman', 'tblRequestAsetPeminjaman.idRequestAsetPeminjaman = tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman');
         $builder->where('tblDetailRequestAsetPeminjaman.idRequestAsetPeminjaman', $idRequestAsetPeminjaman);
         $query = $builder->get();

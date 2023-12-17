@@ -36,13 +36,6 @@
                                     <input type="text" class="form-control bg-transparent" name="tanggal" id="setTanggal" placeholder="Masukkan tanggal" hidden>
                             </div>
                             <div class="row mb-3">
-                                <label for="namaPrasarana" class="col-sm-3 col-form-label">Lokasi</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control bg-transparent" id="namaPrasarana" name="namaPrasarana"
-                                        value="<?= $namaPrasarana->namaPrasarana; ?>" readonly>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
                                 <label for="asalPeminjam" class="col-sm-3 col-form-label">NIS/NIP</label>
                                 <div class="col-sm-9"> 
                                     <input type="text" class="form-control bg-transparent" id="nisnip" name="nisnip"
@@ -95,6 +88,7 @@
                                             <th style="width: 12%;">Kode Aset</th>
                                             <th>Kategori Aset</th>
                                             <th>Nama Aset</th>
+                                            <th>Lokasi</th>
                                             <th>Merek</th>
                                             <th>Warna</th>
                                         </tr>
@@ -114,6 +108,9 @@
                                             </td>
                                             <td>
                                                 <?= $value->namaSarana ?>
+                                            </td>
+                                            <td>
+                                                <?= $value->namaPrasarana ?>
                                             </td>
                                             <td>
                                                 <?= $value->merk ?>

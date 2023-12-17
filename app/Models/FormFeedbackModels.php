@@ -149,6 +149,37 @@ class FormFeedbackModels extends Model
         return $query->getResult();
     }
 
+    
+    public function getAverageFeedbackPercentagesUser($id) {
+        $builder = $this->db->table('tblDetailFormFeedback');
+        $builder->select('tblDetailFormFeedback.idFormFeedback, SUM(isiFeedback) as totalFeedback, COUNT(*) as feedbackCount');
+        $builder->join('tblFormFeedback', 'tblFormFeedback.idFormFeedback = tblDetailFormFeedback.idFormFeedback');
+        $builder->where('tblDetailFormFeedback.isiFeedback!=', null);
+        $builder->where('tblFormFeedback.idDataSiswa', $id);
+        $builder->groupBy('idFormFeedback');
+        $query = $builder->get();
+    
+        $result = $query->getResult();
+    
+        $points = [];
+    
+        foreach ($result as $row) {
+            $idFormFeedback = $row->idFormFeedback;
+            $totalFeedback = $row->totalFeedback;
+            $feedbackCount = $row->feedbackCount;
+    
+            $mean = ($feedbackCount > 0) ? $totalFeedback / $feedbackCount : 0;
+            $percentage = ($feedbackCount > 0) ? (100 / $feedbackCount) : 0;
+            $point = $mean * $percentage;
+    
+            $points[$idFormFeedback] = (float) $point;
+        }
+    
+        $overallAverage = count($points) > 0 ? array_sum($points) / count($points) : 0;
+    
+        return $overallAverage;
+    }
+
     public function getFeedbackPercentagesUser($id) {
         $builder = $this->db->table('tblDetailFormFeedback');
         $builder->select('idFormFeedback, SUM(isiFeedback) as totalFeedback, COUNT(*) as feedbackCount');
