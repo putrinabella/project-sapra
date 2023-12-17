@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\NonInventarisModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,102 +14,16 @@ use Parsedown;
 class NonInventaris extends ResourceController
 {
     
-     function __construct() {
+    function __construct() {
         $this->nonInventarisModel = new NonInventarisModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
     public function index() {
         $data['dataNonInventaris'] = $this->nonInventarisModel->getAll();
         return view('master/nonInventarisView/index', $data);
     }
-
-    // public function index() {
-    //     $startYear = $this->request->getVar('startYear');
-    //     $endYear = $this->request->getVar('endYear');
-    
-    //     $formattedStartYear = !empty($startYear) ? $startYear : '';
-    //     $formattedEndYear = !empty($endYear) ? $endYear : '';
-    
-    //     $tableHeading = "";
-    //     if (!empty($formattedStartYear) && !empty($formattedEndYear)) {
-    //         $tableHeading = "Tahun $formattedStartYear - $formattedEndYear";
-    //     }
-    
-    //     $data['tableHeading'] = $tableHeading;
-
-    //     $dataNonInventaris = $this->nonInventarisModel->getData($startYear, $endYear);
-        
-    //     foreach ($dataNonInventaris as $value) {
-    //         $value->bulanPemakaianAir = $this->nonInventarisModel->convertMonth($value->bulanPemakaianAir);
-    //     }
-        
-    //     $data['dataNonInventaris'] = $dataNonInventaris;
-    
-    //     $chartDataResult = $dataNonInventaris; 
-    //     $chartBiaya = $this->chartBiaya($chartDataResult);
-    //     $chartPemakaian = $this->chartPemakaian($chartDataResult);
-    
-    //     $data = array_merge($data, $chartBiaya, $chartPemakaian);
-    
-    //     return view('master/nonInventarisView/index', $data);
-    // }
-    
-    private function chartBiaya($chartDataResult) {
-        $chartBiaya = [
-            'categories' => [],
-            'biaya' => [],
-        ];
-    
-        if ($chartDataResult) {
-            foreach ($chartDataResult as $row) {
-                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
-                $chartBiaya['categories'][] = $category;
-                $chartBiaya['biaya'][] = (int) $row->biaya;
-            }
-        }
-        return $chartBiaya;
-    }
-
-    private function chartPemakaian($chartDataResult) {
-        $chartPemakaian = [
-            'categories' => [],
-            'pemakaianAir' => [],
-        ];
-    
-        if ($chartDataResult) {
-            foreach ($chartDataResult as $row) {
-                $category = $row->bulanPemakaianAir . ' (' . $row->tahunPemakaianAir . ')';
-                $chartPemakaian['categories'][] = $category;
-                $chartPemakaian['pemakaianAir'][] = $row->pemakaianAir;
-            }
-        }
-        return $chartPemakaian;
-    }
-    
-        // public function index() {
-    //     $startYear = $this->request->getVar('startYear');
-    //     $endYear = $this->request->getVar('endYear');
-        
-    //     $formattedStartYear = !empty($startYear) ? $startYear : '';
-    //     $formattedEndYear = !empty($endYear) ? $endYear : '';
-        
-    //     $tableHeading = "";
-    //     if (!empty($formattedStartYear) && !empty($formattedEndYear)) {
-    //         $tableHeading = "Tahun $formattedStartYear - $formattedEndYear";
-    //     }
-    
-    //     $data['tableHeading'] = $tableHeading;
-    //     $data['dataNonInventaris'] = $this->nonInventarisModel->getData($startYear, $endYear);
-    
-    //     $chartDataResult = $this->nonInventarisModel->getData($startYear, $endYear);
-    //     $chartData = $this->chartPemakaian($chartDataResult);
-    
-    //     $data = array_merge($data, $chartData);
-    
-    //     return view('master/nonInventarisView/index', $data);
-    // }
-    
-
     
     public function show($id = null) {
         if ($id != null) {
@@ -189,6 +104,7 @@ class NonInventaris extends ResourceController
 
     public function delete($id = null) {
         $this->nonInventarisModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Non Inventaris dengan id $id");
         return redirect()->to(site_url('nonInventaris'));
     }
 
@@ -198,39 +114,24 @@ class NonInventaris extends ResourceController
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblNonInventaris')
-                ->set('deleted_at', null, true)
-                ->where(['idNonInventaris' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblNonInventaris')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblNonInventaris', 'idNonInventaris', $id, $this->userActionLogsModel, 'Master - Non Inventaris');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('nonInventaris'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('nonInventaris/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->nonInventarisModel->delete($id, true);
-        return redirect()->to(site_url('nonInventaris/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->nonInventarisModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->nonInventarisModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('nonInventaris/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('nonInventaris/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    } 
+        $affectedRows = deleteData('tblNonInventaris', 'idNonInventaris', $id, $this->userActionLogsModel, 'Master - Non Inventaris');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('nonInventaris'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('nonInventaris/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    }
     
     public function export() {
         $startYear = $this->request->getVar('startYear');

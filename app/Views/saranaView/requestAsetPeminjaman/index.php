@@ -16,13 +16,13 @@
     <div>
         <form action="<?= site_url('requestAsetPeminjaman') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
-                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date"
+                <input type="text" class="form-control border-primary" id="startDate" name="startDate" placeholder="Start Date"
                     readonly>
-                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
-                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" readonly>
-                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+                <input type="text" class="form-control border-primary" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary btn-icon me-1">

@@ -67,28 +67,28 @@
                             <div class="row mb-3">
                                 <label for="namaPeminjam" class="col-sm-3 col-form-label">Nama Peminjam</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control bg-transparent" id="namaPeminjam"
+                                    <input type="text" class="form-control" id="namaPeminjam"
                                         name="namaPeminjam" placeholder="Nama peminjam" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="kelasJabatan" class="col-sm-3 col-form-label">Kelas/Jabatan</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control bg-transparent" id="kelasJabatan"
+                                    <input type="text" class="form-control" id="kelasJabatan"
                                         name="kelasJabatan" placeholder="Kelas atau jabatan" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="keperluanAlat" class="col-sm-3 col-form-label">Keperluan Alat</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control bg-transparent" id="keperluanAlat"
+                                    <input type="text" class="form-control" id="keperluanAlat"
                                         name="keperluanAlat" placeholder="Masukkan keperluan alat">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="lamaPinjam" class="col-sm-3 col-form-label">Lama Peminjaman</label>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control bg-transparent" id="lamaPinjam"
+                                    <input type="number" class="form-control" id="lamaPinjam"
                                         name="lamaPinjam" placeholder="Masukkan lama pinjam (Hari)">
                                 </div>
                             </div>

@@ -126,6 +126,7 @@ class DataNonInventaris extends ResourceController
 
     public function delete($id = null) {
         $this->dataNonInventarisModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Sarana - Non Inventaris dengan id $id");
         return redirect()->to(site_url('dataNonInventaris'));
     }
 

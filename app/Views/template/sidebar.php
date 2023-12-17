@@ -460,7 +460,7 @@
     <?php } ?>
 
     <?php if (session()->get('role') == 'Admin Sarpra') { ?>
-    <li class="nav-item nav-category">Sarana</li>
+        <li class="nav-item nav-category">Sarana</li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#dataAsetUmum" role="button" aria-expanded="false"
             aria-controls="dataAsetUmum">
@@ -483,10 +483,25 @@
         </div>
     </li>
     <li class="nav-item">
-        <a href="<?= site_url('dataNonInventaris') ?>" class="nav-link">
-            <i class="link-icon" data-feather="inbox"></i>
-            <span class="link-title">Non Inventaris</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#saranaManajemenPeminjaman" role="button"
+            aria-expanded="false" aria-controls="saranaManajemenPeminjaman">
+            <i class="link-icon" data-feather="user-check"></i>
+            <span class="link-title">Peminjaman</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
+        <div class="collapse" id="saranaManajemenPeminjaman">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('requestAsetPeminjaman') ?>" class="nav-link">Request Peminjaman </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('dataAsetPeminjaman') ?>" class="nav-link">Data Peminjaman </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('manajemenAsetPeminjaman') ?>" class="nav-link">Pengajuan Peminjaman</a>
+                </li>
+            </ul>
+        </div>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#layananSaranaUmum" role="button" aria-expanded="false"
@@ -505,6 +520,30 @@
                 </li>
             </ul>
         </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#pengaduanuserpengaduan" role="button" aria-expanded="false"
+            aria-controls="pengaduanuserpengaduan">
+            <i class="link-icon" data-feather="file-text"></i>
+            <span class="link-title">Pengaduan</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="pengaduanuserpengaduan">
+            <ul class="nav sub-menu">
+                <li class="nav-item">
+                    <a href="<?= site_url('arsipPengaduan') ?>" class="nav-link">Data Pengaduan</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('arsipFeedback') ?>" class="nav-link">Data Umpan Balik </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="<?= site_url('dataNonInventaris') ?>" class="nav-link">
+            <i class="link-icon" data-feather="inbox"></i>
+            <span class="link-title">Non Inventaris</span>
+        </a>
     </li>
     <li class="nav-item nav-category">Prasarana</li>
     <li class="nav-item">

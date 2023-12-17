@@ -261,14 +261,13 @@ $routes->get('asetGeneral/dataAset/(:num)', 'AsetGeneral::info/$1');
 $routes->get('asetGeneral/(:num)', 'AsetGeneral::show/$1');
 $routes->get('asetGeneral/generatePDF', 'AsetGeneral::GeneratePDF');
 $routes->get('asetGeneral/export', 'AsetGeneral::Export');
-$routes->get('asetGeneral', 'AsetGeneral::view');
+$routes->get('asetGeneral', 'AsetGeneral::view', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of data general aset -------------------------------------------- //
 
 // ----------------------------------------------- Data rincian aset ----------------------------------------------- //
 $routes->get('generateQRDoc', 'RincianAset::generateQRDoc');
 $routes->add('generateSelectedQR/(:any)', 'RincianAset::generateSelectedQR/$1');
 $routes->get('rincianAset/createTemplate', 'RincianAset::createTemplate');
-// $routes->get('rincianAset/print/(:num)', 'RincianAset::print/$1');
 $routes->get('rincianAset/generatePDF', 'RincianAset::generatePDF');
 $routes->get('rincianAset/export', 'RincianAset::export');
 $routes->get('rincianAset/edit', 'RincianAset::edit');
@@ -283,7 +282,7 @@ $routes->post('rincianAset/checkDuplicate', 'RincianAset::checkDuplicate');
 $routes->post('rincianAset/(:any)/updateCheckDuplicate', 'RincianAset::checkDuplicate');
 $routes->delete('rincianAset/deletePermanent/(:any)', 'RincianAset::deletePermanent/$1');
 $routes->delete('rincianAset/deletePermanent', 'RincianAset::deletePermanent');
-$routes->resource('rincianAset', ['filter' => 'isLoggedIn']);
+$routes->resource('rincianAset', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of data rincian aset -------------------------------------------- //
 
 // ----------------------------------------------- Pemusnahan Aset ----------------------------------------------- //
@@ -291,7 +290,7 @@ $routes->get('pemusnahanAset/print/(:any)', 'PemusnahanAset::print/$1');
 $routes->get('pemusnahanAset/generatePDF', 'PemusnahanAset::generatePDF');
 $routes->get('pemusnahanAset/export', 'PemusnahanAset::export');
 $routes->post('pemusnahanAset/destruction/(:any)', 'PemusnahanAset::destruction/$1');
-$routes->resource('pemusnahanAset', ['filter' => 'isLoggedIn']);
+$routes->resource('pemusnahanAset', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of pemusnahan -------------------------------------------- //
 // End of sarana - manajemen aset ======================================================================================== //
 
@@ -301,7 +300,7 @@ $routes->get('requestAsetPeminjaman/generatePDF', 'RequestAsetPeminjaman::genera
 $routes->get('requestAsetPeminjaman/export', 'RequestAsetPeminjaman::export');
 $routes->get('requestAsetPeminjaman/rejectLoan/(:any)', 'RequestAsetPeminjaman::rejectLoan/$1');
 $routes->post('requestAsetPeminjaman/processLoan', 'RequestAsetPeminjaman::processLoan');
-$routes->resource('requestAsetPeminjaman', ['filter' => 'isLoggedIn']);
+$routes->resource('requestAsetPeminjaman', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of request peminjaman -------------------------------------------- //
 
 // ----------------------------------------------- Data peminjaman ----------------------------------------------- //
@@ -316,7 +315,7 @@ $routes->get('dataAsetPeminjaman/history/(:any)', 'DataAsetPeminjaman::getLoanHi
 $routes->post('dataAsetPeminjaman/revokeLoan/(:any)', 'DataAsetPeminjaman::revokeLoan/$1');
 $routes->delete('dataAsetPeminjaman/deletePermanent/(:any)', 'DataAsetPeminjaman::deletePermanent/$1');
 $routes->delete('dataAsetPeminjaman/deletePermanent', 'DataAsetPeminjaman::deletePermanent');
-$routes->resource('dataAsetPeminjaman', ['filter' => 'laboranFilter']);
+$routes->resource('dataAsetPeminjaman', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of data peminjaman -------------------------------------------- //
 
 // ----------------------------------------------- Manajemen peminjaman ----------------------------------------------- //
@@ -324,7 +323,7 @@ $routes->get('manajemenAsetPeminjaman/loan/(:num)', 'ManajemenAsetPeminjaman::lo
 $routes->post('manajemenAsetPeminjaman/getNama', 'ManajemenAsetPeminjaman::getNama');
 $routes->post('manajemenAsetPeminjaman/addLoan', 'ManajemenAsetPeminjaman::addLoan');
 $routes->post('manajemenAsetPeminjaman/getRole', 'ManajemenAsetPeminjaman::getRole');
-$routes->resource('manajemenAsetPeminjaman', ['filter' => 'isLoggedIn']);
+$routes->resource('manajemenAsetPeminjaman', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of manajemen peminjaman -------------------------------------------- //
 // End of sarana - peminjaman ======================================================================================== //
 
@@ -339,16 +338,16 @@ $routes->get('dataNonInventaris/restore/(:any)', 'DataNonInventaris::restore/$1'
 $routes->get('dataNonInventaris/restore', 'DataNonInventaris::restore');
 $routes->delete('dataNonInventaris/deletePermanent/(:any)', 'DataNonInventaris::deletePermanent/$1');
 $routes->delete('dataNonInventaris/deletePermanent', 'DataNonInventaris::deletePermanent');
-$routes->resource('dataNonInventaris', ['filter' => 'isLoggedIn']);
+$routes->resource('dataNonInventaris', ['filter' => 'adminSarpraFilter']);
 // End of sarana - non inventaris ======================================================================================== //
 
 // Sarana - Pengaduan =============================================================================================== //
 // ----------------------------------------------- Data Pengaduan ----------------------------------------------- //
-$routes->resource('arsipPengaduan', ['filter' => 'isLoggedIn']);
+$routes->resource('arsipPengaduan', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of data pengaduan -------------------------------------------- //
 
 // ----------------------------------------------- Data Feedback ----------------------------------------------- //
-$routes->resource('arsipFeedback', ['filter' => 'isLoggedIn']);
+$routes->resource('arsipFeedback', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of data feedback -------------------------------------------- //
 // End of sarana - pengaduan ======================================================================================== //
 
@@ -368,7 +367,7 @@ $routes->get('saranaLayananAset/restore/(:any)', 'SaranaLayananAset::restore/$1'
 $routes->get('saranaLayananAset/restore', 'SaranaLayananAset::restore');
 $routes->delete('saranaLayananAset/deletePermanent/(:any)', 'SaranaLayananAset::deletePermanent/$1');
 $routes->delete('saranaLayananAset/deletePermanent', 'SaranaLayananAset::deletePermanent');
-$routes->resource('saranaLayananAset', ['filter' => 'isLoggedIn']);
+$routes->resource('saranaLayananAset', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of layanan aset -------------------------------------------- //
 
 // ----------------------------------------------- Layanan non aset ----------------------------------------------- //
@@ -382,7 +381,7 @@ $routes->get('saranaLayananNonAset/restore/(:any)', 'SaranaLayananNonAset::resto
 $routes->get('saranaLayananNonAset/restore', 'SaranaLayananNonAset::restore');
 $routes->delete('saranaLayananNonAset/deletePermanent/(:any)', 'SaranaLayananNonAset::deletePermanent/$1');
 $routes->delete('saranaLayananNonAset/deletePermanent', 'SaranaLayananNonAset::deletePermanent');
-$routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
+$routes->resource('saranaLayananNonAset', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of layanan non aset -------------------------------------------- //
 // End of sarana - layanan aset ======================================================================================== //
 
@@ -391,14 +390,14 @@ $routes->resource('saranaLayananNonAset', ['filter' => 'isLoggedIn']);
 $routes->post('prasaranaRuangan/search', 'PrasaranaRuangan::search');
 $routes->get('prasaranaRuangan/print/(:num)', 'PrasaranaRuangan::print/$1');
 $routes->get('prasaranaRuangan/showInfo/(:num)', 'PrasaranaRuangan::showInfo/$1');
-$routes->resource('prasaranaRuangan', ['filter' => 'isLoggedIn']);
+$routes->resource('prasaranaRuangan', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of ruangan -------------------------------------------- //
 
 // ----------------------------------------------- Non Ruangan ----------------------------------------------- //
 $routes->post('prasaranaNonRuangan/search', 'PrasaranaNonRuangan::search');
 $routes->get('prasaranaNonRuangan/print/(:num)', 'PrasaranaNonRuangan::print/$1');
 $routes->get('prasaranaNonRuangan/showInfo/(:num)', 'PrasaranaNonRuangan::showInfo/$1');
-$routes->resource('prasaranaNonRuangan', ['filter' => 'isLoggedIn']);
+$routes->resource('prasaranaNonRuangan', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of non ruangan -------------------------------------------- //
 // End of prasarana ======================================================================================== //
 

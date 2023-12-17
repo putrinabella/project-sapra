@@ -236,6 +236,7 @@ class RincianAset extends ResourceController
 
     public function delete($id = null) {
         $this->rincianAsetModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Sarana - Rincian Aset dengan id $id");
         return redirect()->to(site_url('rincianAset'));
     }
 

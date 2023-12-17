@@ -16,16 +16,13 @@
     <div>
         <form action="<?= site_url('dataNonInventaris') ?>" class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startDatePicker">
-                <span class="input-group-text input-group-addon bg-transparent border-primary"><i
-                        data-feather="calendar" class=" text-primary"></i></span>
-                <input type="text" class="form-control border-primary bg-transparent" id="startDate" name="startDate"
-                    placeholder="Start Date" readonly>
+                <input type="text" class="form-control border-primary" id="startDate" name="startDate" placeholder="Start Date"
+                    readonly>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endDatePicker">
-                <span class="input-group-text input-group-addon bg-transparent border-primary"><i
-                        data-feather="calendar" class=" text-primary"></i></span>
-                <input type="text" class="form-control border-primary bg-transparent" id="endDate" name="endDate"
-                    placeholder="End Date" readonly>
+                <input type="text" class="form-control border-primary" id="endDate" name="endDate" placeholder="End Date" readonly>
+                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary btn-icon me-1">
@@ -160,7 +157,6 @@
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
                                     <form action="<?=site_url('dataNonInventaris/'.$value->idDataNonInventaris)?>"
                                         method="post" class="d-inline" id="del-<?= $value->idDataNonInventaris;?>">
-                                        
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="btn btn-danger btn-icon"
                                             data-confirm="Apakah anda yakin menghapus data ini?">

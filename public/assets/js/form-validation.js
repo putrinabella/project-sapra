@@ -286,6 +286,21 @@ $(document).ready(function () {
       keterangan: {
         required: true,
       }, 
+      kategoriPeminjam: {
+        required: true,
+      }, 
+      namaPeminjam: {
+        required: true,
+      }, 
+      kelasJabatan: {
+        required: true,
+      }, 
+      keperluanAlat: {
+        required: true,
+      }, 
+      lamaPinjam: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -556,6 +571,21 @@ $(document).ready(function () {
       }, 
       keterangan: {
         required: "Silahkan masukkan keterangan",
+      }, 
+      kategoriPeminjam: {
+        required: "Silahkan pilih sebuah opsi",
+      }, 
+      namaPeminjam: {
+        required: "Silahkan masukkan nama peminjam",
+      }, 
+      kelasJabatan: {
+        required: "Silahkan masukkan karyawan/kelas",
+      }, 
+      keperluanAlat: {
+        required: "Silahkan masukkan keperluan alat",
+      }, 
+      lamaPinjam: {
+        required: "Silahkan masukkan lama peminjaman (dalam hari)",
       }, 
     },
     errorPlacement: function (label, element) {
