@@ -37,6 +37,27 @@ class FormPengaduanModels extends Model
         return $query->getResult();
     }
 
+    function getPengaduan($startDate = null, $endDate = null) {
+        $builder = $this->db->table('tblFormPengaduan');
+        $builder->join('tblDetailFormPengaduan', 'tblDetailFormPengaduan.idFormPengaduan = tblFormPengaduan.idFormPengaduan');
+        $builder->join('tblPertanyaanPengaduan', 'tblPertanyaanPengaduan.idPertanyaanPengaduan = tblDetailFormPengaduan.idPertanyaanPengaduan');  
+        $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblFormPengaduan.idDataSiswa');
+        $builder->where('tblFormPengaduan.deleted_at', null);
+        $builder->orderBy("CASE 
+                    WHEN tblFormPengaduan.statusPengaduan = 'needFeedback' THEN 1
+                    WHEN tblFormPengaduan.statusPengaduan = 'request' THEN 2
+                    WHEN tblFormPengaduan.statusPengaduan = 'process' THEN 3
+                    WHEN tblFormPengaduan.statusPengaduan = 'done' THEN 4
+                    ELSE 5 END", 'asc');     
+        $builder->orderBy('tblFormPengaduan.tanggal', 'asc');
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblFormPengaduan.tanggal >=', $startDate);
+            $builder->where('tblFormPengaduan.tanggal <=', $endDate);
+        }
+        $query = $builder->get();
+        return $query->getResult();
+    }
+
     function getIdentitas($id = null) {
         $builder = $this->db->table('tblFormPengaduan');
         $builder->join('tblDataSiswa', 'tblDataSiswa.idDataSiswa = tblFormPengaduan.idDataSiswa');

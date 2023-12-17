@@ -16,6 +16,7 @@ class FormFeedbackModels extends Model
     // Models for admin view =============================================================================================== //
     function getAll($startDate = null, $endDate = null) {
         $builder = $this->db->table('tblFormFeedback');
+        $builder->select('tblFormFeedback.*, tblFormPengaduan.idFormPengaduan, tblFormPengaduan.kodeFormPengaduan, tblDetailFormFeedback.*, tblPertanyaanFeedback.*, tblDataSiswa.*, tblIdentitasKelas.*');
         $builder->join('tblDetailFormFeedback', 'tblDetailFormFeedback.idFormFeedback = tblFormFeedback.idFormFeedback');
         $builder->join('tblFormPengaduan', 'tblFormPengaduan.idFormPengaduan = tblFormFeedback.idFormPengaduan');
         $builder->join('tblPertanyaanFeedback', 'tblPertanyaanFeedback.idPertanyaanFeedback = tblDetailFormFeedback.idPertanyaanFeedback');  
@@ -74,10 +75,15 @@ class FormFeedbackModels extends Model
         return $points;
     }
 
-    public function getAverageFeedbackPercentages() {
+    public function getAverageFeedbackPercentages($startDate = null, $endDate = null) {
         $builder = $this->db->table('tblDetailFormFeedback');
-        $builder->select('idFormFeedback, SUM(isiFeedback) as totalFeedback, COUNT(*) as feedbackCount');
+        $builder->select('tblDetailFormFeedback.idFormFeedback, SUM(isiFeedback) as totalFeedback, COUNT(*) as feedbackCount');
+        $builder->join('tblFormFeedback', 'tblFormFeedback.idFormFeedback = tblDetailFormFeedback.idFormFeedback');
         $builder->where('tblDetailFormFeedback.isiFeedback!=', null);
+        if ($startDate !== null && $endDate !== null) {
+            $builder->where('tblFormFeedback.tanggal >=', $startDate);
+            $builder->where('tblFormFeedback.tanggal <=', $endDate);
+        }
         $builder->groupBy('idFormFeedback');
         $query = $builder->get();
     
@@ -108,6 +114,7 @@ class FormFeedbackModels extends Model
     // Models for user view =============================================================================================== //
     function getData($startDate = null, $endDate = null, $idUser) {
         $builder = $this->db->table('tblFormFeedback');
+        $builder->select('tblFormFeedback.*, tblFormPengaduan.idFormPengaduan, tblFormPengaduan.kodeFormPengaduan, tblDetailFormFeedback.*, tblPertanyaanFeedback.*, tblDataSiswa.*, tblIdentitasKelas.*');
         $builder->join('tblDetailFormFeedback', 'tblDetailFormFeedback.idFormFeedback = tblFormFeedback.idFormFeedback');
         $builder->join('tblFormPengaduan', 'tblFormPengaduan.idFormPengaduan = tblFormFeedback.idFormPengaduan');
         $builder->join('tblPertanyaanFeedback', 'tblPertanyaanFeedback.idPertanyaanFeedback = tblDetailFormFeedback.idPertanyaanFeedback');  

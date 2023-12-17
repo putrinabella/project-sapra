@@ -343,10 +343,12 @@ $routes->resource('dataNonInventaris', ['filter' => 'adminSarpraFilter']);
 
 // Sarana - Pengaduan =============================================================================================== //
 // ----------------------------------------------- Data Pengaduan ----------------------------------------------- //
+$routes->get('arsipPengaduan/generatePDF', 'ArsipPengaduan::generatePDF');
 $routes->resource('arsipPengaduan', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of data pengaduan -------------------------------------------- //
 
 // ----------------------------------------------- Data Feedback ----------------------------------------------- //
+$routes->get('arsipFeedback/generatePDF', 'ArsipFeedback::generatePDF');
 $routes->resource('arsipFeedback', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of data feedback -------------------------------------------- //
 // End of sarana - pengaduan ======================================================================================== //

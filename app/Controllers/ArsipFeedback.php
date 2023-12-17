@@ -40,7 +40,7 @@ class ArsipFeedback extends ResourceController
             'tableHeading' => $tableHeading,
             'dataFeedback' => $this->formFeedbackModel->getAll($startDate, $endDate, $idUser),
             'feedbackPercentages' => $this->formFeedbackModel->getFeedbackPercentages(),
-            'averageFeedbackPercentages' => $this->formFeedbackModel->getAverageFeedbackPercentages(),
+            'averageFeedbackPercentages' => $this->formFeedbackModel->getAverageFeedbackPercentages($startDate, $endDate),
         ];
         return view('saranaView/dataFeedback/view', $data);
     }
@@ -120,5 +120,30 @@ class ArsipFeedback extends ResourceController
         } else {
             return view('error/404');
         }
+    }
+
+    public function generatePDF() {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
+        $dataFeedback = $this->formFeedbackModel->getAll($startDate, $endDate, $idUser);
+        $feedbackPercentages = $this->formFeedbackModel->getFeedbackPercentages();
+        $averageFeedbackPercentages = $this->formFeedbackModel->getAverageFeedbackPercentages($startDate, $endDate);
+        $title = "DATA FEEDBACK";
+        if (!$dataFeedback) {
+            return view('error/404');
+        }    
+    
+        $pdfData = pdfFeedback($dataFeedback, $feedbackPercentages, $averageFeedbackPercentages, $title, $startDate, $endDate);
+    
+        
+        $filename = 'Pengaduan - Feedback' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }

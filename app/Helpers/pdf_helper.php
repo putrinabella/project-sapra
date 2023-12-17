@@ -4011,6 +4011,371 @@ if (!function_exists('pdfMasterIdentitasPrasarana')) {
     }
 }
 
+if (!function_exists('pdfMasterIdentitasLab')) {
+    function pdfMasterIdentitasLab($data, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Master - Identitas Laboratorium');
+        $pdf->SetSubject('Master - Identitas Laboratorium');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 90%;"><b>Identitas Laboratorium</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 90%; text-align: left;">' . 
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 20%;">Kode</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 75%;">' . $value->kodeLab . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Nama</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaLab . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Gedung</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaGedung . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Lantai</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaLantai . '</td>' .
+                        '</tr>' .
+                    '</table>' 
+            . '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdfFeedback')) {
+    function pdfFeedback($data,  $feedbackPercentages, $averageFeedbackPercentages, $title, $startDate, $endDate) {
+        usort($data, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Pengaduan - Umpan Balik');
+        $pdf->SetSubject('Pengaduan - Umpan Balik');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        // Include date range only when both $startDate and $endDate are not null
+        if ($startDateFormatted !== '' && $endDateFormatted !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+        
+        $formattedaverageFeedbackPercentages = number_format($averageFeedbackPercentages, 2);
+        $html .= <<<EOD
+        <h3>Rata-rata: $formattedaverageFeedbackPercentages % </h3> 
+
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 70%;"><b>Identitas</b></th>
+                    <th style="width: 20%;"><b>Umpan Balik</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $tanggalFormatted = $dayNamesIndonesian[date('w', strtotime($value->tanggal))] . ', ' . date('j', strtotime($value->tanggal)) . ' ' . $monthNamesIndonesian[date('n', strtotime($value->tanggal))] . ' ' . date('Y', strtotime($value->tanggal));
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 70%; text-align: left;">' . 
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 30%;">Tanggal</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 75%;">' . $tanggalFormatted . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Kode Pengaduan</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->kodeFormPengaduan . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>NIS/NIK</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->nis . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Nama</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaSiswa . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Kelas/Karyawan</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaKelas . '</td>' .
+                        '</tr>' .
+                    '</table>' 
+            . '</td>';
+            // Check if the corresponding key exists in the feedbackPercentages array
+            $feedbackKey = $value->idFormFeedback;
+            if (isset($feedbackPercentages[$feedbackKey])) {
+                $formattedPercentage = number_format($feedbackPercentages[$feedbackKey], 2);
+                $html .= '<td style="width: 20%; text-align: center;">' . $formattedPercentage . '%'. '</td>';
+            } else {
+                $html .= '<td style="width: 20%; text-align: center;">N/A</td>'; 
+            }
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdfPengaduan')) {
+    function pdfPengaduan($data, $pengaduan, $title, $startDate, $endDate) {
+        usort($data, function($a, $b) {
+            return strtotime($a->tanggal) - strtotime($b->tanggal);
+        });
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Pengaduan - Umpan Balik');
+        $pdf->SetSubject('Pengaduan - Umpan Balik');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        
+        $monthNamesIndonesian = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        $dayNamesIndonesian = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+        $dateRange = '';
+
+        if ($startDate !== null && $endDate !== null) {
+            $startDateFormatted .= date('j', strtotime($startDate));
+            $startDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($startDate))];
+            $startDateFormatted .= ' ' . date('Y', strtotime($startDate));
+
+            $endDateFormatted .= date('j', strtotime($endDate));
+            $endDateFormatted .= ' ' . $monthNamesIndonesian[date('n', strtotime($endDate))];
+            $endDateFormatted .= ' ' . date('Y', strtotime($endDate));
+
+            $dateRange = ' - ';
+        }
+    
+        $html = <<<EOD
+
+        
+        <h3 style="text-align: center;"> $title</h3>
+        EOD;
+        
+        // Include date range only when both $startDate and $endDate are not null
+        if ($startDateFormatted !== '' && $endDateFormatted !== '') {
+            $html .= '<h4 style="text-align: center;">' . $startDateFormatted . $dateRange . $endDateFormatted . '</h4>';
+        }
+        $html .= <<<EOD
+
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 60%;"><b>Identitas</b></th>
+                    <th style="width: 30%;"><b>Pengaduan</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $tanggalFormatted = $dayNamesIndonesian[date('w', strtotime($value->tanggal))] . ', ' . date('j', strtotime($value->tanggal)) . ' ' . $monthNamesIndonesian[date('n', strtotime($value->tanggal))] . ' ' . date('Y', strtotime($value->tanggal));
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 60%; text-align: left;">' . 
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 30%;">Tanggal</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 75%;">' . $tanggalFormatted . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Kode Pengaduan</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->kodeFormPengaduan . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>NIS/NIK</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->nis . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Nama</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaSiswa . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Kelas/Karyawan</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->namaKelas . '</td>' .
+                        '</tr>' .
+                    '</table>' 
+                . '</td>';
+        $html .= '</tr>';
+    }
+    
+    
+    $html .= <<<EOD
+
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
 
 // Not use 
 if (!function_exists('pdfDetailPemusnahanAset')) {
@@ -4050,7 +4415,7 @@ if (!function_exists('pdfDetailPemusnahanAset')) {
         $dayNamesIndonesian = [
             'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
         ];
-        $tanggalFormatted = number_format($data->hargaBeli, 0, ',', '.');
+        $hargaFormatted = number_format($data->hargaBeli, 0, ',', '.');
         
         $imageUrl = generateFileId($data->bukti);
         $html = <<<EOD
@@ -4102,7 +4467,7 @@ if (!function_exists('pdfDetailPemusnahanAset')) {
             <tr>
                 <th style="width: 30%;">Harga Beli</th>
                 <th style="width: 5%;">:</th>
-                <th style="width: 65%;">Rp$tanggalFormatted</th>
+                <th style="width: 65%;">Rp$hargaFormatted</th>
             </tr>
             <tr>
                 <th><img src="$imageUrl" style="max-width: 800px; height: auto;" alt="Bukti"></th>

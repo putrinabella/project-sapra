@@ -119,4 +119,30 @@ class ArsipPengaduan extends ResourceController
             return view('error/404');
         }
     }
+
+    public function generatePDF() {
+        $startDate = $this->request->getVar('startDate');
+        $endDate = $this->request->getVar('endDate');
+
+        $idUser = $this->dataSiswaModel->getIdByUsername(session('username'));
+        $dataPengaduan = $this->formPengaduanModel->getAll($startDate, $endDate, $idUser);
+        $pengaduan = $this->formPengaduanModel->getPengaduan($startDate, $endDate, $idUser);
+        // var_dump($pengaduan);
+        // die;
+        $title = "DATA PENGADUAN";
+        if (!$dataPengaduan) {
+            return view('error/404');
+        }    
+    
+        $pdfData = pdfPengaduan($dataPengaduan, $pengaduan, $title, $startDate, $endDate);
+    
+        
+        $filename = 'Pengaduan - Data Pengaduan' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
 }
