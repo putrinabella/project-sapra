@@ -26,7 +26,7 @@ $routes->post('updateSessionMode', 'Auth::updateSessionMode');
 // -------------------------------------------- End of auth routes -------------------------------------------- //
 
 // Profile User =============================================================================================== //
-$routes->resource('profileUser', ['filter' => 'isLoggedIn']);
+$routes->resource('profileUser', ['filter' => 'superAdminFilter']);
 // End of profile user ======================================================================================== //
 
 // ----------------------------------------------- User logs ----------------------------------------------- //
@@ -75,7 +75,7 @@ $routes->get('identitasSarana/restore/(:any)', 'IdentitasSarana::restore/$1');
 $routes->get('identitasSarana/restore', 'IdentitasSarana::restore');
 $routes->delete('identitasSarana/deletePermanent/(:any)', 'IdentitasSarana::deletePermanent/$1');
 $routes->delete('identitasSarana/deletePermanent', 'IdentitasSarana::deletePermanent');
-$routes->presenter('identitasSarana', ['filter' => 'isLoggedIn']);
+$routes->presenter('identitasSarana', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of identitas sarana -------------------------------------------- //
 
 // ----------------------------------------------- Identitas prasarana ----------------------------------------------- //
@@ -89,7 +89,7 @@ $routes->get('identitasPrasarana/restore/(:any)', 'IdentitasPrasarana::restore/$
 $routes->get('identitasPrasarana/restore', 'IdentitasPrasarana::restore');
 $routes->delete('identitasPrasarana/deletePermanent/(:any)', 'IdentitasPrasarana::deletePermanent/$1');
 $routes->delete('identitasPrasarana/deletePermanent', 'IdentitasPrasarana::deletePermanent');
-$routes->resource('identitasPrasarana', ['filter' => 'isLoggedIn']);
+$routes->resource('identitasPrasarana', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of identitas prasarana -------------------------------------------- //
 
 // ----------------------------------------------- Identitas laboratorium ----------------------------------------------- //
@@ -103,7 +103,7 @@ $routes->get('identitasLab/restore/(:any)', 'IdentitasLab::restore/$1');
 $routes->get('identitasLab/restore', 'IdentitasLab::restore');
 $routes->delete('identitasLab/deletePermanent/(:any)', 'IdentitasLab::deletePermanent/$1');
 $routes->delete('identitasLab/deletePermanent', 'IdentitasLab::deletePermanent');
-$routes->resource('identitasLab', ['filter' => 'isLoggedIn']);
+$routes->resource('identitasLab', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of identitas laboratorium -------------------------------------------- //
 
 // ----------------------------------------------- Sumber dana ----------------------------------------------- //
@@ -117,7 +117,7 @@ $routes->get('sumberDana/restore/(:any)', 'SumberDana::restore/$1');
 $routes->get('sumberDana/restore', 'SumberDana::restore');
 $routes->delete('sumberDana/deletePermanent/(:any)', 'SumberDana::deletePermanent/$1');
 $routes->delete('sumberDana/deletePermanent', 'SumberDana::deletePermanent');
-$routes->presenter('sumberDana', ['filter' => 'isLoggedIn']);
+$routes->presenter('sumberDana', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of sumber dana -------------------------------------------- //
 
 // ----------------------------------------------- Identitas gedung ----------------------------------------------- //
@@ -131,7 +131,7 @@ $routes->get('identitasGedung/restore/(:any)', 'IdentitasGedung::restore/$1');
 $routes->get('identitasGedung/restore', 'IdentitasGedung::restore');
 $routes->delete('identitasGedung/deletePermanent/(:any)', 'IdentitasGedung::deletePermanent/$1');
 $routes->delete('identitasGedung/deletePermanent', 'IdentitasGedung::deletePermanent');
-$routes->presenter('identitasGedung', ['filter' => 'isLoggedIn']);
+$routes->presenter('identitasGedung', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of identitas gedung -------------------------------------------- //
 
 // ----------------------------------------------- Identitas lantai ----------------------------------------------- //
@@ -145,7 +145,7 @@ $routes->get('identitasLantai/restore/(:any)', 'IdentitasLantai::restore/$1');
 $routes->get('identitasLantai/restore', 'IdentitasLantai::restore');
 $routes->delete('identitasLantai/deletePermanent/(:any)', 'IdentitasLantai::deletePermanent/$1');
 $routes->delete('identitasLantai/deletePermanent', 'IdentitasLantai::deletePermanent');
-$routes->presenter('identitasLantai', ['filter' => 'isLoggedIn']);
+$routes->presenter('identitasLantai', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of identitas lantai -------------------------------------------- //
 
 // ----------------------------------------------- Status layanan ----------------------------------------------- //
@@ -159,7 +159,7 @@ $routes->get('statusLayanan/restore/(:any)', 'StatusLayanan::restore/$1');
 $routes->get('statusLayanan/restore', 'StatusLayanan::restore');
 $routes->delete('statusLayanan/deletePermanent/(:any)', 'StatusLayanan::deletePermanent/$1');
 $routes->delete('statusLayanan/deletePermanent', 'StatusLayanan::deletePermanent');
-$routes->presenter('statusLayanan', ['filter' => 'isLoggedIn']);
+$routes->presenter('statusLayanan', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of status layanan -------------------------------------------- //
 
 // ----------------------------------------------- Kategori manajemen ----------------------------------------------- //
@@ -173,7 +173,7 @@ $routes->get('kategoriManajemen/restore/(:any)', 'KategoriManajemen::restore/$1'
 $routes->get('kategoriManajemen/restore', 'KategoriManajemen::restore');
 $routes->delete('kategoriManajemen/deletePermanent/(:any)', 'KategoriManajemen::deletePermanent/$1');
 $routes->delete('kategoriManajemen/deletePermanent', 'KategoriManajemen::deletePermanent');
-$routes->presenter('kategoriManajemen', ['filter' => 'isLoggedIn']);
+$routes->presenter('kategoriManajemen', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of kategori manajemen -------------------------------------------- //
 
 // ----------------------------------------------- Kategori mechanical, electrical, and plubming ----------------------------------------------- //
@@ -187,7 +187,7 @@ $routes->get('kategoriMep/restore/(:any)', 'KategoriMep::restore/$1');
 $routes->get('kategoriMep/restore', 'KategoriMep::restore');
 $routes->delete('kategoriMep/deletePermanent/(:any)', 'KategoriMep::deletePermanent/$1');
 $routes->delete('kategoriMep/deletePermanent', 'KategoriMep::deletePermanent');
-$routes->presenter('kategoriMep', ['filter' => 'isLoggedIn']);
+$routes->presenter('kategoriMep', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of kategori mechanical, electrical, and plubming -------------------------------------------- //
 
 // ----------------------------------------------- Identitas Kelas ----------------------------------------------- //
@@ -201,7 +201,7 @@ $routes->get('identitasKelas/restore/(:any)', 'IdentitasKelas::restore/$1');
 $routes->get('identitasKelas/restore', 'IdentitasKelas::restore');
 $routes->delete('identitasKelas/deletePermanent/(:any)', 'IdentitasKelas::deletePermanent/$1');
 $routes->delete('identitasKelas/deletePermanent', 'IdentitasKelas::deletePermanent');
-$routes->presenter('identitasKelas', ['filter' => 'isLoggedIn']);
+$routes->presenter('identitasKelas', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of identitas kelas -------------------------------------------- //
 
 // ----------------------------------------------- Data siswa ----------------------------------------------- //
@@ -215,7 +215,7 @@ $routes->get('dataSiswa/restore/(:any)', 'DataSiswa::restore/$1');
 $routes->get('dataSiswa/restore', 'DataSiswa::restore');
 $routes->delete('dataSiswa/deletePermanent/(:any)', 'DataSiswa::deletePermanent/$1');
 $routes->delete('dataSiswa/deletePermanent', 'DataSiswa::deletePermanent');
-$routes->resource('dataSiswa', ['filter' => 'isLoggedIn']);
+$routes->resource('dataSiswa', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of data siswa -------------------------------------------- //
 
 // ----------------------------------------------- Data pegawai ----------------------------------------------- //
@@ -229,7 +229,7 @@ $routes->get('dataPegawai/restore/(:any)', 'DataPegawai::restore/$1');
 $routes->get('dataPegawai/restore', 'DataPegawai::restore');
 $routes->delete('dataPegawai/deletePermanent/(:any)', 'DataPegawai::deletePermanent/$1');
 $routes->delete('dataPegawai/deletePermanent', 'DataPegawai::deletePermanent');
-$routes->resource('dataPegawai', ['filter' => 'isLoggedIn']);
+$routes->resource('dataPegawai', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of data pegawai -------------------------------------------- //
 
 // ----------------------------------------------- Data non inventaris ----------------------------------------------- //
@@ -243,15 +243,15 @@ $routes->get('nonInventaris/restore/(:any)', 'NonInventaris::restore/$1');
 $routes->get('nonInventaris/restore', 'NonInventaris::restore');
 $routes->delete('nonInventaris/deletePermanent/(:any)', 'NonInventaris::deletePermanent/$1');
 $routes->delete('nonInventaris/deletePermanent', 'NonInventaris::deletePermanent');
-$routes->resource('nonInventaris', ['filter' => 'isLoggedIn']);
+$routes->resource('nonInventaris', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of data non inventaris -------------------------------------------- //
 
 // ----------------------------------------------- Pertanyaan Pengaduan ----------------------------------------------- //
-$routes->resource('pertanyaanPengaduan', ['filter' => 'isLoggedIn']);
+$routes->resource('pertanyaanPengaduan', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of pertanyaan pengaduan -------------------------------------------- //
 
 // ----------------------------------------------- Pertanyaan Feedback ----------------------------------------------- //
-$routes->resource('pertanyaanFeedback', ['filter' => 'isLoggedIn']);
+$routes->resource('pertanyaanFeedback', ['filter' => 'superAdminFilter']);
 // -------------------------------------------- End of pertanyaan feedback -------------------------------------------- //
 // End of data master ======================================================================================== //
 
@@ -515,7 +515,7 @@ $routes->patch('profilSekolah/updateDokumen/(:segment)', 'ProfilSekolah::updateD
 $routes->delete('profilSekolah/deleteDokumen/(:num)', 'ProfilSekolah::deleteDokumen/$1');
 $routes->delete('profilSekolah/deletePermanent/(:any)', 'ProfilSekolah::deletePermanent/$1');
 $routes->delete('profilSekolah/deletePermanent', 'ProfilSekolah::deletePermanent');
-$routes->resource('profilSekolah', ['filter' => 'isLoggedIn']);
+$routes->resource('profilSekolah', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of profil sekolah -------------------------------------------- //
 
 // ----------------------------------------------- Tagihan air ----------------------------------------------- //
@@ -529,7 +529,7 @@ $routes->get('tagihanAir/restore/(:any)', 'TagihanAir::restore/$1');
 $routes->get('tagihanAir/restore', 'TagihanAir::restore');
 $routes->delete('tagihanAir/deletePermanent/(:any)', 'TagihanAir::deletePermanent/$1');
 $routes->delete('tagihanAir/deletePermanent', 'TagihanAir::deletePermanent');
-$routes->resource('tagihanAir', ['filter' => 'isLoggedIn']);
+$routes->resource('tagihanAir', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of tagihan air -------------------------------------------- //
 
 // ----------------------------------------------- Tagihan listirk ----------------------------------------------- //
@@ -543,7 +543,7 @@ $routes->get('tagihanListrik/restore/(:any)', 'TagihanListrik::restore/$1');
 $routes->get('tagihanListrik/restore', 'TagihanListrik::restore');
 $routes->delete('tagihanListrik/deletePermanent/(:any)', 'TagihanListrik::deletePermanent/$1');
 $routes->delete('tagihanListrik/deletePermanent', 'TagihanListrik::deletePermanent');
-$routes->resource('tagihanListrik', ['filter' => 'isLoggedIn']);
+$routes->resource('tagihanListrik', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of tagihan listrik -------------------------------------------- //
 
 // ----------------------------------------------- Tagihan internet ----------------------------------------------- //
@@ -557,7 +557,7 @@ $routes->get('tagihanInternet/restore/(:any)', 'TagihanInternet::restore/$1');
 $routes->get('tagihanInternet/restore', 'TagihanInternet::restore');
 $routes->delete('tagihanInternet/deletePermanent/(:any)', 'TagihanInternet::deletePermanent/$1');
 $routes->delete('tagihanInternet/deletePermanent', 'TagihanInternet::deletePermanent');
-$routes->resource('tagihanInternet', ['filter' => 'isLoggedIn']);
+$routes->resource('tagihanInternet', ['filter' => 'adminSarpraFilter']);
 // -------------------------------------------- End of tagihan internet -------------------------------------------- //
 // End of profil sekolah ======================================================================================== //
 
@@ -679,7 +679,7 @@ $routes->resource('manajemenPeminjaman', ['filter' => 'laboranFilter']);
 // Backup and Restore =============================================================================================== //
 $routes->get('backup', 'DatabaseManagement::backup');
 $routes->get('restore', 'DatabaseManagement::restoreView');
-$routes->post('restoreDatabase', 'DatabaseManagement::restore');
+$routes->post('restoreDatabase', 'DatabaseManagement::restore', ['filter' => 'superAdminFilter']);
 // End of backup and restore ======================================================================================== //
 
 // User - Laboratorium =============================================================================================== //

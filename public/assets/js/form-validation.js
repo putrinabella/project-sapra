@@ -38,6 +38,16 @@ $(document).ready(function () {
         minlength: 4,
         maxlength: 4,
       },
+      tahunPemakaianListrik: {
+        required: true,
+        minlength: 4,
+        maxlength: 4,
+      },
+      tahunPemakaianInternet: {
+        required: true,
+        minlength: 4,
+        maxlength: 4,
+      },
       namaSumberDana: {
         required: true,
         maxlength: 255,
@@ -114,6 +124,12 @@ $(document).ready(function () {
         required: true,
       },
       bulanPemakaianAir: {
+        required: true,
+      },
+      bulanPemakaianListrik: {
+        required: true,
+      },
+      bulanPemakaianInternet: {
         required: true,
       },
       idIdentitasGedung: {
@@ -310,6 +326,15 @@ $(document).ready(function () {
       lamaPinjam: {
         required: true,
       }, 
+      pemakaianInternet: {
+        required: true,
+      }, 
+      pemakaianAir: {
+        required: true,
+      }, 
+      pemakaianListrik: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -329,6 +354,16 @@ $(document).ready(function () {
         maxlength: "Tahun pengadaan maksimal terdiri dari 4 karakter",
       },
       tahunPemakaianAir: {
+        required: "Silahkan masukkan tahun",
+        minlength: "Tahun minimal terdiri dari 4 karakter",
+        maxlength: "Tahun maksimal terdiri dari 4 karakter",
+      },
+      tahunPemakaianListrik: {
+        required: "Silahkan masukkan tahun",
+        minlength: "Tahun minimal terdiri dari 4 karakter",
+        maxlength: "Tahun maksimal terdiri dari 4 karakter",
+      },
+      tahunPemakaianInternet: {
         required: "Silahkan masukkan tahun",
         minlength: "Tahun minimal terdiri dari 4 karakter",
         maxlength: "Tahun maksimal terdiri dari 4 karakter",
@@ -409,6 +444,12 @@ $(document).ready(function () {
         required: "Silahkan pilih sebuah opsi",
       },
       bulanPemakaianAir: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      bulanPemakaianInternet: {
+        required: "Silahkan pilih sebuah opsi",
+      },
+      bulanPemakaianListrik: {
         required: "Silahkan pilih sebuah opsi",
       },
       idIdentitasGedung: {
@@ -604,6 +645,15 @@ $(document).ready(function () {
       }, 
       lamaPinjam: {
         required: "Silahkan masukkan lama peminjaman (dalam hari)",
+      }, 
+      pemakaianInternet: {
+        required: "Silahkan masukkan pemakaian internet",
+      }, 
+      pemakaianListrik: {
+        required: "Silahkan masukkan pemakaian listrik",
+      }, 
+      pemakaianAir: {
+        required: "Silahkan masukkan pemakaian air",
       }, 
     },
     errorPlacement: function (label, element) {

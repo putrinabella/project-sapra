@@ -15,13 +15,13 @@
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
         <form action="<?=site_url('tagihanInternet')?>" class="d-flex align-items-center flex-wrap text-nowrap">
-            <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
-                <input type="text" class="form-control border-primary bg-transparent" id="startYear" name="startYear" placeholder="Start Year" readonly>
-                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+        <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="startYearPicker">
+                <input type="text" class="form-control border-primary" id="startYear" name="startYear" placeholder="Start Year" readonly>
+                <span class="input-group-text input-group-addon border-primary"><i data-feather="calendar"></i></span>
             </div>
             <div class="input-group date datepicker col py-3 p-0 me-2 mb-2 mb-md-0" id="endYearPicker">
-                <input type="text" class="form-control border-primary bg-transparent" id="endYear" name="endYear" placeholder="End Year" readonly>
-                <span class="input-group-text input-group-addon bg-transparent"><i data-feather="calendar"></i></span>
+                <input type="text" class="form-control border-primary" id="endYear" name="endYear" placeholder="End Year" readonly>
+                <span class="input-group-text input-group-addon border-primary"><i data-feather="calendar"></i></span>
             </div>
             <div class="col py-3 p-0 mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary btn-icon me-1">
