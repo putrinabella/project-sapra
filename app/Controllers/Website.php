@@ -4,22 +4,19 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\WebsiteModels; 
-use App\Models\IdentitasSaranaModels; 
-use App\Models\SumberDanaModels; 
-use App\Models\KategoriManajemenModels; 
-use App\Models\IdentitasPrasaranaModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Parsedown;
 
 class Website extends ResourceController
 {
     
-     function __construct() {
+    function __construct() {
         $this->websiteModel = new WebsiteModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -107,6 +104,7 @@ class Website extends ResourceController
 
     public function delete($id = null) {
         $this->websiteModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Platfrom Digital - Website dengan id $id");
         return redirect()->to(site_url('website'));
     }
 
@@ -116,38 +114,23 @@ class Website extends ResourceController
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblWebsite')
-                ->set('deleted_at', null, true)
-                ->where(['idWebsite' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblWebsite')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblWebsite', 'idWebsite', $id, $this->userActionLogsModel, 'Platfrom Digital - Website');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('website'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('website/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->websiteModel->delete($id, true);
-        return redirect()->to(site_url('website/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->websiteModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->websiteModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('website/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('website/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
+        $affectedRows = deleteData('tblWebsite', 'idWebsite', $id, $this->userActionLogsModel, 'Platfrom Digital - Website');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('website'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('website/trash'))->with('error', 'Tidak ada data untuk dihapus');
     } 
     
     public function export() {
@@ -194,7 +177,7 @@ class Website extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - Website.xlsx');
+        header('Content-Disposition: attachment;filename=Platform Digital - Website.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -293,7 +276,7 @@ class Website extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - Website Example.xlsx');
+        header('Content-Disposition: attachment;filename=Platform Digital - Website Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -340,30 +323,23 @@ class Website extends ResourceController
         }
     }
 
-
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/profilSekolahView/website/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataWebsite = $this->websiteModel->findAll();
+        $title = "PLATFORM DIGITAL - WEBSITE";
+        
+        if (!$dataWebsite) {
             return view('error/404');
         }
-
-        $data['dataWebsite'] = $this->websiteModel->findAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfPlatformDigitalWebsite($dataWebsite, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Profil - Website Report.pdf';
-        $dompdf->stream($filename);
+        
+        $filename = 'Platfrom Digital - Sosial Media' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }

@@ -210,7 +210,7 @@ class PemusnahanAset extends ResourceController
             $activeWorksheet->setCellValue('I'.($index + 2), $value->status);
             $activeWorksheet->setCellValue('J'.($index + 2), $value->namaSumberDana);
             $activeWorksheet->setCellValue('K'.($index + 2), $pengadaan);
-            $activeWorksheet->setCellValue('L'.($index + 2), $value->biaya);
+            $activeWorksheet->setCellValue('L'.($index + 2), $value->hargaBeli);
             $activeWorksheet->setCellValue('M'.($index + 2), $value->merk);
             $activeWorksheet->setCellValue('N'.($index + 2), $value->noSeri);
             $activeWorksheet->setCellValue('O'.($index + 2), $value->warna);

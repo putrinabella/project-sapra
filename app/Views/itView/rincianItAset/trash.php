@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
                     <div>
-                        <a href="<?= site_url('rincianAset')?>"
+                        <a href="<?= site_url('rincianItAset')?>"
                             class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="arrow-left"></i>
                             Back

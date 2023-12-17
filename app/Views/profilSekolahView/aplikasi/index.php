@@ -5,13 +5,13 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
-<nav class="page-breadcrumb">
+
+<nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Profil</a></li>
+        <li class="breadcrumb-item"><a href="#">Platform Digital</a></li>
         <li class="breadcrumb-item active" aria-current="page">Aplikasi</li>
     </ol>
 </nav>
-
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
         <h4 class="mb-3 mb-md-0">Aplikasi</h4>
@@ -29,7 +29,8 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('aplikasi/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('aplikasi/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('aplikasi/generatePDF') ?>">Download as
+                    PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -79,7 +80,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="dataTable" style="width: 100%;">
+                    <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
@@ -89,21 +90,26 @@
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                        <?php foreach ($dataAplikasi as $key => $value) : ?>
+                            <?php foreach ($dataAplikasi as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td> <?= $value->namaAplikasi; ?> </td>
-                                <td> <?= $value->picAplikasi; ?> </td>
+                                <td>
+                                    <?= $value->namaAplikasi; ?>
+                                </td>
+                                <td>
+                                    <?= $value->picAplikasi; ?>
+                                </td>
                                 <td class="text-center">
                                     <a href="<?=site_url('aplikasi/'.$value->idAplikasi.'/edit') ?>"
                                         class="btn btn-primary btn-icon"> <i data-feather="edit-2"></i></a>
-                                    <form action="<?=site_url('aplikasi/'.$value->idAplikasi)?>"
-                                        method="post" class="d-inline" id="del-<?= $value->idAplikasi;?>">
-                                        
+                                    <form action="<?=site_url('aplikasi/'.$value->idAplikasi)?>" method="post"
+                                        class="d-inline" id="del-<?= $value->idAplikasi;?>">
+
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger btn-icon" data-confirm="Apakah anda yakin menghapus data ini?">
+                                        <button class="btn btn-danger btn-icon"
+                                            data-confirm="Apakah anda yakin menghapus data ini?">
                                             <i data-feather="trash"></i>
                                         </button>
                                     </form>
@@ -125,9 +131,10 @@
                 <h5 class="modal-title" id="exampleModalCenterTitle">Import Excel</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
-            <form action="<?=site_url("aplikasi/import")?>" method="POST" enctype="multipart/form-data"  id="custom-validation">
+            <form action="<?=site_url(" aplikasi/import")?>" method="POST" enctype="multipart/form-data"
+                id="custom-validation">
                 <div class="modal-body">
-                    
+
                     <input class="form-control" type="file" id="formExcel" name="formExcel">
                 </div>
                 <div class="modal-footer">

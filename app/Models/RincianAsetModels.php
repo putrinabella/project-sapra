@@ -325,6 +325,7 @@ class RincianAsetModels extends Model
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->where('tblRincianAset.idIdentitasSarana', $idIdentitasSarana);
         $builder->where('tblIdentitasSarana.perangkatIT', 1);
+        $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('status', 'Bagus');
         $query = $builder->get();
         $result = $query->getRow();
@@ -339,6 +340,7 @@ class RincianAsetModels extends Model
         $builder->where('tblRincianAset.sectionAset !=', 'Dimusnahkan');
         $builder->where('tblRincianAset.idIdentitasSarana', $idIdentitasSarana);
         $builder->where('tblIdentitasSarana.perangkatIT', 1);
+        $builder->where('tblRincianAset.deleted_at', null);
         $builder->where('status', 'Rusak');
         $query = $builder->get();
         $result = $query->getRow();

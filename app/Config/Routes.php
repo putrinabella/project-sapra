@@ -441,14 +441,6 @@ $routes->resource('pemusnahanItAset', ['filter' => 'adminItFilter']);
 // -------------------------------------------- End of pemusnahan aset IT -------------------------------------------- //
 // End of perangkat IT - manajemen aset ======================================================================================== //
 
-// // Perangkat IT (NOT USE)!!!!
-// $routes->get('perangkatIt/print/(:num)', 'perangkatIt::print/$1');
-// $routes->get('perangkatIt/createTemplate', 'perangkatIt::createTemplate');
-// $routes->get('perangkatIt/generatePDF', 'perangkatIt::generatePDF');
-// $routes->get('perangkatIt/export', 'perangkatIt::export');
-// $routes->get('perangkatIt/rincian/(:num)', 'perangkatIt::rincian/$1');
-// $routes->resource('perangkatIt', ['filter' => 'adminItFilter']);
-
 // Perangkat IT - Layanan Aset =============================================================================================== //
 $routes->get('layananAsetIt/createTemplate', 'LayananAsetIt::createTemplate');
 $routes->get('layananAsetIt/generatePDF', 'LayananAsetIt::generatePDF');

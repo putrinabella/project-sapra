@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\AplikasiModels; 
+use App\Models\UserActionLogsModels; 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -15,7 +16,9 @@ class Aplikasi extends ResourceController
     
      function __construct() {
         $this->aplikasiModel = new AplikasiModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
         $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index() {
@@ -102,6 +105,7 @@ class Aplikasi extends ResourceController
 
     public function delete($id = null) {
         $this->aplikasiModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Platfrom Digital - Aplikasi dengan id $id");
         return redirect()->to(site_url('aplikasi'));
     }
 
@@ -111,40 +115,25 @@ class Aplikasi extends ResourceController
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblAplikasi')
-                ->set('deleted_at', null, true)
-                ->where(['idAplikasi' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblAplikasi')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblAplikasi', 'idAplikasi', $id, $this->userActionLogsModel, 'Platfrom Digital - Aplikasi');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('aplikasi'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('aplikasi/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->aplikasiModel->delete($id, true);
-        return redirect()->to(site_url('aplikasi/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->aplikasiModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->aplikasiModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('aplikasi/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('aplikasi/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    } 
+        $affectedRows = deleteData('tblAplikasi', 'idAplikasi', $id, $this->userActionLogsModel, 'Platfrom Digital - Aplikasi');
     
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('aplikasi'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('aplikasi/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    }
+
     public function export() {
         $data = $this->aplikasiModel->findAll();
         $spreadsheet = new Spreadsheet();
@@ -187,7 +176,7 @@ class Aplikasi extends ResourceController
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - Aplikasi.xlsx');
+        header('Content-Disposition: attachment;filename=Platfrom Digital - Aplikasi.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -281,7 +270,7 @@ class Aplikasi extends ResourceController
         $writer = new Xlsx($spreadsheet);
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Profil - Aplikasi Example.xlsx');
+        header('Content-Disposition: attachment;filename=Platfrom Digital - Aplikasi Example.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -324,30 +313,23 @@ class Aplikasi extends ResourceController
         }
     }
 
-
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/profilSekolahView/aplikasi/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataAplikasi = $this->aplikasiModel->findAll();
+        $title = "PLATFORM DIGITAL - APLIKASI";
+        
+        if (!$dataAplikasi) {
             return view('error/404');
         }
-
-        $data['dataAplikasi'] = $this->aplikasiModel->findAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfPlatformDigitalAplikasi($dataAplikasi, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Profil - Aplikasi Report.pdf';
-        $dompdf->stream($filename);
+        
+        $filename = 'Platfrom Digital - Aplikasi' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }

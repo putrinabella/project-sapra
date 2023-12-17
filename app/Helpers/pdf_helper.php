@@ -559,9 +559,7 @@ if (!function_exists('pdfLayananAset')) {
         }
     
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -706,9 +704,7 @@ if (!function_exists('pdfLayananNonAset')) {
         }
     
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -847,9 +843,7 @@ if (!function_exists('pdfLayananAsetIt')) {
         }
     
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -993,9 +987,7 @@ if (!function_exists('pdfLayananAsetLab')) {
         }
     
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -1140,9 +1132,7 @@ if (!function_exists('pdfLayananNonAsetLab')) {
         }
     
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -1935,9 +1925,7 @@ if (!function_exists('pdfAsetGeneral')) {
         }
 
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -2033,9 +2021,7 @@ if (!function_exists('pdfAsetItGeneral')) {
         }
 
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -2131,9 +2117,7 @@ if (!function_exists('pdfAsetLabGeneral')) {
         }
 
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -3079,9 +3063,7 @@ if (!function_exists('pdfUserLogs')) {
         }
     
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         EOD;
@@ -3114,25 +3096,6 @@ if (!function_exists('pdfUserLogs')) {
         $html .= '<td style="width: 30%; text-align: left;">' . $formattedTanggal. '</td>';
         $html .= '<td style="width: 30%; text-align: left;">' . $value->username.  ' (' . $value->role . ')' .'</td>';
         $html .= '<td style="width: 30%; text-align: left;">' . $value->actionType. '</td>';
-        // $html .= '<td style="width: 35%; text-align: left;">' .
-        //                 '<table style="width: 100%; padding:5px;">' .
-        //                 '<tr>' .
-        //                     '<td style="width: 40%;">Username</td>' .
-        //                     '<td style="width: 10%;">:</td>' .
-        //                     '<td style="width: 50%;">' . $value->username . '</td>' .
-        //                 '</tr>' .
-        //                 '<tr>' .
-        //                     '<td>Nama</td>' .
-        //                     '<td>:</td>' .
-        //                     '<td>' . $value->nama . '</td>' .
-        //                 '</tr>' .
-        //                 '<tr>' .
-        //                     '<td>Role</td>' .
-        //                     '<td>:</td>' .
-        //                     '<td>' . $value->role . '</td>' .
-        //                 '</tr>' .
-        //             '</table>' .
-        //         '</td>';
         $html .= '</tr>';
     }
     
@@ -3457,6 +3420,255 @@ if (!function_exists('pdfAsetLaboratorium')) {
     }
 }
 
+if (!function_exists('pdfPlatformDigitalAplikasi')) {
+    function pdfPlatformDigitalAplikasi($data, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Platfrom Digital - Aplikasi');
+        $pdf->SetSubject('Platfrom Digital - Aplikasi');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 90%;"><b>Detail Aplikasi</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 90%; text-align: left;">' . 
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 20%;">Nama Aplikasi</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 75%;">' . $value->namaAplikasi . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Nama PIC</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->picAplikasi . '</td>' .
+                        '</tr>' .
+                    '</table>' 
+            . '</td>';
+        $html .= '</tr>';
+    }
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdfPlatformDigitalSosialMedia')) {
+    function pdfPlatformDigitalSosialMedia($data, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Platfrom Digital - Sosial Media');
+        $pdf->SetSubject('Platfrom Digital - Sosial Media');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 90%;"><b>Detail Sosial Media</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 90%; text-align: left;">' . 
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 20%;">Sosial Media</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 75%;">' . $value->namaSosialMedia . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Username</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->usernameSosialMedia . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Link</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->linkSosialMedia . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Nama PIC</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->picSosialMedia . '</td>' .
+                        '</tr>' .
+                    '</table>' 
+            . '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+if (!function_exists('pdfPlatformDigitalWebsite')) {
+    function pdfPlatformDigitalWebsite($data, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Platfrom Digital - Website');
+        $pdf->SetSubject('Platfrom Digital - Website');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 90%;"><b>Detail Website</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 90%; text-align: left;">' . 
+                    '<table style="width: 100%; padding:5px;">' .
+                        '<tr>' .
+                            '<td style="width: 20%;">Website</td>' .
+                            '<td style="width: 5%;">:</td>' .
+                            '<td style="width: 75%;">' . $value->namaWebsite . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Fungsi</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->fungsiWebsite . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Link</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->linkWebsite . '</td>' .
+                        '</tr>' .
+                        '<tr>' .
+                            '<td>Nama PIC</td>' .
+                            '<td>:</td>' .
+                            '<td>' . $value->picWebsite . '</td>' .
+                        '</tr>' .
+                    '</table>' 
+            . '</td>';
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
+
+
 // Not use 
 if (!function_exists('pdfDetailPemusnahanAset')) {
     function pdfDetailPemusnahanAset($data, $title) {
@@ -3499,9 +3711,7 @@ if (!function_exists('pdfDetailPemusnahanAset')) {
         
         $imageUrl = generateFileId($data->bukti);
         $html = <<<EOD
-        <style>
-        
-        </style>
+
         
         <h3 style="text-align: center;"> $title</h3>
         <br>

@@ -233,9 +233,9 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaHilang; ?>
+                                                                                <?= $value->saranaDipinjam; ?>
                                                                             </div>
-                                                                            <div class="box-label">Hilang</div>
+                                                                            <div class="box-label">Dipinjam</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1299,7 +1299,7 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaRusak ?>
+                                                                                <?= $value->saranaRusak + $value->saranaHilang; ?>
                                                                             </div>
                                                                             <div class="box-label">Rusak</div>
                                                                         </div>
@@ -1307,9 +1307,9 @@
                                                                     <div class="row">
                                                                         <div class="box">
                                                                             <div class="box-number">
-                                                                                <?= $value->saranaHilang; ?>
+                                                                                <?= $value->saranaDipinjam; ?>
                                                                             </div>
-                                                                            <div class="box-label">Hilang</div>
+                                                                            <div class="box-label">Dipinjam</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>

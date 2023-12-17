@@ -112,6 +112,7 @@ class UserLogs extends BaseController
         $response->setBody($pdfData);
         $response->send();
     }
+    
     public function generatePDFs() {
         $filePath = APPPATH . 'Views/userLogsView/userLoginLogs/print.php';
     

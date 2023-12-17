@@ -261,7 +261,7 @@
 </script>
 
 
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         const generateSelectedQR = document.getElementById('generateSelectedQR');
         generateSelectedQR.addEventListener('click', function (e) {
@@ -292,6 +292,102 @@
             return selectedRowIds;
         }
     });
+</script> -->
+
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const generateSelectedQR = document.getElementById('generateSelectedQR');
+        generateSelectedQR.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const selectedRows = getSelectedRowIds();
+
+            if (selectedRows.length > 0) {
+                const selectedRowsQueryParam = selectedRows.join(',');
+                window.open('<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam, '_blank');
+
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak ada data',
+                    text: 'Silahkan pilih minimal satu data!',
+                    confirmButtonText: 'OK',
+                });
+            }
+        });
+
+        function getSelectedRowIds() {
+            const selectedRowIds = [];
+
+            // Iterate over all DataTable pages
+            const dataTable = $('#dataTable').DataTable();
+            for (let i = 0; i < dataTable.page.info().pages; i++) {
+                dataTable.page(i).draw('page');
+
+                const checkboxes = document.querySelectorAll('input[name="selectedRows[]"]:checked');
+                checkboxes.forEach(function (checkbox) {
+                    selectedRowIds.push(checkbox.value);
+                });
+            }
+
+            return selectedRowIds;
+        }
+    });
+</script> -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const generateSelectedQR = document.getElementById('generateSelectedQR');
+        generateSelectedQR.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const selectedRows = getSelectedRowIds();
+
+            if (selectedRows.length > 0) {
+                const selectedRowsQueryParam = selectedRows.join(',');
+                window.open('<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam, '_blank');
+
+                // Uncheck all checkboxes on all DataTable pages
+                const dataTable = $('#dataTable').DataTable();
+                for (let i = 0; i < dataTable.page.info().pages; i++) {
+                    dataTable.page(i).draw('page');
+
+                    const checkboxes = document.querySelectorAll('input[name="selectedRows[]"]');
+                    checkboxes.forEach(function (checkbox) {
+                        checkbox.checked = false;
+                    });
+                }
+
+                // Navigate back to DataTable page 1
+                dataTable.page(0).draw('page');
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak ada data',
+                    text: 'Silahkan pilih minimal satu data!',
+                    confirmButtonText: 'OK',
+                });
+            }
+        });
+
+        function getSelectedRowIds() {
+            const selectedRowIds = [];
+
+            // Iterate over all DataTable pages
+            const dataTable = $('#dataTable').DataTable();
+            for (let i = 0; i < dataTable.page.info().pages; i++) {
+                dataTable.page(i).draw('page');
+
+                const checkboxes = document.querySelectorAll('input[name="selectedRows[]"]:checked');
+                checkboxes.forEach(function (checkbox) {
+                    selectedRowIds.push(checkbox.value);
+                });
+            }
+
+            return selectedRowIds;
+        }
+    });
 </script>
+
 
 <?= $this->endSection(); ?>

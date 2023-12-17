@@ -107,6 +107,9 @@ $(document).ready(function () {
       kodeRincianLabAset: {
         required: true,
       },
+      kodeRincianAset: {
+        required: true,
+      },
       idIdentitasLantai: {
         required: true,
       },
@@ -151,6 +154,9 @@ $(document).ready(function () {
       namaWebsite: {
         required: true,
       }, 
+      namaAplikasi: {
+        required: true,
+      }, 
       fungsiWebsite: {
         required: true,
       }, 
@@ -158,6 +164,12 @@ $(document).ready(function () {
         required: true,
       }, 
       picWebsite: {
+        required: true,
+      }, 
+      picSosialMedia: {
+        required: true,
+      }, 
+      picAplikasi: {
         required: true,
       }, 
       namaSosialMedia: {
@@ -271,6 +283,9 @@ $(document).ready(function () {
       isiFeedback: {
         required: true,
       }, 
+      keterangan: {
+        required: true,
+      }, 
     },
     messages: {
       username: {
@@ -363,6 +378,9 @@ $(document).ready(function () {
       kodeRincianLabAset: {
         required: "Silahkan pilih sebuah opsi",
       },
+      kodeRincianAset: {
+        required: "Silahkan pilih sebuah opsi",
+      },
       idIdentitasLantai: {
         required: "Silahkan pilih sebuah opsi",
       },
@@ -410,6 +428,9 @@ $(document).ready(function () {
       namaWebsite: {
         required: "Silahkan masukkan nama website",
       },
+      namaAplikasi: {
+        required: "Silahkan masukkan nama aplikasi",
+      },
       fungsiWebsite: {
         required: "Silahkan masukkan fungsi website",
       },
@@ -418,6 +439,12 @@ $(document).ready(function () {
       },
       picWebsite: {
         required: "Silahkan masukkan PIC website",
+      },
+      picSosialMedia: {
+        required: "Silahkan masukkan PIC sosial media",
+      },
+      picAplikasi: {
+        required: "Silahkan masukkan PIC aplikasi",
       },
       namaSosialMedia: {
         required: "Silahkan masukkan jenis sosial media",
@@ -526,6 +553,9 @@ $(document).ready(function () {
       }, 
       isiFeedback: {
         required: "Silahkan masukkan umpan balik",
+      }, 
+      keterangan: {
+        required: "Silahkan masukkan keterangan",
       }, 
     },
     errorPlacement: function (label, element) {

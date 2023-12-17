@@ -7,7 +7,7 @@
 <?= $this->section("content"); ?>
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Profil</a></li>
+    <li class="breadcrumb-item"><a href="#">Platform Digital</a></li>
         <li class="breadcrumb-item active" aria-current="page">Sosial Media</li>
     </ol>
 </nav>
@@ -29,7 +29,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('sosialMedia/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('sosialMedia/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('sosialMedia/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">

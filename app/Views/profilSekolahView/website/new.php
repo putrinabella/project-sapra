@@ -6,21 +6,19 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Website</h4>
-    </div>
-</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Platform Digital</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('website')?>">Website</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Input Data</li>
+    </ol>
+</nav>
 
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Tambah Data</h4>
-                </div>
-            </div>
+
             <div class="card-body">
                 <form action="<?= site_url('website')?>" method="post" autocomplete="off"  id="custom-validation">
                     

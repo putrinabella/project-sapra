@@ -140,7 +140,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td><?=$value->namaSumberDana?></td>
-                                <td class="text-center">
+                                <td>
                                     <?php 
                                         if($value->tahunPengadaan == 0 || 0000) {
                                             echo "Tidak diketahui"; 
@@ -263,6 +263,19 @@
                 const selectedRowsQueryParam = selectedRows.join(',');
                 window.open('<?= site_url('generateSelectedQR') ?>/' + selectedRowsQueryParam, '_blank');
 
+                // Uncheck all checkboxes on all DataTable pages
+                const dataTable = $('#dataTable').DataTable();
+                for (let i = 0; i < dataTable.page.info().pages; i++) {
+                    dataTable.page(i).draw('page');
+
+                    const checkboxes = document.querySelectorAll('input[name="selectedRows[]"]');
+                    checkboxes.forEach(function (checkbox) {
+                        checkbox.checked = false;
+                    });
+                }
+
+                // Navigate back to DataTable page 1
+                dataTable.page(0).draw('page');
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -274,11 +287,19 @@
         });
 
         function getSelectedRowIds() {
-            const checkboxes = document.querySelectorAll('input[name="selectedRows[]"]:checked');
             const selectedRowIds = [];
-            checkboxes.forEach(function (checkbox) {
-                selectedRowIds.push(checkbox.value);
-            });
+
+            // Iterate over all DataTable pages
+            const dataTable = $('#dataTable').DataTable();
+            for (let i = 0; i < dataTable.page.info().pages; i++) {
+                dataTable.page(i).draw('page');
+
+                const checkboxes = document.querySelectorAll('input[name="selectedRows[]"]:checked');
+                checkboxes.forEach(function (checkbox) {
+                    selectedRowIds.push(checkbox.value);
+                });
+            }
+
             return selectedRowIds;
         }
     });

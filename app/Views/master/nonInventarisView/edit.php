@@ -16,11 +16,7 @@
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Edit Data</h4>
-                </div>
-            </div>
+
             <div class="card-body">
                 <form action="<?= site_url('nonInventaris/'.$dataNonInventaris->idNonInventaris)?>" method="post" autocomplete="off"  id="custom-validation">
                     
