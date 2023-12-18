@@ -23,10 +23,6 @@ class IdentitasGedung extends ResourcePresenter
         return view('master/identitasGedungView/index', $data);
     }
 
-    public function show($id = null)
-    {
-        //
-    }
 
     public function new()
     {
