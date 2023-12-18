@@ -4293,6 +4293,69 @@ if (!function_exists('pdfMasterKategoriMep')) {
     }
 }
 
+if (!function_exists('pdfMasterIdentitasKelas')) {
+    function pdfMasterIdentitasKelas($data, $title) {
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Putri Nabella');
+        $pdf->SetTitle('Master - Identitas Kelas');
+        $pdf->SetSubject('Master - Identitas Kelas');
+        $pdf->SetKeywords('TCPDF, PDF, CodeIgniter 4');
+
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        $pdf->SetMargins(10, 54, 10);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+
+        $pdf->SetFont('times', '', 12, '', true);
+        $pdf->AddPage();
+
+        $html = <<<EOD
+        <h3 style="text-align: center;"> $title</h3>
+        <br>
+        <table border="1" style="text-align: center; width: 100%; padding:5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;"><b>No</b></th>
+                    <th style="width: 90%;"><b>Nama Kelas</b></th>
+                </tr>
+            </thead>
+        <tbody>
+        EOD;
+        
+    
+    foreach ($data as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<td style="width: 10%;">' . ($key + 1) . '</td>';
+        $html .= '<td style="width: 90%; text-align: left;">' . $value->namaKelas . '</td>';  
+        $html .= '</tr>';
+    }
+    
+    $html .= <<<EOD
+        </tbody>
+    </table>
+
+    EOD;
+        
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+    
+    $pdfData = $pdf->Output('Generated PDF.pdf', 'S');
+
+    return $pdfData;
+    }
+}
+
 if (!function_exists('pdfMasterStatusLayanan')) {
     function pdfMasterStatusLayanan($data, $title) {
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -4328,7 +4391,7 @@ if (!function_exists('pdfMasterStatusLayanan')) {
             <thead>
                 <tr>
                     <th style="width: 10%;"><b>No</b></th>
-                    <th style="width: 90%;"><b>Kode</b></th>
+                    <th style="width: 90%;"><b>Status Layanan</b></th>
                 </tr>
             </thead>
         <tbody>
@@ -4355,6 +4418,7 @@ if (!function_exists('pdfMasterStatusLayanan')) {
     return $pdfData;
     }
 }
+
 if (!function_exists('pdfMasterNonInventaris')) {
     function pdfMasterNonInventaris($data, $title) {
         $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
