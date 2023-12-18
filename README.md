@@ -4,6 +4,24 @@
 
 Web Sistem Manajemen Sarana dan Prasarana, IT, dan Lab SMK Telkom Banjarbaru merupakan sebuah platform yang dirancang khusus untuk menyediakan solusi terpadu dalam pengelolaan fasilitas sekolah, memberikan fokus pada aset fisik, layanan, peminjaman, dan pengelolaan keluhan dengan feedback. Dengan antarmuka yang intuitif, kami bertujuan memberikan kemudahan bagi pengguna dalam melacak inventaris, menjadwalkan pemeliharaan, dan memonitor kondisi operasional secara efisien.
 
+## Aktifkan file environment
+
+Aktifkan file `env` dengan cara menambahkan tanda titik `.` pada bagian depan nama file, sehingga menjadi `.env`
+
+Pada line 17 dan 18 terdapat dua pilihan mode, yaitu **production** dan **development**. Hapus tanda `#` pada mode yang dinginkan untuk menyalakan mode tersebut.
+
+Hapus tanda `#` pada line 17 untuk masuk ke **mode production**
+
+Hapus tanda `#` pada line 18 untuk masuk ke **mode development**
+
+_Catatan_
+
+- Hanya nyalakan satu mode, matikan mode yang tidak inginkan dengan cara menambahkan tanda pagar pada bagian depan.
+
+## Install Dependencies 
+
+Install dependencies yang diperlukan dengan cara membuka text editor lalu jalankan perintah `composer install` dan tunggu hingga prosesnya selesai
+
 ## Informasi Database
 
 - Database Name: `dbmanajemensapra`
