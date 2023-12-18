@@ -1,62 +1,116 @@
-# CodeIgniter 4 Application Starter
+# PERANCANGAN DAN PEMBUATAN SISTEM MANAJEMEN SARANA DAN PRASARANA, IT, DAN LAB SMK TELKOM BANJARBARU
 
-## What is CodeIgniter?
+## Deskripsi Sistem 
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Web Sistem Manajemen Sarana dan Prasarana, IT, dan Lab SMK Telkom Banjarbaru merupakan sebuah platform yang dirancang khusus untuk menyediakan solusi terpadu dalam pengelolaan fasilitas sekolah, memberikan fokus pada aset fisik, layanan, peminjaman, dan pengelolaan keluhan dengan feedback. Dengan antarmuka yang intuitif, kami bertujuan memberikan kemudahan bagi pengguna dalam melacak inventaris, menjadwalkan pemeliharaan, dan memonitor kondisi operasional secara efisien.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Informasi Database
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+- Database Name: `dbmanajemensapra`
 
-The user guide corresponding to the latest version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+## Migration
 
-## Installation & updates
+Buka terminal text editor lalu jalankan perintah `php spark migrate`
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## Seeder
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+Buka terminal text editor lalu jalankan perintah `php spark db:seed <nama seeder>`
+| Nama Seed                | Fungsi                                                                                                       |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------|
+| UserSeeder               | Register akun Super Admin, Admin IT, Admin Sarpra dan Laboran                                                |
+| IdentitasKelasSeeder     | Input identitas kelas karena untuk tabel identitas kelas **idIdentitasKelas 1** harus merupakan “Karyawan”   |    
 
-## Setup
+## Run Project
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+Buka terminal text editor lalu jalankan perintah `php spark serve`
 
-## Important Change with index.php
+## Login Credentials
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+| Username       | Password      | Role          |
+| -------------- | ------------- | ------------- |
+| Super Admin    | superadmin    | Super Admin   |
+| Laboran        | laboran       | Laboran       |
+| Admin IT       | adminit       | Admin IT      |
+| Admin Sarpra   | adminsarpra   | Admin Sarpra  |
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## Akun Siswa dan Karyawan
 
-**Please** read the user guide for a better explanation of how CI4 works!
+Proses pembuatan akun siswa dan karyawan dalam sistem disederhanakan melalui halaman input **data siswa** dan **data pegawai**. Dengan cara ini, setiap input data secara otomatis menghasilkan pembuatan akun dengan role **user**.
+| Data        | Username      | Password      |
+| ----------  | ------------- | ------------- |
+| Siswa       | NIS           | NIS           |
+| Karyawan    | NIP           | NIP           |
 
-## Repository Management
+Setelah login dengan username dan password yang telah dibuat, pengguna dapat dengan mudah mengganti passwordnya melalui halaman **profil pengguna**.
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## Perbedaan Hak Akses
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+| Feature                    | Super Admin | Admin Sarpra | Admin IT | Admin Lab | User |
+|----------------------------|-------------|--------------|----------|-----------|------|
+| Dashboard                  | X           | X            | X        | X         | X    |
+| **SARANA**                     |
+| Data General               | X           | X            |          |           |      |
+| Data Rincian Aset          | X           | X            |          |           |      |
+| Pemusnahan Aset            | X           | X            |          |           |      |
+| Request Peminjaman         | X           | X            |          |          |  X    |
+| Data Peminjaman            | X           | X            |          |          |  X    |
+| Pengajuan Peminjaman       | X           | X            |          |          |  X    |
+| Layanan Aset               | X           | X            |          |           |      |
+| Layanan Non Aset           | X           | X            |          |           |      |
+| Data Pengaduan             | X           | X            |          |          |  X    |
+| Data Umpan Balik           | X           | X            |          |        |  X    |
+| Non-Inventaris             | X           | X            |          |           |      |
+| **PRASARANA**                |
+| Ruangan                    | X           | X            |          |           |      |
+| Non Ruangan                | X           | X            |          |           |      |
+| **LABORATORIUM**                |
+| Laboratorium               | X           |              |          | X         |      |
+| Data General               | X           |              |          | X         |      |
+| Data Rincian Aset          | X           |              |          | X         |      |
+| Pemusnahan Aset            | X           |              |          | X         |      |
+| Request Peminjaman         | X           |              |          | X         | X    |
+| Data Peminjaman            | X           |              |          | X         | X    |
+| Pengajuan Peminjaman       | X           |              |          | X         | X    |
+| Layanan Aset               | X           |              |          | X         |      |
+| Layanan Non Aset           | X           |              |          | X         |      |
+| **IT**      |
+| Data General               | X           |              | X        |           |      |
+| Data Rincian Aset          | X           |              | X        |           |      |
+| Pemusnahan Aset            | X           |              | X        |           |      |
+| Layanan Perangkat IT       | X           |              | X        |           |      |
+| Aplikasi                    | X           |              | X        |           |      |
+| Sosial Media               | X           |              | X        |           |      |
+| Website                    | X           |              | X        |           |      |
+| **SEKOLAH**     |
+| Profil Sekolah              | X           | X             |          |           |      |
+| Tagihan Air                 | X           | X             |          |           |      |
+| Tagihan Listrik             | X           | X             |          |           |      |
+| Tagihan Internet            | X           | X             |          |           |      |
+| **MASTER**     |
+| Data User                  | X           |              |          |           |      |
+| User Logs                  | X           |              |          |           |      |
+| User Actions               | X           |              |          |           |      |
+| Backup                     | X           |              |          |           |      |
+| Restore                    | X           |              |          |           |      |
+| Data Siswa                 | X           |              |          |           |      |
+| Data Pegawai               | X           |              |          |           |      |
+| Pertanyaan Pengaduan       | X           |              |          |           |      |
+| Pertanyaan Feedback         | X           |              |          |           |      |
+| Identitas Gedung           | X           |              |          |           |      |
+| Identitas Lantai           | X           |              |          |           |      |
+| Identitas Prasarana        | X           |              |          |           |      |
+| Identitas Laboratorium     | X           |              |          |           |      |
+| Identitas Sarana           | X           |              |          |           |      |
+| Identitas Kelas            | X           |              |          |           |      |
+| Non Inventaris             | X           |              |          |           |      |
+| Kategori Barang            | X           |              |          |           |      |
+| Kategori MEP               | X           |              |          |           |      |
+| Sumber Dana                | X           |              |          |           |      |
+| Status Layanan             | X           |              |          |           |      |
 
-## Server Requirements
 
-PHP version 7.4 or higher is required, with the following extensions installed:
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+## System Launch
+- PHP 8.0.28
+- CodeIngiter 4.4.3
+  
