@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\SumberDanaModels;
+use App\Models\UserActionLogsModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,6 +14,9 @@ class SumberDana extends ResourcePresenter
 {
     function __construct() {
         $this->sumberDanaModel = new SumberDanaModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
+        $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
         public function index()
     {
@@ -58,20 +62,6 @@ class SumberDana extends ResourcePresenter
     }
     
 
-    public function update1($id = null) {
-        $data = $this->request->getPost();
-    
-        $kodeSumberDana = $data['kodeSumberDana'];
-        $namaSumberDana = $data['namaSumberDana'];
-    
-        if ($this->sumberDanaModel->isDuplicate($kodeSumberDana, $namaSumberDana)) {
-            return redirect()->to(site_url('sumberDana'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
-        } else {
-            $this->sumberDanaModel->update($id, $data);
-            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil update');
-        }
-    }
-
     public function update($id = null) {
         if ($id != null) {
             $data = $this->request->getPost();
@@ -85,11 +75,11 @@ class SumberDana extends ResourcePresenter
                 }
             } else if ($existingData->kodeSumberDana != $kodeSumberDana) {
                 if ($this->sumberDanaModel->kodeSumberDanaDuplicate($kodeSumberDana)) {
-                    return redirect()->to(site_url('sumberDana'))->with('error', 'Gagal update karena kode prasarana duplikat!');
+                    return redirect()->to(site_url('sumberDana'))->with('error', 'Gagal update karena kode sumber dana duplikat!');
                 }
             } else if ($existingData->namaSumberDana != $namaSumberDana) {
                 if ($this->sumberDanaModel->namaSumberDanaDuplicate($namaSumberDana)) {
-                    return redirect()->to(site_url('sumberDana'))->with('error', 'Gagal update karena nama prasarana duplikat!');
+                    return redirect()->to(site_url('sumberDana'))->with('error', 'Gagal update karena nama sumber dana duplikat!');
                 }
             }
             $this->sumberDanaModel->update($id, $data);
@@ -105,9 +95,9 @@ class SumberDana extends ResourcePresenter
         //
     }
 
-        public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->sumberDanaModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Sumber Dana dengan id $id");
         return redirect()->to(site_url('sumberDana'));
     }
 
@@ -117,39 +107,25 @@ class SumberDana extends ResourcePresenter
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblSumberDana')
-                ->set('deleted_at', null, true)
-                ->where(['idSumberDana' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblSumberDana')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblSumberDana', 'idSumberDana', $id, $this->userActionLogsModel, 'Master - Sumber Dana');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('sumberDana/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->sumberDanaModel->delete($id, true);
-        return redirect()->to(site_url('sumberDana/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->sumberDanaModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->sumberDanaModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('sumberDana/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('sumberDana/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
+        $affectedRows = deleteData('tblSumberDana', 'idSumberDana', $id, $this->userActionLogsModel, 'Master - Sumber Dana');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('sumberDana'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('sumberDana/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    } 
+
 
     public function export() {
         $data = $this->sumberDanaModel->findAll();
@@ -312,28 +288,21 @@ class SumberDana extends ResourcePresenter
 
     public function generatePDF()
     {
-        $filePath = APPPATH . 'Views/master/sumberDanaView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataSumberDana = $this->sumberDanaModel->findAll();
+        $title = "MASTER - SUMBER DANA";
+        
+        if (!$dataSumberDana) {
             return view('error/404');
         }
-
-        $data['dataSumberDana'] = $this->sumberDanaModel->findAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfMasterSumberDana($dataSumberDana, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
-        $dompdf->render();
-        $filename = 'Data Master - Sumber Dana.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Master - Sumber Dana' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }

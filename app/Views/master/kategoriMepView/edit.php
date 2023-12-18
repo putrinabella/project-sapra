@@ -6,11 +6,13 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Kategori MEP</h4>
-    </div>
-</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Data Master</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('kategoriMep')?>">Kategori MEP</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
+    </ol>
+</nav>
 
 
 <div class="row">

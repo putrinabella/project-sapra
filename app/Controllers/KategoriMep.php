@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\KategoriMepModels;
+use App\Models\UserActionLogsModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,6 +14,9 @@ class KategoriMep extends ResourcePresenter
 {
     function __construct() {
         $this->kategoriMepModel = new KategoriMepModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
+        $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index()
@@ -79,9 +83,9 @@ class KategoriMep extends ResourcePresenter
         //
     }
 
-    public function delete($id = null)
-    {
-        $this->kategoriMepModel->where('idKategoriMep', $id)->delete();
+    public function delete($id = null) {
+        $this->kategoriMepModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Kategori Mep dengan id $id");
         return redirect()->to(site_url('kategoriMep'));
     }
 
@@ -91,40 +95,25 @@ class KategoriMep extends ResourcePresenter
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblKategoriMep')
-                ->set('deleted_at', null, true)
-                ->where(['idKategoriMep' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblKategoriMep')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-        }
-
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblKategoriMep', 'idKategoriMep', $id, $this->userActionLogsModel, 'Master - Kategori Mep');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('kategoriMep'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('kategoriMep/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->kategoriMepModel->delete($id, true);
-        return redirect()->to(site_url('kategoriMep/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->kategoriMepModel->onlyDeleted()->countAllResults();
-            
-            if ($countInTrash > 0) {
-                $this->kategoriMepModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('kategoriMep/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('kategoriMep/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
+        $affectedRows = deleteData('tblKategoriMep', 'idKategoriMep', $id, $this->userActionLogsModel, 'Master - Kategori Mep');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('kategoriMep'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('kategoriMep/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    } 
+
 
     public function export() {
         $data = $this->kategoriMepModel->findAll();
@@ -278,28 +267,44 @@ class KategoriMep extends ResourcePresenter
     }
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/kategoriMepView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataKategoriMep = $this->kategoriMepModel->findAll();
+        $title = "MASTER - KATEGORI MEP";
+        
+        if (!$dataKategoriMep) {
             return view('error/404');
         }
-
-        $data['dataKategoriMep'] = $this->kategoriMepModel->findAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfMasterKategoriMep($dataKategoriMep, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
-        $dompdf->render();
-        $filename = 'Kategori MEP Report.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Master - Kategori Mep' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+        // $filePath = APPPATH . 'Views/master/kategoriMepView/print.php';
+    
+        // if (!file_exists($filePath)) {
+        //     return view('error/404');
+        // }
+
+        // $data['dataKategoriMep'] = $this->kategoriMepModel->findAll();
+
+        // ob_start();
+
+        // $includeFile = function ($filePath, $data) {
+        //     include $filePath;
+        // };
+    
+        // $includeFile($filePath, $data);
+    
+        // $html = ob_get_clean();
+        // $dompdf = new Dompdf();
+        // $dompdf->loadHtml($html);
+        // $dompdf->setPaper('A4', 'potrait');
+        // $dompdf->render();
+        // $filename = 'Kategori MEP Report.pdf';
+        // $dompdf->stream($filename);
     }
 }

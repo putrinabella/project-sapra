@@ -8,7 +8,7 @@
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Data Master</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Identitas Laboratorium</li>
+        <li class="breadcrumb-item active" aria-current="page">Identitas Lab</li>
     </ol>
 </nav>
 
@@ -64,7 +64,6 @@
                             <?=session()->getFlashdata('success')?>
                         </div>
                     </div>
-                    <br>
                     <?php endif; ?>
                     <?php if(session()->getFlashdata('error')) :?>
                     <div class="alert alert-danger alert-dismissible show fade" role="alert" id="alert">
@@ -75,7 +74,6 @@
                             <?=session()->getFlashdata('error')?>
                         </div>
                     </div>
-                    <br>
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
@@ -88,7 +86,7 @@
                                 <th>Lokasi Gedung</th>
                                 <th>Lokasi Lantai</th>
                                 <th>Luas</th>
-                                <th style="width: 20%;">Aksi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">

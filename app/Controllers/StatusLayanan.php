@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\StatusLayananModels;
+use App\Models\UserActionLogsModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,6 +14,9 @@ class StatusLayanan extends ResourcePresenter
 {
     function __construct() {
         $this->statusLayananModel = new StatusLayananModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
+        $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index()
@@ -67,9 +71,9 @@ class StatusLayanan extends ResourcePresenter
         //
     }
 
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->statusLayananModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Status Layanan dengan id $id");
         return redirect()->to(site_url('statusLayanan'));
     }
 
@@ -79,39 +83,25 @@ class StatusLayanan extends ResourcePresenter
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblStatusLayanan')
-                ->set('deleted_at', null, true)
-                ->where(['idStatusLayanan' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblStatusLayanan')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-            }
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblStatusLayanan', 'idStatusLayanan', $id, $this->userActionLogsModel, 'Master - Status Layanan');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('statusLayanan'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('statusLayanan/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->statusLayananModel->delete($id, true);
-        return redirect()->to(site_url('statusLayanan/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->statusLayananModel->onlyDeleted()->countAllResults();
-        
-            if ($countInTrash > 0) {
-                $this->statusLayananModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('statusLayanan/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('statusLayanan/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
+        $affectedRows = deleteData('tblStatusLayanan', 'idStatusLayanan', $id, $this->userActionLogsModel, 'Master - Status Layanan');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('statusLayanan'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('statusLayanan/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    } 
+
 
     public function export() {
         $data = $this->statusLayananModel->findAll();
@@ -266,28 +256,21 @@ class StatusLayanan extends ResourcePresenter
     }
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/statusLayananView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataStatusLayanan = $this->statusLayananModel->findAll();
+        $title = "MASTER - STATUS LAYANAN";
+        
+        if (!$dataStatusLayanan) {
             return view('error/404');
         }
-
-        $data['dataStatusLayanan'] = $this->statusLayananModel->findAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfMasterStatusLayanan($dataStatusLayanan, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
-        $dompdf->render();
-        $filename = 'Data Master - Status Layanan.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Master - Status Layanan' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }

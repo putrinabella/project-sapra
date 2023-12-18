@@ -132,137 +132,37 @@ class NonInventaris extends ResourceController
     
         return redirect()->to(site_url('nonInventaris/trash'))->with('error', 'Tidak ada data untuk dihapus');
     }
-    
     public function export() {
-        $startYear = $this->request->getVar('startYear');
-        $endYear = $this->request->getVar('endYear');
-
-        $data = $this->nonInventarisModel->getData($startYear, $endYear);
+        $data = $this->nonInventarisModel->findAll();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('NonInventaris');
-        $activeWorksheet->getTabColor()->setRGB('DF2E38');
     
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
+        $headers = ['No.', 'Nama', 'Satuan'];
         $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
         foreach ($data as $index => $value) {
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), $value->bulanPemakaianAir);
-            $activeWorksheet->setCellValue('C'.($index + 2), $value->tahunPemakaianAir);
-            $activeWorksheet->setCellValue('D'.($index + 2), $value->pemakaianAir);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->biaya);
+            $activeWorksheet->setCellValue('B'.($index + 2), $value->nama);
+            $activeWorksheet->setCellValue('C'.($index + 2), $value->satuan);
 
-            $columns = ['A', 'B', 'C', 'D', 'E'];
-            
-            foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
+            $activeWorksheet->getStyle('A'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $activeWorksheet->getStyle('B'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            $activeWorksheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
         }
-        
-        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);
     
-        foreach (range('A', 'E') as $column) {
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Tagihan - Tagihan Air.xlsx');
-        header('Cache-Control: max-age=0');
-        $writer->save('php://output');
-        exit();
-    }
-    
-    public function createTemplate() {
-        $data = $this->nonInventarisModel->findAll();
-        $spreadsheet = new Spreadsheet();
-        $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setTitle('Input Sheet');
-        $activeWorksheet->getTabColor()->setRGB('DF2E38');
-    
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
-        $activeWorksheet->fromArray([$headers], NULL, 'A1');
-        $activeWorksheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        foreach ($data as $index => $value) {
-            if ($index >= 3) {
-                break;
-            }
-            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
-            $activeWorksheet->setCellValue('B'.($index + 2), '');
-            $activeWorksheet->setCellValue('C'.($index + 2), '');
-            $activeWorksheet->setCellValue('D'.($index + 2), '');
-            $activeWorksheet->setCellValue('E'.($index + 2), '');
-
-            $columns = ['A', 'B', 'C', 'D', 'E'];
-            
-            foreach ($columns as $column) {
-                $activeWorksheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }        
-        }
-        
-        $activeWorksheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:E'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:E')->getAlignment()->setWrapText(true);;
-    
-        foreach (range('A', 'E') as $column) {
-            if ($column === 'A') {
-                $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
-            }
-            $activeWorksheet->getColumnDimension($column)->setWidth(30);
-        }
-
-        $exampleSheet = $spreadsheet->createSheet();
-        $exampleSheet->setTitle('Example Sheet');
-        $exampleSheet->getTabColor()->setRGB('767870');
-
-        $headers = ['No.', 'Bulan', 'Tahun', 'Pemakaian Air (kubik)',  'Biaya Tagihan'];
-        $exampleSheet->fromArray([$headers], NULL, 'A1');
-        $exampleSheet->getStyle('A1:E1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
-        foreach ($data as $index => $value) {
-            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
-            $exampleSheet->setCellValue('B'.($index + 2), $value->bulanPemakaianAir);
-            $exampleSheet->setCellValue('C'.($index + 2), $value->tahunPemakaianAir);
-            $exampleSheet->setCellValue('D'.($index + 2), $value->pemakaianAir);
-            $exampleSheet->setCellValue('E'.($index + 2), $value->biaya);
-
-            $columns = ['A', 'B', 'C', 'D', 'E'];
-            
-            foreach ($columns as $column) {
-                $exampleSheet->getStyle($column . ($index + 2))
-                ->getAlignment()
-                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-            }            
-        }
-        
-        $exampleSheet->getStyle('A1:E1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $exampleSheet->getStyle('A1:E1')->getFont()->setBold(true);
-        $exampleSheet->getStyle('A1:E'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $exampleSheet->getStyle('A:E')->getAlignment()->setWrapText(true);
-    
-        foreach (range('A', 'E') as $column) {
-            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
-        }
-        
-
-        $writer = new Xlsx($spreadsheet);
-        $spreadsheet->setActiveSheetIndex(0);
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename=Tagihan - Tagihan Air Example.xlsx');
+        header('Content-Disposition: attachment;filename=Data Master - Non Inventaris.xlsx');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
         exit();
@@ -284,19 +184,16 @@ class NonInventaris extends ResourceController
                 if ($key == 0) {
                     continue;
                 }
-                $pemakaianAir            = $value[3] ?? null;
-                $bulanPemakaianAir       = $value[1] ?? null;
-                $tahunPemakaianAir       = $value[2] ?? null;
-                $biaya                   = $value[4] ?? null;
-
+            
+                $nama = $value[1] ?? null;
+                $satuan = $value[2] ?? null;
+            
                 $data = [
-                    'pemakaianAir'             => $pemakaianAir,
-                    'bulanPemakaianAir'        => $bulanPemakaianAir,
-                    'tahunPemakaianAir'        => $tahunPemakaianAir,
-                    'biaya'                    => $biaya,
+                    'nama' => $nama,
+                    'satuan' => $satuan,
                 ];
 
-                if (!empty($data['pemakaianAir'])  && !empty($data['bulanPemakaianAir'])  && !empty($data['tahunPemakaianAir']) && !empty($data['biaya']) ) {
+                if (!empty($data['nama']) && !empty($data['satuan'])  ) {
                         $this->nonInventarisModel->insert($data);
                 } else {
                     return redirect()->to(site_url('nonInventaris'))->with('error', 'Pastikan semua data telah diisi!');
@@ -308,34 +205,85 @@ class NonInventaris extends ResourceController
         }
     }
 
-
-    public function generatePDF() {
-        $startYear = $this->request->getVar('startYear');
-        $endYear = $this->request->getVar('endYear');
-        
-
-        $filePath = APPPATH . 'Views/master/nonInventarisView/print.php';
+    public function createTemplate() {
+        $data = $this->nonInventarisModel->findAll();
+        $spreadsheet = new Spreadsheet();
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setTitle('Input Sheet');
+        $activeWorksheet->getTabColor()->setRGB('DF2E38');
+        $headers = ['No.', 'Nama', 'Satuan'];
+        $activeWorksheet->fromArray([$headers], NULL, 'A1');
+        $activeWorksheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
-        if (!file_exists($filePath)) {
-            return view('error/404');
+        foreach ($data as $index => $value) {
+            $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
+            $activeWorksheet->setCellValue('B'.($index + 2), "");
+            $activeWorksheet->setCellValue('C'.($index + 2), "");
+
+            $activeWorksheet->getStyle('A'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $activeWorksheet->getStyle('B'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            $activeWorksheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        }
+    
+        $activeWorksheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $activeWorksheet->getStyle('A1:C'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
+            $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
 
-        $data['dataNonInventaris'] = $this->nonInventarisModel->getData($startYear, $endYear);
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
+        $exampleSheet = $spreadsheet->createSheet();
+        $exampleSheet->setTitle('Example Sheet');
+        $exampleSheet->getTabColor()->setRGB('767870');
+        $exampleSheet->fromArray([$headers], NULL, 'A1');
+        $exampleSheet->getStyle('A1:C1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
     
-        $includeFile($filePath, $data);
+        foreach ($data as $index => $value) {
+            $exampleSheet->setCellValue('A'.($index + 2), $index + 1);
+            $exampleSheet->setCellValue('B'.($index + 2), $value->nama);
+            $exampleSheet->setCellValue('C'.($index + 2), $value->satuan);
+
+            $exampleSheet->getStyle('A'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $exampleSheet->getStyle('B'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            $exampleSheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        }
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $filename = 'Tagihan - Tagihan Air Report.pdf';
-        $dompdf->stream($filename);
+        $exampleSheet->getStyle('A1:C1')->getFont()->setBold(true);
+        $exampleSheet->getStyle('A1:C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $exampleSheet->getStyle('A1:C'.$exampleSheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $exampleSheet->getStyle('A:C')->getAlignment()->setWrapText(true);
+    
+        foreach (range('A', 'C') as $column) {
+            $exampleSheet->getColumnDimension($column)->setAutoSize(true);
+        }
+    
+        $writer = new Xlsx($spreadsheet);
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=Identitas Non Inventaris Example.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit();
+    }
+
+    public function generatePDF() {
+        $dataNonInventaris = $this->nonInventarisModel->findAll();
+        $title = "MASTER - NON INVENTARIS";
+        
+        if (!$dataNonInventaris) {
+            return view('error/404');
+        }
+    
+        $pdfData = pdfMasterNonInventaris($dataNonInventaris, $title);
+    
+        $filename = 'Master - Status Layanan' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }

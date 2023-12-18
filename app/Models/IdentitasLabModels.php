@@ -9,7 +9,7 @@ class IdentitasLabModels extends Model
     protected $table            = 'tblIdentitasLab';
     protected $primaryKey       = 'idIdentitasLab';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['namaLab', 'luas', 'idIdentitasGedung', 'idIdentitasLantai', 'kodeLab'];
+    protected $allowedFields    = ['namaLab', 'luas', 'idIdentitasGedung', 'idIdentitasLantai', 'kodeLab' ,'tipe', 'picturePath'];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 
@@ -37,7 +37,7 @@ class IdentitasLabModels extends Model
             ->orWhere('namaLab', $namaLab)
             ->countAllResults() > 0;
     }
-
+    
     public function kodeLabDuplicate($kodeLab) {
         $builder = $this->db->table($this->table);
         return $builder->where('kodeLab', $kodeLab)
@@ -49,7 +49,7 @@ class IdentitasLabModels extends Model
         return $builder->where('namaLab', $namaLab)
             ->countAllResults() > 0;
     }
-
+    
     public function getKodeLabById($idIdentitasLab) {
         $builder = $this->db->table($this->table);
         $builder->select('kodeLab');
@@ -63,5 +63,4 @@ class IdentitasLabModels extends Model
             return null; 
         }
     }
-    
 }

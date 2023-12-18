@@ -29,7 +29,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="<?= site_url('kategoriManajemen/export') ?>">Download as Excel</a>
-                <a class="dropdown-item" href="<?= site_url('kategoriManajemen/generatePDF') ?>">Download as PDF</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('kategoriManajemen/generatePDF') ?>">Download as PDF</a>
             </div>
         </div>
         <div class="dropdown">
@@ -84,6 +84,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th>No.</th>
+                                <th>Kode</th>
                                 <th>Nama Kategori Barang</th>
                                 <th>Aksi</th>
                             </tr>
@@ -94,6 +95,7 @@
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
+                                <td class="text-left"><?=$value->kodeKategoriManajemen?></td>
                                 <td class="text-left"><?=$value->namaKategoriManajemen?></td>
                                 <td class="text-center">
                                     <a href="<?=site_url('kategoriManajemen/edit/'.$value->idKategoriManajemen) ?>"

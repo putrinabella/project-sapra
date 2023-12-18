@@ -9,7 +9,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Data Master</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('identitasLab')?>">Identitas Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('identitasLab')?>">Identitas Lab</a></li>
         <li class="breadcrumb-item active" aria-current="page">Input Data</li>
     </ol>
 </nav>
@@ -33,20 +33,20 @@
                     <br>
                     <?php endif; ?>
                 </div>
-                <form action="<?= site_url('identitasLab')?>" method="post" autocomplete="off"  id="custom-validation">
+                <form action="<?= site_url('identitasLab')?>" method="post" autocomplete="off"  id="custom-validation"  enctype="multipart/form-data">
                     
                     <div class="row mb-3">
                         <label for="kodeLab" class="col-sm-3 col-form-label">Kode Lab</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="kodeLab" name="kodeLab"
-                                placeholder="Masukkan kode laboratorium">
+                                placeholder="Masukkan kode lab">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="namaLab" class="col-sm-3 col-form-label">Nama Laboratorium</label>
+                        <label for="namaLab" class="col-sm-3 col-form-label">Identitas Lab</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="namaLab" name="namaLab"
-                                placeholder="Masukkan nama laboratorium">
+                                placeholder="Masukkan identitas lab">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -76,6 +76,13 @@
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="luas" name="luas"
                                 placeholder="Masukkan luas (satuan meter)">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="picturePath" class="col-sm-3 col-form-label">Foto</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" id="picturePath" name="picturePath"
+                                placeholder="Masukkan foto lab">
                         </div>
                     </div>
                     <div class="row mb-3">

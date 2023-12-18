@@ -21,6 +21,28 @@
             <i class=" btn-icon-prepend" data-feather="trash"></i>
             Recycle Bin
         </a>
+        <div class="dropdown">
+            <button class="btn btn-success btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="download"></i>
+                Export File
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= site_url('nonInventaris/export') ?>">Download as Excel</a>
+                <a class="dropdown-item" target="_blank" href="<?= site_url('nonInventaris/generatePDF') ?>">Download as PDF</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-secondary btn-icon-text dropdown-toggle me-2 mb-2 mb-md-0" type="button"
+                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class=" btn-icon-prepend" data-feather="upload"></i>
+                Import File
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= site_url('nonInventaris/createTemplate') ?>">Download Template</a>
+                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#modalImport">Upload Excel</a>
+            </div>
+        </div>
         <a href="<?= site_url('nonInventaris/new') ?>" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
             <i class=" btn-icon-prepend" data-feather="edit"></i>
             Tambah Data

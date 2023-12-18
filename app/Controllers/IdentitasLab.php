@@ -138,6 +138,7 @@ class IdentitasLab extends ResourceController
         return redirect()->to(site_url('identitasLab/trash'))->with('error', 'Tidak ada data untuk dihapus');
     } 
 
+    
     public function export() {
         $data = $this->identitasLabModel->getAll();
         $keyGedung = $this->identitasGedungModel->findAll();
@@ -147,7 +148,7 @@ class IdentitasLab extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
-        $headerInputTable = ['No.', 'Kode', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
+        $headerInputTable = ['No.', 'Kode', 'Nama Lab', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:F1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
@@ -155,15 +156,15 @@ class IdentitasLab extends ResourceController
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), $value->kodeLab);
             $activeWorksheet->setCellValue('C'.($index + 2), $value->namaLab);
-            $activeWorksheet->setCellValue('E'.($index + 2), $value->luas . ' m²');
-            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaGedung);
-            $activeWorksheet->setCellValue('G'.($index + 2), $value->namaLantai);
+            $activeWorksheet->setCellValue('D'.($index + 2), $value->luas . ' m²');
+            $activeWorksheet->setCellValue('E'.($index + 2), $value->namaGedung);
+            $activeWorksheet->setCellValue('F'.($index + 2), $value->namaLantai);
             
             // $activeWorksheet->getStyle('B'.($index + 2))
             //     ->getAlignment()
             //     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
                 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F' ,'G'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -171,12 +172,12 @@ class IdentitasLab extends ResourceController
             }    
         }
     
-        $activeWorksheet->getStyle('A1:G1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('A1:G'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
+        $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:F')->getAlignment()->setWrapText(true);
         
-        foreach (range('A', 'G') as $column) {
+        foreach (range('A', 'F') as $column) {
             $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -187,7 +188,25 @@ class IdentitasLab extends ResourceController
         $writer->save('php://output');
         exit();
     }
+
+    public function generatePDF() {
+        $dataIdentitasLab = $this->identitasLabModel->getAll();
+        $title = "MASTER - IDENTITAS LABORATORIUM";
+        
+        if (!$dataIdentitasLab) {
+            return view('error/404');
+        }
     
+        $pdfData = pdfMasterIdentitasLab($dataIdentitasLab, $title);
+    
+        $filename = 'Master - Identitas Laboratorium' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
+    }
 
     public function createTemplate() {
         $data = $this->identitasLabModel->getAll();
@@ -200,13 +219,9 @@ class IdentitasLab extends ResourceController
         $activeWorksheet->setTitle('Input Sheet');
         $activeWorksheet->getTabColor()->setRGB('DF2E38');
         
-        $headerInputTable = ['No.', 'Kode Lab', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai' ,'Status'];
+        $headerInputTable = ['No.', 'Kode Lab', 'Nama Lab', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $activeWorksheet->fromArray([$headerInputTable], NULL, 'A1');
         $activeWorksheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        
-        $headerTipeLab = ['Tipe'];
-        $activeWorksheet->fromArray([$headerTipeLab], NULL, 'J1');
-        $activeWorksheet->getStyle('J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         
         $headerGedungID = ['ID Identitas Gedung', 'Nama Gedung'];
         $activeWorksheet->fromArray([$headerGedungID], NULL, 'L1');
@@ -226,20 +241,16 @@ class IdentitasLab extends ResourceController
             if ($index >= 1) {
                 break;
             }
-            $getFormula = '=IF(AND(B2<>"",C2<>"",D2<>"",E2<>"",F2<>"",G2<>""),IF(OR(ISNUMBER(MATCH(B2,$R$2:$R$'.(count($keyLab)+1).',0)),ISNUMBER(MATCH(C2,$S$2:$S$'.(count($keyLab)+1).',0))),"ERROR: Duplicate Data",IF(AND(ISNUMBER(MATCH(D2,$J$2:$J$3,0)),ISNUMBER(MATCH(F2,$L$2:$L$'.(count($keyGedung)+1).',0)),ISNUMBER(MATCH(G2,$O$2:$O$'.(count($keyLantai)+1).',0))),"CORRECT","ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai")),"ERROR: Empty data")';
-
             $activeWorksheet->setCellValue('A'.($index + 2), $index + 1);
             $activeWorksheet->setCellValue('B'.($index + 2), '');
             $activeWorksheet->setCellValue('C'.($index + 2), '');
             $activeWorksheet->setCellValue('D'.($index + 2), '');
             $activeWorksheet->setCellValue('E'.($index + 2), '');
             $activeWorksheet->setCellValue('F'.($index + 2), '');
-            $activeWorksheet->setCellValue('G'.($index + 2), '');
-            $activeWorksheet->setCellValue('H'.($index + 2), $getFormula);
             
             
 
-            $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H'];
+            $columns = ['A', 'B', 'C', 'D', 'E', 'F'];
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
                     ->getAlignment()
@@ -247,37 +258,18 @@ class IdentitasLab extends ResourceController
             }    
         }
     
-        $activeWorksheet->getStyle('A1:H1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
-        $activeWorksheet->getStyle('A1:H'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $activeWorksheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+        $activeWorksheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $activeWorksheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('5D9C59');
+        $activeWorksheet->getStyle('A1:F'.$activeWorksheet->getHighestRow())->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $activeWorksheet->getStyle('A:F')->getAlignment()->setWrapText(true);
         
-        foreach (range('A', 'H') as $column) {
+        foreach (range('A', 'F') as $column) {
             if ($column === 'D' || $column === 'E') {
                 $activeWorksheet->getColumnDimension($column)->setWidth(20);
             } else {
                 $activeWorksheet->getColumnDimension($column)->setAutoSize(true);
             }
         }
-
-        $activeWorksheet->setCellValue('J2', 'Ruangan');
-        $activeWorksheet->setCellValue('J3', 'Non Ruangan');
-
-        $activeWorksheet->getStyle('J1')
-            ->getAlignment()
-            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $activeWorksheet->getStyle('J1')->getFont()->setBold(true);
-        $activeWorksheet->getStyle('J1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C7E8CA');
-        $activeWorksheet->getStyle('J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        $activeWorksheet->getStyle('J2:J3')
-            ->getAlignment()
-            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $activeWorksheet->getStyle('J2:J3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        $activeWorksheet->getStyle('J')->getAlignment()->setWrapText(true);
-        $activeWorksheet->getColumnDimension('J')->setAutoSize(true);
-
         foreach ($keyGedung as $index => $value) {
             $activeWorksheet->setCellValue('L'.($index + 2), $value->idIdentitasGedung);
             $activeWorksheet->setCellValue('M'.($index + 2), $value->namaGedung);
@@ -345,7 +337,7 @@ class IdentitasLab extends ResourceController
         $exampleSheet->setTitle('Example Sheet');
         $exampleSheet->getTabColor()->setRGB('767870');
 
-        $headerExampleTable = ['No.', 'Kode Lab', 'Nama Lab', 'Tipe', 'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
+        $headerExampleTable = ['No.', 'Kode Lab', 'Nama Lab',  'Luas', 'Lokasi Gedung', 'Lokasi Lantai'];
         $exampleSheet->fromArray([$headerExampleTable], NULL, 'A1');
         $exampleSheet->getStyle('A1:H1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);    
 
@@ -400,8 +392,9 @@ class IdentitasLab extends ResourceController
         if ($extension == 'xlsx' || $extension == 'xls') {
             if ($extension == 'xls') {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             }
-            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
     
             $spreadsheet = $reader->load($file);
             $theFile = $spreadsheet->getActiveSheet()->toArray();
@@ -412,10 +405,9 @@ class IdentitasLab extends ResourceController
                 }
                 $kodeLab = $value[1] ?? null;
                 $namaLab = $value[2] ?? null;
-                $luas = $value[4] ?? null;
-                $idIdentitasGedung = $value[5] ?? null;
-                $idIdentitasLantai = $value[6] ?? null;
-                $status = $value[7] ?? null;
+                $luas = $value[3] ?? null;
+                $idIdentitasGedung = $value[4] ?? null;
+                $idIdentitasLantai = $value[5] ?? null;
     
                 $data = [
                     'namaLab' => $namaLab,
@@ -423,59 +415,21 @@ class IdentitasLab extends ResourceController
                     'idIdentitasGedung' => $idIdentitasGedung,
                     'idIdentitasLantai' => $idIdentitasLantai,
                     'kodeLab' => $kodeLab,
-                    'status' => $status,
                 ];
     
-                if ($status == 'CORRECT') {
-                    if ($this->identitasLabModel->isDuplicate($kodeLab, $namaLab)) {
-                        $hasErrors = true;
-                        $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
-                        break;
-                    } else {
-                        $this->identitasLabModel->insert($data);
-                    }
-                } else if ($status == 'ERROR: Empty data') {
-                    $hasErrors = true;
-                    $errorMessage = 'Pastikan semua data telah terisi.';
-                    break;
-                } else if ($status == 'ERROR: Duplicate Data') {
-                    $hasErrors = true;
-                    $errorMessage = 'Ditemukan duplikat data! Masukkan data yang berbeda.';
-                    break;
-                } else if ($status == 'ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai') {
-                    $errorMessage = 'ERROR: Tipe, ID Lantai atau ID Gedung tidak sesuai!';
-                    break;
+                if (!empty($data['namaLab']) && !empty($data['luas'])
+                && !empty($data['idIdentitasGedung']) && !empty($data['idIdentitasLantai']) 
+                && !empty($data['kodeLab'])) {
+                    $this->identitasLabModel->insert($data);
+                } else {
+                    return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diimport');
                 }
             }
-    
-            if ($hasErrors) {
-                return redirect()->to(site_url('identitasLab'))->with('error', $errorMessage);
-            } else {
-                return redirect()->to(site_url('identitasLab'))->with('success', 'Data berhasil diimport');
-            }
+            return redirect()->to(site_url('identitasLab'))->with('error', 'Pastikan semua data telah diisi!');
         } else {
             return redirect()->to(site_url('identitasLab'))->with('error', 'Masukkan file excel dengan extensi xlsx atau xls');
         }
     }
     
-
-    public function generatePDF() {
-        $dataIdentitasLab = $this->identitasLabModel->getAll();
-        $title = "MASTER - IDENTITAS LABORATORIUM";
-        
-        if (!$dataIdentitasLab) {
-            return view('error/404');
-        }
-    
-        $pdfData = pdfMasterIdentitasLab($dataIdentitasLab, $title);
-    
-        $filename = 'Master - Identitas Laboratorium' . ".pdf";
-        
-        $response = $this->response;
-        $response->setHeader('Content-Type', 'application/pdf');
-        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
-        $response->setBody($pdfData);
-        $response->send();
-    }
 }
 

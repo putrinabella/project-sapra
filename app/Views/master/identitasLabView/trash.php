@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Data Identitas Lab &verbar; SARPRA </title>
+<title>Recycle Bin Identitas Lab &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -9,7 +9,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Data Master</a></li>
-        <li class="breadcrumb-item"><a href="<?= site_url('identitasLab')?>">Identitas Laboratorium</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('identitasLab')?>">Identitas Lab</a></li>
         <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
     </ol>
 </nav>
@@ -37,8 +37,7 @@
                             
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger btn-icon-text" type="submit">
-                                <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent
-                            </button>
+                            <i class="btn-icon-prepend" data-feather="alert-triangle"></i> Delete All Permanent </button>
                         </form>
                         </a>
                     </div>
@@ -70,40 +69,35 @@
                     <?php endif; ?>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover" id="dataTable" style="width: 100%;">
+                   <table class="table table-hover" id="dataTable" style="width: 100%;">
                         <thead>
-                            <tr class="text-center">
+                        <tr class="text-center">
                                 <th style="width: 5%;">No.</th>
-                                <th>Kode</th>
-                                <th>Nama Lab</th>
-                                <th>Gedung</th>
-                                <th>Lantai</th>
+                                <th style="width: 12%;">ID</th>
+                                <th>Nama</th>
+                                <th>Lokasi Gedung</th>
+                                <th>Lokasi Lantai</th>
+                                <th>Luas</th>
                                 <th style="width: 20%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="py-2">
-                            <?php foreach ($dataIdentitasLab as $key => $value) : ?>
+                        <?php foreach ($dataIdentitasLab as $key => $value) : ?>
                             <tr style="padding-top: 10px; padding-bottom: 10px; vertical-align: middle;">
                                 <td class="text-center">
                                     <?=$key + 1?>
                                 </td>
-                                <td>
-                                    <?= $value->kodeLab; ?>
+                                <td class="text-center">
+                                    <?=$value->kodeLab?>
                                 </td>
-                                <td>
-                                    <?= $value->namaLab; ?>
-                                </td>
-                                <td>
-                                    <?= $value->namaGedung; ?>
-                                </td>
-                                <td>
-                                    <?= $value->namaLantai; ?>
-                                </td>
+                                <td class="text-left"><?=$value->namaLab?></td>
+                                <td class="text-center"><?=$value->namaGedung?></td>
+                                <td class="text-center"><?=$value->namaLantai?></td>
+                                <td class="text-center"><?=$value->luas?> m&sup2;</td>
                                 <td class="text-center">
                                     <a href="<?=site_url('identitasLab/restore/'.$value->idIdentitasLab) ?>"
                                         class="btn btn-primary"> Restore</a>
-                                    <form
-                                        action="<?= site_url('identitasLab/deletePermanent/'.$value->idIdentitasLab) ?>"
+                                    <form action="<?= site_url('identitasLab/deletePermanent/'.$value->idIdentitasLab) ?>"
                                         method="POST" class="d-inline">
                                         
                                         <input type="hidden" name="_method" value="DELETE">

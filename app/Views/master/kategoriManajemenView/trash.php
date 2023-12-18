@@ -6,8 +6,14 @@
 
 <?= $this->section("content"); ?>
 
-<h4 class="mb-3 mb-md-0">Recyle Bin Data Kategori Barang</h4>
-<br>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Data Master</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('kategoriManajemen')?>">Kategori Manajemen</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recycle Bin</li>
+    </ol>
+</nav>
+
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">

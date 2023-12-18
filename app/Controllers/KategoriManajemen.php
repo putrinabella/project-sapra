@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\KategoriManajemenModels;
+use App\Models\UserActionLogsModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,6 +14,9 @@ class KategoriManajemen extends ResourcePresenter
 {
     function __construct() {
         $this->kategoriManajemenModel = new KategoriManajemenModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
+        $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index()
@@ -64,27 +68,39 @@ class KategoriManajemen extends ResourcePresenter
 
     public function update($id = null)
     {
+        if ($id != null) {
         $data = $this->request->getPost();
     
         $kodeKategoriManajemen = $data['kodeKategoriManajemen'];
         $namaKategoriManajemen = $data['namaKategoriManajemen'];
     
-        if ($this->kategoriManajemenModel->isDuplicate($kodeKategoriManajemen, $namaKategoriManajemen)) {
-            return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Ditemukan duplikat data! Masukkan data yang berbeda.');
-        } else {
+            $existingData = $this->kategoriManajemenModel->find($id);
+            if ($existingData->kodeKategoriManajemen != $kodeKategoriManajemen && $existingData->namaKategoriManajemen != $namaKategoriManajemen ) {
+                if ($this->kategoriManajemenModel->isDuplicate($kodeKategoriManajemen, $namaKategoriManajemen)) {
+                    return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Gagal update karena ditemukan duplikat data!');
+                }
+            } else if ($existingData->kodeKategoriManajemen != $kodeKategoriManajemen) {
+                if ($this->kategoriManajemenModel->kodeKategoriManajemenDuplicate($kodeKategoriManajemen)) {
+                    return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Gagal update karena kode prasarana duplikat!');
+                }
+            } else if ($existingData->namaKategoriManajemen != $namaKategoriManajemen) {
+                if ($this->kategoriManajemenModel->namaKategoriManajemenDuplicate($namaKategoriManajemen)) {
+                    return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Gagal update karena nama prasarana duplikat!');
+                }
+            }       
             $this->kategoriManajemenModel->update($id, $data);
             return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil update');
         }
-    }
+}
 
     public function remove($id = null)
     {
         //
     }
 
-    public function delete($id = null)
-    {
-        $this->kategoriManajemenModel->where('idKategoriManajemen', $id)->delete();
+    public function delete($id = null) {
+        $this->kategoriManajemenModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Kategori Manajemen dengan id $id");
         return redirect()->to(site_url('kategoriManajemen'));
     }
 
@@ -94,40 +110,24 @@ class KategoriManajemen extends ResourcePresenter
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblKategoriManajemen')
-                ->set('deleted_at', null, true)
-                ->where(['idKategoriManajemen' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblKategoriManajemen')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-        }
-
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblKategoriManajemen', 'idKategoriManajemen', $id, $this->userActionLogsModel, 'Master - Kategori Manajemen');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('kategoriManajemen/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->kategoriManajemenModel->delete($id, true);
-        return redirect()->to(site_url('kategoriManajemen/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->kategoriManajemenModel->onlyDeleted()->countAllResults();
-            
-            if ($countInTrash > 0) {
-                $this->kategoriManajemenModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('kategoriManajemen/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('kategoriManajemen/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
+        $affectedRows = deleteData('tblKategoriManajemen', 'idKategoriManajemen', $id, $this->userActionLogsModel, 'Master - Kategori Manajemen');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('kategoriManajemen/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    } 
 
     public function export() {
         $data = $this->kategoriManajemenModel->findAll();
@@ -198,7 +198,7 @@ class KategoriManajemen extends ResourcePresenter
                 if (!empty($data['kodeKategoriManajemen']) && !empty($data['namaKategoriManajemen'])) {
                     $this->kategoriManajemenModel->insert($data);
                 } else {
-                    return redirect()->to(site_url('kategoriManajemen'))->with('error', 'Pastikan semua data telah diisi!');
+                    return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil diimport');
                 }
             }
             return redirect()->to(site_url('kategoriManajemen'))->with('success', 'Data berhasil diimport');
@@ -288,28 +288,21 @@ class KategoriManajemen extends ResourcePresenter
     }
 
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/kategoriManajemenView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataKategoriManajemen = $this->kategoriManajemenModel->findAll();
+        $title = "MASTER - KATEGORI MANAJEMEN";
+        
+        if (!$dataKategoriManajemen) {
             return view('error/404');
         }
-
-        $data['dataKategoriManajemen'] = $this->kategoriManajemenModel->findAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfMasterKategoriManajemen($dataKategoriManajemen, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
-        $dompdf->render();
-        $filename = 'Kategori Barang Report.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Master - Kategori Manajemen' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }

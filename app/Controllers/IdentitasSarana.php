@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourcePresenter;
 use App\Models\IdentitasSaranaModels;
+use App\Models\UserActionLogsModels;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,6 +14,9 @@ class IdentitasSarana extends ResourcePresenter
 {
     function __construct() {
         $this->identitasSaranaModel = new IdentitasSaranaModels();
+        $this->userActionLogsModel = new UserActionLogsModels();
+        $this->db = \Config\Database::connect();
+        helper(['pdf', 'custom']);
     }
 
     public function index()
@@ -106,7 +110,8 @@ class IdentitasSarana extends ResourcePresenter
     }
 
     public function delete($id = null) {
-        $this->identitasSaranaModel->where('idIdentitasSarana', $id)->delete();
+        $this->identitasSaranaModel->delete($id);
+        activityLogs($this->userActionLogsModel, "Soft Delete", "Melakukan soft delete data Master - Identitas Sarana dengan id $id");
         return redirect()->to(site_url('identitasSarana'));
     }
 
@@ -116,40 +121,25 @@ class IdentitasSarana extends ResourcePresenter
     } 
 
     public function restore($id = null) {
-        $this->db = \Config\Database::connect();
-        if($id != null) {
-            $this->db->table('tblIdentitasSarana')
-                ->set('deleted_at', null, true)
-                ->where(['idIdentitasSarana' => $id])
-                ->update();
-        } else {
-            $this->db->table('tblIdentitasSarana')
-                ->set('deleted_at', null, true)
-                ->where('deleted_at is NOT NULL', NULL, FALSE)
-                ->update();
-        }
-
-        if($this->db->affectedRows() > 0) {
+        $affectedRows = restoreData('tblIdentitasSarana', 'idIdentitasSarana', $id, $this->userActionLogsModel, 'Master - Identitas Sarana');
+    
+        if ($affectedRows > 0) {
             return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil direstore');
-        } 
+        }
+    
         return redirect()->to(site_url('identitasSarana/trash'))->with('error', 'Tidak ada data untuk direstore');
-    } 
+    }
 
     public function deletePermanent($id = null) {
-        if($id != null) {
-        $this->identitasSaranaModel->delete($id, true);
-        return redirect()->to(site_url('identitasSarana/trash'))->with('success', 'Data berhasil dihapus permanen');
-        } else {
-            $countInTrash = $this->identitasSaranaModel->onlyDeleted()->countAllResults();
-            
-            if ($countInTrash > 0) {
-                $this->identitasSaranaModel->onlyDeleted()->purgeDeleted();
-                return redirect()->to(site_url('identitasSarana/trash'))->with('success', 'Semua data trash berhasil dihapus permanen');
-            } else {
-                return redirect()->to(site_url('identitasSarana/trash'))->with('error', 'Tempat sampah sudah kosong!');
-            }
-        }
-    }  
+        $affectedRows = deleteData('tblIdentitasSarana', 'idIdentitasSarana', $id, $this->userActionLogsModel, 'Master - Identitas Sarana');
+    
+        if ($affectedRows > 0) {
+            return redirect()->to(site_url('identitasSarana'))->with('success', 'Data berhasil dihapus');
+        } 
+    
+        return redirect()->to(site_url('identitasSarana/trash'))->with('error', 'Tidak ada data untuk dihapus');
+    } 
+
 
     public function export() {
         $data = $this->identitasSaranaModel->findAll();
@@ -170,7 +160,7 @@ class IdentitasSarana extends ResourcePresenter
                 $activeWorksheet->setCellValue('D'.($index + 2), 'Bukan Perangkat IT');
             }
     
-            $columns = ['A', 'B', 'D'];
+            $columns = ['A', 'B'];
 
             foreach ($columns as $column) {
                 $activeWorksheet->getStyle($column . ($index + 2))
@@ -178,6 +168,7 @@ class IdentitasSarana extends ResourcePresenter
                                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             }     
             $activeWorksheet->getStyle('C'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            $activeWorksheet->getStyle('D'.($index + 2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
         }
     
         $activeWorksheet->getStyle('A1:D1')->getFont()->setBold(true);
@@ -417,28 +408,21 @@ class IdentitasSarana extends ResourcePresenter
     }
     
     public function generatePDF() {
-        $filePath = APPPATH . 'Views/master/identitasSaranaView/print.php';
-    
-        if (!file_exists($filePath)) {
+        $dataIdentitasSarana = $this->identitasSaranaModel->findAll();
+        $title = "MASTER - IDENTITAS SARANA";
+        
+        if (!$dataIdentitasSarana) {
             return view('error/404');
         }
-
-        $data['dataIdentitasSarana'] = $this->identitasSaranaModel->findAll();
-
-        ob_start();
-
-        $includeFile = function ($filePath, $data) {
-            include $filePath;
-        };
     
-        $includeFile($filePath, $data);
+        $pdfData = pdfMasterIdentitasSarana($dataIdentitasSarana, $title);
     
-        $html = ob_get_clean();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'potrait');
-        $dompdf->render();
-        $filename = 'Identitas Spesifikasi Report.pdf';
-        $dompdf->stream($filename);
+        $filename = 'Master - Identitas Sarana' . ".pdf";
+        
+        $response = $this->response;
+        $response->setHeader('Content-Type', 'application/pdf');
+        $response->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"');
+        $response->setBody($pdfData);
+        $response->send();
     }
 }
