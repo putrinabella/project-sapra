@@ -47,13 +47,13 @@
                     <div class="row mb-3">
                         <label for="role" class="col-sm-3 col-form-label">Role</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="role" name="role">
-                                <option value="" hidden>Pilih role</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible"
+                                data-width="100%" data-select2-id="1" aria-hidden="true" id="role" name="role">
+                                <option value="" disabled hidden>Pilih role</option>
                                 <option value="Super Admin">Super Admin</option>
                                 <option value="Admin IT">Admin IT</option>
                                 <option value="Admin Sarpra">Admin Sarpra</option>
                                 <option value="Laboran">Laboran</option>
-                                <option value="User">User</option>
                             </select>
                         </div>
                     </div>

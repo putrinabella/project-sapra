@@ -43,8 +43,8 @@
                     <div class="row mb-3">
                         <label for="tipe" class="col-sm-3 col-form-label">Tipe</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="tipe" name="tipe">
-                                <option value="" hidden>Pilih tipe</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1"  aria-hidden="true" id="tipe" name="tipe">
+                                <option value="" disabled hidden>Pilih tipe</option>
                                 <option value="Ruangan" <?=$dataIdentitasPrasarana->tipe == 'Ruangan' ? 'selected' : ''
                                     ?>>Ruangan</option>
                                 <option value="Non Ruangan" <?=$dataIdentitasPrasarana->tipe == 'Non Ruangan' ?
@@ -55,8 +55,8 @@
                     <div class="row mb-3">
                         <label for="idIdentitasGedung" class="col-sm-3 col-form-label">Lokasi Gedung</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasGedung" name="idIdentitasGedung">
-                                <option value="" hidden>Pilih lokasi gedung</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2"  aria-hidden="true" id="idIdentitasGedung" name="idIdentitasGedung">
+                                <option value="" disabled hidden>Pilih lokasi gedung</option>
                                 <?php foreach($dataIdentitasGedung as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasGedung?>" <?=$dataIdentitasPrasarana->
                                     idIdentitasGedung == $value->idIdentitasGedung ? 'selected' : null ?>>
@@ -69,8 +69,8 @@
                     <div class="row mb-3">
                         <label for="idIdentitasLantai" class="col-sm-3 col-form-label">Lokasi Lantai</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasLantai" name="idIdentitasLantai">
-                                <option value="" hidden>Pilih lokasi lantai</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="3"  aria-hidden="true" id="idIdentitasLantai" name="idIdentitasLantai">
+                                <option value="" disabled hidden>Pilih lokasi lantai</option>
                                 <?php foreach($dataIdentitasLantai as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasLantai?>" <?=$dataIdentitasPrasarana->
                                     idIdentitasLantai == $value->idIdentitasLantai ? 'selected' : null ?>>

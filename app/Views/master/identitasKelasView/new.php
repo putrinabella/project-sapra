@@ -6,27 +6,18 @@
 
 <?= $this->section("content"); ?>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-    <div>
-        <h4 class="mb-3 mb-md-0">Identitas Kelas</h4>
-    </div>
-</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Data Master</a></li>
+        <li class="breadcrumb-item"><a href="<?= site_url('identitasKelas')?>">Identitas Kelas</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Input Data</li>
+    </ol>
+</nav>
 
 
 <div class="row">
     <div class="col-12 col-xl-12 grid-margin stretch-card">
         <div class="card overflow-hidden">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h4>Tambah Data</h4>
-                    <!-- <div class="secion-header-back">
-                        <a href="<?= site_url('identitasKelas')?>" class="btn btn-outline-primary btn-icon-text">
-                            <i class="btn-icon-prepend" data-feather="arrow-left"></i>
-                            Back
-                        </a>
-                    </div> -->
-                </div>
-            </div>
             <div class="card-body">
                 <form action="<?= site_url('identitasKelas')?>" method="post" autocomplete="off"  id="custom-validation">
                     

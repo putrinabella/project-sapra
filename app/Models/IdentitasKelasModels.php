@@ -9,7 +9,7 @@ class IdentitasKelasModels extends Model
     protected $table            = 'tblIdentitasKelas';
     protected $primaryKey       = 'idIdentitasKelas';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['namaKelas', 'jumlahSiswa'];
+    protected $allowedFields    = ['namaKelas',];
     protected $useTimestamps    = true;
     protected $useSoftDeletes   = true;
 

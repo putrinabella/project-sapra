@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Edit Identitas Lab &verbar; SARPRA </title>
+<title>Edit Identitas Laboratorium &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>
@@ -43,8 +43,8 @@
                     <div class="row mb-3">
                         <label for="idIdentitasGedung" class="col-sm-3 col-form-label">Lokasi Gedung</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasGedung" name="idIdentitasGedung">
-                                <option value="" hidden>Pilih lokasi gedung</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1"  aria-hidden="true" id="idIdentitasGedung" name="idIdentitasGedung">  
+                                <option value="" disabled hidden>Pilih lokasi gedung</option>
                                 <?php foreach($dataIdentitasGedung as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasGedung?>" <?=$dataIdentitasLab->
                                     idIdentitasGedung == $value->idIdentitasGedung ? 'selected' : null ?>>
@@ -57,8 +57,8 @@
                     <div class="row mb-3">
                         <label for="idIdentitasLantai" class="col-sm-3 col-form-label">Lokasi Lantai</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="idIdentitasLantai" name="idIdentitasLantai">
-                                <option value="" hidden>Pilih lokasi lantai</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2"  aria-hidden="true" id="idIdentitasLantai" name="idIdentitasLantai">
+                                <option value="" disabled hidden>Pilih lokasi lantai</option>
                                 <?php foreach($dataIdentitasLantai as $key =>$value): ?>
                                 <option value="<?=$value->idIdentitasLantai?>" <?=$dataIdentitasLab->
                                     idIdentitasLantai == $value->idIdentitasLantai ? 'selected' : null ?>>

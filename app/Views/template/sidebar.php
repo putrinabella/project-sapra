@@ -345,6 +345,9 @@
                     <a href="<?= site_url('identitasLab') ?>" class="nav-link">Identitas Laboratorium</a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= site_url('identitasKelas') ?>" class="nav-link">Identitas Kelas</a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= site_url('identitasSarana') ?>" class="nav-link">Identitas Sarana</a>
                 </li>
                 <li class="nav-item">

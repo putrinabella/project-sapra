@@ -60,9 +60,3 @@ class Home extends BaseController
         return $db->table('tblUser')->where('idUser', session('id_user'))->get()->getRow();
     }
 }
-
-
-            // 'dataIdentitasSarana' => $this->identitasSaranaModel->findAll(),
-            // 'dataSumberDana' => $this->sumberDanaModel->findAll(),
-            // 'dataKategoriManajemen' => $this->kategoriManajemenModel->findAll(),
-            // 'dataIdentitasPrasarana' => $this->identitasPrasaranaModel->findAll(),

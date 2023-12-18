@@ -1,7 +1,7 @@
 <?= $this->extend('template/webshell'); ?>
 
 <?= $this->section("title"); ?>
-<title>Recycle Bin Identitas Lab &verbar; SARPRA </title>
+<title>Recycle Bin Identitas Laboratorium &verbar; SARPRA </title>
 <?= $this->endSection(); ?>
 
 <?= $this->section("content"); ?>

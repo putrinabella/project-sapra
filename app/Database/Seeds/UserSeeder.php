@@ -20,36 +20,29 @@ class UserSeeder extends Seeder
         // multiple data
         $data = [
             [
-                'username' => 'putri',
-                'password' => password_hash('putri', PASSWORD_BCRYPT),
+                'username' => 'Super Admin',
+                'password' => password_hash('superadmin', PASSWORD_BCRYPT),
                 'nama' => 'Putri',
                 'role' => 'Super Admin',
             ],
             [
-                'username' => 'nabella',
-                'password' => password_hash('nabella', PASSWORD_BCRYPT),
+                'username' => 'Laboran',
+                'password' => password_hash('laboran', PASSWORD_BCRYPT),
                 'nama' => 'Nabella',
                 'role' => 'Laboran',
             ],
             [
-                'username' => 'hana',
-                'password' => password_hash('nabella', PASSWORD_BCRYPT),
-                'nama' => 'Nabella',
+                'username' => 'Admin IT',
+                'password' => password_hash('adminit', PASSWORD_BCRYPT),
+                'nama' => 'Adha',
                 'role' => 'Admin IT',
             ],
             [
-                'username' => 'budi',
-                'password' => password_hash('nabella', PASSWORD_BCRYPT),
-                'nama' => 'Nabella',
+                'username' => 'Admin Sarpra',
+                'password' => password_hash('adminsarpra', PASSWORD_BCRYPT),
+                'nama' => 'Pratama',
                 'role' => 'Admin Sarpra',
             ],
-            [
-                'username' => 'salsa',
-                'password' => password_hash('nabella', PASSWORD_BCRYPT),
-                'nama' => 'Nabella',
-                'role' => 'User',
-            ],
-
         ];
         $this->db->table('tblUser')->insertBatch($data);
     }

@@ -19,11 +19,6 @@ class IdentitasKelas extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'jumlahSiswa' => [
-                'type' => 'INT',
-                'constraint' => 4,
-                'null' => true,
-            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

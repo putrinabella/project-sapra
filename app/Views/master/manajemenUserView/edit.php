@@ -36,8 +36,8 @@
                     <div class="row mb-3">
                         <label for="role" class="col-sm-3 col-form-label">Role</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="role" name="role">
-                                <option value="" hidden>Pilih role</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1"  aria-hidden="true" id="role" name="role">
+                                <option value="" disabled hidden>Pilih role</option>
                                 <option value="Super Admin" <?= $dataManajemenUser->role == 'Super Admin' ? 'selected' : '' ?>>Super Admin</option>
                                 <option value="Admin IT" <?= $dataManajemenUser->role == 'Admin IT' ? 'selected' : '' ?>>Admin IT</option>
                                 <option value="Admin Sarpra" <?= $dataManajemenUser->role == 'Admin Sarpra' ? 'selected' : '' ?>>Admin Sarpra</option>

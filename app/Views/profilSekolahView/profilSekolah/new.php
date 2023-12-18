@@ -37,8 +37,8 @@
                     <div class="row mb-3">
                         <label for="akreditasi" class="col-sm-3 col-form-label">akreditasi</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="akreditasi" name="akreditasi">
-                                <option value="" hidden>Pilih status</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="1"  aria-hidden="true" id="akreditasi" name="akreditasi">
+                                <option value="" disabled hidden>Pilih status</option>
                                 <option value="A" >A</option>
                                 <option value="B" >B</option>
                                 <option value="C" >C</option>
@@ -48,8 +48,8 @@
                     <div class="row mb-3">
                         <label for="kurikulum" class="col-sm-3 col-form-label">Kurikulum</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="kurikulum" name="kurikulum">
-                                <option value="" hidden>Pilih Kurikulum</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="2"  aria-hidden="true" id="kurikulum" name="kurikulum">
+                                <option value="" disabled hidden>Pilih Kurikulum</option>
                                 <option value="Kurikulum 2006" >Kurikulum 2006</option>
                                 <option value="Kurikulum 2013" >Kurikulum 2013</option>
                                 <option value="Kurikulum Merdeka" >Kurikulum Merdeka</option>
@@ -76,8 +76,8 @@
                     <div class="row mb-3">
                         <label for="status" class="col-sm-3 col-form-label">Status</label>
                         <div class="col-sm-9">
-                            <select class="form-select" id="status" name="status">
-                                <option value="" hidden>Pilih status</option>
+                            <select class="js-example-basic-single form-select select2-hidden-accessible" data-width="100%" data-select2-id="3"  aria-hidden="true" id="status" name="status">
+                                <option value="" disabled hidden>Pilih status</option>
                                 <option value="Swasta" >Swasta</option>
                                 <option value="Negeri" >Negeri</option>
                             </select>
